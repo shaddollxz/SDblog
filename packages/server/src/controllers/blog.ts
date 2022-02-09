@@ -25,13 +25,16 @@ export const homePage: GetHandler<HomePageOptions> = async (req, res, next) => {
             .populate("author")
             .populate("tags");
 
+        const blogListSend = blogList.map((item) => {
+            const result = item.toJSON() as unknown as BlogDetailInfo;
+            // @ts-ignore 强制改了
+            result.contentLength = result.content?.length;
+            delete result.content;
+            return result;
+        });
+
         res.status(StatusEnum.OK).json({
-            blogList: blogList.map((item) => {
-                // @ts-ignore
-                item.contentLength = item.content!.length;
-                delete item.content;
-                return item as unknown as BlogListItemInfo;
-            }),
+            blogList: blogListSend,
             allPage,
         });
     } catch (e) {

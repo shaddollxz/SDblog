@@ -86,7 +86,6 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
 /** 重新登录 */
 export const relogin: GetHandler = async (req, res, next) => {
     try {
-        console.log(req.body._id);
         const userData = await User.findById(req.body._id);
         if (userData) {
             const token = sign({ _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin });

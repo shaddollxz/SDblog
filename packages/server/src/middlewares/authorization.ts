@@ -3,7 +3,6 @@ import { StatusEnum } from "#interface";
 
 export const mustLogin: MiddleWare = async (req, res, next) => {
     let token = req.header("Authorization");
-    console.log(token);
     if (!token) {
         return res.status(StatusEnum.Unauthorized).json({ error: "登录再进行操作", isShow: true });
     } else {

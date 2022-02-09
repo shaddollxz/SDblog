@@ -30,7 +30,6 @@ provide("blogDetail", blogDetail);
 
 onMounted(() => {
     blogDetailApi(route.params.blogId as string).then(({ data }) => {
-        console.log(data);
         blogDetail.value = data;
         document.head.querySelector("title")!.innerText = data.title;
     });

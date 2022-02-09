@@ -34,7 +34,6 @@ export const useUserStore = defineStore("user", {
         relogin() {
             reloginApi().then(
                 ({ data }) => {
-                    console.log(data);
                     this.refreshUserInfo(data.userData);
                     token.set(data.token);
                 },

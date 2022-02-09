@@ -100,7 +100,7 @@ watchEffect(() => {
 
 let showMenu = ref(false);
 function deleteBlog() {
-    deleteBlogApi(props.blogMsg._id).then(({ data }) => {
+    deleteBlogApi(props.blogMsg._id).then(() => {
         Message.success("删除成功");
     });
 }
