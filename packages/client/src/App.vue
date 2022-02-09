@@ -24,7 +24,7 @@ const tagStore = useTagStore();
 
 onMounted(() => {
     if (localStorage.getItem("access_token")) {
-        userStore.getUserInfo();
+        userStore.relogin();
     }
     tagStore.getAllTag();
 });

@@ -58,7 +58,7 @@ export const getDetail: GetHandler<any, { blogId: string }> = async (req, res, n
         })
             .populate("author")
             .populate("tags");
-        res.status(StatusEnum.OK).json({ ...detail });
+        res.status(StatusEnum.OK).json({ ...detail.toJSON() });
     } catch (e) {
         res.status(StatusEnum.notFound).json({ error: "没有找到该博客", isShow: true });
     }

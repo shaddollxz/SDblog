@@ -17,21 +17,21 @@ export class Blog extends defaultClasses.TimeStamps implements dbBase {
     @prop({ required: true, ref: () => User })
     author!: Ref<User>;
 
-    @prop({ required: true, default: "" })
+    @prop({ default: "" })
     description!: string;
 
-    @prop({ required: true, default: null })
+    @prop({ default: null })
     headPic!: string;
 
-    @prop({ required: true, ref: () => Tag })
+    @prop({ default: [], ref: () => Tag })
     tags!: Ref<Tag>[];
 
-    @prop({ required: true, default: 0 })
+    @prop({ default: 0 })
     read!: number;
 
-    @prop({ required: true, default: 0 })
+    @prop({ default: 0 })
     likes!: number;
 
-    @prop({ required: true, default: 0 })
+    @prop({ default: 0 })
     replyCount!: number;
 }

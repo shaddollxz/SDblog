@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-let jwtSecret = process.env.jwtSecret!;
+const { jwtSecret, jwtLimit } = process.env;
 
 interface UserPayload {
     _id: string;
     isAdmin: boolean;
 }
 
-export function sign(data: UserPayload, limit: number | string) {
-    return jwt.sign(data, jwtSecret, { expiresIn: limit });
+export function sign(data: UserPayload) {
+    return jwt.sign(data, jwtSecret!, { expiresIn: jwtLimit! });
 }
 
 export function verify(token: string) {
-    return jwt.verify(token, jwtSecret) as UserPayload;
+    return jwt.verify(token, jwtSecret!) as UserPayload;
 }

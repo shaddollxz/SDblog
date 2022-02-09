@@ -3,7 +3,7 @@ export {
     sendRegisterEmail as sendRegisterEmailApi,
     sendRetrieveEmail as sendRetrieveEmailApi,
     register as registerApi,
-    userDetail as userDetailApi,
+    relogin as reloginApi,
     updateUserInfo as updateUserInfoApi,
     changePassWord as changePassWordApi,
 } from "./ajax/user";

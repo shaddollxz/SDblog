@@ -56,10 +56,10 @@ export function register(formData: RegisterOptions): AxiosPromise<Success | Fail
 }
 
 // 获取用户信息
-export function userDetail(): AxiosPromise<{ userData: UserInfo; token: string }> {
+export function relogin(): AxiosPromise<{ userData: UserInfo; token: string }> {
     return axios({
         method: "get",
-        url: "user/userDetail",
+        url: "user/relogin",
     });
 }
 

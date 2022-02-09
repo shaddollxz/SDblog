@@ -17,12 +17,12 @@ try {
 }
 
 export default function getServer(Env: ImportMetaEnv, isBuild: boolean): ServerOptions {
-    let proxySetting: { target: string; rewrite: string };
+    let proxySetting: { target: string; rewriteto: string };
 
     if (Env.VITE_LOCAL == "true") {
-        proxySetting = { target: "http://localhost:3000", rewrite: "" };
+        proxySetting = { target: "http://localhost:3000", rewriteto: "" };
     } else {
-        proxySetting = { target: "https://www.shaddollxz.space", rewrite: "/api" }; // 配置代理
+        proxySetting = { target: "https://www.shaddollxz.space", rewriteto: "/api" }; // 配置代理
     }
 
     return {
@@ -33,7 +33,7 @@ export default function getServer(Env: ImportMetaEnv, isBuild: boolean): ServerO
             "/api": {
                 target: proxySetting.target,
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, proxySetting.rewrite),
+                rewrite: (path) => path.replace(/^\/api/, proxySetting.rewriteto),
             },
         },
     };

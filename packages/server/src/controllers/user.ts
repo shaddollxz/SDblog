@@ -26,10 +26,10 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
 
         if (user) {
             if (user.passWord == md5(req.body.passWord)) {
-                const token = sign({ _id: user._id, isAdmin: user.authority == AuthorityEnum.admin }, "7d"); // 七天后token无效
+                const token = sign({ _id: user._id, isAdmin: user.authority == AuthorityEnum.admin }); // 七天后token无效
                 const userInfo = user.toJSON();
                 delete userInfo.passWord;
-                return res.status(StatusEnum.OK).json({ user, token });
+                return res.status(StatusEnum.OK).json({ userData: userInfo, token });
             }
             throw "密码不正确";
         }
@@ -83,16 +83,28 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
     }
 };
 
-/** 获得用户详细信息 */
+/** 重新登录 */
+export const relogin: GetHandler = async (req, res, next) => {
+    try {
+        console.log(req.body._id);
+        const userData = await User.findById(req.body._id);
+        if (userData) {
+            const token = sign({ _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin });
+            res.status(StatusEnum.OK).json({ userData, token });
+        } else {
+            res.status(StatusEnum.notFound).json({ error: "没有该用户", isShow: true });
+        }
+    } catch (e) {
+        next(e);
+    }
+};
+
+/** 获取用户信息 */
 export const userDetail: GetHandler<any, { userId: string }> = async (req, res, next) => {
     try {
         const userData = await User.findById(req.params.userId);
         if (userData) {
-            const token = sign(
-                { _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin },
-                "7d"
-            );
-            res.status(StatusEnum.OK).json({ userData, token });
+            res.status(StatusEnum.OK).json({ ...userData.toJSON() });
         } else {
             res.status(StatusEnum.notFound).json({ error: "没有该用户", isShow: true });
         }
@@ -124,7 +136,7 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
                     { $set: { passWord: newPassWord } },
                     { new: true }
                 );
-                const token = sign({ _id: user!._id, isAdmin: user!.authority == AuthorityEnum.admin }, "7d");
+                const token = sign({ _id: user!._id, isAdmin: user!.authority == AuthorityEnum.admin });
                 return res.status(StatusEnum.OK).json({ userData: user, token });
             } else {
                 res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });

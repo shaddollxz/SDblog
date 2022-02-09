@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { userDetailApi, loginApi } from "@apis";
+import { reloginApi, loginApi } from "@apis";
 import type { UserInfo, LoginOptions } from "@blog/server";
 import { AuthorityEnum } from "@blog/server";
 import token from "@/utils/token";
@@ -31,9 +31,10 @@ export const useUserStore = defineStore("user", {
             token.set(data.token);
             Message.success("登录成功");
         },
-        getUserInfo() {
-            userDetailApi().then(
+        relogin() {
+            reloginApi().then(
                 ({ data }) => {
+                    console.log(data);
                     this.refreshUserInfo(data.userData);
                     token.set(data.token);
                 },

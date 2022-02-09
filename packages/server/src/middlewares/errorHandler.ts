@@ -8,5 +8,3 @@ export default (): ErrorRequestHandler => (err, req, res, next) => {
         error: format(err),
     });
 };
-
-//! 错误日志在cd /root/.pm2/logs
