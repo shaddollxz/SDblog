@@ -1,0 +1,255 @@
+<template>
+    <div class="sendMarkdown">
+        <div class="toolBar">
+            <div class="left">
+                <div v-for="item of leftList" :title="item.title" @click="item.func">
+                    <i :class="item.icon"></i>
+                </div>
+            </div>
+            <div class="right">
+                <div v-for="item of rightList" :title="item.title" @click="item.func">
+                    <i :class="item.icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputArea">
+            <textarea
+                ref="textarea"
+                cols="30"
+                rows="10"
+                v-model.trim="text"
+                @keydown="inputFormat($event)"
+                v-bind="$attrs"
+            ></textarea>
+            <Markdown v-if="isPreview" :markdown="text"></Markdown>
+        </div>
+
+        <div class="buttons">
+            <div class="left"><slot name="leftBtn"></slot></div>
+            <div class="right">
+                <CheckButton v-bind="$attrs" @onClick="$emit('onSend')" :isCanClick="isCanSend">
+                    发送
+                </CheckButton>
+                <div class="gusto-button" @click="text = ''">清空</div>
+            </div>
+        </div>
+
+        <EmojiBox @insertEmoji="insertEmoji" ref="emojiBox"></EmojiBox>
+    </div>
+</template>
+
+<script setup lang="ts">
+import Markdown from "../Markdown/index.vue";
+import EmojiBox from "./EmojiBox.vue";
+import CheckButton from "../CheckButton/index.vue";
+import { Message } from "sdt3";
+import TextArea from "@/utils/TextArea";
+const props = defineProps({
+    isCanSend: {
+        type: Boolean,
+        required: true,
+    },
+    isCanChoseFile: {
+        type: Boolean,
+        default: false,
+    },
+    isTitle: {
+        type: Boolean,
+        default: false,
+    },
+});
+defineEmits(["onSend"]);
+
+let text = ref("");
+const emojiBox = shallowRef<typeof EmojiBox | null>(null); // 通过组件实例暴露的isShowEmojiBox控制表情box的出现
+const textarea = shallowRef<HTMLTextAreaElement | null>(null); // 获得文本框 通过原生方法进行补全等操作
+let isPreview = ref(true); // 是否显示预览
+let isAutoEnter = ref(true);
+
+//todo 输入补全
+let textArea: TextArea; // 用来操作textarea和text
+nextTick(() => (textArea = new TextArea(textarea.value!, text)));
+function inputFormat(e: KeyboardEvent) {
+    switch (e.key) {
+        case " ":
+            //todo 如果空格前面是# 则阻止
+            if (!props.isTitle && text.value[text.value.length - 1] == "#") {
+                e.preventDefault();
+                Message.error("别在这发标题啦~");
+            }
+            break;
+        case "Tab":
+            e.preventDefault();
+            textArea.insert("    ");
+            break;
+        case "Enter":
+            if (isAutoEnter.value) {
+                e.preventDefault();
+                textArea.insert("  \n");
+            }
+            break;
+        case '"':
+        case "'":
+        case "`":
+            e.preventDefault();
+            textArea.add(e.key, e.key);
+            break;
+        case "{":
+            e.preventDefault();
+            textArea.add("{", "}");
+            break;
+        case "(":
+            e.preventDefault();
+            textArea.add("(", ")");
+            break;
+    }
+}
+//todo 表情插入
+function insertEmoji(emoji: string) {
+    textArea.insert(emoji);
+}
+
+const leftList = reactive([
+    {
+        title: "插入表情",
+        icon: "iconfont icon-biaoqing",
+        func() {
+            emojiBox.value!.isShowEmojiBox = !emojiBox.value!.isShowEmojiBox;
+        },
+    },
+    {
+        title: "插入图片",
+        icon: "iconfont icon-tupian",
+        func() {
+            text.value += `![]()`;
+        },
+    },
+    {
+        title: "插入代码块",
+        icon: "iconfont icon-code",
+        func() {
+            text.value += "\n\r```\n\n```";
+        },
+    },
+    {
+        title: "插入表格",
+        icon: "iconfont icon-biaoge",
+        func() {
+            text.value += "\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |";
+        },
+    },
+]);
+const rightList = reactive([
+    {
+        title: computed(() => (isAutoEnter.value ? "自动换行开启中" : "自动换行关闭中")),
+        icon: computed(() => (isAutoEnter.value ? "iconfont icon-huiche" : "iconfont icon-cuowutishi")),
+        func() {
+            isAutoEnter.value = !isAutoEnter.value;
+        },
+    },
+    {
+        title: computed(() => (isPreview.value ? "关闭预览" : "开启预览")),
+        icon: computed(() =>
+            isPreview.value ? "iconfont icon-yanjing_yincang" : "iconfont icon-yanjing_xianshi"
+        ),
+        func() {
+            isPreview.value = !isPreview.value;
+        },
+    },
+    {
+        title: "帮助",
+        icon: "iconfont icon-bangzhu",
+        func() {
+            window.open("https://www.runoob.com/markdown/md-tutorial.html");
+        },
+    },
+]);
+
+defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让父组件发送ajax
+</script>
+
+<style lang="scss" scoped>
+.sendMarkdown {
+    $barHeight: 4rem;
+    $borderRadius: 0.5rem;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: $borderRadius;
+    border: 1px solid var(--color-border);
+    .toolBar,
+    .buttons {
+        flex: 0 0 auto;
+        height: $barHeight;
+        width: 100%;
+        background-color: var(--color-bg-bland);
+        display: flex;
+        align-items: center;
+    }
+    .toolBar {
+        justify-content: space-between;
+        border-start-start-radius: $borderRadius;
+        border-bottom: 1px solid var(--color-border);
+        .left,
+        .right {
+            margin: 0 1rem;
+            display: flex;
+            i {
+                margin: 0 1rem;
+                font-size: var(--fontsize-big);
+                cursor: pointer;
+                &:hover {
+                    color: var(--color-text-theme);
+                }
+            }
+        }
+    }
+    .buttons {
+        justify-content: space-between;
+        border-end-end-radius: $borderRadius;
+        border-top: 1px solid var(--color-border);
+        .left,
+        .right {
+            display: flex;
+            margin: 0 1.3rem;
+        }
+        .checkButton {
+            margin-right: 1rem;
+        }
+    }
+    .emojiBox {
+        position: absolute;
+        top: $barHeight;
+        max-height: calc(100% - $barHeight * 2);
+        overflow-y: scroll;
+        width: 40%;
+        @media screen and (max-width: 750px) {
+            width: 100%;
+        }
+    }
+    .inputArea {
+        height: calc(100% - $barHeight * 2 - 2px); // 2px是border的大小
+        width: 100%;
+        display: flex;
+        textarea,
+        &:deep(.markdown) {
+            overflow-y: scroll;
+            flex: 1;
+            padding: 1.5rem 2rem;
+            font-size: var(--fontsize-default);
+            background-color: var(--color-bg-bland);
+            color: var(--color-text-default);
+            .markdownContent {
+                padding: 0;
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+            flex-direction: column;
+            textarea {
+                border-bottom: 1px solid var(--color-border);
+            }
+        }
+    }
+}
+</style>

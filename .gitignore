@@ -1,0 +1,9 @@
+node_modules
+*.local
+.env
+.vscode
+dist
+stats.html
+packages/server/public
+packages/server/bin
+packages/server/logs

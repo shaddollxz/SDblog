@@ -1,0 +1,77 @@
+:root {
+    --height-header: 5rem;
+    --width-wife: 16rem;
+
+    --fontsize-xxlarge: 4.5rem;
+    --fontsize-xlarge: 3.3rem;
+    --fontsize-large: 2.4rem;
+    --fontsize-big: 1.9rem;
+    --fontsize-default: 1.4rem;
+    --fontsize-small: 1rem;
+    --fontsize-tiny: 0.8rem;
+}
+
+body {
+    font-size: var(--fontsize-default);
+    color: var(--color-text-default);
+    background-color: var(--color-bg-deep);
+}
+
+a {
+    position: relative;
+    color: var(--color-text-default);
+    text-decoration: none;
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        height: 1px;
+        left: 0;
+        width: 100%;
+        transition: all 0.2s;
+        transform: scaleX(0);
+        backface-visibility: hidden;
+        background-color: var(--color-text-theme);
+    }
+    &:hover {
+        color: var(--color-text-theme) !important;
+        &::before {
+            transform: scaleX(1);
+        }
+    }
+}
+
+span,
+p {
+    cursor: default;
+}
+
+input[type="text"],
+input[type="passWord"] {
+    color: var(--color-text-default);
+    background-color: var(--color-bg-bland);
+    border: 1.5px solid var(--color-border);
+    border-radius: 0.5rem;
+    &:focus-visible {
+        outline-style: none;
+        border-color: var(--color-text-theme) !important;
+    }
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+textarea {
+    resize: none;
+    border: none;
+    &:focus-visible {
+        outline-style: none;
+    }
+}

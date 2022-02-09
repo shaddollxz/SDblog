@@ -1,0 +1,89 @@
+{
+  "version": "Live2DViewerEX Config 1.0",
+  "model": "model.moc",
+  "textures": [
+    "model.512/texture_00.png",
+    "model.512/texture_01.png"
+  ],
+  "controllers": {
+    "param_hit": {},
+    "param_loop": {},
+    "eye_blink": {
+      "min_interval": 500,
+      "max_interval": 6000,
+      "enabled": true
+    },
+    "lip_sync": {
+      "gain": 5.0
+    },
+    "look_at": {
+      "smooth_time": 0.3572749,
+      "items": [
+        {
+          "id": "PARAM_ANGLE_X",
+          "min": -18.0,
+          "max": 18.0,
+          "blend_mode": 1
+        },
+        {
+          "id": "PARAM_ANGLE_Y",
+          "min": -18.0,
+          "max": 18.0,
+          "inverted": true,
+          "blend_mode": 1,
+          "axis": 1
+        }
+      ],
+      "enabled": true
+    },
+    "auto_breath": {
+      "enabled": true
+    },
+    "extra_motion": {
+      "enabled": true
+    },
+    "accelerometer": {
+      "enabled": true
+    },
+    "microphone": {},
+    "transform": {},
+    "face_tracking": {
+      "enabled": true
+    },
+    "param_value": {},
+    "part_opacity": {},
+    "artmesh_opacity": {},
+    "intimacy_system": {}
+  },
+ 	"expressions":[
+		{"name":"F00.exp.json","file":"expressions/F00.exp.json"}
+	],
+	"motions":{
+		"idle":[
+			{"file":"motions/normal.mtn"}
+		],
+		"tap":[
+			{"file":"motions/angry.mtn"},
+			{"file":"motions/sad.mtn"},
+			{"file":"motions/surprise.mtn"},
+			{"file":"motions/shy.mtn"},
+			{"file":"motions/happy.mtn"},
+			{"file":"motions/happy2.mtn"}
+		]
+	},
+	"hit_areas":
+	[
+		{"name":"head", "id":"head"},
+		{"name":"breast", "id":"breast"}
+	],
+	"layout":
+	{
+		"center_x":0,
+		"center_y":-1.5,
+		"width":5
+	},
+	"physics":"model.physics.json",
+	"pose":"model.pose.json",
+	"project_settings":"model.settings.json",
+	"name":"model"
+}

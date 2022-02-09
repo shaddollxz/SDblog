@@ -1,0 +1,47 @@
+<template>
+    <footer class="gusto-flex-center">
+        <div class="siteMsg">
+            <div>
+                Copyright © 2021
+                <a href="https://www.shaddollxz.space">影依贤者</a>
+            </div>
+            <div class="gusto-flex-center">
+                <img src="~@img/beian.png" alt="" />
+                <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2021027724号</a>
+            </div>
+        </div>
+    </footer>
+</template>
+
+<style lang="scss" scoped>
+footer {
+    height: 7rem;
+    background-color: #2d333b; // footer颜色固定
+    color: #bebfc1;
+    box-sizing: border-box;
+    padding-left: var(--width-wife);
+    a {
+        color: #bebfc1;
+    }
+    .siteMsg {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+        margin-right: 15rem;
+        text-align: center;
+    }
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column;
+        padding-left: 0;
+        .siteMsg {
+            margin-right: 0;
+        }
+        .about {
+            display: flex;
+            margin-right: 1rem;
+        }
+    }
+}
+</style>

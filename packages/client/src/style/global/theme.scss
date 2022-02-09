@@ -1,0 +1,30 @@
+:root {
+    // 主题
+    &[data-theme="dark"] {
+        --color-text-default: #adbac7;
+        --color-border: #444c56;
+        --color-bg-deep: #1c2128;
+        --color-bg-bland: #22272e;
+        // 滚动条
+        scrollbar-color: #444c56 var(--color-bg-deep);
+        ::-webkit-scrollbar {
+            background-color: var(--color-bg-deep);
+            color: #444c56;
+        }
+        ::-webkit-scrollbar-corner {
+            background-color: #444c56;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #444c56;
+        }
+        img {
+            filter: sepia(19%);
+        }
+    }
+    &[data-theme="light"] {
+        --color-text-default: #24292fcd;
+        --color-border: rgba(27, 31, 36, 0.15);
+        --color-bg-deep: #f6f8fa;
+        --color-bg-bland: #ffffff;
+    }
+}
