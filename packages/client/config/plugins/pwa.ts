@@ -7,7 +7,7 @@ export default VitePWA({
     },
     manifest: {
         lang: "zh",
-        // start_url: "https://www.shaddollxz.space/", // 必须在这个url下才能安装 不写是当前网页的路径
+        start_url: "https://www.shaddollxz.space/", // 必须在这个url下才能安装 不写是当前网页的路径
         name: "影依贤者的博客",
         short_name: "博客",
         description: "个人博客",
