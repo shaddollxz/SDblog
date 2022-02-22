@@ -6,6 +6,7 @@
         </h1>
 
         <Theme></Theme>
+
         <transition name="sideBar">
             <div class="sideBar" v-show="isShowSideBar">
                 <Search></Search>

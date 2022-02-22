@@ -27,10 +27,6 @@
                         <span>{{ blogMsg?.author?.name }}</span>
                     </div>
                     <div>
-                        <i class="iconfont icon-yuedu"></i>
-                        <span>{{ blogMsg.read }}</span>
-                    </div>
-                    <div>
                         <i class="iconfont icon-dianzan"></i>
                         <span>{{ blogMsg.likes }}</span>
                     </div>
@@ -52,7 +48,7 @@
                 </div>
             </div>
             <div class="img">
-                <img :src="headPic" alt="" />
+                <img ref="headPic" alt="这里是头图" />
             </div>
             <div v-if="userStore.isAdmin" class="menu" @click="showMenu = !showMenu">
                 <i class="iconfont icon-caidan1"></i>
@@ -72,11 +68,12 @@
 </template>
 
 <script setup lang="ts">
-import { Message } from "sdt3";
+import { Message, Random } from "sdt3";
 import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
+import defaultHeadPic from "@img/blogHeadPic_default.png";
+import headPics from "virtual:headPics";
 import { useUserStore } from "@/store/user";
-import type { Img } from "#/globalProperties";
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -85,17 +82,16 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const internalInstance = getCurrentInstance();
-const $img: Img = internalInstance!.appContext.config.globalProperties.$img;
-let headPic = ref("");
-watchEffect(() => {
+const headPic = ref<HTMLImageElement | null>(null);
+onMounted(() => {
     if (props.blogMsg.headPic) {
-        headPic.value = props.blogMsg.headPic;
+        headPic.value!.src = props.blogMsg.headPic;
     } else {
-        $img.randomPic().then((imgSrc) => {
-            headPic.value = imgSrc;
-        });
+        headPic.value!.src = "/assets/headPic/" + Random.array(headPics);
     }
+    headPic.value!.addEventListener("error", function () {
+        this.src = defaultHeadPic;
+    });
 });
 
 let showMenu = ref(false);

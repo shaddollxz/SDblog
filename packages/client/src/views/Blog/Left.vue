@@ -4,7 +4,7 @@
         <Author></Author>
         <Markdown ref="markdown" :markdown="blogDetail?.content!" :isLoading="true"></Markdown>
         <div class="end gusto-flex-center">end</div>
-        <p id="评论">评论：</p>
+        <p id="评论" class="reply">评论：</p>
         <ReplyList
             ref="replyList"
             :replyMainId="($route.params.blogId as string)"
@@ -76,7 +76,7 @@ watch(
     .markdown {
         width: 100%;
     }
-    #reply {
+    .reply {
         font-family: "xingyan";
         font-size: var(--fontsize-xlarge);
     }

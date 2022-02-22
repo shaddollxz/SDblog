@@ -36,7 +36,7 @@ importers:
       rollup: ^2.67.1
       rollup-plugin-visualizer: ^5.5.2
       sass: ^1.49.7
-      sdt3: ^2.0.21
+      sdt3: ^2.0.22
       unplugin-auto-import: ^0.5.11
       vite: ^2.7.13
       vite-plugin-compression: ^0.3.5
@@ -52,7 +52,7 @@ importers:
       highlight.js: 11.4.0
       marked: 4.0.10
       pinia: 2.0.9_typescript@4.5.4+vue@3.2.26
-      sdt3: 2.0.21
+      sdt3: 2.0.22
       vue: 3.2.26
       vue-router: 4.0.12_vue@3.2.26
     devDependencies:
@@ -4876,8 +4876,8 @@ packages:
       source-map-js: 1.0.1
     dev: true
 
-  /sdt3/2.0.21:
-    resolution: {integrity: sha512-9KQWXpj4/+BMnvHdD951k19h+MadM3Tcjg2OkyFK3qkvp2qIzDdP8cPKvE16z9U87/M/n2oT7M59jbxlIMAjAw==}
+  /sdt3/2.0.22:
+    resolution: {integrity: sha512-6CrszE9sWVf4fIrr+hvdgD2rB0tWk+ah3HISFcM5qzpHrM9ecIEKCtMBO4jLWn0x7HiA8eEYEHMBKrB/hYIMRA==}
     dependencies:
       vue: 3.2.26
     dev: false

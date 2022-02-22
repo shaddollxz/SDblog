@@ -19,7 +19,9 @@ export function uploadAvatar(formData: FormData): AxiosPromise<{ imgSrc: string 
     });
 }
 
-// 随机图片
+/**
+ *  @deprecated 随机图片 该接口已经废弃
+ */
 export function randomPic(): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "get",

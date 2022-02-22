@@ -15,8 +15,6 @@
                 </span>
                 <i class="iconfont icon-dianzan"></i>
                 <span>{{ blogMsg?.likes }}</span>
-                <i class="iconfont icon-yuedu" title="阅读数"></i>
-                <span>{{ blogMsg?.read }}</span>
                 <span>约{{ $formatNumber(blogMsg?.content!.length) }}字</span>
             </div>
             <div class="tags">
