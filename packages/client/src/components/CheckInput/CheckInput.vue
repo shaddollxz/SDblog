@@ -8,7 +8,7 @@
                 @keyup="checkInputDebounce"
                 v-bind="$attrs"
             />
-            <i v-if="ispwd" class="iconfont" :class="'icon-yanjing_' + iconState" @click="state = !state"></i>
+            <i v-if="ispwd" :class="`iconfont icon-yanjing_${iconState}`" @click="state = !state"></i>
             <span>
                 <i v-show="data && !error" class="iconfont icon-zhengquetishi"></i>
             </span>
@@ -35,8 +35,8 @@ const props = withDefaults(defineProps<Props>(), {
 let state = ref(true);
 let iconState = computed(() => (state.value ? "xianshi" : "yincang"));
 
-const data = ref(""); //? 输入框中的数据
-const error = ref(""); //? 输入出错时报错的提示
+const data = ref(""); // 输入框中的数据
+const error = ref(""); // 输入出错时报错的提示
 const validator = new Validator(data.value);
 for (const rule of props.check) {
     if (typeof rule[0] == "string") {

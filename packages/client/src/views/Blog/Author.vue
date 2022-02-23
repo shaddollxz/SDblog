@@ -13,8 +13,6 @@
                 <span>
                     {{ $formatTime(blogMsg?.createdAt!, "/YYYY/-/MM/-/DD/ /HH/:/mm/ 周/W/") }}
                 </span>
-                <i class="iconfont icon-dianzan"></i>
-                <span>{{ blogMsg?.likes }}</span>
                 <span>约{{ $formatNumber(blogMsg?.content!.length) }}字</span>
             </div>
             <div class="tags">

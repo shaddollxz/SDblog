@@ -73,6 +73,7 @@ import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
 import defaultHeadPic from "@img/blogHeadPic_default.png";
 import headPics from "virtual:headPics";
+import isMobile from "@/utils/isMobile";
 import { useUserStore } from "@/store/user";
 const router = useRouter();
 const userStore = useUserStore();
@@ -84,6 +85,8 @@ const props = defineProps<Props>();
 
 const headPic = ref<HTMLImageElement | null>(null);
 onMounted(() => {
+    if (isMobile) return;
+
     if (props.blogMsg.headPic) {
         headPic.value!.src = props.blogMsg.headPic;
     } else {
@@ -198,7 +201,6 @@ function editBlog() {
             }
         }
         .menu {
-            z-index: 10;
             position: absolute;
             top: -2rem;
             right: -2rem;

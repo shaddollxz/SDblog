@@ -1,6 +1,6 @@
 <template>
     <div class="join gusto-flex-center">
-        <router-view></router-view>
+        <RouterView></RouterView>
     </div>
 </template>
 

@@ -9,10 +9,11 @@
                 <SvgIcon name="vue"></SvgIcon>
                 <SvgIcon name="typescript"></SvgIcon>
                 <SvgIcon name="pinia"></SvgIcon>
-                <SvgIcon name="less"></SvgIcon>
+                <SvgIcon name="sass"></SvgIcon>
                 <br />
                 <span>后端使用</span>
                 <SvgIcon name="nodejs"></SvgIcon>
+                <SvgIcon name="typescript"></SvgIcon>
                 <SvgIcon name="mongodb"></SvgIcon>
             </p>
             <p>
