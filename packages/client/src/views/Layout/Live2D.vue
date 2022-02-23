@@ -3,12 +3,11 @@
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
 import loadL2D from "@/utils/loadL2D.js";
 
 onMounted(() => {
-    loadL2D({
-        path: "/Live2D/angel/model.model.json",
+    loadL2D("#wife_L2D", {
+        paths: [{ url: window.location.origin + "/Live2D/angel/model.model.json" }],
     });
 });
 </script>

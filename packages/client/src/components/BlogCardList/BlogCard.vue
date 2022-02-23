@@ -71,7 +71,7 @@
 import { Message, Random } from "sdt3";
 import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
-import defaultHeadPic from "@img/blogHeadPic_default.png";
+import defaultHeadPic from "@img/blogHeadPic_default.jpg";
 import headPics from "virtual:headPics";
 import isMobile from "@/utils/isMobile";
 import { useUserStore } from "@/store/user";
