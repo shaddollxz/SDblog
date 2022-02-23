@@ -235,7 +235,7 @@ function editBlog() {
             }
             .menu {
                 top: 1rem;
-                div {
+                > div {
                     left: 50%;
                     top: 3rem;
                     transform: translateX(-50%);
