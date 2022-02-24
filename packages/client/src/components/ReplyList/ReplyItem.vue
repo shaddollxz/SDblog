@@ -1,6 +1,6 @@
 <template>
     <div class="replyItem" :class="{ isChild }">
-        <SliderBox>
+        <LazyLoadBox>
             <div class="main">
                 <div class="avatar gusto-avatarBox">
                     <img :src="detail.author.avatar || $img.akarin" alt="" />
@@ -39,7 +39,7 @@
                     v-bind="$attrs"
                 ></ReplyItem>
             </template>
-        </SliderBox>
+        </LazyLoadBox>
     </div>
 </template>
 

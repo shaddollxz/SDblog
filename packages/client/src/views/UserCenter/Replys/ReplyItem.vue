@@ -1,6 +1,6 @@
 <template>
     <div class="replyItem">
-        <SliderBox>
+        <LazyLoadBox>
             <div class="head">
                 <span class="time">
                     {{ $formatTime($props.replyMsg?.createdAt, "/YYYY/-/MM/-/DD/") }}
@@ -24,7 +24,7 @@
             <div class="content">
                 <Markdown :markdown="$props.replyMsg?.content"></Markdown>
             </div>
-        </SliderBox>
+        </LazyLoadBox>
     </div>
 </template>
 
@@ -45,7 +45,7 @@ const map = {
 
 <style lang="scss" scoped>
 .replyItem {
-    .sliderBox {
+    .lazyLoadBox {
         display: flex;
         flex-direction: column;
         gap: 0.8rem;

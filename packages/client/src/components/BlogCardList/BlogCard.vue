@@ -1,6 +1,6 @@
 <template>
     <section class="blogCard">
-        <SliderBox>
+        <LazyLoadBox :isReHidden="true" @onShow="onShow">
             <div class="msg">
                 <div class="time">
                     <i class="iconfont icon-calendar-v2-full"></i>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </div>
-        </SliderBox>
+        </LazyLoadBox>
     </section>
 </template>
 
@@ -84,18 +84,23 @@ interface Props {
 const props = defineProps<Props>();
 
 const headPic = ref<HTMLImageElement | null>(null);
-onMounted(() => {
+
+let alreadyShow = false;
+function onShow() {
     if (isMobile) return;
 
-    if (props.blogMsg.headPic) {
-        headPic.value!.src = props.blogMsg.headPic;
-    } else {
-        headPic.value!.src = "/assets/headPic/" + Random.array(headPics);
+    if (!alreadyShow) {
+        alreadyShow = true;
+        if (props.blogMsg.headPic) {
+            headPic.value!.src = props.blogMsg.headPic;
+        } else {
+            headPic.value!.src = "/assets/headPic/" + Random.array(headPics);
+        }
+        headPic.value!.addEventListener("error", function () {
+            this.src = defaultHeadPic;
+        });
     }
-    headPic.value!.addEventListener("error", function () {
-        this.src = defaultHeadPic;
-    });
-});
+}
 
 let showMenu = ref(false);
 function deleteBlog() {
@@ -114,7 +119,7 @@ function editBlog() {
     box-sizing: border-box;
     padding: 2rem 1.6rem;
     border-bottom: 2px solid var(--color-border);
-    .sliderBox {
+    .lazyLoadBox {
         min-height: 10rem;
         display: flex;
         align-items: center;

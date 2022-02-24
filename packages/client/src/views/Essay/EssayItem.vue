@@ -1,6 +1,6 @@
 <template>
     <div class="essayItem gusto-border">
-        <SliderBox>
+        <LazyLoadBox>
             <div class="avatar gusto-frameBox">
                 <img :src="essayData.author.avatar || $img.akarin" alt="" />
                 <img :src="$img.avatarFrame[essayData.author.avatarFrame]" alt="" />
@@ -35,7 +35,7 @@
                     <i class="iconfont icon-shanchu"></i>
                 </div>
             </div>
-        </SliderBox>
+        </LazyLoadBox>
         <ReplyList v-if="isShowReply" :replyMainId="essayData._id" :type="ReplyEnum.essay"></ReplyList>
     </div>
 </template>
@@ -102,7 +102,7 @@ function deleteEssay() {
         }
     }
 }
-.sliderBox {
+.lazyLoadBox {
     width: 100%;
     display: flex;
 }
