@@ -4,7 +4,7 @@ import type { Reply, VisitorInfo as Visitor } from "../../db/reply";
 import type { SchemaToInfo } from "../tools/SchemaToInfo";
 
 // 博客和随笔的回复
-export type ReplyItemInfo = Omit<SchemaToInfo<Reply>, "user" | "visitot"> & {
+export type ReplyItemInfo = Omit<SchemaToInfo<Reply>, "user" | "visitor"> & {
     author: Author;
     children: ReplyItemInfo[];
 };

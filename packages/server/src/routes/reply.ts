@@ -1,6 +1,6 @@
 import { Router } from "express";
-import * as Reply from "../controllers/reply.js";
-import { mustLogin } from "../middlewares/authorization.js";
+import * as Reply from "../controllers/reply";
+import { mustLogin } from "../middlewares/authorization";
 
 const router = Router();
 

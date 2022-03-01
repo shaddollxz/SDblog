@@ -1,4 +1,3 @@
-import type { OmitByType } from "sdt3";
 import type { Ref } from "@typegoose/typegoose";
 import type { dbBase } from "../../db/dbBase";
 

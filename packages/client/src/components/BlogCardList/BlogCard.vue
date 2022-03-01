@@ -86,6 +86,10 @@ const props = defineProps<Props>();
 const headPic = ref<HTMLImageElement | null>(null);
 
 let alreadyShow = false;
+function errorHandle(this: HTMLImageElement) {
+    this.src = defaultHeadPic;
+    this.removeEventListener("error", errorHandle);
+}
 function onShow() {
     if (isMobile) return;
 
@@ -96,9 +100,7 @@ function onShow() {
         } else {
             headPic.value!.src = "/assets/headPic/" + Random.array(headPics);
         }
-        headPic.value!.addEventListener("error", function () {
-            this.src = defaultHeadPic;
-        });
+        headPic.value!.addEventListener("error", errorHandle);
     }
 }
 
