@@ -98,7 +98,7 @@ function onShow() {
         if (props.blogMsg.headPic) {
             headPic.value!.src = props.blogMsg.headPic;
         } else {
-            headPic.value!.src = "/assets/headPic/" + Random.array(headPics);
+            headPic.value!.src = Random.array(headPics);
         }
         headPic.value!.addEventListener("error", errorHandle);
     }

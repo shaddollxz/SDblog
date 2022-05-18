@@ -20,7 +20,7 @@ function headPics(path: fs.PathLike): Plugin {
         async load(id) {
             if (id == resolvedVirtualModuleId) {
                 if (!cache) {
-                    cache = await fs.readdir(path);
+                    cache = (await fs.readdir(path)).map((item) => "/assets/headPic/" + item);
                 }
                 return "export default " + JSON.stringify(cache);
             }
