@@ -61,7 +61,7 @@ function sendFunc() {
         height: 20rem;
         margin: 1rem 0 2rem;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         margin: 0;
     }
 }

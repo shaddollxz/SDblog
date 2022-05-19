@@ -30,7 +30,7 @@ export default ({ command, mode }: ConfigEnv) => {
             preprocessorOptions: {
                 scss: {
                     // 设置sass全局变量
-                    // additionalData: "@use '@/style/tools/var' as *; @use '@/style/tools/mixin' as *;",
+                    additionalData: "@use '@/style/vars/var' as *; @use '@/style/vars/mixin' as *;",
                 },
             },
             postcss: {

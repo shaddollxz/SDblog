@@ -9,7 +9,7 @@
 
                 <RouterLink :to="{ path: `/blog/${blogMsg._id}` }" custom v-slot="{ navigate }">
                     <h2
-                        class="title gusto-limitTextLength"
+                        class="title gusto-limitTextLength canClick"
                         @click="navigate"
                         role="link"
                         :title="blogMsg.title"
@@ -50,14 +50,14 @@
             <div class="img">
                 <img ref="headPic" alt="这里是头图" />
             </div>
-            <div v-if="userStore.isAdmin" class="menu" @click="showMenu = !showMenu">
+            <div v-if="userStore.isAdmin" class="menu canClick" @click="showMenu = !showMenu">
                 <i class="iconfont icon-caidan1"></i>
                 <div v-show="showMenu" class="gusto-border gusto-flex-center">
-                    <div @click="deleteBlog">
+                    <div class="canClick" @click="deleteBlog">
                         <i class="iconfont icon-shanchu"></i>
                         <span>删除</span>
                     </div>
-                    <div @click="editBlog">
+                    <div class="canClick" @click="editBlog">
                         <i class="iconfont icon-bianji"></i>
                         <span>修改</span>
                     </div>
@@ -147,7 +147,6 @@ function editBlog() {
                 margin: 1.5rem 0;
                 font-weight: bold;
                 font-size: var(--fontsize-large);
-                cursor: pointer;
                 &:hover {
                     color: var(--color-text-theme);
                 }
@@ -197,21 +196,16 @@ function editBlog() {
         .img {
             flex: 0 0 auto;
             width: 19rem;
-            transition: all 0.3s;
+            @include scaleImage();
             img {
                 border-radius: 0.5rem;
                 width: 100%;
-                height: auto;
-            }
-            &:hover {
-                transform: scale(110%);
             }
         }
         .menu {
             position: absolute;
             top: -2rem;
             right: -2rem;
-            cursor: pointer;
             i {
                 font-size: var(--fontsize-big);
             }
@@ -225,15 +219,12 @@ function editBlog() {
                 width: max-content;
                 gap: 1rem;
                 background-color: var(--color-bg-bland);
-                > div {
-                    cursor: pointer;
-                }
                 i {
                     font-weight: 600;
                 }
             }
         }
-        @media screen and (max-width: 750px) {
+        @include mobile {
             .msg {
                 margin: 0;
             }

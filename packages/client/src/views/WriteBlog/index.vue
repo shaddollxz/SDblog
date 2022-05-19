@@ -53,7 +53,7 @@ async function choseFile() {
 }
 .popup {
     width: 50%;
-    @media screen and (max-width: 750px) {
+    @include mobile {
         width: 100%;
     }
 }

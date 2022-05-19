@@ -1,7 +1,7 @@
 <template>
     <div class="goTop gusto-noClick gusto-flex-center" :class="{ show }">
         <img class="gusto-fillImg" src="~@img/goTop/rope.png" alt="" />
-        <img class="cat" @click="rollToTop" src="~@img/goTop/cat.png" alt="" />
+        <img class="cat canClick" @click="rollToTop" src="~@img/goTop/cat.png" alt="" />
     </div>
     <div ref="observer" class="observer"></div>
 </template>
@@ -30,15 +30,9 @@ const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
     height: 75vh;
     transition: all 0.7s ease-in;
     z-index: 5;
-    img {
-        display: block;
-    }
     .cat {
-        cursor: pointer;
         pointer-events: auto;
-        transition: all 0.3s;
-        &:hover {
-            transform: scale(107%);
+        @include scaleImage($scaled: 107%) {
             transform-origin: top;
         }
     }
@@ -50,7 +44,7 @@ const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
     position: absolute;
     top: calc(100vh - var(--height-header));
 }
-@media screen and (max-width: 750px) {
+@include mobile {
     .cat {
         transform: scale(70%);
         transform-origin: top;

@@ -1,6 +1,6 @@
 <template>
     <div class="choseImg">
-        <div class="chose gusto-border gusto-flex-center" @click="choseFile">
+        <div class="chose gusto-border gusto-flex-center canClick" @click="choseFile">
             <div v-if="!imgData" class="box gusto-flex-center">
                 <i class="iconfont icon-tupian"></i>
                 <slot></slot>
@@ -39,7 +39,6 @@ defineExpose({ data, imgData });
         width: 100%;
         height: 100%;
         overflow: hidden;
-        cursor: pointer;
         .box {
             flex-direction: column;
             height: 100%;

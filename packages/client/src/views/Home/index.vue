@@ -40,7 +40,7 @@ import Right from "./Right.vue";
     .left {
         order: 1;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         flex-direction: column;
         .left,
         .center {

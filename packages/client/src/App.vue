@@ -38,7 +38,7 @@ main {
     margin-top: var(--height-header);
     margin-bottom: 3rem;
     min-height: calc(100vh - var(--height-header));
-    @media screen and (max-width: 750px) {
+    @include mobile {
         margin-left: 2px;
         margin-right: 2px;
     }

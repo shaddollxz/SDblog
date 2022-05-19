@@ -22,7 +22,7 @@ const props = defineProps<Props>();
     .essayItem {
         margin: 1rem;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         width: 100%;
         .essayItem {
             margin: 0 0 1rem 0;

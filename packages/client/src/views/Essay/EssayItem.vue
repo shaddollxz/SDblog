@@ -88,7 +88,7 @@ function deleteEssay() {
     box-sizing: border-box;
     padding: 2rem 2rem;
 
-    @media screen and (max-width: 750px) {
+    @include mobile {
         padding: 1rem;
     }
     &:deep(.replyList) {
@@ -130,7 +130,7 @@ function deleteEssay() {
             :last-child {
                 margin-left: 1rem;
             }
-            @media screen and (max-width: 750px) {
+            @include mobile {
                 span {
                     display: block;
                     margin: 0 !important;

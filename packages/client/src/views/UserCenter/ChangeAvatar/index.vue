@@ -88,7 +88,7 @@ let isShowChangeAvatarFrame = ref(false);
     .checkButton {
         margin-top: 1rem;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         width: 90%;
         .imgBox {
             flex-direction: column;

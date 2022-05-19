@@ -79,7 +79,6 @@ defineExpose({ isShowEmojiBox });
             margin-top: 0.4rem;
             img {
                 width: 100%;
-                height: auto;
                 cursor: pointer;
             }
         }

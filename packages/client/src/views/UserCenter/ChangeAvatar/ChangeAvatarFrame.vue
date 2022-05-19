@@ -54,7 +54,7 @@ function choseFrame(index: number) {
             height: 6rem;
             width: 6rem;
         }
-        @media screen and (max-width: 750px) {
+        @include mobile {
             width: 100%;
             padding: 2rem 1rem;
         }

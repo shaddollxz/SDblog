@@ -65,7 +65,7 @@
                     padding: 0.3rem 0.3rem;
                     border-radius: 0.5rem;
                     margin: 0 0 0 1rem;
-                    @media screen and (max-width: 750px) {
+                    @include mobile {
                         width: 8rem;
                         padding: 0.3rem 0.3rem;
                         margin-left: 0.5rem;
@@ -80,7 +80,7 @@
             }
         }
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         width: 96%;
         .box {
             .text {

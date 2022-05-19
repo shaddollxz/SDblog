@@ -1,0 +1,13 @@
+@mixin mobile {
+    @media screen and (max-width: 750px) {
+        @content;
+    }
+}
+
+@mixin scaleImage($duration: 0.3s, $scaled: 110%) {
+    transition: all $duration;
+    &:hover {
+        transform: scale($scaled);
+        @content;
+    }
+}

@@ -5,7 +5,7 @@
     position: relative;
     box-sizing: border-box;
     padding: 2rem 1.5rem;
-    @media screen and (max-width: 750px) {
+    @include mobile {
         padding-left: 1rem;
     }
     h1,
@@ -250,7 +250,6 @@
     }
     img {
         width: 70%;
-        display: block;
         margin: 0 auto;
         // 表情包
         &.inline {

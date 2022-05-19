@@ -17,7 +17,9 @@
                     v-bind="$attrs"
                 />
             </div>
-            <div class="arrow" :class="{ isShowOptions }" @click="isShowOptions = !isShowOptions">❮</div>
+            <div class="arrow canClick" :class="{ isShowOptions }" @click="isShowOptions = !isShowOptions">
+                ❮
+            </div>
         </div>
         <div class="select gusto-border" v-show="isShowOptions">
             <div class="option" v-for="item of list" :key="item._id" @click="select(item)">
@@ -136,7 +138,6 @@ $height: 3rem;
             transform: rotate(-90deg);
             transition: all linear 0.3s;
             color: var(--color-text-theme);
-            cursor: pointer;
             &.isShowOptions {
                 transform: rotate(90deg);
             }

@@ -1,6 +1,6 @@
 <template>
     <div class="userBar gusto-flex-center">
-        <div v-if="userStore.isLogin" class="avatar gusto-avatarBox" @click="toUserCenter">
+        <div v-if="userStore.isLogin" class="avatar gusto-avatarBox canClick" @click="toUserCenter">
             <img :src="userStore.avatars.avatar || $img.akarin" alt="" title="用户中心" />
         </div>
 
@@ -31,13 +31,12 @@ defineExpose({});
 .avatar {
     height: calc(var(--height-header) * 0.85);
     width: calc(var(--height-header) * 0.85);
-    cursor: pointer;
     transition: all 0.04s linear;
     &:hover {
         transform: scale(1.8);
         transform-origin: top;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         height: 80%;
         width: 80%;
     }
@@ -49,7 +48,7 @@ defineExpose({});
         color: var(--color-text-theme);
         border-color: var(--color-text-theme);
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         width: 100%;
         padding: 0.8rem 1.8rem;
         font-size: var(--fontsize-big);

@@ -32,7 +32,7 @@ footer {
         text-align: center;
     }
 
-    @media screen and (max-width: 750px) {
+    @include mobile {
         flex-direction: column;
         padding-left: 0;
         .siteMsg {

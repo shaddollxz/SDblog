@@ -53,7 +53,7 @@ onMounted(() => {
             content: "__";
             animation: kirakira 0.85s infinite;
         }
-        @media screen and (max-width: 750px) {
+        @include mobile {
             width: 90%;
         }
     }

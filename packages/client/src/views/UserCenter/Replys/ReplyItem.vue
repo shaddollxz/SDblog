@@ -64,7 +64,7 @@ const map = {
             .link {
                 font-family: "chuyuan";
             }
-            @media screen and (max-width: 750px) {
+            @include mobile {
                 margin-left: 0.5rem;
             }
         }

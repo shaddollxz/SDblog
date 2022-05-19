@@ -98,7 +98,7 @@ function sendReply() {
         max-height: 35rem;
         overflow: hidden;
         margin-bottom: 2rem;
-        @media screen and (max-width: 750px) {
+        @include mobile {
             height: 45rem;
             max-height: 45rem;
         }

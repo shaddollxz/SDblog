@@ -80,7 +80,7 @@ const navList = [
         box-sizing: border-box;
         padding: 4rem 2rem;
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         height: max-content;
         margin: 0;
         flex-direction: column;

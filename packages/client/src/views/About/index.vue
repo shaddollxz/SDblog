@@ -81,7 +81,7 @@ const qitao = [wechat, alipay];
 @import "@/style/markdown/markdown.scss";
 .aboutme {
     margin: 0 var(--width-wife) 1rem;
-    @media screen and (max-width: 750px) {
+    @include mobile {
         margin: 0;
     }
 }
@@ -101,7 +101,7 @@ const qitao = [wechat, alipay];
     }
     img {
         width: 20%;
-        @media screen and (max-width: 750px) {
+        @include mobile {
             width: 50%;
         }
     }

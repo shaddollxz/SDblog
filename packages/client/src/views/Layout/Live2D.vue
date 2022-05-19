@@ -18,7 +18,7 @@ onMounted(() => {
     bottom: -4px;
     left: 0.5rem;
     z-index: 99999;
-    @media screen and (max-width: 750px) {
+    @include mobile {
         display: none;
     }
 }

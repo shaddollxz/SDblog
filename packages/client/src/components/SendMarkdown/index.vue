@@ -223,7 +223,7 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
         max-height: calc(100% - $barHeight * 2);
         overflow-y: scroll;
         width: 40%;
-        @media screen and (max-width: 750px) {
+        @include mobile {
             width: 100%;
         }
     }
@@ -244,7 +244,7 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
             }
         }
 
-        @media screen and (max-width: 750px) {
+        @include mobile {
             flex-direction: column;
             textarea {
                 border-bottom: 1px solid var(--color-border);

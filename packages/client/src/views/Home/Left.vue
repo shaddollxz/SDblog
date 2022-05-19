@@ -17,7 +17,7 @@ import Me from "./Me.vue";
         background-color: var(--color-bg-bland);
     }
 }
-@media screen and (max-width: 750px) {
+@include mobile {
     .tagBox {
         display: none;
     }

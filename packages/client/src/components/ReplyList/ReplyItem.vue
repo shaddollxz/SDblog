@@ -19,7 +19,7 @@
                         <div class="msg">
                             {{ $formatTime(detail.createdAt, "/YYYY/-/MM/-/DD/ /HH/:/mm/:/ss/") }}
                         </div>
-                        <div class="msg reply" @click="replyIt = !replyIt">回复</div>
+                        <div class="msg reply canClick" @click="replyIt = !replyIt">回复</div>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,6 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
             .foot {
                 display: flex;
                 .reply {
-                    cursor: pointer;
                     &:hover {
                         color: var(--color-text-theme);
                     }
@@ -144,7 +143,7 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
             }
         }
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         .main {
             .avatar {
                 margin-right: 1rem;

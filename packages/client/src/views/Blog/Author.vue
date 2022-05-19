@@ -79,7 +79,7 @@ const blogMsg: BlogDetail_Inject = inject("blogDetail")!;
             }
         }
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         padding: 0 0.6rem;
     }
 }

@@ -52,13 +52,13 @@ let menuState = ref(false); // 手机端时控制显示菜单
             width: calc(100vw - var(--width-wife) - 2rem - 20rem - 2rem);
             box-sizing: border-box;
             padding: 0 2rem 2rem;
-            @media screen and (max-width: 750px) {
+            @include mobile {
                 width: 100%;
                 padding: 0;
             }
         }
         .right {
-            @media screen and (max-width: 750px) {
+            @include mobile {
                 z-index: 29;
                 position: fixed;
                 top: 0;
@@ -91,12 +91,12 @@ let menuState = ref(false); // 手机端时控制显示菜单
                 font-size: var(--fontsize-xlarge);
                 color: var(--color-text-theme);
             }
-            @media screen and (max-width: 750px) {
+            @include mobile {
                 display: flex;
             }
         }
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         overflow: hidden;
         margin: 0;
         width: 100%;

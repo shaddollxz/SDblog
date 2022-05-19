@@ -67,7 +67,7 @@ defineExpose({ count });
         margin: 4rem auto 0;
         font-size: var(--fontsize-large);
     }
-    @media screen and (max-width: 750px) {
+    @include mobile {
         .replyItem {
             width: 100%;
         }

@@ -1,6 +1,6 @@
 <template>
     <div class="theme gusto-flex-center">
-        <i class="iconfont icon-theme" title="改变主题"></i>
+        <i class="iconfont icon-theme canClick" title="改变主题"></i>
         <div class="tools gusto-border">
             <div class="themeBg">
                 <span>主题</span>
@@ -68,7 +68,6 @@ function changeColor(color: typeof colors[number]) {
     .icon-theme {
         font-size: var(--fontsize-large);
         color: var(--color-text-theme);
-        cursor: pointer;
     }
     &:hover {
         .tools {

@@ -56,7 +56,6 @@ onMounted(() => clearInterval(interval));
         pointer-events: all !important;
         color: var(--color-primary-text);
         background-color: var(--color-primary);
-        cursor: pointer;
         &:hover {
             background-color: var(--color-primary-bland);
             border-color: transparent;
