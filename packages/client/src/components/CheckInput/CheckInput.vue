@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { debounce, Validator } from "sdt3";
-import { CheckRules } from "./index";
+import type { CheckRules } from "./index";
 
 interface Props {
     ispwd?: boolean;

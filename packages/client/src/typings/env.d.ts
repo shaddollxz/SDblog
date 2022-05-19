@@ -9,8 +9,8 @@ declare module "*.vue" {
 
 //todo 配置环境变量
 interface ImportMetaEnv {
-    readonly VITE_INTEST?: "true" | "false";
-    readonly VITE_LOCAL?: "true" | "false";
+    readonly VITE_LOCAL?: "0" | "1";
+    readonly VITE_DEVMOBILE?: "0" | "1";
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv;

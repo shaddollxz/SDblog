@@ -9,10 +9,11 @@ import getBuild from "./config/build";
 export default ({ command, mode }: ConfigEnv) => {
     const Env = loadEnv(mode, path.resolve("./env")) as ImportMetaEnv;
     const isBuild = command == "build";
+    const isDev = mode == "development";
 
     return defineConfig({
-        plugins: getPlugins(Env, isBuild),
-        server: getServer(Env, isBuild),
+        plugins: getPlugins(Env, isBuild, isDev),
+        server: getServer(Env, isBuild, isDev),
         envDir: path.resolve("./env"), // 环境变量文件夹位置
         build: getBuild(),
         resolve: {

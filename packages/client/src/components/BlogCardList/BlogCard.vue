@@ -82,7 +82,7 @@ interface Props {
     blogMsg: BlogListItemInfo;
 }
 const props = defineProps<Props>();
-
+console.log(props.blogMsg);
 const headPic = ref<HTMLImageElement | null>(null);
 
 let alreadyShow = false;

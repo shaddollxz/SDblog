@@ -105,12 +105,12 @@ export const search: GetHandler<SearchBlogByKeywordOptions & SearchBlogByTagOpti
             searchResult = deleteRepeat(blogListMap.flat(Infinity), "_id");
         }
 
-        blogList = searchResult!.map((item) => {
-            item.contentLength = item.content.length;
-            delete item.content;
-            return item as unknown as BlogListItemInfo[];
+        blogList = searchResult!.map((item: any) => {
+            const result = item.toJSON();
+            result.contentLength = result.content.length;
+            delete result.content;
+            return result as BlogListItemInfo;
         });
-
         res.status(StatusEnum.OK).json({ blogList, allPage });
     } catch (e) {
         res.status(StatusEnum.OK).json({ blogList: [], allPage: undefined });
