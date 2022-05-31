@@ -5,26 +5,26 @@ import md5 from "../utils/md5";
 import type { dbBase } from "./dbBase";
 
 export class User extends defaultClasses.TimeStamps implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ required: true })
-    name!: string;
+    declare name: string;
 
     @prop({ required: true, unique: true })
-    email!: string;
+    declare email: string;
 
     @prop({ required: true, set: (pwd) => md5(pwd), select: false })
-    passWord?: string;
+    declare passWord?: string;
 
     @prop({ default: null })
-    avatar!: string;
+    declare avatar: string;
 
     @prop({ default: 0 })
-    avatarFrame!: number;
+    declare avatarFrame: number;
 
     @prop({ default: AuthorityEnum.normal })
-    authority!: AuthorityEnum;
+    declare authority: AuthorityEnum;
 
     @prop({ default: false, select: false })
-    isDelete?: boolean;
+    declare isDelete?: boolean;
 }

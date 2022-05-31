@@ -2,7 +2,7 @@
     <footer class="gusto-flex-center">
         <div class="siteMsg">
             <div>
-                Copyright © 2021
+                Copyright © 2022
                 <a href="https://www.shaddollxz.space">影依贤者</a>
             </div>
             <div class="gusto-flex-center">
@@ -16,12 +16,12 @@
 <style lang="scss" scoped>
 footer {
     height: 7rem;
-    background-color: #2d333b; // footer颜色固定
-    color: #bebfc1;
+    background-color: $bg-header;
+    color: $color-header;
     box-sizing: border-box;
-    padding-left: var(--width-wife);
+    padding-left: $width-wife;
     a {
-        color: #bebfc1;
+        color: $color-header;
     }
     .siteMsg {
         display: flex;

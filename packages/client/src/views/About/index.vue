@@ -80,7 +80,7 @@ const qitao = [wechat, alipay];
 <style lang="scss" scoped>
 @import "@/style/markdown/markdown.scss";
 .aboutme {
-    margin: 0 var(--width-wife) 1rem;
+    margin: 0 $width-wife 1rem;
     @include mobile {
         margin: 0;
     }

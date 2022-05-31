@@ -63,7 +63,7 @@ function changeColor(color: typeof colors[number]) {
 .theme {
     position: relative;
     height: 100%;
-    width: var(--height-header);
+    width: $height-header;
 
     .icon-theme {
         font-size: var(--fontsize-large);
@@ -77,7 +77,7 @@ function changeColor(color: typeof colors[number]) {
     .tools {
         display: none;
         position: absolute;
-        top: var(--height-header);
+        top: $height-header;
         left: 50%;
         transform: translateX(-50%);
         width: 20rem;

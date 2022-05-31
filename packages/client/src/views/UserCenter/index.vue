@@ -40,9 +40,9 @@ const navList = [
 
 <style lang="scss" scoped>
 .userCenter {
-    height: calc(100vh - var(--height-header) - 2rem);
+    height: calc(100vh - $height-header - 2rem);
     max-height: 100rem;
-    margin: calc(var(--height-header) + 2rem) var(--width-wife) 0;
+    margin: calc($height-header + 2rem) $width-wife 0;
     gap: 2rem;
     nav {
         height: 100%;

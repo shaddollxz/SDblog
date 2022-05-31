@@ -43,8 +43,8 @@ onMounted(async () => {
     $pointRadius: 0.5rem;
     $linewidth: 0.5rem;
     position: sticky;
-    top: calc(var(--height-header) + 1rem);
-    height: calc(100vh - var(--height-header) - 4rem);
+    top: calc($height-header + 1rem);
+    height: calc(100vh - $height-header - 4rem);
     overflow: hidden;
     .title {
         position: relative;

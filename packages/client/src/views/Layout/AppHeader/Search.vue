@@ -7,12 +7,15 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(["onChangeSideBarState"]);
+
 const router = useRouter();
 let keyWord = ref("");
 
 function search() {
     if (keyWord.value) {
         router.push({ path: "/search", query: { keyWord: keyWord.value } });
+        emit("onChangeSideBarState");
     }
 }
 </script>

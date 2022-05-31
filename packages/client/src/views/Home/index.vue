@@ -18,7 +18,7 @@ import Right from "./Right.vue";
     display: flex;
     justify-content: center;
     height: 100%;
-    margin-top: calc(var(--height-header) + 3rem);
+    margin-top: calc($height-header + 3rem);
     margin-bottom: 1rem;
     gap: 1rem;
     .center {

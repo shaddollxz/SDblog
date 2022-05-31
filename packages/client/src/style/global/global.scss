@@ -1,7 +1,4 @@
 :root {
-    --height-header: 5rem;
-    --width-wife: 16rem;
-
     --fontsize-xxlarge: 4.5rem;
     --fontsize-xlarge: 3.3rem;
     --fontsize-large: 2.4rem;
@@ -47,6 +44,7 @@ p {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="passWord"] {
     color: var(--color-text-default);
     background-color: var(--color-bg-bland);

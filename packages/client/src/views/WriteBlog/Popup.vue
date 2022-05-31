@@ -125,11 +125,11 @@ async function sendBlog() {
 
 <style lang="scss" scoped>
 .popup {
-    height: calc(100vh - var(--height-header));
+    height: calc(100vh -$height-header);
     box-sizing: border-box;
     padding: 0 1rem 1rem 2rem;
     position: absolute;
-    top: var(--height-header);
+    top: $height-header;
     right: 0;
     display: flex;
     flex-direction: column;

@@ -23,8 +23,8 @@
     h5,
     h6 {
         // 保证a标签的定位位置
-        padding-top: calc(1rem + var(--height-header)) !important;
-        margin-top: calc(0 - var(--height-header)) !important;
+        padding-top: calc(1rem + $height-header) !important;
+        margin-top: calc(0rem - $height-header) !important;
         font-family: Georgia, Palatino, serif;
         font-weight: 600;
         code {
@@ -36,7 +36,6 @@
     h3,
     h4,
     h5,
-    p,
     dl {
         margin-bottom: 1rem;
         padding: 0;
@@ -192,11 +191,12 @@
         border-spacing: 0;
         width: 80%;
         margin: 0 auto;
-    }
-    table {
-        border: solid var(--color-bg-bland) 1px;
         border-radius: 0.5rem;
         overflow: hidden;
+        background: var(--color-bg-bland);
+    }
+    table tr {
+        background: inherit;
     }
     table tr:hover {
         background: var(--color-bg-deep);
@@ -206,14 +206,16 @@
     table th {
         border-left: 1px solid var(--color-text-theme);
         border-top: 1px solid var(--color-text-theme);
-        padding: 10px;
+        padding: 0.7rem;
         text-align: left;
+        @include mobile {
+            padding: 0.2rem;
+        }
     }
-
     table th {
         color: var(--color-text-theme);
-        font-weight: 600;
-        background-color: var(--color-bg-bland);
+        font-weight: bold;
+        background: inherit;
         border-top: none;
         padding: 5px;
     }
@@ -223,31 +225,6 @@
         border-left: none;
     }
 
-    table th:first-child {
-        -moz-border-radius: 6px 0 0 0;
-        -webkit-border-radius: 6px 0 0 0;
-        border-radius: 6px 0 0 0;
-    }
-    table th:last-child {
-        -moz-border-radius: 0 6px 0 0;
-        -webkit-border-radius: 0 6px 0 0;
-        border-radius: 0 6px 0 0;
-    }
-    table th:only-child {
-        -moz-border-radius: 6px 6px 0 0;
-        -webkit-border-radius: 6px 6px 0 0;
-        border-radius: 6px 6px 0 0;
-    }
-    table tr:last-child td:first-child {
-        -moz-border-radius: 0 0 0 6px;
-        -webkit-border-radius: 0 0 0 6px;
-        border-radius: 0 0 0 6px;
-    }
-    table tr:last-child td:last-child {
-        -moz-border-radius: 0 0 6px 0;
-        -webkit-border-radius: 0 0 6px 0;
-        border-radius: 0 0 6px 0;
-    }
     img {
         width: 70%;
         margin: 0 auto;

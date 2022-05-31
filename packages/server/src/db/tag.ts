@@ -5,11 +5,11 @@ import { User } from "./user";
 import type { dbBase } from "./dbBase";
 
 export class Tag implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ required: true, unique: true })
-    value!: string;
+    declare value: string;
 
     @prop({ required: true, ref: () => User })
-    creater!: Ref<User>;
+    declare creater: Ref<User>;
 }

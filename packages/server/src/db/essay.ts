@@ -6,23 +6,23 @@ import type { dbBase } from "./dbBase";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Essay implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ required: true, ref: () => User })
-    author!: Ref<User>;
+    declare author: Ref<User>;
 
     @prop({ required: true })
-    content!: string;
+    declare content: string;
 
     @prop({ default: 0 })
-    likes!: number;
+    declare likes: number;
 
     @prop({ default: [] })
-    pictures!: string[];
+    declare pictures: string[];
 
     @prop({ default: 0 })
-    replyCount!: number;
+    declare replyCount: number;
 
     @prop({ default: Date.now })
-    createdAt!: Date;
+    declare createdAt: Date;
 }

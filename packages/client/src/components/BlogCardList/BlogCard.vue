@@ -82,7 +82,7 @@ interface Props {
     blogMsg: BlogListItemInfo;
 }
 const props = defineProps<Props>();
-console.log(props.blogMsg);
+
 const headPic = ref<HTMLImageElement | null>(null);
 
 let alreadyShow = false;
@@ -162,18 +162,13 @@ function editBlog() {
                 flex: 0 0 auto;
                 margin-bottom: 1rem;
                 font-size: var(--fontsize-default);
-                line-height: 1.7rem;
             }
             .foot {
                 display: flex;
                 gap: 0.5rem;
                 > div {
-                    line-height: 1.5rem;
                     display: flex;
                     align-items: center;
-                    &:last-child {
-                        margin: 0;
-                    }
                     i {
                         font-size: var(--fontsize-default);
                     }
@@ -211,13 +206,13 @@ function editBlog() {
             }
             > div {
                 flex-direction: column;
+                gap: 1rem;
                 box-sizing: border-box;
                 padding: 0.5rem 0.5rem;
                 position: absolute;
                 left: 50%;
                 top: 100%;
                 width: max-content;
-                gap: 1rem;
                 background-color: var(--color-bg-bland);
                 i {
                     font-weight: 600;

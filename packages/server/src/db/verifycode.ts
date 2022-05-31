@@ -3,14 +3,14 @@ const { prop } = typegoose;
 import type { dbBase } from "./dbBase";
 
 export class Verifycode implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ required: true })
-    email!: string;
+    declare email: string;
 
     @prop({ required: true, unique: true })
-    verifycode!: string;
+    declare verifycode: string;
 
     @prop({ default: Date.now, index: { expireAfterSeconds: 600 } })
-    createdAt!: Date;
+    declare createdAt: Date;
 }

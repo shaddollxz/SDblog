@@ -29,6 +29,7 @@ export const homePage: GetHandler<HomePageOptions> = async (req, res, next) => {
             const result = item.toJSON() as unknown as BlogDetailInfo;
             // @ts-ignore 强制改了
             result.contentLength = result.content?.length;
+            // @ts-ignore
             delete result.content;
             return result;
         });

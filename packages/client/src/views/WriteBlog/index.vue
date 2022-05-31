@@ -49,7 +49,7 @@ async function choseFile() {
     overflow: hidden;
 }
 .sendMarkdown {
-    height: calc(100vh - var(--height-header));
+    height: calc(100vh - $height-header);
 }
 .popup {
     width: 50%;

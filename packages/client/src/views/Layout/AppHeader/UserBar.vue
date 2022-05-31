@@ -23,14 +23,12 @@ function toUserCenter() {
     emit("changeSideBarState");
     router.push({ path: "/userCenter" });
 }
-
-defineExpose({});
 </script>
 
 <style lang="scss" scoped>
 .avatar {
-    height: calc(var(--height-header) * 0.85);
-    width: calc(var(--height-header) * 0.85);
+    height: calc($height-header * 0.85);
+    width: calc($height-header * 0.85);
     transition: all 0.04s linear;
     &:hover {
         transform: scale(1.8);
@@ -42,7 +40,7 @@ defineExpose({});
     }
 }
 .loginBtn {
-    width: var(--height-header);
+    width: $height-header;
     border-width: 2px;
     &:hover {
         color: var(--color-text-theme);

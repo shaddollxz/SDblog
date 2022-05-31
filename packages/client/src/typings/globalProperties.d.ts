@@ -8,7 +8,7 @@ export interface Img {
     randomPic: () => Promise<string>;
 }
 export interface FormatNumber {
-    (number: number): string;
+    (number: number, precision?: number, isSlice?: boolean): string;
 }
 export interface FormatTime {
     (timeStr: number | string | Date, formatStr: string, isUseChinese?: boolean): string;

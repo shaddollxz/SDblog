@@ -6,6 +6,6 @@ export default {
         return window.localStorage.getItem("access_token");
     },
     remove() {
-        window.localStorage.getItem("access_token");
+        window.localStorage.removeItem("access_token");
     },
 };

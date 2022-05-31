@@ -6,32 +6,32 @@ import { Tag } from "./tag";
 import type { dbBase } from "./dbBase";
 
 export class Blog extends defaultClasses.TimeStamps implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ required: true })
-    title!: string;
+    declare title: string;
 
     @prop({ required: true })
-    content?: string;
+    declare content: string;
 
     @prop({ required: true, ref: () => User })
-    author!: Ref<User>;
+    declare author: Ref<User>;
 
     @prop({ default: "" })
-    description!: string;
+    declare description: string;
 
     @prop({ default: null })
-    headPic!: string;
+    declare headPic: string;
 
     @prop({ default: [], ref: () => Tag })
-    tags!: Ref<Tag>[];
+    declare tags: Ref<Tag>[];
 
     @prop({ default: 0 })
-    read!: number;
+    declare read: number;
 
     @prop({ default: 0 })
-    likes!: number;
+    declare likes: number;
 
     @prop({ default: 0 })
-    replyCount!: number;
+    declare replyCount: number;
 }

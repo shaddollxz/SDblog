@@ -40,16 +40,16 @@ let menuState = ref(false); // 手机端时控制显示菜单
 
 <style lang="scss" scoped>
 .blog {
-    margin-left: var(--width-wife);
+    margin-left: $width-wife;
     margin-right: 2rem;
-    width: calc(100% - var(--width-wife) - 2rem);
+    width: calc(100% - $width-wife - 2rem);
     .content {
         display: flex;
         justify-content: space-between;
         height: 100%; // 设置高度让子元素都是这个高度 这样menu才能sticky
         width: 100%;
         .left {
-            width: calc(100vw - var(--width-wife) - 2rem - 20rem - 2rem);
+            width: calc(100vw - $width-wife - 2rem - 20rem - 2rem);
             box-sizing: border-box;
             padding: 0 2rem 2rem;
             @include mobile {
@@ -68,7 +68,7 @@ let menuState = ref(false); // 手机端时控制显示菜单
                 background-color: var(--color-bg-bland);
                 transition: 0.4s all;
                 &:deep(.bar) {
-                    margin-top: calc(var(--height-header) + 1rem);
+                    margin-top: calc($height-header + 1rem);
                     .markdownMenu {
                         height: 33rem;
                     }

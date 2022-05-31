@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import ProgressBar from "./views/Layout/ProgressBar.vue";
-import AppHeader from "./views/Layout/AppHeader.vue";
+import AppHeader from "./views/Layout/AppHeader/index.vue";
 import AppFooter from "./views/Layout/AppFooter.vue";
 import GoTop from "./views/Layout/GoTop.vue";
 import isMobile from "./utils/isMobile";
@@ -32,12 +32,11 @@ onMounted(() => {
 
 <style lang="scss">
 header {
-    height: var(--height-header);
+    height: $height-header;
 }
 main {
-    margin-top: var(--height-header);
-    margin-bottom: 3rem;
-    min-height: calc(100vh - var(--height-header));
+    margin: $height-header 0 3rem 0;
+    min-height: calc(100vh - $height-header);
     @include mobile {
         margin-left: 2px;
         margin-right: 2px;

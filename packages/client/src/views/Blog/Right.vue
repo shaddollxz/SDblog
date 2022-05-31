@@ -61,11 +61,11 @@ onBeforeRouteLeave((to, from) => sendLikes());
     width: $menuWith;
     .bar {
         position: sticky;
-        top: calc(var(--height-header) + 3rem); // 被固定时的位置
-        margin-top: calc(var(--height-header) + 10rem); // 初始未知
+        top: calc($height-header + 3rem); // 被固定时的位置
+        margin-top: calc($height-header + 10rem); // 初始未知
         .markdownMenu {
             width: $menuWith;
-            height: calc(100vh - var(--height-header) - 11rem);
+            height: calc(100vh - $height-header - 11rem);
         }
 
         .tools {

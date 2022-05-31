@@ -5,7 +5,6 @@
                 <div class="selected gusto-border" v-for="item of selectedItems" :key="item._id">
                     <span>{{ item.value }}</span>
                     <strong @click="removeItem(item)">✖</strong>
-                    <!-- <i @click="removeItem(item)"></i> -->
                 </div>
                 <input
                     ref="input"

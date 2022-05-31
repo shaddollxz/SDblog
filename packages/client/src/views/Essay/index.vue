@@ -54,7 +54,7 @@ function sendFunc() {
 
 <style lang="scss" scoped>
 .essay {
-    margin: calc(var(--height-header) + 3rem) var(--width-wife) 0;
+    margin: calc($height-header + 3rem) $width-wife 0;
     flex-direction: column;
     .sendMarkdown {
         width: 100%;

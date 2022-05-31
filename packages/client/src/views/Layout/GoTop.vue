@@ -42,7 +42,7 @@ const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
 }
 .observer {
     position: absolute;
-    top: calc(100vh - var(--height-header));
+    top: calc(100vh - $height-header);
 }
 @include mobile {
     .cat {

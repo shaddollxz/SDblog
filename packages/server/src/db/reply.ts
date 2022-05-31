@@ -14,31 +14,31 @@ export interface VisitorInfo {
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Reply implements dbBase {
-    DB!: true;
+    declare DB: true;
 
     @prop({ default: null, ref: () => User })
-    user?: Ref<User>;
+    declare user?: Ref<User>;
 
     @prop({ default: null })
-    visitor?: VisitorInfo | null;
+    declare visitor?: VisitorInfo | null;
 
     @prop({ required: true })
-    content!: string;
+    declare content: string;
 
     @prop({ required: true })
-    replyMainId!: string;
+    declare replyMainId: string;
 
     @prop({ required: true })
-    type!: ReplyEnum;
+    declare type: ReplyEnum;
 
     @prop({ default: null })
-    replyTo!: string;
+    declare replyTo: string;
 
     @prop({ default: 0 })
-    likes!: number;
+    declare likes: number;
 
     @prop({ default: Date.now })
-    createdAt!: Date;
+    declare createdAt: Date;
 
     static async findReply(this: ReturnModelType<typeof Reply>, replyMainId: string) {
         const replyList = await this.find({ replyMainId }).sort({ createdAt: 1 }).populate("user");

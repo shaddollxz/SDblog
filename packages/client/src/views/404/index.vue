@@ -7,7 +7,7 @@
 
 <style lang="scss" scoped>
 .notFound {
-    height: calc(100vh - var(--height-header));
+    height: calc(100vh - $height-header);
     width: 100%;
     flex-direction: column;
     h2 {
