@@ -2,11 +2,11 @@
     <div class="sendReplyBox">
         <div class="user" v-if="!userStore.isLogin">
             <div class="input">
-                <span>id:</span>
+                <span class="xingyan">id:</span>
                 <CheckInput ref="name" :check="nameCheck"></CheckInput>
             </div>
             <div class="input">
-                <span>email:</span>
+                <span class="xingyan">email:</span>
                 <CheckInput ref="email" :check="emailCheck"></CheckInput>
             </div>
         </div>
@@ -34,9 +34,9 @@ const replyMainId = inject<Props["replyMainId"]>("replyMainId")!;
 const type = inject<Props["type"]>("type")!;
 
 //todo 验证游客评论需要的信息
-const sendMarkdown = shallowRef<typeof SendMarkdown | null>(null);
-const name = shallowRef<typeof CheckInput | null>(null);
-const email = shallowRef<typeof CheckInput | null>(null);
+const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
+const name = shallowRef<InstanceType<typeof CheckInput> | null>(null);
+const email = shallowRef<InstanceType<typeof CheckInput> | null>(null);
 const visitorInfo = computed(() => {
     return {
         name: name.value?.passCheckData,
@@ -61,7 +61,7 @@ function sendReply() {
         replyMainId,
         content: sendMarkdown.value!.text,
         replyTo: undefined,
-        visitorInfo: visitorInfo.value,
+        visitorInfo: visitorInfo.value as any,
     }).then(({ data }) => {
         Message.success("发送成功");
         sendMarkdown.value!.text = "";
@@ -83,7 +83,6 @@ function sendReply() {
         }
         .input {
             span {
-                font-family: "xingyan";
                 font-size: var(--fontsize-big);
                 font-weight: 600;
             }

@@ -33,8 +33,8 @@ const emailCheck: CheckRules[] = [
 ];
 const passWordCheck: CheckRules[] = [["notEmpty", null, "密码不能为空"]];
 //todo 验证结果
-const email = shallowRef<typeof CheckInput | null>(null);
-const passWord = shallowRef<typeof CheckInput | null>(null);
+const email = shallowRef<InstanceType<typeof CheckInput> | null>(null);
+const passWord = shallowRef<InstanceType<typeof CheckInput> | null>(null);
 const formData = computed(() => {
     return {
         email: email.value?.passCheckData,
@@ -42,12 +42,12 @@ const formData = computed(() => {
     };
 });
 // 是否通过所有验证
-const ispassAllCheck = computed(() => formData.value.email && !!formData.value.passWord);
+const ispassAllCheck = computed(() => !!formData.value.email && !!formData.value.passWord);
 
 //todo 登录
 function login() {
     if (ispassAllCheck.value) {
-        userStore.login(formData.value).then(() => {
+        userStore.login(formData.value as any).then(() => {
             setTimeout(() => {
                 router.go(-1);
             }, 800);

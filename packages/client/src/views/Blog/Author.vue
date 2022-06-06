@@ -6,9 +6,9 @@
         <div class="msg">
             <div class="authorMsg">
                 <span>{{ blogMsg?.author.name }}</span>
-                <span>{{ blogMsg?.author.email }}</span>
+                <span class="chuyuan">{{ blogMsg?.author.email }}</span>
             </div>
-            <div class="blogMsg">
+            <div class="chuyuan">
                 <i class="iconfont icon-calendar-v2-full" title="创作日期"></i>
                 <span>
                     {{ $formatTime(blogMsg?.createdAt!, "/YYYY/-/MM/-/DD/ /HH/:/mm/ 周/W/") }}
@@ -63,12 +63,8 @@ const blogMsg: BlogDetail_Inject = inject("blogDetail")!;
             }
             :nth-child(2) {
                 margin: 0;
-                font-family: "chuyuan";
                 font-style: italic;
             }
-        }
-        .blogMsg {
-            font-family: "chuyuan";
         }
         .tags {
             display: flex;

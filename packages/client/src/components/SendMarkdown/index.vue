@@ -62,7 +62,7 @@ const props = defineProps({
 defineEmits(["onSend"]);
 
 let text = ref("");
-const emojiBox = shallowRef<typeof EmojiBox | null>(null); // 通过组件实例暴露的isShowEmojiBox控制表情box的出现
+const emojiBox = shallowRef<InstanceType<typeof EmojiBox> | null>(null); // 通过组件实例暴露的isShowEmojiBox控制表情box的出现
 const textarea = shallowRef<HTMLTextAreaElement | null>(null); // 获得文本框 通过原生方法进行补全等操作
 let isPreview = ref(true); // 是否显示预览
 let isAutoEnter = ref(true);

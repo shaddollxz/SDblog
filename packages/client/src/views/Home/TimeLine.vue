@@ -1,15 +1,15 @@
 <template>
     <div class="timeLine">
-        <p class="title">
+        <p class="title xingyan">
             <i class="iconfont icon-calendar-v2-full"></i>
             <span>时间轴</span>
         </p>
         <ul v-if="timeLine" class="lines gusto-hiddenScrollBar">
             <li v-for="(monthItem, year) of timeLine">
-                <h3>{{ year }}</h3>
+                <h3 class="chuyuan">{{ year }}</h3>
                 <ul v-for="(contents, month) of monthItem">
-                    <h4>{{ month }}</h4>
-                    <li v-for="item of contents" @click="$router.push('/blog/' + item._id)">
+                    <h4 class="chuyuan">{{ month }}</h4>
+                    <li v-for="item of contents" class="chuyuan" @click="$router.push('/blog/' + item._id)">
                         <div class="time">
                             {{ item.createdAt }}
                         </div>
@@ -49,7 +49,6 @@ onMounted(async () => {
     .title {
         position: relative;
         height: $titleHeight;
-        font-family: "xingyan";
         font-size: var(--fontsize-large);
         padding: 1.75rem $paddingLeft 0.5rem calc($paddingLeft / 2);
         margin-top: 0;
@@ -98,7 +97,6 @@ onMounted(async () => {
                 list-style: none;
                 margin-bottom: 2rem;
                 cursor: pointer;
-                font-family: "chuyuan";
                 text-align: center;
                 &:hover {
                     .time::before {
@@ -140,10 +138,6 @@ onMounted(async () => {
                     flex: 1;
                 }
             }
-        }
-        h3,
-        h4 {
-            font-family: "chuyuan";
         }
         h3 {
             font-size: var(--fontsize-large);

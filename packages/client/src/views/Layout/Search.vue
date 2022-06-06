@@ -2,7 +2,7 @@
     <div class="search">
         <i class="iconfont icon-sousuo" @click="search"></i>
 
-        <input @keypress.enter="search" type="text" v-model="keyWord" placeholder="搜索" />
+        <input class="chuyuan" @keypress.enter="search" type="text" v-model="keyWord" placeholder="搜索" />
     </div>
 </template>
 
@@ -39,7 +39,6 @@ function search() {
         color: #bebfc1;
         border-color: #626a74;
         background-color: #24292f; // 和header一致
-        font-family: "chuyuan";
     }
 }
 </style>

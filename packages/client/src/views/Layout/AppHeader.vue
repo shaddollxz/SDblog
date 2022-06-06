@@ -1,8 +1,8 @@
 <template>
     <header>
-        <h1 @click="$router.push('/')" title="Quincy Is Watching You">
+        <h1 class="chuyuan" @click="$router.push('/')" title="Quincy Is Watching You">
             0v0
-            <span>昆~</span>
+            <span class="chuyuan">昆~</span>
         </h1>
 
         <Theme></Theme>
@@ -13,7 +13,7 @@
 
                 <UserBar @changeSideBarState="changeSideBarState"></UserBar>
 
-                <nav v-once>
+                <nav class="xingyan" v-once>
                     <template v-for="nav of navlist">
                         <RouterLink :to="nav.link" custom v-slot="{ navigate }">
                             <div
@@ -89,10 +89,8 @@ header {
     color: #bebfc1;
 
     h1 {
-        font-family: "chuyuan";
         cursor: pointer;
         span {
-            font-family: "chuyuan";
             font-size: var(--fontsize-small);
         }
     }
@@ -111,7 +109,6 @@ header {
             display: flex;
             height: 100%;
             gap: 2rem;
-            font-family: "xingyan";
             > div {
                 display: flex;
                 justify-content: center;

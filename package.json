@@ -11,7 +11,8 @@
         "build:server": "cd packages/server && pnpm build",
         "preview:client": "cd packages/client && pnpm preview",
         "preview:server": "cd packages/server && pnpm preview",
-        "pm2": "pm2 start packages/server/pm2.json"
+        "pm2": "pm2 start packages/server/pm2.json",
+        "font": "cd packages/scripts && pnpm font"
     },
     "keywords": [],
     "author": "",

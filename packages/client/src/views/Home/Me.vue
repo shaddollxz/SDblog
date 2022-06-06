@@ -10,12 +10,12 @@
                 <span>shaddollxz@163.com</span>
             </div>
             <div class="blogInfo">
-                <div>
+                <div class="chuyuan">
                     <div>文章</div>
                     <div>{{ detail.blogCount }}</div>
                 </div>
                 <span>|</span>
-                <div>
+                <div class="chuyuan">
                     <div>标签</div>
                     <div>{{ tagStore.count }}</div>
                 </div>
@@ -103,11 +103,9 @@ const aboutMe = [
             text-align: center;
             &:first-child {
                 font-size: var(--fontsize-large);
-                font-family: "chuyuan";
             }
             &:last-child {
                 font-size: var(--fontsize-big);
-                font-family: "chuyuan";
             }
         }
         span {

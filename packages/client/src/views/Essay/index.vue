@@ -41,7 +41,7 @@ function pageChange(page = 1) {
     router.push({ path: route.path, query: { page } });
 }
 
-const sendMarkdown = shallowRef<typeof SendMarkdown | null>(null);
+const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
 function sendFunc() {
     writeEssayApi(sendMarkdown.value!.text).then(({ data }) => {
         sendMarkdown.value!.text = "";
