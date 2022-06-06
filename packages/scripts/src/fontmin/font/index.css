@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "chuyuan";
+    src: url("./chuyuan.woff2");
+}
+
+@font-face {
+    font-family: "xingyan";
+    src: url("./xingyan.woff2");
+}
+
+.chuyuan{
+    font-family: "chuyuan";
+}
+.xingyan{
+    font-family: "xingyan";
+}
