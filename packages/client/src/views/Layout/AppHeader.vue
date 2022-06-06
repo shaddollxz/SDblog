@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1 class="chuyuan" @click="$router.push('/')" title="Quincy Is Watching You">
+        <h1 class="canClick chuyuan" @click="$router.push('/')" title="Quincy Is Watching You">
             0v0
             <span class="chuyuan">昆~</span>
         </h1>
@@ -89,9 +89,8 @@ header {
     color: #bebfc1;
 
     h1 {
-        cursor: pointer;
         span {
-            font-size: var(--fontsize-small);
+            font-size: var(--fontsize-default);
         }
     }
 
