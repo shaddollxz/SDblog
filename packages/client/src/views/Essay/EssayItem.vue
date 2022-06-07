@@ -7,7 +7,7 @@
             </div>
 
             <div class="content">
-                <div class="msg">
+                <div class="msg chuyuan">
                     <div class="name">
                         <span>{{ essayData.author.name }}</span>
                         <span>{{ essayData.author.email }}</span>
@@ -120,7 +120,6 @@ function deleteEssay() {
     position: relative;
 
     .msg {
-        font-family: "chuyuan";
         .name {
             :first-child {
                 color: var(--color-text-theme);

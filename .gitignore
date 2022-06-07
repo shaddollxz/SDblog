@@ -8,3 +8,5 @@ packages/server/static/avatar
 packages/server/static/image
 packages/server/bin
 packages/server/logs
+packages/client/src/assets/font
+packages/client/src/typings/autoImport.d.ts

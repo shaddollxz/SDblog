@@ -1,5 +1,5 @@
 <template>
-    <ul class="markdownMenuChild" v-if="menuData">
+    <ul class="markdownMenuChild chuyuan" v-if="menuData">
         <li v-for="menu of menuData">
             <a :href="'#' + menu.id">{{ menu.id }}</a>
             <MarkdownMenuChild v-if="menu.child" :menuData="menu.child"></MarkdownMenuChild>
@@ -16,7 +16,6 @@ defineProps<Props>();
 
 <style lang="scss" scoped>
 .markdownMenuChild {
-    font-family: "chuyuan";
     li {
         margin: 0.35rem 1.35rem;
         margin-right: 0;

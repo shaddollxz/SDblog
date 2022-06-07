@@ -2,8 +2,8 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default VitePWA({
     workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,svg,jpg,png,ttf,moc,mtn,json}"], // 缓存的文件后缀
-        maximumFileSizeToCacheInBytes: 2097152 * 5, // 缓存的文件最大大小 这里是20M
+        globPatterns: ["**/*.{js,css,html,ico,svg,jpg,png,ttf,woff2,moc,mtn,json}"], // 缓存的文件后缀
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 缓存的文件最大大小 这里是5M
     },
     manifest: {
         lang: "zh",

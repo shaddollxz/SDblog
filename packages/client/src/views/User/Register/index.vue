@@ -51,9 +51,9 @@ const passWordCheck: CheckRules[] = [
 ];
 
 //todo 验证结果
-const name = shallowRef<typeof CheckInput | null>(null);
-const email = shallowRef<typeof CheckInput | null>(null);
-const passWord = shallowRef<typeof CheckInput | null>(null);
+const name = shallowRef<InstanceType<typeof CheckInput> | null>(null);
+const email = shallowRef<InstanceType<typeof CheckInput> | null>(null);
+const passWord = shallowRef<InstanceType<typeof CheckInput> | null>(null);
 const verifycode = ref("");
 const formData = computed(() => {
     return {
@@ -67,7 +67,10 @@ const formData = computed(() => {
 //todo 是否通过所有验证
 const ispassAllCheck = computed(
     () =>
-        formData.value.verifycode && formData.value.name && formData.value.email && !!formData.value.passWord
+        !!formData.value.verifycode &&
+        !!formData.value.name &&
+        !!formData.value.email &&
+        !!formData.value.passWord
 );
 
 //todo 注册
@@ -75,13 +78,13 @@ let isShowCodeBox = ref(false);
 const canSendEmail = computed(() => !!formData.value.email); // 邮箱填写正确
 
 function sendEmail() {
-    sendRegisterEmailApi(formData.value.email);
+    sendRegisterEmailApi(formData.value.email!);
     isShowCodeBox.value = true;
 }
 
 function register() {
     if (ispassAllCheck.value) {
-        registerApi(formData.value).then(() => {
+        registerApi(formData.value as any).then(() => {
             Message.success("注册成功，即将跳转至登录页面", { duration: 1300 });
             setTimeout(() => {
                 router.push("/login");

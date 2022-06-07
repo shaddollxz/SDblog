@@ -1,5 +1,5 @@
 <template>
-    <div class="clock">
+    <div class="clock chuyuan">
         <div class="bigTime">
             <div class="week">{{ date.week }}</div>
             <div class="day">{{ date.day }}</div>
@@ -28,7 +28,6 @@ onUnmounted(() => clearInterval(interval));
 
 <style lang="scss" scoped>
 .clock {
-    font-family: "chuyuan";
     border-bottom: 1px solid var(--color-border);
     cursor: default;
     .bigTime {

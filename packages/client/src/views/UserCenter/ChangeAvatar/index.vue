@@ -2,9 +2,9 @@
     <section class="changeAvatar gusto-flex-center">
         <div class="imgBox gusto-flex-center">
             <div class="originBox gusto-flex-center">
-                <span>原图</span>
+                <span class="chuyuan">原图</span>
                 <ChoseImg ref="choseImg" :maxSize="5 * 1024">选择头像</ChoseImg>
-                <span class="description">只支持5MB以下的图片的上传</span>
+                <span class="description chuyuan">只支持5MB以下的图片的上传</span>
             </div>
             <div class="previewBox gusto-flex-center">
                 <span>预览</span>
@@ -42,7 +42,7 @@ const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame
 const userStore = useUserStore();
 const avatars = toRef(userStore, "avatars");
 
-const choseImg = shallowRef<typeof ChoseImg | null>(null);
+const choseImg = shallowRef<InstanceType<typeof ChoseImg> | null>(null);
 async function uploadAvatar() {
     const formData = new FormData();
     formData.append("avatar", choseImg.value!.data as unknown as File);
@@ -64,7 +64,6 @@ let isShowChangeAvatarFrame = ref(false);
             flex-direction: column;
             span {
                 margin-bottom: 2rem;
-                font-family: "chuyuan";
                 &.description {
                     margin: 2rem 0;
                     font-size: var(--fontsize-small);

@@ -1,6 +1,6 @@
 <template>
     <div class="userCenter gusto-flex-center">
-        <nav class="gusto-border">
+        <nav class="gusto-border xingyan">
             <template v-for="item of navList">
                 <RouterLink :to="item.path" custom v-slot="{ navigate }">
                     <div @click="navigate" role="link">
@@ -53,7 +53,6 @@ const navList = [
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
-        font-family: "xingyan";
         font-size: var(--fontsize-big);
         background-color: var(--color-bg-bland);
         div,

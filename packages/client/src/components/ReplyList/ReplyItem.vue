@@ -9,7 +9,7 @@
                     <div class="head">
                         <div class="top">
                             <div class="msg">{{ detail.author.name }}</div>
-                            <div class="msg">{{ detail.author.email }}</div>
+                            <div class="msg chuyuan">{{ detail.author.email }}</div>
                         </div>
                         <span class="content">
                             <Markdown :markdown="detail.content"></Markdown>
@@ -107,7 +107,6 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
                         font-weight: 600;
                     }
                     :nth-child(2) {
-                        font-family: "chuyuan";
                         font-style: italic;
                     }
                 }

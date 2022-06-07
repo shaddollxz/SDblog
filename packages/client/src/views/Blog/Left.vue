@@ -3,8 +3,8 @@
         <h2 class="title">{{ blogDetail?.title }}</h2>
         <Author></Author>
         <Markdown ref="markdown" :markdown="blogDetail?.content!" :isLoading="true"></Markdown>
-        <div class="end gusto-flex-center">end</div>
-        <p id="评论" class="reply">评论：</p>
+        <div class="end chuyuan gusto-flex-center">end</div>
+        <p id="评论" class="reply xingyan">评论：</p>
         <ReplyList
             ref="replyList"
             :replyMainId="($route.params.blogId as string)"
@@ -24,16 +24,16 @@ const updateMarkdownCountent = inject<UpdateMarkdownContent>("update:markdownCon
 const updateReplyCount = inject<UpdateReplyCount>("update:replyCount")!;
 const blogDetail = inject<BlogDetail_Inject>("blogDetail")!;
 
-const markdown = shallowRef<typeof Markdown | null>(null); // 获取解析后的字符串来解析为目录
-const replyList = shallowRef<typeof ReplyList | null>(null);
+const markdown = shallowRef<InstanceType<typeof Markdown> | null>(null); // 获取解析后的字符串来解析为目录
+const replyList = shallowRef<InstanceType<typeof ReplyList> | null>(null);
 
 watch(
     () => markdown?.value?.html,
-    (n) => updateMarkdownCountent(n)
+    (n) => updateMarkdownCountent(n ?? "")
 );
 watch(
     () => replyList?.value?.count,
-    (n) => updateReplyCount(n)
+    (n) => updateReplyCount(n ?? 0)
 );
 </script>
 
@@ -55,7 +55,6 @@ watch(
         position: relative;
         margin-top: 3rem;
         font-size: var(--fontsize-large);
-        font-family: "chuyuan";
         &::before {
             content: "";
             position: absolute;
@@ -77,7 +76,6 @@ watch(
         width: 100%;
     }
     .reply {
-        font-family: "xingyan";
         font-size: var(--fontsize-xlarge);
     }
 }

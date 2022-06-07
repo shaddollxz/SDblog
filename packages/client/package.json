@@ -12,28 +12,28 @@
     "dependencies": {
         "@blog/server": "workspace:^1.0.0",
         "clipboard-polyfill": "^3.0.3",
-        "highlight.js": "^11.3.1",
+        "highlight.js": "^11.5.1",
         "marked": "^4.0.5",
-        "pinia": "^2.0.3",
-        "sdt3": "^2.0.23",
-        "vue": "^3.2.16",
+        "pinia": "^2.0.14",
+        "sdt3": "^2.0.24",
+        "vue": "^3.2.37",
         "vue-router": "^4.0.12"
     },
     "devDependencies": {
         "@types/marked": "^4.0.1",
         "@vitejs/plugin-legacy": "^1.6.3",
-        "@vitejs/plugin-vue": "^1.9.3",
+        "@vitejs/plugin-vue": "^2.3.3",
         "rollup": "^2.67.1",
         "rollup-plugin-visualizer": "^5.5.2",
         "sass": "^1.49.7",
-        "unplugin-auto-import": "^0.5.11",
+        "unplugin-auto-import": "^0.8.7",
         "vconsole": "^3.14.6",
         "vite": "^2.9.9",
         "vite-plugin-compression": "^0.3.5",
         "vite-plugin-pwa": "^0.11.13",
         "vite-plugin-svg-icons": "^2.0.1",
         "vite-plugin-vconsole": "^1.2.1",
-        "vue-tsc": "^0.3.0",
+        "vue-tsc": "^0.37.0",
         "workbox-window": "^6.4.2"
     }
 }

@@ -1,0 +1,19 @@
+{
+    "name": "@blog/scripts",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "font": "node --loader ts-node/esm src/fontmin/index.ts --experimental-specifier-resolution=node"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "fontmin": "^0.9.9"
+    },
+    "devDependencies": {
+        "@types/fontmin": "^0.9.0"
+    }
+}

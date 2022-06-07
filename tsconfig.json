@@ -25,6 +25,7 @@
     "exclude": [
         "packages/server/bin",
         "packages/server/public",
+        "*/*.js",
         "node_modules"
     ]
 }

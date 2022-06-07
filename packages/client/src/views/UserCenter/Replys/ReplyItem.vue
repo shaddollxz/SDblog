@@ -9,8 +9,8 @@
                     <i class="iconfont icon-dianzan"></i>
                     <span>{{ $props.replyMsg?.likes }}</span>
                 </span>
-                <span class="link">回复于</span>
-                <span class="link">
+                <span class="chuyuan">回复于</span>
+                <span class="chuyuan">
                     <a
                         href="javascript:void(0)"
                         @click="
@@ -60,9 +60,6 @@ const map = {
                 span {
                     font-size: var(--fontsize-small);
                 }
-            }
-            .link {
-                font-family: "chuyuan";
             }
             @include mobile {
                 margin-left: 0.5rem;

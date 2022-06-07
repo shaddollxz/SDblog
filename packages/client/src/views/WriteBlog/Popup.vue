@@ -60,8 +60,8 @@ const emit = defineEmits(["update:isShowPopup"]);
 const blogId = route.query.edit as string;
 
 let title = ref("");
-const selectInput = shallowRef<typeof SelectInput | null>(null); // 标签
-const choseImg = shallowRef<typeof ChoseImg | null>(null);
+const selectInput = shallowRef<InstanceType<typeof SelectInput> | null>(null); // 标签
+const choseImg = shallowRef<InstanceType<typeof ChoseImg> | null>(null);
 let description = ref("");
 let imgSrc = ref("");
 
@@ -84,7 +84,7 @@ const blogMsg = computed(() => {
         title: title.value,
         content: props.content,
         description: description.value,
-        tags: selectInput.value?.selectedItems,
+        tags: selectInput.value?.selectedItems ?? [],
         headPic: imgSrc.value,
     };
 });

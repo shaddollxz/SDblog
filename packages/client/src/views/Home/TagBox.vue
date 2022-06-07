@@ -1,6 +1,6 @@
 <template>
     <div class="tagBox gusto-border">
-        <p>
+        <p class="xingyan">
             <i class="iconfont icon-biaoqian"></i>
             <span>标签</span>
         </p>
@@ -36,7 +36,6 @@ export default defineComponent({
     box-sizing: border-box;
     padding: 1rem 1.25rem 0 1.25rem;
     p {
-        font-family: "xingyan";
         font-size: var(--fontsize-large);
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--color-border);

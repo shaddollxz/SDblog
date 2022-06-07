@@ -1,7 +1,7 @@
 <template>
     <div class="loading gusto-flex-center">
         <div class="loadingBox"></div>
-        <span class="text">Loading...</span>
+        <span class="text chuyuan">Loading...</span>
     </div>
 </template>
 
@@ -13,7 +13,6 @@
 }
 .text {
     margin-top: calc(var(--gap) + 2.5rem);
-    font-family: "chuyuan";
     font-size: var(--fontsize-large);
     font-weight: 600;
 }

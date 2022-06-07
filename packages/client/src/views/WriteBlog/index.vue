@@ -28,7 +28,7 @@ import CheckButton from "@/components/CheckButton/index.vue";
 import Popup from "./Popup.vue";
 import { LocalFiles } from "sdt3";
 
-const sendMarkdown = shallowRef<typeof SendMarkdown | null>(null);
+const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
 function changeText(text: string) {
     sendMarkdown.value!.text = text;
 }
@@ -40,7 +40,7 @@ function onSend() {
 
 async function choseFile() {
     const file = await new LocalFiles({ type: ["txt", "md"] });
-    sendMarkdown.value!.text = await file.read();
+    sendMarkdown.value!.text = (await file.read()) as string;
 }
 </script>
 

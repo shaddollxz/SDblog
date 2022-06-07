@@ -1,6 +1,6 @@
 <template>
     <div class="markdownMenu">
-        <p>目录</p>
+        <p class="xingyan">目录</p>
         <div class="menu gusto-hiddenScrollBar">
             <MarkdownMenuChild :menuData="menuTree"></MarkdownMenuChild>
         </div>
@@ -41,7 +41,6 @@ const menuTree = computed(() => {
     p {
         height: var(--fontsize-big);
         margin: 2rem 0;
-        font-family: "xingyan";
         font-size: var(--fontsize-big);
         font-weight: 600;
         color: var(--color-text-theme);
