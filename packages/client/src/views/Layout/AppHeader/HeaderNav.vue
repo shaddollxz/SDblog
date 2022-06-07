@@ -1,5 +1,5 @@
 <template>
-    <nav class="navlist" v-once>
+    <nav class="navlist xingyan" v-once>
         <template v-for="nav of navlist">
             <template v-if="nav.children">
                 <div class="navItem dropdown gusto-flex-center">
@@ -69,7 +69,6 @@ const navlist = [
     display: flex;
     height: 100%;
     gap: 2rem;
-    font-family: "xingyan";
     .navItem {
         height: 100%;
         line-height: $height-header;
