@@ -34,15 +34,14 @@
                     <div class="add gusto-button" @click="addCard">+ 添加</div>
                 </div>
             </div>
-            <div class="result">
+            <div class="result" v-show="!!calulatorResult">
                 <span class="total">
-                    计算结果:{{ $formatNumber(calulatorResult.mainPossiable * 100, precision, false) + "%" }}
+                    计算结果:{{ $formatNumber(calulatorResult!.mainPossiable * 100, precision, false) + "%" }}
                 </span>
                 <span>&nbsp;具体概率分布见下表</span>
                 <Table
-                    v-show="!!calulatorResult"
-                    :names="calulatorResult.names"
-                    :possibles="calulatorResult.possibles"
+                    :names="calulatorResult!.names"
+                    :possibles="calulatorResult!.possibles"
                     :precision="precision"
                 ></Table>
             </div>
@@ -51,6 +50,8 @@
 </template>
 
 <script setup lang="ts">
+import CheckInput from "@/components/CheckInput";
+import type { CheckRules } from "@/components/CheckInput";
 import CardAnalyze from "./utils/CardAnalyze";
 import type { Card } from "./utils/CardAnalyze";
 import Table from "./Table.vue";
@@ -59,13 +60,9 @@ const inputs = reactive({
     deckSize: 40,
     handSize: 5,
 });
-let lastId = 3;
-const cards = reactive<(Card & { id: number })[]>([
-    { id: 0, name: "怪", all: 12, min: 1, max: 1 },
-    { id: 1, name: "本家魔陷", all: 10, min: 0, max: 2 },
-    { id: 2, name: "系统外启动点", all: 7, min: 0, max: 2 },
-    { id: 3, name: "系统外启动点", all: 7, min: 0, max: 2 },
-]);
+
+let lastId = 0;
+const cards = reactive<(Card & { id: number })[]>([{ id: lastId++, name: "一张卡", all: 3, min: 1, max: 3 }]);
 function removeCard(index: number) {
     cards.splice(index, 1);
 }
@@ -93,9 +90,6 @@ const precision = ref(2);
                 margin-bottom: 3rem;
             }
             .cards {
-                .add {
-                    margin: 2rem 1rem 4rem auto;
-                }
                 table {
                     tr {
                         th {
@@ -109,6 +103,9 @@ const precision = ref(2);
                             }
                         }
                     }
+                }
+                .add {
+                    margin: 2rem 30% 4rem auto;
                 }
             }
             input {

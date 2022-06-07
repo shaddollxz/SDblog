@@ -5,16 +5,16 @@
             <p>我的博客网站，大概拿来放点学习笔记啥的，预计会再搭建几个页面干别的</p>
             <p style="display: flex; align-items: center">
                 <span>前端使用</span>
-                <SvgIcon name="vite"></SvgIcon>
-                <SvgIcon name="vue"></SvgIcon>
-                <SvgIcon name="typescript"></SvgIcon>
-                <SvgIcon name="pinia"></SvgIcon>
-                <SvgIcon name="sass"></SvgIcon>
+                <SvgIcon name="about-vite"></SvgIcon>
+                <SvgIcon name="about-vue"></SvgIcon>
+                <SvgIcon name="about-typescript"></SvgIcon>
+                <SvgIcon name="about-pinia"></SvgIcon>
+                <SvgIcon name="about-sass"></SvgIcon>
                 <br />
                 <span>后端使用</span>
-                <SvgIcon name="nodejs"></SvgIcon>
-                <SvgIcon name="typescript"></SvgIcon>
-                <SvgIcon name="mongodb"></SvgIcon>
+                <SvgIcon name="about-nodejs"></SvgIcon>
+                <SvgIcon name="about-typescript"></SvgIcon>
+                <SvgIcon name="about-mongodb"></SvgIcon>
             </p>
             <p>
                 本站完全适配手机屏幕，如果嫌丑请告诉我改进方案，我只是前端不会设计（网站配色都是从

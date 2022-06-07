@@ -34,11 +34,7 @@
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: var(--fontsize-tiny);
                 color: #0969da;
-                cursor: pointer;
             }
-        }
-        .checkInput {
-            margin-bottom: 1.6rem;
         }
         .checkButton {
             width: 100%;

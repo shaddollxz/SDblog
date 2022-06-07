@@ -75,14 +75,17 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
 
 <style lang="scss" scoped>
 .checkInput {
+    --mb: 1.7rem;
+    --h: 2rem;
     position: relative;
+    margin-bottom: var(--mb);
     .input {
         display: flex;
         align-items: center;
         position: relative;
         input {
             width: 100%;
-            height: 2rem;
+            height: var(--h);
             padding: 0.1rem 0.4rem;
             &:focus-visible {
                 + i {
@@ -109,12 +112,12 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
         }
     }
     .error {
-        color: red;
+        color: var(--color-error);
         position: absolute;
-        top: 2.7rem;
-        font-size: 0.8rem;
+        top: calc(var(--h) + 0.2rem + 0.3rem); // 有0.2rem是Input的padding
+        font-size: var(--fontsize-tiny);
         i {
-            font-size: 0.8rem;
+            font-size: var(--fontsize-tiny);
         }
     }
 }
