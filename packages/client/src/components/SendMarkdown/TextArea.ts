@@ -39,41 +39,30 @@ export default class TextArea {
 
         this.main.setSelectionRange(start + 1, start + 1);
     }
-    /** 从当前位置删除直到指定字符 返回布尔值表示是否删除成功 */
-    deleteTo(target: string) {
-        this.main.focus();
-        // 从外部判断start和end相同
-        const start = this.main.selectionStart;
-
-        const end = searchAll(this.main.value.slice(0, start), new RegExp(target, "g")).pop();
-
-        if (end) {
-            const deleted = this.main.value.slice(end, start);
-            this.main.value = this.text.value =
-                this.main.value.slice(0, end) + this.main.value.slice(start + 1, this.textLen);
-            this.main.setSelectionRange(end, end);
-            return deleted;
-        } else {
-            return false;
-        }
-    }
-    isImgOrLink(start: number) {
+    /** 是否符合一键删除的判断 如果不符合返回undefined */
+    removeType(start: number) {
         if (this.main.value[start] == ")") {
-            const indexs = Array.from(this.main.value.slice(0, start).matchAll(/\(|\[|\]/g));
-            if (indexs.at(-1)?.[0] == "(" && indexs.at(-2)?.[0] == "]" && indexs.at(-3)?.[0] == "[") {
-                if (indexs.at(-4)?.[0] == "!") {
-                    return "img";
+            const results = Array.from(this.main.value.slice(0, start).matchAll(/\(|\[|\]|\!/g));
+            if (results.at(-1)?.[0] == "(" && results.at(-2)?.[0] == "]" && results.at(-3)?.[0] == "[") {
+                const end = results.at(-4);
+                if (end?.[0] == "!") {
+                    return { type: "img", end: end.index };
                 }
-                return "link";
+                return { type: "link", end: results.at(-3)!.index };
+            }
+        } else if (this.main.value[start] == ":") {
+            const results = Array.from(this.text.value.matchAll(/:\w+?-\d+?:$/g));
+            if (results[0]) {
+                return { type: "emoji", end: results[0]!.index };
             }
         }
-        return false;
+        return;
     }
-
     /** 光标向后移动 */
     cursorBack(to: number) {
+        console.log(to);
         this.main.focus();
-        this.main.setSelectionRange(to, to, "backward");
+        this.main.setSelectionRange(2, 3, "forward");
     }
 }
 

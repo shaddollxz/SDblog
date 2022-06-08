@@ -84,12 +84,6 @@ function inputFormat(e: KeyboardEvent) {
             e.preventDefault();
             textArea.insert("    ");
             break;
-        case "Enter":
-            if (isAutoEnter.value) {
-                e.preventDefault();
-                textArea.insert("  \n");
-            }
-            break;
         case '"':
         case "'":
         case "`":
@@ -108,25 +102,34 @@ function inputFormat(e: KeyboardEvent) {
             e.preventDefault();
             textArea.add("[", "]");
             break;
+        case "Enter":
+            if (isAutoEnter.value) {
+                e.preventDefault();
+                textArea.insert("  \n");
+            }
+            break;
         case "Backspace":
             {
                 // 一键删除图片或链接
                 const curCursor = textArea.cursorPoint();
-                if (curCursor.start == curCursor.end && textarea!.value?.[curCursor.start]) {
-                    const type = textArea.isImgOrLink(curCursor.start);
-                    if (type == undefined) null;
-                    e.preventDefault();
-                    if (type == "img") {
-                        const deleted = textArea.deleteTo("!");
-                        if (deleted) {
-                            removeImageApi(deleted).then(({ data }) => {});
-                        }
-                        // @ts-ignore 删除最后一个字符
-                        text.value.length = text.value.length - 1;
-                    } else if (type == "link") {
-                        if (!textArea.deleteTo("[")) {
-                            // @ts-ignore 删除最后一个字符
-                            text.value.length = text.value.length - 1;
+
+                if (curCursor.start == curCursor.end) {
+                    const type = textArea.removeType(curCursor.start - 1);
+
+                    if (type) {
+                        e.preventDefault();
+
+                        const deleted = text.value.slice(type.end, curCursor.start);
+                        text.value =
+                            text.value.slice(0, type.end) +
+                            text.value.slice(curCursor.start, text.value.length);
+
+                        if (type.type == "img") {
+                            const src = deleted.match(/(?<=\().+(?=\))/)?.[0];
+                            if (src) {
+                                console.log(src);
+                                // removeImageApi(deleted).then(({ data }) => {});
+                            }
                         }
                     }
                 }
@@ -144,36 +147,33 @@ const leftList = [
     {
         title: "插入表情",
         icon: "iconfont icon-biaoqing",
-        func() {
-            emojiBox.value!.isShowEmojiBox = !emojiBox.value!.isShowEmojiBox;
-        },
+        func: () => (emojiBox.value!.isShowEmojiBox = !emojiBox.value!.isShowEmojiBox),
     },
     {
         title: "插入图片",
         icon: "iconfont icon-tupian",
         async func() {
-            const formData = new FormData();
-            const file = (await new LocalFiles({ type: ["jpg", "png", "jpeg", "gif"], maxSize: 5 * 1024 }))
-                .files[0];
-            formData.append("image", file);
-            const { data } = await uploadImageApi(formData);
-            text.value += `![](${data.imgSrc})`;
+            try {
+                const formData = new FormData();
+                // prettier-ignore
+                const file = (await new LocalFiles({ type: ["jpg", "png", "jpeg", "gif", "webp"], maxSize: 5 * 1024 })).files[0];
+                formData.append("image", file);
+                const { data } = await uploadImageApi(formData);
+                textArea.insert(`![](${data.imgSrc})`);
+            } catch (e) {
+                Message.error("图片上传失败");
+            }
         },
     },
     {
         title: "插入代码块",
         icon: "iconfont icon-code",
-        func() {
-            text.value += "\n\r```\n\n```";
-            textArea.cursorBack(3);
-        },
+        func: () => textArea.insert("\n\r```\n\n```"),
     },
     {
         title: "插入表格",
         icon: "iconfont icon-biaoge",
-        func() {
-            text.value += "\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |";
-        },
+        func: () => textArea.insert("\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |"),
     },
 ];
 const rightList = reactive([

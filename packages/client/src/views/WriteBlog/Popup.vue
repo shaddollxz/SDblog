@@ -125,7 +125,7 @@ async function sendBlog() {
 
 <style lang="scss" scoped>
 .popup {
-    height: calc(100vh -$height-header);
+    height: calc(100vh - $height-header);
     box-sizing: border-box;
     padding: 0 1rem 1rem 2rem;
     position: absolute;

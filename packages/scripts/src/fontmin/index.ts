@@ -23,6 +23,7 @@ const keyWords = [
     "个人信息",
     "修改头像",
     "评论列表",
+    "写博客",
 ];
 
 await fs.ensureDir(path.resolve(__dirname, "../../../client/src/assets/font"));
