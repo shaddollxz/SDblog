@@ -13,8 +13,7 @@
                         <img :src="choseImg?.imgData || userStore.avatars.avatar || $img.akarin" alt="" />
                     </div>
                     <div
-                        class="gusto-frameBox"
-                        style="cursor: pointer"
+                        class="gusto-frameBox canClick"
                         title="修改头像框"
                         @click="isShowChangeAvatarFrame = !isShowChangeAvatarFrame"
                     >
@@ -42,7 +41,7 @@ const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame
 const userStore = useUserStore();
 const avatars = toRef(userStore, "avatars");
 
-const choseImg = shallowRef<InstanceType<typeof ChoseImg> | null>(null);
+const choseImg = shallowRef<InstanceType<typeof ChoseImg>>();
 async function uploadAvatar() {
     const formData = new FormData();
     formData.append("avatar", choseImg.value!.data as unknown as File);

@@ -10,6 +10,11 @@ export function uploadImage(formData: FormData): AxiosPromise<{ imgSrc: string }
     });
 }
 
+// 删除图片
+export function removeImage(src: string) {
+    return axios({});
+}
+
 // 上传头像
 export function uploadAvatar(formData: FormData): AxiosPromise<{ imgSrc: string }> {
     return axios({

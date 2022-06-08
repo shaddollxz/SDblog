@@ -43,8 +43,9 @@
 import Markdown from "../Markdown/index.vue";
 import EmojiBox from "./EmojiBox.vue";
 import CheckButton from "../CheckButton/index.vue";
-import { Message } from "sdt3";
-import TextArea from "@/utils/TextArea";
+import { Message, LocalFiles } from "sdt3";
+import TextArea from "./TextArea";
+import { uploadImageApi, removeImageApi } from "@apis";
 const props = defineProps({
     isCanSend: {
         type: Boolean,
@@ -54,7 +55,7 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    isTitle: {
+    useTitle: {
         type: Boolean,
         default: false,
     },
@@ -74,7 +75,7 @@ function inputFormat(e: KeyboardEvent) {
     switch (e.key) {
         case " ":
             //todo 如果空格前面是# 则阻止
-            if (!props.isTitle && text.value[text.value.length - 1] == "#") {
+            if (!props.useTitle && text.value[text.value.length - 1] == "#") {
                 e.preventDefault();
                 Message.error("别在这发标题啦~");
             }
@@ -93,7 +94,7 @@ function inputFormat(e: KeyboardEvent) {
         case "'":
         case "`":
             e.preventDefault();
-            textArea.add(e.key, e.key);
+            textArea.add(e.key);
             break;
         case "{":
             e.preventDefault();
@@ -103,14 +104,43 @@ function inputFormat(e: KeyboardEvent) {
             e.preventDefault();
             textArea.add("(", ")");
             break;
+        case "[":
+            e.preventDefault();
+            textArea.add("[", "]");
+            break;
+        case "Backspace":
+            {
+                // 一键删除图片或链接
+                const curCursor = textArea.cursorPoint();
+                if (curCursor.start == curCursor.end && textarea!.value?.[curCursor.start]) {
+                    const type = textArea.isImgOrLink(curCursor.start);
+                    if (type == undefined) null;
+                    e.preventDefault();
+                    if (type == "img") {
+                        const deleted = textArea.deleteTo("!");
+                        if (deleted) {
+                            removeImageApi(deleted).then(({ data }) => {});
+                        }
+                        // @ts-ignore 删除最后一个字符
+                        text.value.length = text.value.length - 1;
+                    } else if (type == "link") {
+                        if (!textArea.deleteTo("[")) {
+                            // @ts-ignore 删除最后一个字符
+                            text.value.length = text.value.length - 1;
+                        }
+                    }
+                }
+            }
+            break;
     }
 }
+
 //todo 表情插入
 function insertEmoji(emoji: string) {
     textArea.insert(emoji);
 }
 
-const leftList = reactive([
+const leftList = [
     {
         title: "插入表情",
         icon: "iconfont icon-biaoqing",
@@ -121,8 +151,13 @@ const leftList = reactive([
     {
         title: "插入图片",
         icon: "iconfont icon-tupian",
-        func() {
-            text.value += `![]()`;
+        async func() {
+            const formData = new FormData();
+            const file = (await new LocalFiles({ type: ["jpg", "png", "jpeg", "gif"], maxSize: 5 * 1024 }))
+                .files[0];
+            formData.append("image", file);
+            const { data } = await uploadImageApi(formData);
+            text.value += `![](${data.imgSrc})`;
         },
     },
     {
@@ -130,6 +165,7 @@ const leftList = reactive([
         icon: "iconfont icon-code",
         func() {
             text.value += "\n\r```\n\n```";
+            textArea.cursorBack(3);
         },
     },
     {
@@ -139,7 +175,7 @@ const leftList = reactive([
             text.value += "\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |";
         },
     },
-]);
+];
 const rightList = reactive([
     {
         title: computed(() => (isAutoEnter.value ? "自动换行开启中" : "自动换行关闭中")),

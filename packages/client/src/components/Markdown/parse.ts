@@ -1,6 +1,6 @@
 import { marked, Renderer } from "marked";
 import type { marked as MarkedType } from "marked";
-import { pareMD, pareHTML } from "@/utils/markdownExtend";
+import { pareMD, pareHTML } from "./markdownExtend";
 import hljs from "highlight.js/lib/core";
 
 import typescript from "highlight.js/lib/languages/typescript";
