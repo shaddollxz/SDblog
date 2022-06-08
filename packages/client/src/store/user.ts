@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reloginApi, loginApi } from "@apis";
+import { reloginApi, loginApi, updateUserInfoApi } from "@apis";
 import type { UserInfo, LoginOptions } from "@blog/server";
 import { AuthorityEnum } from "@blog/server";
 import token from "@/utils/token";
@@ -23,6 +23,12 @@ export const useUserStore = defineStore("user", {
             this.isLogin = true;
             this.isAdmin = (data.authority as unknown as AuthorityEnum) == AuthorityEnum.admin;
             this.userInfo = data;
+        },
+
+        async updateUserInfo(info: Partial<UserInfo>) {
+            const { data } = await updateUserInfoApi(info);
+            this.refreshUserInfo(data.userData);
+            Message.success("修改成功");
         },
 
         async login(formData: LoginOptions) {

@@ -60,7 +60,6 @@ export default class TextArea {
     }
     /** 光标向后移动 */
     cursorBack(to: number) {
-        console.log(to);
         this.main.focus();
         this.main.setSelectionRange(2, 3, "forward");
     }

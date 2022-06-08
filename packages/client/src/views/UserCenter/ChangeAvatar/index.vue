@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import ChoseImg from "@/components/ChoseImg/index.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
-import { uploadAvatarApi, updateUserInfoApi } from "@apis";
+import { uploadAvatarApi, removeImageApi } from "@apis";
 import { useUserStore } from "@/store/user";
 const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame.vue"));
 const userStore = useUserStore();
@@ -46,8 +46,8 @@ async function uploadAvatar() {
     const formData = new FormData();
     formData.append("avatar", choseImg.value!.data as unknown as File);
     const { data } = await uploadAvatarApi(formData);
-    const res = await updateUserInfoApi({ avatar: data.imgSrc });
-    userStore.refreshUserInfo(res.data.userData);
+    await removeImageApi(userStore.avatars.avatar);
+    userStore.updateUserInfo({ avatar: data.imgSrc });
 }
 
 let isShowChangeAvatarFrame = ref(false);

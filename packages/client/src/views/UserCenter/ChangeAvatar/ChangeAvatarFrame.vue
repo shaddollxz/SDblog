@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { updateUserInfoApi } from "@apis";
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 defineProps({
@@ -27,9 +26,7 @@ defineProps({
 defineEmits(["update:isShow"]);
 
 function choseFrame(index: number) {
-    updateUserInfoApi({ avatarFrame: index }).then(({ data }) => {
-        userStore.refreshUserInfo(data.userData);
-    });
+    userStore.updateUserInfo({ avatarFrame: index });
 }
 </script>
 

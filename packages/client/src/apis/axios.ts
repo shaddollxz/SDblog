@@ -1,5 +1,6 @@
 import { default as Axios } from "axios";
 import { Message } from "sdt3";
+import Token from "@/utils/token";
 
 const axios = Axios.create({
     baseURL: "/api",
@@ -9,8 +10,8 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(
     (req) => {
-        let token: string | null;
-        if ((token = window.localStorage.getItem("access_token"))) {
+        let token = Token.get();
+        if (token) {
             req.headers!.Authorization = token;
         }
         return req;

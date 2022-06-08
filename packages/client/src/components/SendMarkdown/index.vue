@@ -127,8 +127,7 @@ function inputFormat(e: KeyboardEvent) {
                         if (type.type == "img") {
                             const src = deleted.match(/(?<=\().+(?=\))/)?.[0];
                             if (src) {
-                                console.log(src);
-                                // removeImageApi(deleted).then(({ data }) => {});
+                                removeImageApi(src);
                             }
                         }
                     }
