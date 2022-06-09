@@ -20,6 +20,7 @@
         "vue-router": "^4.0.12"
     },
     "devDependencies": {
+        "@blog/scripts": "workspace:^1.0.0",
         "@types/marked": "^4.0.1",
         "@vitejs/plugin-legacy": "^1.6.3",
         "@vitejs/plugin-vue": "^2.3.3",

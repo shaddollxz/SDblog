@@ -6,7 +6,7 @@ import svgIcons from "./svgIcons";
 // import legacy from "./plugins/legacy";
 import viteCompression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
-import headPics from "./headPics";
+import staticPics from "./staticPics";
 import vconsole from "./vconsole";
 
 export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean) {
@@ -17,7 +17,7 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
     plugins.push(svgIcons);
     plugins.push(pwa); // pwa
     plugins.push(autoImport);
-    plugins.push(headPics);
+    plugins.push(staticPics);
     plugins.push(vconsole(Env, isBuild, isDev));
     // plugins.push(legacy);
 

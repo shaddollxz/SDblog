@@ -25,6 +25,7 @@ importers:
 
   packages/client:
     specifiers:
+      '@blog/scripts': workspace:^1.0.0
       '@blog/server': workspace:^1.0.0
       '@types/marked': ^4.0.1
       '@vitejs/plugin-legacy': ^1.6.3
@@ -58,6 +59,7 @@ importers:
       vue: 3.2.37
       vue-router: 4.0.15_vue@3.2.37
     devDependencies:
+      '@blog/scripts': link:../scripts
       '@types/marked': 4.0.3
       '@vitejs/plugin-legacy': 1.8.2_vite@2.9.10
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.10+vue@3.2.37
@@ -85,6 +87,7 @@ importers:
 
   packages/server:
     specifiers:
+      '@blog/scripts': workspace:^1.0.0
       '@typegoose/typegoose': ^9.5.0
       '@types/compression': ^1.7.2
       '@types/express': ^4.17.13
@@ -98,6 +101,7 @@ importers:
       multer: ^1.4.3
       nodemailer: ^6.6.5
     dependencies:
+      '@blog/scripts': link:../scripts
       '@typegoose/typegoose': 9.9.0_mongoose@6.3.6
       compression: 1.7.4
       express: 4.18.1

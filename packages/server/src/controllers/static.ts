@@ -1,5 +1,5 @@
 import { StatusEnum } from "#interface";
-import { staticPath } from "../utils/paths";
+import { staticPath } from "@blog/scripts";
 import { resolve } from "path";
 import fs from "fs-extra";
 

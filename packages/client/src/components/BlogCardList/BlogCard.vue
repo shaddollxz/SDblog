@@ -72,7 +72,7 @@ import { Message, Random } from "sdt3";
 import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
 import defaultHeadPic from "@img/blogHeadPic_default.jpg";
-import headPics from "virtual:headPics";
+import staticPics from "virtual:staticPics";
 import isMobile from "@/utils/isMobile";
 import { useUserStore } from "@/store/user";
 const router = useRouter();
@@ -98,7 +98,7 @@ function onShow() {
         if (props.blogMsg.headPic) {
             headPic.value!.src = props.blogMsg.headPic;
         } else {
-            headPic.value!.src = Random.array(headPics);
+            headPic.value!.src = Random.array(staticPics.headPic);
         }
         headPic.value!.addEventListener("error", errorHandle);
     }

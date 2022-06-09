@@ -3,7 +3,7 @@ import "./utils/loadEnv"; // 加载环境变量
 import "./db/connect"; // 链接数据库
 import express from "express";
 import compression from "./middlewares/compression";
-import { publicPath, staticPath } from "./utils/paths";
+import { publicPath, staticPath } from "@blog/scripts";
 
 const app = express();
 

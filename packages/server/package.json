@@ -13,6 +13,7 @@
         "preview": "node --experimental-specifier-resolution=node bin/app.js"
     },
     "dependencies": {
+        "@blog/scripts": "workspace:^1.0.0",
         "@typegoose/typegoose": "^9.5.0",
         "compression": "^1.7.4",
         "express": "^4.17.2",

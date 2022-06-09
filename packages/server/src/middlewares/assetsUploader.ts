@@ -1,6 +1,6 @@
 import multer from "multer";
 import { resolve } from "path";
-import { staticPath } from "../utils/paths";
+import { staticPath } from "@blog/scripts";
 
 function formatFilename(filename: string) {
     const arr = filename.split(".");
