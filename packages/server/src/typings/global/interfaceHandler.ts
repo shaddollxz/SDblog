@@ -11,6 +11,7 @@ type ReqQuery<T = any, P = Record<string, string>> = RequestHandler<
     { _id?: string; isAdmin?: boolean },
     T
 >;
+
 declare global {
     type PostHandler<T = any, P = Record<string, string>> = ReqBody<T, P>;
     type DeleteHandler<T = any, P = Record<string, string>> = ReqBody<T, P>;
@@ -24,8 +25,4 @@ declare global {
     interface Success {
         success: true;
     }
-
-    type NumberString = `${number}`;
 }
-
-export {};

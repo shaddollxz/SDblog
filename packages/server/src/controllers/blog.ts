@@ -8,7 +8,7 @@ import type {
     WriteBlogOptions,
 } from "#interface";
 import deleteRepeat from "../utils/deleteRepeat";
-const blogPageCount = +process.env.blogPageCount!;
+const blogPageCount = +process.env.blogPageCount;
 import { StatusEnum } from "#interface";
 
 /** 获得主页博客列表 */

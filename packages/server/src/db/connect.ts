@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-const { dbURL } = process.env;
+const { DBURL } = process.env;
 
 //? 连接数据库
-mongoose.connect(dbURL!);
+mongoose.connect(DBURL);
 const db = mongoose.connection;
 
 db.on("error", () => {

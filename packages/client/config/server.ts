@@ -16,7 +16,7 @@ try {
     host = "localhost";
 }
 
-export default function getServer(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): ServerOptions {
+export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): ServerOptions {
     let proxySetting: { target: string; rewriteto: string };
 
     if (Env.VITE_LOCAL == "1") {

@@ -1,13 +1,12 @@
 import type { Plugin } from "vite";
 import fs from "fs-extra";
 import { resolve } from "path";
-import { staticPath } from "@blog/scripts";
 
 interface Option {
     dts: string;
 }
 
-function staticPics<T extends string>(dirs: readonly T[], options: Option): Plugin {
+function staticPics<T extends string>(staticPath: string, dirs: readonly T[], options: Option): Plugin {
     const virtualModuleId = "virtual:staticPics";
     const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
@@ -59,4 +58,6 @@ declare module "virtual:staticPics" {
 }
 
 const dirs = ["headPic"];
-export default staticPics(dirs, { dts: resolve(__dirname, "../../src/typings/staticPics.d.ts") });
+export default (Env: ImportMetaEnv) => {
+    staticPics(Env.STATIC_PATH, dirs, { dts: resolve(__dirname, "../../src/typings/staticPics.d.ts") });
+};

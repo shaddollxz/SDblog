@@ -17,7 +17,7 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
     plugins.push(svgIcons);
     plugins.push(pwa); // pwa
     plugins.push(autoImport);
-    plugins.push(staticPics);
+    plugins.push(staticPics(Env));
     plugins.push(vconsole(Env, isBuild, isDev));
     // plugins.push(legacy);
 
