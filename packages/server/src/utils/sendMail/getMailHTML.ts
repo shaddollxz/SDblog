@@ -8,7 +8,7 @@ export default async function (transform: Record<string, string | number>) {
     let content = await fs.readFile(path.resolve(__dirname, "./mail.html"), "utf8");
 
     for (let key in transform) {
-        content = content.replace(new RegExp(`(?<=\>\{)${key}(?=\}\<)`, "g"), transform[key]);
+        content = content.replaceAll(new RegExp(`(?<=\>\{)${key}(?=\}\<)`, "g"), String(transform[key]));
     }
 
     return content;

@@ -2,15 +2,23 @@ import type { Plugin } from "vite";
 import fs from "fs-extra";
 import { resolve } from "path";
 
+const dirs = ["headPic"];
+export default (Env: ImportMetaEnv) =>
+    staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
+        dts: resolve(__dirname, "../../src/typings/staticPics.d.ts"),
+    });
+
+// 插件实现👇
+
 interface Option {
     dts: string;
 }
 
-function staticPics<T extends string>(staticPath: string, dirs: readonly T[], options: Option): Plugin {
+function staticPics(staticPath: string, dirs: string[], options: Option): Plugin {
     const virtualModuleId = "virtual:staticPics";
     const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
-    let cache: Record<T, string[]>; // 因为文件夹内文件只会在更新时变化，只需要读取一次
+    let cache: Record<string, string[]>; // 因为文件夹内文件只会在更新时变化，只需要读取一次
 
     return {
         name: "staticPics",
@@ -24,7 +32,6 @@ function staticPics<T extends string>(staticPath: string, dirs: readonly T[], op
         async load(id) {
             if (id == resolvedVirtualModuleId) {
                 if (!cache) {
-                    // @ts-ignore
                     cache = {};
                     for (const dirname of dirs) {
                         cache[dirname] = (await fs.readdir(resolve(staticPath, `./${dirname}`))).map(
@@ -39,12 +46,12 @@ function staticPics<T extends string>(staticPath: string, dirs: readonly T[], op
 
         async buildStart() {
             await fs.remove(options.dts);
-            await fs.writeFile(options.dts, dts(dirs));
+            await fs.writeFile(options.dts, generateDTS(dirs));
         },
     };
 }
 
-function dts(dirs: readonly string[]) {
+function generateDTS(dirs: readonly string[]) {
     return `// 由staticPics插件生成
 declare module "virtual:staticPics" {
     const staticPics: {
@@ -56,8 +63,3 @@ declare module "virtual:staticPics" {
 }
 `;
 }
-
-const dirs = ["headPic"];
-export default (Env: ImportMetaEnv) => {
-    staticPics(Env.STATIC_PATH, dirs, { dts: resolve(__dirname, "../../src/typings/staticPics.d.ts") });
-};

@@ -10,8 +10,8 @@ app.use(compression); //gzip
 app.use(express.json());
 
 // 配置静态资源
-app.use("/", express.static(process.env.PUBLIC_PATH)); // 网页
-app.use("/assets", express.static(process.env.STATIC_PATH)); // 上传的资源
+app.use("/", express.static(process.env.PUBLIC_DIST_PATH)); // 网页
+app.use("/assets", express.static(process.env.PUBLIC_STATIC_PATH)); // 上传的资源
 
 // 配置接口
 import routes from "./routes";

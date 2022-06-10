@@ -1,6 +1,6 @@
-import type { CssOptions } from "vite";
+import type { CSSOptions } from "vite";
 
-export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): CssOptions {
+export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): CSSOptions {
     return {
         preprocessorOptions: {
             scss: {

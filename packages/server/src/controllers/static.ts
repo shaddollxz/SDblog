@@ -1,5 +1,4 @@
 import { StatusEnum } from "#interface";
-import { staticPath } from "@blog/scripts";
 import { resolve } from "path";
 import fs from "fs-extra";
 
@@ -20,7 +19,7 @@ export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next
     try {
         const dir = req.body.src.match(/(?<=^\/assets\/).+/)?.[0];
         if (dir) {
-            await fs.remove(resolve(staticPath, dir));
+            await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
         }
         res.status(StatusEnum.OK).json(null);
     } catch (e) {

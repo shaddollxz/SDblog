@@ -1,11 +1,8 @@
 import type { BuildOptions } from "vite";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { resolve } from "path";
 
 export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): BuildOptions {
-    const publicPath = Env.PUBLIC_PATH ?? path.resolve(__dirname, "../../../public");
+    const publicPath = Env.PUBLIC_DIST_PATH ?? resolve(__dirname, "../../../public");
     return {
         outDir: publicPath, // 打包输出路径
         target: "modules", // 打包文件支持的es语法 这里指支持<script type="module">标签的浏览器 具体见https://vitejs.cn/config/#build-target
