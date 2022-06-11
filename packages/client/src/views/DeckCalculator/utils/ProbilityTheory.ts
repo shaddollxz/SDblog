@@ -7,7 +7,7 @@ export class ProbabilityTheory {
      * @param m 取出的数
      */
     static A(n: number, m: number) {
-        if (m > n) throw "";
+        if (m > n) throw "选择的数不能比总数大";
         return this.factorial(n) / this.factorial(n - m);
     }
 
@@ -17,7 +17,7 @@ export class ProbabilityTheory {
      * @param m 取出的数
      */
     static C(n: number, m: number) {
-        if (m > n) throw "";
+        if (m > n) throw "选择的数不能比总数大";
         return this.factorial(n) / (this.factorial(m) * this.factorial(n - m));
     }
 

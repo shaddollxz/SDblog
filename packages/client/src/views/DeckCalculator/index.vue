@@ -21,11 +21,40 @@
                             <th>最小期待数</th>
                             <th>最大期待数</th>
                         </tr>
-                        <tr v-for="(item, index) of cards" :key="item.id">
-                            <td><input type="text" v-model="item.name" class="cardName" /></td>
-                            <td><input type="text" v-model="item.all" /></td>
-                            <td><input type="text" v-model="item.min" /></td>
-                            <td><input type="text" v-model="item.max" /></td>
+                        <tr>
+                            <td>剩余卡数</td>
+                            <td>{{ surplusCard }}</td>
+                        </tr>
+                        <!-- vfor不能读取getset 只能手动设置 -->
+                        <tr v-for="(item, index) of cards">
+                            <td>
+                                <input
+                                    type="text"
+                                    :value="item.name"
+                                    @input="($event) => checkInput(index, 'name')($event)"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    :value="item.all"
+                                    @input="($event) => checkInput(index, 'all')($event)"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    :value="item.min"
+                                    @input="($event) => checkInput(index, 'min')($event)"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    :value="item.max"
+                                    @input="($event) => checkInput(index, 'max')($event)"
+                                />
+                            </td>
                             <td>
                                 <strong @click="removeCard(index)" class="canClick gusto-button">✖</strong>
                             </td>
@@ -34,11 +63,16 @@
                     <div class="add gusto-button" @click="addCard">+ 添加</div>
                 </div>
             </div>
-            <div class="result" v-show="!!calulatorResult">
+            <div class="result">
                 <span class="total">
-                    计算结果:{{ $formatNumber(calulatorResult!.mainPossiable * 100, precision, false) + "%" }}
+                    所有可能合计结果:{{ $formatNumber(calulatorResult!.mainPossiable * 100, precision, false) + "%" }}
                 </span>
                 <span>&nbsp;具体概率分布见下表</span>
+                <p>
+                    <span>注：表中每项代表上手的数量，如：1代表</span>
+                    <strong>只</strong>
+                    <span>上手一张，2代表同时上手两张，只有0才代表没有上手</span>
+                </p>
                 <Table
                     :names="calulatorResult!.names"
                     :possibles="calulatorResult!.possibles"
@@ -50,11 +84,10 @@
 </template>
 
 <script setup lang="ts">
-import CheckInput from "@/components/CheckInput";
-import type { CheckRules } from "@/components/CheckInput";
 import CardAnalyze from "./utils/CardAnalyze";
-import type { Card } from "./utils/CardAnalyze";
+import { Card } from "./utils/Card";
 import Table from "./Table.vue";
+import { debounce, Message } from "sdt3";
 
 const inputs = reactive({
     deckSize: 40,
@@ -62,16 +95,46 @@ const inputs = reactive({
 });
 
 let lastId = 0;
-const cards = reactive<(Card & { id: number })[]>([{ id: lastId++, name: "一张卡", all: 3, min: 1, max: 3 }]);
+const cards = reactive<Card[]>([new Card(lastId++, "一张卡", 3, 1, 3)]) as Card[];
 function removeCard(index: number) {
     cards.splice(index, 1);
 }
 function addCard() {
-    cards.push({ id: lastId++, name: "", all: 3, min: 1, max: 3 });
+    cards.push(new Card(lastId++, "一张卡", 3, 1, 3));
+}
+
+const surplusCard = computed(() => inputs.deckSize - cards.reduce((pre, cur) => pre + cur.all, 0));
+function checkInput(index: number, type: Exclude<keyof Card, "id">) {
+    const row = cards[index];
+    return debounce(
+        (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            if (type == "name") return (row.name = target.value);
+
+            const newData = +target.value;
+            if (!Number.isNaN(newData)) {
+                row[type] = newData;
+            }
+            target.value = newData as unknown as string;
+        },
+        600,
+        false
+    );
 }
 
 const calulatorResult = computed(() => {
-    return new CardAnalyze(inputs.deckSize, inputs.handSize, cards);
+    try {
+        return new CardAnalyze(inputs.deckSize, inputs.handSize, cards);
+    } catch {
+        Message.error("参数有问题，我算不出来啊", {
+            leaveTo: "left",
+            style: {
+                position: "fixed",
+                left: "0",
+                top: "5rem",
+            },
+        });
+    }
 });
 
 const precision = ref(2);
@@ -98,7 +161,9 @@ const precision = ref(2);
                         td {
                             text-align: center;
                             height: 3rem;
-                            .cardName {
+                        }
+                        td:first-child {
+                            input {
                                 max-width: 10rem;
                             }
                         }

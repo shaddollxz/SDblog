@@ -1,16 +1,11 @@
 import { ProbabilityTheory } from "./ProbilityTheory";
+import type { Card } from "./Card";
 
-export interface Card {
-    name: string;
-    all: number; // 总数
-    min: number; // 最小期待上手数
-    max: number; // 最大期待上手数
-}
 interface CurrentMsg {
-    count: number[];
-    all: number;
-    useHand: number;
-    combine: number;
+    count: number[]; // 这个组合对应的卡片数
+    all: number; // 这个组合的卡片的数量总数
+    useHand: number; // 这个组合实际的起手数
+    combine: number; //
 }
 
 export default class CardAnalyze {
@@ -23,17 +18,22 @@ export default class CardAnalyze {
         // 卡组抽出的所有组合
         this.allCombines = ProbabilityTheory.C(deckSize, handSize);
 
+        // 过滤掉总数为0的卡
+        cards = cards.filter((item) => item.all > 0);
+
         this.names = cards.map((item) => item.name);
 
+        // 每种卡的最小数量到最大数量所有情况的组合
         const cardPossibles = this.getCardPossibles(cards);
 
+        // 每种组合的情况的概率 第一个元素是组合 第二个是组合的概率
         this.possibles = this.combinePossibles(cardPossibles);
 
+        // 总概率
         this.mainPossiable = this.possibles.reduce((pre, cur) => pre + cur[1], 0);
     }
 
     private getCardPossibles(cards: Card[]) {
-        // 每种卡的最小数量到最大数量所有情况的组合
         const map = new Map<Card, number[]>();
 
         for (const card of cards) {
@@ -59,6 +59,7 @@ export default class CardAnalyze {
 
         const res = arr.reduce((pre, cur) => this.getMulti(pre, cur), [] as CurrentMsg[]);
 
+        // 计算每种组合的概率
         return res.map((item) => [
             item.count,
             (item.combine * ProbabilityTheory.C(this.deckSize - item.all, this.handSize - item.useHand)) /
@@ -66,10 +67,12 @@ export default class CardAnalyze {
         ]);
     }
 
+    // 获得一种组合的各种信息
     private getMulti(arr1: CurrentMsg[], arr2: [Card, number[]]): CurrentMsg[] {
         const result: CurrentMsg[] = [];
 
         if (arr1.length == 0) {
+            // 初始化 将一张卡片的最小期待数到最大期待数的情况列出
             for (let i = 0; i < arr2[1].length; i++) {
                 result.push({
                     count: [arr2[0].min + i],
