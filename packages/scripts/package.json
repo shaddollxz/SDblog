@@ -2,9 +2,11 @@
     "name": "@blog/scripts",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "./src/index.js",
+    "typings": "./src/index.d.ts",
     "type": "module",
     "scripts": {
+        "build": "tsc",
         "font": "node --loader ts-node/esm src/fontmin/index.ts --experimental-specifier-resolution=node"
     },
     "keywords": [],

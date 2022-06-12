@@ -38,6 +38,10 @@ export {
 
 export { getAllTag as getAllTagApi, addNewTag as addNewTagApi } from "./ajax/tag";
 
-export { uploadImage as uploadImageApi, uploadAvatar as uploadAvatarApi } from "./ajax/static";
+export {
+    uploadImage as uploadImageApi,
+    removeImage as removeImageApi,
+    uploadAvatar as uploadAvatarApi,
+} from "./ajax/static";
 
 export { default as shaddollxzDetailApi } from "./ajax/shaddollxz";

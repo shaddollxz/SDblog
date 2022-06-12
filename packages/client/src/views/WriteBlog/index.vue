@@ -4,7 +4,7 @@
             ref="sendMarkdown"
             :isCanSend="!!sendMarkdown?.text"
             :isCanChoseFile="true"
-            :isTitle="true"
+            :useTitle="true"
             @onSend="onSend"
         >
             <template #leftBtn>

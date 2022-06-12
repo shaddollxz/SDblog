@@ -19,8 +19,6 @@
 
 <script setup lang="ts">
 import CheckButton from "@/components/CheckButton/index.vue";
-import { Message } from "sdt3";
-import { updateUserInfoApi } from "@apis";
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 
@@ -35,10 +33,7 @@ function editName() {
 
 function updateUserInfo() {
     const userData = { name: name!.value };
-    updateUserInfoApi(userData).then(({ data }) => {
-        userStore.refreshUserInfo(data.userData);
-        Message.success("修改成功");
-    });
+    userStore.updateUserInfo(userData);
 }
 </script>
 

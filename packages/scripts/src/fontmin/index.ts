@@ -25,19 +25,19 @@ const keyWords = [
     "评论列表",
     "小工具",
     "卡手率计算器",
+    "写博客",
 ];
 
-await fs.ensureDir(path.resolve(__dirname, "../../../client/src/assets/font"));
-await fs.emptyDir(path.resolve(__dirname, "../../../client/src/assets/font"));
+const targetDir = path.resolve(__dirname, "../../../client/src/assets/font");
 
 const chuyuan = new Fontmin()
     .src(path.resolve(__dirname, "./font/chuyuan.ttf"))
-    .dest(path.resolve(__dirname, "../../../client/src/assets/font"))
+    .dest(targetDir)
     .use(Fontmin.ttf2woff2({ clone: false }));
 
 const xingyan = new Fontmin()
     .src(path.resolve(__dirname, "./font/xingyan.ttf"))
-    .dest(path.resolve(__dirname, "../../../client/src/assets/font"))
+    .dest(targetDir)
     .use(
         Fontmin.glyph({
             text: [...new Set(keyWords.join("").split(""))].join(""),
@@ -46,6 +46,11 @@ const xingyan = new Fontmin()
     )
     .use(Fontmin.ttf2woff2({ clone: false }));
 
+await fs.ensureDir(targetDir);
+await fs.emptyDir(targetDir);
+
+await fs.copy(path.resolve(__dirname, "./font/index.css"), path.resolve(targetDir, "./index.css"));
+
 chuyuan.run((err, files) => {
     if (err) console.log(err);
 });
@@ -53,8 +58,3 @@ chuyuan.run((err, files) => {
 xingyan.run((err, files) => {
     if (err) console.log(err);
 });
-
-await fs.copy(
-    path.resolve(__dirname, "./font/index.css"),
-    path.resolve(__dirname, "../../../client/src/assets/font/index.css")
-);

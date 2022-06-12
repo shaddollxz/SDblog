@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const { jwtSecret, jwtLimit } = process.env;
+const { JWT_SECRET, JWT_LIMIT } = process.env;
 
 interface UserPayload {
     _id: string;
@@ -7,9 +7,9 @@ interface UserPayload {
 }
 
 export function sign(data: UserPayload) {
-    return jwt.sign(data, jwtSecret!, { expiresIn: jwtLimit! });
+    return jwt.sign(data, JWT_SECRET, { expiresIn: JWT_LIMIT });
 }
 
 export function verify(token: string) {
-    return jwt.verify(token, jwtSecret!) as UserPayload;
+    return jwt.verify(token, JWT_SECRET) as UserPayload;
 }

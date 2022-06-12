@@ -5,8 +5,17 @@ import type { AxiosPromise } from "axios";
 export function uploadImage(formData: FormData): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
-        url: "uploadImg",
+        url: "image",
         data: formData,
+    });
+}
+
+// 删除图片
+export function removeImage(src: string) {
+    return axios({
+        method: "delete",
+        url: "image",
+        data: { src },
     });
 }
 
@@ -14,17 +23,7 @@ export function uploadImage(formData: FormData): AxiosPromise<{ imgSrc: string }
 export function uploadAvatar(formData: FormData): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
-        url: "uploadAvatar",
+        url: "avatar",
         data: formData,
-    });
-}
-
-/**
- *  @deprecated 随机图片 该接口已经废弃
- */
-export function randomPic(): AxiosPromise<{ imgSrc: string }> {
-    return axios({
-        method: "get",
-        url: "randomPic",
     });
 }

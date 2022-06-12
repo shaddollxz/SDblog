@@ -1,5 +1,5 @@
 import { Essay } from "../db";
-const essayPageCount = +process.env.essayPageCount!;
+const essayPageCount = +process.env.essayPageCount;
 import type { EssayListOptions, WriteEssayOptions, RemoveEssayOptions, LikeEssayOptions } from "#interface";
 import { StatusEnum } from "#interface";
 

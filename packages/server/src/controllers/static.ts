@@ -1,33 +1,40 @@
-import formatMedia from "../utils/formatMedia";
 import { StatusEnum } from "#interface";
+import { resolve } from "path";
+import fs from "fs-extra";
 
-export const image: PostHandler = async (req, res, next) => {
+export const uploadImage: PostHandler = async (req, res, next) => {
     try {
-        const imgName = await formatMedia(req.file);
-        res.status(StatusEnum.OK).json({
-            imgSrc: "/assets/image/" + imgName,
-        });
+        const file = req.file;
+        if (file) {
+            res.status(StatusEnum.OK).json({
+                imgSrc: "/assets/image/" + file.filename,
+            });
+        }
     } catch (e) {
         next(e);
     }
 };
 
-export const avatar: PostHandler = async (req, res, next) => {
+export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next) => {
     try {
-        const imgName = await formatMedia(req.file);
-        res.status(StatusEnum.OK).json({
-            imgSrc: "/assets/avatar/" + imgName,
-        });
+        const dir = req.body.src.match(/(?<=^\/assets\/).+/)?.[0];
+        if (dir) {
+            await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
+        }
+        res.status(StatusEnum.OK).json(null);
     } catch (e) {
         next(e);
     }
 };
 
-export const randomPic: PostHandler = async (req, res, next) => {
+export const uploadAvatar: PostHandler = async (req, res, next) => {
     try {
-        // const { data } = await axios.get("https://api.ixiaowai.cn/api/api.php?return=json");
-        // res.status(StatusEnum.OK).json({ imgurl: data.imgurl });
-        res.status(StatusEnum.OK).json({ imgSrc: "" });
+        const file = req.file;
+        if (file) {
+            res.status(StatusEnum.OK).json({
+                imgSrc: "/assets/avatar/" + file.filename,
+            });
+        }
     } catch (e) {
         next(e);
     }

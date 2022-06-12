@@ -16,10 +16,10 @@ try {
     host = "localhost";
 }
 
-export default function getServer(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): ServerOptions {
+export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): ServerOptions {
     let proxySetting: { target: string; rewriteto: string };
 
-    if (Env.VITE_LOCAL == "1") {
+    if (Env.VITE_PROXY_LOCAL == "1") {
         proxySetting = { target: "http://localhost:3000", rewriteto: "" };
     } else {
         proxySetting = { target: "https://www.shaddollxz.space", rewriteto: "/api" }; // 配置代理

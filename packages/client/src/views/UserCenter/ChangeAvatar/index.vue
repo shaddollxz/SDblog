@@ -13,8 +13,7 @@
                         <img :src="choseImg?.imgData || userStore.avatars.avatar || $img.akarin" alt="" />
                     </div>
                     <div
-                        class="gusto-frameBox"
-                        style="cursor: pointer"
+                        class="gusto-frameBox canClick"
                         title="修改头像框"
                         @click="isShowChangeAvatarFrame = !isShowChangeAvatarFrame"
                     >
@@ -36,19 +35,19 @@
 <script setup lang="ts">
 import ChoseImg from "@/components/ChoseImg/index.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
-import { uploadAvatarApi, updateUserInfoApi } from "@apis";
+import { uploadAvatarApi, removeImageApi } from "@apis";
 import { useUserStore } from "@/store/user";
 const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame.vue"));
 const userStore = useUserStore();
 const avatars = toRef(userStore, "avatars");
 
-const choseImg = shallowRef<InstanceType<typeof ChoseImg> | null>(null);
+const choseImg = shallowRef<InstanceType<typeof ChoseImg>>();
 async function uploadAvatar() {
     const formData = new FormData();
     formData.append("avatar", choseImg.value!.data as unknown as File);
     const { data } = await uploadAvatarApi(formData);
-    const res = await updateUserInfoApi({ avatar: data.imgSrc });
-    userStore.refreshUserInfo(res.data.userData);
+    await removeImageApi(userStore.avatars.avatar);
+    userStore.updateUserInfo({ avatar: data.imgSrc });
 }
 
 let isShowChangeAvatarFrame = ref(false);

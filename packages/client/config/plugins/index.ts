@@ -6,7 +6,7 @@ import svgIcons from "./svgIcons";
 // import legacy from "./plugins/legacy";
 import viteCompression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
-import headPics from "./headPics";
+import staticPics from "./staticPics";
 import vconsole from "./vconsole";
 
 export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean) {
@@ -17,12 +17,12 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
     plugins.push(svgIcons);
     plugins.push(pwa); // pwa
     plugins.push(autoImport);
-    plugins.push(headPics);
-    plugins.push(vconsole(Env, isBuild, isDev));
+    plugins.push(staticPics(Env));
     // plugins.push(legacy);
 
     if (isDev) {
         //* 只在开发环境使用
+        plugins.push(vconsole(Env, isBuild, isDev));
         if (isBuild) {
             plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: true })); // 依赖分析
         }
