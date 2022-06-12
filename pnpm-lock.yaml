@@ -37,7 +37,7 @@ importers:
       rollup: ^2.67.1
       rollup-plugin-visualizer: ^5.5.2
       sass: ^1.49.7
-      sdt3: ^2.0.24
+      sdt3: ^2.1.0
       unplugin-auto-import: ^0.8.7
       vconsole: ^3.14.6
       vite: ^2.9.9
@@ -55,7 +55,7 @@ importers:
       highlight.js: 11.5.1
       marked: 4.0.16
       pinia: 2.0.14_vue@3.2.37
-      sdt3: 2.0.24
+      sdt3: 2.1.0_vue@3.2.37
       vue: 3.2.37
       vue-router: 4.0.15_vue@3.2.37
     devDependencies:
@@ -5779,8 +5779,10 @@ packages:
     resolution: {integrity: sha512-M9gnWtn3J0W+UhJOHmBxBTwv8mZCan5i1Himp60t6vvZcor0wr+IM0URKmIglsWJ7bRujNAVVN77fp+uZaWoKg==}
     dev: true
 
-  /sdt3/2.0.24:
-    resolution: {integrity: sha512-miqEm9ITnh8lE2CQ5n9FSdgM10ZZhazbH6gegH/LX/yOebfb86CpEroTQv3BPCKt3w7uJcQluuKDX5FMSQmZQg==}
+  /sdt3/2.1.0_vue@3.2.37:
+    resolution: {integrity: sha512-uDa3aGBLkpUME+CJyZO7c5fQA/uC9fbgi/itQwA7GqnRrq0CkN/zEJntsSyF7RySfjGabL3JFvJU3j6lqRXnUA==}
+    peerDependencies:
+      vue: ^3.2.0
     dependencies:
       vue: 3.2.37
     dev: false

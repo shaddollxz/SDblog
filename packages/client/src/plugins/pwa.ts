@@ -1,5 +1,3 @@
-export {};
-
 import { Message } from "sdt3";
 import { registerSW } from "virtual:pwa-register";
 
@@ -19,7 +17,7 @@ const updateSW = registerSW({
         });
     },
     onOfflineReady() {
-        Message.success("网站下载成功，现在可以离线进入了");
+        Message.success("应用下载成功，现在可以离线进入了");
     },
     onRegisterError() {
         Message.error("应用下载失败");

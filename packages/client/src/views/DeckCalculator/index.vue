@@ -25,7 +25,7 @@
                             <td>剩余卡数</td>
                             <td>{{ surplusCard }}</td>
                         </tr>
-                        <!-- vfor不能读取getset 只能手动设置 -->
+                        <!-- v-for不能读取getset 只能手动设置 -->
                         <tr v-for="(item, index) of cards">
                             <td>
                                 <input
@@ -71,7 +71,7 @@
                 <p>
                     <span>注：表中每项代表上手的数量，如：1代表</span>
                     <strong>只</strong>
-                    <span>上手一张，2代表同时上手两张，只有0才代表没有上手</span>
+                    <span>上手一张，2代表同时上手两张，0代表一张都没上手</span>
                 </p>
                 <Table
                     :names="calulatorResult!.names"
@@ -129,9 +129,7 @@ const calulatorResult = computed(() => {
         Message.error("参数有问题，我算不出来啊", {
             leaveTo: "left",
             style: {
-                position: "fixed",
-                left: "0",
-                top: "5rem",
+                marginLeft: 0,
             },
         });
     }

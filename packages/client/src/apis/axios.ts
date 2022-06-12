@@ -1,6 +1,6 @@
 import { default as Axios } from "axios";
 import { Message } from "sdt3";
-import Token from "@/utils/token";
+import Token from "@/storages/token";
 
 const axios = Axios.create({
     baseURL: "/api",

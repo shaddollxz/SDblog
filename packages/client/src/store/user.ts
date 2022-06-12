@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reloginApi, loginApi, updateUserInfoApi } from "@apis";
 import type { UserInfo, LoginOptions } from "@blog/server";
 import { AuthorityEnum } from "@blog/server";
-import token from "@/utils/token";
+import Token from "@/storages/token";
 import { Message } from "sdt3";
 
 type User = { userInfo: Partial<UserInfo>; isLogin: boolean; isAdmin: boolean };
@@ -34,26 +34,26 @@ export const useUserStore = defineStore("user", {
         async login(formData: LoginOptions) {
             const { data } = await loginApi(formData);
             this.refreshUserInfo(data.userData);
-            token.set(data.token);
+            Token.set(data.token);
             Message.success("登录成功");
         },
         relogin() {
             reloginApi().then(
                 ({ data }) => {
                     this.refreshUserInfo(data.userData);
-                    token.set(data.token);
+                    Token.set(data.token);
                 },
                 (e) => {
                     if (e.timeout) return Message.error("网络连接失败，请刷新页面");
                     if (e.logout) {
-                        token.remove();
+                        Token.remove();
                         return Message.error("登录过期，请重新登录");
                     }
                 }
             );
         },
         logout() {
-            token.remove();
+            Token.remove();
             this.isLogin = false;
             this.isAdmin = false;
             Message.success("退出成功");

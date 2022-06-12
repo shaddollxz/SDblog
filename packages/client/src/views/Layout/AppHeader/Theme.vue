@@ -28,34 +28,32 @@
 </template>
 
 <script lang="ts">
+import Theme from "@/storages/theme";
 export default defineComponent({
     name: "theme",
 });
 
 //! 作为导入该组件的副作用 这句话在setup之前执行
 //todo 设置主题或默认主题
-document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") ?? "dark");
-document.documentElement.style.setProperty(
-    "--color-text-theme",
-    localStorage.getItem("themeColor") ?? "#fb9b5f"
-);
+document.documentElement.setAttribute("data-theme", Theme.getItem("theme") ?? "dark");
+document.documentElement.style.setProperty("--color-text-theme", Theme.getItem("themeColor") ?? "#fb9b5f");
 </script>
 <script setup lang="ts">
 let isDark = ref(document.documentElement.dataset.theme == "dark");
 function themeChange(statu: boolean) {
     if (statu) {
         document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("theme", "dark");
+        Theme.setItem("theme", "dark");
     } else {
         document.documentElement.setAttribute("data-theme", "light");
-        localStorage.setItem("theme", "light");
+        Theme.setItem("theme", "light");
     }
 }
 
 const colors = ["#f26d6d", "#fb9b5f", "#ffd700", "#39C5BB", "#2196f3", "#8e44ad"] as const;
 function changeColor(color: typeof colors[number]) {
     document.documentElement.style.setProperty("--color-text-theme", color);
-    localStorage.setItem("themeColor", color);
+    Theme.setItem("themeColor", color);
 }
 </script>
 
