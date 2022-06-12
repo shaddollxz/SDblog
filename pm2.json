@@ -1,8 +1,8 @@
 {
     "apps": {
         "name": "blog", // 项目名          
-        "script": "./bin/app.js", // 执行文件
-        "cwd": "", // 根目录 绝对路径
+        "script": "./packages/server/bin/app.js", // 执行文件
+        "cwd": ".", // 根目录 绝对路径
         "args": "", // 传递给脚本的参数
         "interpreter": "", // 指定的脚本解释器
         "interpreter_args": "", // 传递给解释器的参数
