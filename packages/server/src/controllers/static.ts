@@ -1,6 +1,7 @@
 import { StatusEnum } from "#interface";
 import { resolve } from "path";
 import fs from "fs-extra";
+import { staticPath } from "../utils/paths";
 
 export const uploadImage: PostHandler = async (req, res, next) => {
     try {
@@ -19,7 +20,7 @@ export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next
     try {
         const dir = req.body.src.match(/(?<=^\/assets\/).+/)?.[0];
         if (dir) {
-            await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
+            await fs.remove(resolve(staticPath, dir));
         }
         res.status(StatusEnum.OK).json(null);
     } catch (e) {
