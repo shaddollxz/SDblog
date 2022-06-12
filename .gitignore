@@ -2,13 +2,9 @@ node_modules
 *.local
 *.env
 .vscode
-dist
 stats.html
-public
+dist
 static
-packages/server/public
-packages/server/static/avatar
-packages/server/static/image
 packages/server/bin
 packages/server/logs
 packages/client/src/assets/font
