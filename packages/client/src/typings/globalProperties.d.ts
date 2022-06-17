@@ -3,9 +3,7 @@ import "vue";
 export interface Img {
     akarin: string;
     admin: string;
-    blogCard: string;
     avatarFrame: string[];
-    randomPic: () => Promise<string>;
 }
 export interface FormatNumber {
     (number: number, precision?: number, isSlice?: boolean): string;

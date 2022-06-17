@@ -20,7 +20,7 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
 
     let cache: Record<string, string[]>; // 因为文件夹内文件只会在更新时变化，只需要读取一次
     // 确保传入的dirs为真实路径后的路径
-    // const realDirs: string[] = [];
+    const realDirs: string[] = [];
 
     return {
         name: "staticPics",
@@ -38,7 +38,7 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
                     for (const dirname of dirs) {
                         const path = resolve(staticPath, `./static/${dirname}`);
                         if (await fs.pathExists(path)) {
-                            // realDirs.push(dirname);
+                            realDirs.push(dirname);
                             cache[dirname] = (await fs.readdir(path)).map(
                                 (filename) => `/assets/${dirname}/${filename}`
                             );
@@ -52,8 +52,7 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
 
         async buildStart() {
             await fs.remove(options.dts);
-            // await fs.writeFile(options.dts, generateDTS(realDirs));
-            await fs.writeFile(options.dts, generateDTS(dirs));
+            await fs.writeFile(options.dts, generateDTS(realDirs));
         },
     };
 }
