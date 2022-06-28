@@ -5,9 +5,15 @@
             <CheckInput ref="email" :check="emailCheck" placeholder="电子邮箱"></CheckInput>
             <div class="text">
                 密码：
-                <RouterLink to="/user/retrieve">找回密码</RouterLink>
+                <RouterLink to="/user/retrieve" tabindex="-1">找回密码</RouterLink>
             </div>
-            <CheckInput ref="passWord" :check="passWordCheck" :ispwd="true" placeholder="密码"></CheckInput>
+            <CheckInput
+                ref="passWord"
+                :check="passWordCheck"
+                :ispwd="true"
+                placeholder="密码"
+                @keydown.enter="login"
+            ></CheckInput>
             <CheckButton @onClick="login" :isCanClick="ispassAllCheck">登录</CheckButton>
         </template>
         <template #tips>
@@ -23,6 +29,7 @@ import CheckButton from "@/components/CheckButton/index.vue";
 import CheckInput from "@/components/CheckInput/CheckInput.vue";
 import type { CheckRules } from "@/components/CheckInput";
 import { useUserStore } from "@/store/user";
+import { debounce } from "sdt3";
 const userStore = useUserStore();
 const router = useRouter();
 
@@ -45,7 +52,7 @@ const formData = computed(() => {
 const ispassAllCheck = computed(() => !!formData.value.email && !!formData.value.passWord);
 
 //todo 登录
-function login() {
+function _login() {
     if (ispassAllCheck.value) {
         userStore.login(formData.value as any).then(() => {
             setTimeout(() => {
@@ -54,4 +61,5 @@ function login() {
         });
     }
 }
+const login = debounce(_login);
 </script>

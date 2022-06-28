@@ -9,15 +9,19 @@
                         发送验证码
                     </CheckButton>
                 </div>
-                <!-- <div class="codeBox" v-show="isShowCodeBox"> -->
-                <div class="codeBox">
+                <div class="codeBox" v-show="isShowCodeBox">
                     <input type="text" v-model="verifycode" placeholder="输入验证码" />
                 </div>
             </div>
             <div class="text">创建密码</div>
             <CheckInput ref="passWord" :ispwd="true" :check="passWordCheck" placeholder="密码"></CheckInput>
             <div class="text">创建用户名</div>
-            <CheckInput ref="name" :check="nameCheck" placeholder="用户名"></CheckInput>
+            <CheckInput
+                ref="name"
+                :check="nameCheck"
+                placeholder="用户名"
+                @keypress.enter="register"
+            ></CheckInput>
             <CheckButton @onClick="register" :isCanClick="ispassAllCheck">注册账号</CheckButton>
         </template>
         <template #tips>
@@ -32,7 +36,7 @@ import Frame from "../Frame.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
 import CheckInput from "@/components/CheckInput/CheckInput.vue";
 import type { CheckRules } from "@/components/CheckInput";
-import { Message } from "sdt3";
+import { Message, debounce } from "sdt3";
 import { sendRegisterEmailApi, registerApi } from "@apis";
 const router = useRouter();
 
@@ -82,7 +86,7 @@ function sendEmail() {
     isShowCodeBox.value = true;
 }
 
-function register() {
+function _register() {
     if (ispassAllCheck.value) {
         registerApi(formData.value as any).then(() => {
             Message.success("注册成功，即将跳转至登录页面", { duration: 1300 });
@@ -92,4 +96,5 @@ function register() {
         });
     }
 }
+const register = debounce(_register);
 </script>

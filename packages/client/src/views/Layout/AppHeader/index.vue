@@ -19,13 +19,13 @@
                 ></HeaderNav>
 
                 <div class="closeSideBar" @click="changeSideBarState">
-                    <i class="iconfont icon-cuowutishi"></i>
+                    <SvgIcon name="layout-close"></SvgIcon>
                 </div>
             </div>
         </transition>
 
         <div class="openSideBar" @click="changeSideBarState">
-            <i class="iconfont icon-caidan"></i>
+            <SvgIcon name="blog-menu"></SvgIcon>
         </div>
     </header>
 </template>
@@ -81,10 +81,15 @@ header {
     .closeSideBar {
         display: none;
     }
+    .svgIcon {
+        width: var(--fontsize-xlarge);
+        height: var(--fontsize-xlarge);
+    }
 
     @include mobile {
         padding: 1rem 3rem;
         .sideBar {
+            --top: 2rem;
             position: absolute;
             top: 0;
             left: 0;
@@ -94,7 +99,7 @@ header {
             .search {
                 order: 1;
                 width: 80%;
-                margin: 2rem 3rem 2rem 0;
+                margin: var(--top) 3rem 2rem 0;
             }
             .loginBtn,
             .userBar {
@@ -112,20 +117,14 @@ header {
             }
             .closeSideBar {
                 position: absolute;
-                top: 2rem; // 和.search的margintop相同
-                right: 1rem;
+                top: var(--top);
+                right: 0;
                 display: block;
-                i {
-                    font-size: var(--fontsize-large) !important;
-                }
             }
         }
         .openSideBar {
             display: block;
             flex: 0 0 auto;
-            i {
-                font-size: var(--fontsize-xlarge) !important;
-            }
         }
     }
 }

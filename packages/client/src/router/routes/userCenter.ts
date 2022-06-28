@@ -28,15 +28,5 @@ export default <RouteItem>{
                 keepAlive: false,
             },
         },
-        {
-            path: "reply",
-            name: "userReply",
-            component: () => import("@views/UserCenter/Replys/index.vue"),
-            meta: {
-                title: "个人中心-评论列表",
-                needLogin: true,
-                keepAlive: false,
-            },
-        },
     ],
 };

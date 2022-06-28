@@ -2,19 +2,15 @@
     <div class="userCenter gusto-flex-center">
         <nav class="gusto-border xingyan">
             <template v-for="item of navList">
-                <RouterLink :to="item.path" custom v-slot="{ navigate }">
+                <RouterLink v-if="item.isShow" :to="item.path" custom v-slot="{ navigate }">
                     <div @click="navigate" role="link">
-                        <i class="iconfont" :class="'icon-' + item.icon"></i>
+                        <SvgIcon :name="item.icon"></SvgIcon>
                         <span>{{ item.title }}</span>
                     </div>
                 </RouterLink>
             </template>
-            <div v-if="userStore.isAdmin" @click="$router.push('/writeBlog')">
-                <i class="iconfont icon-yongyan"></i>
-                <span>写博客</span>
-            </div>
             <div @click="userStore.logout(), $router.push('/')">
-                <i class="iconfont icon-tuichudenglu"></i>
+                <SvgIcon name="userCenter-logout"></SvgIcon>
                 <span>退出登录</span>
             </div>
         </nav>
@@ -32,9 +28,9 @@ import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 //? 不需要管理员权限的功能
 const navList = [
-    { title: "个人信息", path: "/userCenter", icon: "user" },
-    { title: "修改头像", path: "/userCenter/avatar", icon: "bianji" },
-    { title: "评论列表", path: "/userCenter/reply", icon: "kuaisuhuifu" },
+    { title: "个人信息", path: "/userCenter", icon: "userCenter-person", isShow: true },
+    { title: "修改头像", path: "/userCenter/avatar", icon: "userCenter-avatar", isShow: true },
+    { title: "写博客", path: "/writeBlog", icon: "userCenter-write", isShow: userStore.isAdmin },
 ];
 </script>
 
@@ -57,15 +53,16 @@ const navList = [
         background-color: var(--color-bg-bland);
         div,
         span,
-        i {
+        .svgIcon {
             cursor: pointer;
         }
         div {
             width: 90%;
             padding: 0.5rem 1rem;
             border-bottom: 1px solid var(--color-border);
-            i {
-                font-size: var(--fontsize-large);
+            .svgIcon {
+                height: var(--fontsize-large);
+                width: var(--fontsize-large);
                 margin-right: 1rem;
             }
             &:hover {
@@ -96,7 +93,7 @@ const navList = [
                 align-items: center;
                 justify-content: center;
                 border: none;
-                i {
+                .svgIcon {
                     margin: 0;
                 }
                 span {

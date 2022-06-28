@@ -1,7 +1,7 @@
 <template>
     <div class="timeLine">
         <p class="title xingyan">
-            <i class="iconfont icon-calendar-v2-full"></i>
+            <SvgIcon name="home-calendar"></SvgIcon>
             <span>时间轴</span>
         </p>
         <ul v-if="timeLine" class="lines gusto-hiddenScrollBar">
@@ -47,6 +47,8 @@ onMounted(async () => {
     height: calc(100vh - $height-header - 4rem);
     overflow: hidden;
     .title {
+        display: flex;
+        align-items: center;
         position: relative;
         height: $titleHeight;
         font-size: var(--fontsize-large);
@@ -63,11 +65,6 @@ onMounted(async () => {
             bottom: 0;
             height: 1px;
             background-color: var(--color-border);
-        }
-        .iconfont {
-            font-size: var(--fontsize-large);
-            font-weight: 600;
-            margin-right: 1.5rem;
         }
     }
     .lines {
@@ -147,5 +144,10 @@ onMounted(async () => {
             font-size: var(--fontsize-big);
         }
     }
+}
+.svgIcon {
+    height: var(--fontsize-large);
+    width: var(--fontsize-large);
+    margin-right: 1.5rem;
 }
 </style>

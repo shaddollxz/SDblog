@@ -5,12 +5,13 @@
 
             <div class="tools">
                 <div @click="changeLikeStatus">
-                    <i class="iconfont" :class="likeStatus ? 'icon-dianzan_kuai' : 'icon-dianzan'"></i>
+                    <SvgIcon v-show="likeStatus" name="blog-like_block" class="liked"></SvgIcon>
+                    <SvgIcon v-show="!likeStatus" name="blog-like"></SvgIcon>
                     {{ likes }}
                 </div>
                 <a href="#评论">
                     <div>
-                        <i class="iconfont icon-kuaisuhuifu"></i>
+                        <SvgIcon name="blog-reply"></SvgIcon>
                         {{ replyCount }}
                     </div>
                 </a>
@@ -85,12 +86,13 @@ onBeforeRouteLeave((to, from) => sendLikes());
                 align-items: center;
                 cursor: pointer;
                 font-size: var(--fontsize-small);
-                i {
-                    font-size: var(--fontsize-big);
-                }
             }
-            .icon-dianzan_kuai {
-                color: var(--color-text-theme);
+            .svgIcon {
+                width: var(--fontsize-big);
+                height: var(--fontsize-big);
+            }
+            .liked {
+                fill: var(--color-text-theme);
             }
             a {
                 &::before {

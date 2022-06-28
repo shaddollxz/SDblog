@@ -2,10 +2,10 @@
     <div class="caches">
         <span>当前已用缓存：{{ cache }}MB（占总可用缓存的{{ percent }}%）</span>
         <CheckButton :isCanClick="!!cacheDetail" @onClick="clearCache">清除缓存</CheckButton>
-        <i
-            class="iconfont icon-bangzhu canClick"
+        <SvgIcon
+            name="replyBox-help"
             title="只会清除程序加载的资源，还有剩余缓存请从浏览器设置中清除"
-        ></i>
+        ></SvgIcon>
     </div>
 </template>
 
@@ -43,8 +43,9 @@ onMounted(getCacheSize);
     display: flex;
     align-items: center;
 }
-i {
+.svgIcon {
     margin-left: 1rem;
-    font-size: var(--fontsize-big);
+    height: var(--fontsize-big);
+    width: var(--fontsize-big);
 }
 </style>

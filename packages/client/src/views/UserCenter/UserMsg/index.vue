@@ -4,7 +4,7 @@
             <span>用户名：</span>
             <div>
                 <input ref="input" type="text" v-model="name" :readonly="!isEdit" />
-                <i class="iconfont icon-bianji" @click="editName"></i>
+                <SvgIcon name="public-edit" @click="editName"></SvgIcon>
             </div>
         </div>
         <div>
@@ -49,8 +49,10 @@ function updateUserInfo() {
         margin-bottom: 2rem;
         div {
             display: inline;
-            i {
-                font-size: inherit;
+            .svgIcon {
+                margin-left: 1rem;
+                width: var(--fontsize-large);
+                height: var(--fontsize-large);
             }
         }
     }

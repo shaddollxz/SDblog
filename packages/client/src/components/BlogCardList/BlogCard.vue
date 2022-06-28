@@ -3,7 +3,7 @@
         <LazyLoadBox :isReHidden="true" @onShow="onShow">
             <div class="msg">
                 <div class="time">
-                    <i class="iconfont icon-calendar-v2-full"></i>
+                    <SvgIcon name="blog-clock"></SvgIcon>
                     <span>{{ $formatTime(props.blogMsg.createdAt!, "/YYYY/-/MM/-/DD/ /HH/:/mm/") }}</span>
                 </div>
 
@@ -23,15 +23,15 @@
                 </span>
                 <div class="foot">
                     <div>
-                        <i class="iconfont icon-zuozhe"></i>
+                        <SvgIcon name="userCenter-person"></SvgIcon>
                         <span>{{ blogMsg?.author?.name }}</span>
                     </div>
                     <div>
-                        <i class="iconfont icon-dianzan"></i>
+                        <SvgIcon name="blog-like"></SvgIcon>
                         <span>{{ blogMsg.likes }}</span>
                     </div>
                     <div>
-                        <i class="iconfont icon-kuaisuhuifu"></i>
+                        <SvgIcon name="blog-reply"></SvgIcon>
                         <span>{{ blogMsg.replyCount }}</span>
                     </div>
                     <div>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="tags">
-                    <i class="iconfont icon-biaoqian"></i>
+                    <SvgIcon name="blog-tag"></SvgIcon>
                     <div class="gusto-tagBox" v-for="tag of blogMsg.tags">
                         <RouterLink :to="{ path: '/search', query: { tag: tag._id } }">
                             {{ tag.value }}
@@ -51,14 +51,14 @@
                 <img ref="headPic" alt="这里是头图" />
             </div>
             <div v-if="userStore.isAdmin" class="menu canClick" @click="showMenu = !showMenu">
-                <i class="iconfont icon-caidan1"></i>
+                <SvgIcon name="blog-menu"></SvgIcon>
                 <div v-show="showMenu" class="gusto-border gusto-flex-center">
                     <div class="canClick" @click="deleteBlog">
-                        <i class="iconfont icon-shanchu"></i>
+                        <SvgIcon name="public-delete"></SvgIcon>
                         <span>删除</span>
                     </div>
                     <div class="canClick" @click="editBlog">
-                        <i class="iconfont icon-bianji"></i>
+                        <SvgIcon name="public-edit"></SvgIcon>
                         <span>修改</span>
                     </div>
                 </div>
@@ -103,6 +103,7 @@ function onShow() {
         headPic.value!.addEventListener("error", errorHandle);
     }
 }
+onUnmounted(() => headPic.value?.removeEventListener("error", errorHandle));
 
 let showMenu = ref(false);
 function deleteBlog() {
@@ -121,6 +122,11 @@ function editBlog() {
     box-sizing: border-box;
     padding: 2rem 1.6rem;
     border-bottom: 2px solid var(--color-border);
+    .svgIcon {
+        margin-right: 0.2rem;
+        width: var(--fontsize-small);
+        height: var(--fontsize-small);
+    }
     .lazyLoadBox {
         min-height: 10rem;
         display: flex;
@@ -134,10 +140,6 @@ function editBlog() {
             margin-right: 2rem;
             .time {
                 font-size: var(--fontsize-small);
-                i {
-                    margin-right: 0.2rem;
-                    font-size: var(--fontsize-default) !important;
-                }
                 span {
                     font-style: italic;
                 }
@@ -169,9 +171,6 @@ function editBlog() {
                 > div {
                     display: flex;
                     align-items: center;
-                    i {
-                        font-size: var(--fontsize-default);
-                    }
                     > span {
                         font-size: var(--fontsize-small);
                         margin-right: 0.3rem;
@@ -201,8 +200,9 @@ function editBlog() {
             position: absolute;
             top: -2rem;
             right: -2rem;
-            i {
-                font-size: var(--fontsize-big);
+            .svgIcon {
+                height: var(--fontsize-default);
+                width: var(--fontsize-default);
             }
             > div {
                 flex-direction: column;
@@ -214,9 +214,6 @@ function editBlog() {
                 top: 100%;
                 width: max-content;
                 background-color: var(--color-bg-bland);
-                i {
-                    font-weight: 600;
-                }
             }
         }
         @include mobile {

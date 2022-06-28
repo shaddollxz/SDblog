@@ -9,6 +9,5 @@ router.post("/user", mustLogin, Reply.userWriteReply); // 用户发送评论
 router.post("/visitor", Reply.visitorWriteReply); // 游客发送评论
 router.put("/:replyId", Reply.like); // 评论点赞
 router.delete("/:replyId", mustLogin, Reply.remove); //删除评论
-router.get("/:userId", mustLogin, Reply.userReplyList); // 用户评论列表
 
 export default router;

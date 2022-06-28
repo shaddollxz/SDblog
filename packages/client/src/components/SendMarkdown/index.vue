@@ -1,14 +1,14 @@
 <template>
-    <div class="sendMarkdown">
+    <div class="sendMarkdown" ref="sendMarkdown">
         <div class="toolBar">
             <div class="left">
                 <div v-for="item of leftList" :title="item.title" @click="item.func">
-                    <i :class="item.icon"></i>
+                    <SvgIcon :name="item.icon"></SvgIcon>
                 </div>
             </div>
             <div class="right">
                 <div v-for="item of rightList" :title="item.title" @click="item.func">
-                    <i :class="item.icon"></i>
+                    <SvgIcon :name="item.icon"></SvgIcon>
                 </div>
             </div>
         </div>
@@ -46,6 +46,7 @@ import CheckButton from "../CheckButton/index.vue";
 import { Message, LocalFiles } from "sdt3";
 import TextArea from "./TextArea";
 import { uploadImageApi, removeImageApi } from "@apis";
+import fullScreen from "@/utils/fullScreen";
 const props = defineProps({
     isCanSend: {
         type: Boolean,
@@ -63,6 +64,7 @@ const props = defineProps({
 defineEmits(["onSend"]);
 
 let text = ref("");
+const sendMarkdown = shallowRef<HTMLDivElement>();
 const emojiBox = shallowRef<InstanceType<typeof EmojiBox>>(); // 通过组件实例暴露的isShowEmojiBox控制表情box的出现
 const textarea = shallowRef<HTMLTextAreaElement | null>(null); // 获得文本框 通过原生方法进行补全等操作
 let isPreview = ref(true); // 是否显示预览
@@ -145,12 +147,12 @@ function insertEmoji(emoji: string) {
 const leftList = [
     {
         title: "插入表情",
-        icon: "iconfont icon-biaoqing",
+        icon: "replyBox-emoji",
         func: () => (emojiBox.value!.isShowEmojiBox = !emojiBox.value!.isShowEmojiBox),
     },
     {
         title: "插入图片",
-        icon: "iconfont icon-tupian",
+        icon: "replyBox-picture",
         async func() {
             try {
                 const formData = new FormData();
@@ -166,37 +168,42 @@ const leftList = [
     },
     {
         title: "插入代码块",
-        icon: "iconfont icon-code",
+        icon: "replyBox-code",
         func: () => textArea.insert("\n\r```\n\n```"),
     },
     {
         title: "插入表格",
-        icon: "iconfont icon-biaoge",
+        icon: "replyBox-table",
         func: () => textArea.insert("\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |"),
     },
 ];
 const rightList = reactive([
     {
         title: computed(() => (isAutoEnter.value ? "自动换行开启中" : "自动换行关闭中")),
-        icon: computed(() => (isAutoEnter.value ? "iconfont icon-huiche" : "iconfont icon-cuowutishi")),
+        icon: computed(() => (isAutoEnter.value ? "replyBox-enter" : "public-error")),
         func() {
             isAutoEnter.value = !isAutoEnter.value;
         },
     },
     {
         title: computed(() => (isPreview.value ? "关闭预览" : "开启预览")),
-        icon: computed(() =>
-            isPreview.value ? "iconfont icon-yanjing_yincang" : "iconfont icon-yanjing_xianshi"
-        ),
+        icon: computed(() => (isPreview.value ? "replyBox-preview_close" : "replyBox-preview")),
         func() {
             isPreview.value = !isPreview.value;
         },
     },
     {
         title: "帮助",
-        icon: "iconfont icon-bangzhu",
+        icon: "replyBox-help",
         func() {
             window.open("https://www.runoob.com/markdown/md-tutorial.html");
+        },
+    },
+    {
+        title: "全屏",
+        icon: "replyBox-fullScreen",
+        func() {
+            sendMarkdown.value && fullScreen(sendMarkdown.value);
         },
     },
 ]);
@@ -229,12 +236,13 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
         .right {
             margin: 0 1rem;
             display: flex;
-            i {
+            .svgIcon {
                 margin: 0 1rem;
-                font-size: var(--fontsize-big);
+                height: var(--fontsize-big);
+                width: var(--fontsize-big);
                 cursor: pointer;
                 &:hover {
-                    color: var(--color-text-theme);
+                    fill: var(--color-text-theme);
                 }
             }
         }

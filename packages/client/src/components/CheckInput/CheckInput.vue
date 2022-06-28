@@ -3,18 +3,21 @@
         <div class="input">
             <input
                 :class="ispwd ? 'ispwd' : ''"
-                :type="ispwd && state ? 'password' : 'text'"
+                :type="ispwd && pwdstate ? 'password' : 'text'"
                 v-model.trim="data"
                 @keyup="checkInputDebounce"
                 v-bind="$attrs"
             />
-            <i v-if="ispwd" :class="`iconfont icon-yanjing_${iconState}`" @click="state = !state"></i>
+            <div class="icon" v-if="ispwd" @click="pwdstate = !pwdstate">
+                <SvgIcon v-show="pwdstate" name="replyBox-preview_close"></SvgIcon>
+                <SvgIcon v-show="!pwdstate" name="replyBox-preview"></SvgIcon>
+            </div>
             <span>
-                <i v-show="data && !error" class="iconfont icon-zhengquetishi"></i>
+                <SvgIcon v-show="data && !error" name="public-correct"></SvgIcon>
             </span>
         </div>
         <div class="error" v-show="error">
-            <i class="iconfont icon-cuowutishi"></i>
+            <SvgIcon name="public-error"></SvgIcon>
             <span>{{ error }}</span>
         </div>
     </div>
@@ -32,8 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
     ispwd: false,
 });
 
-let state = ref(true);
-let iconState = computed(() => (state.value ? "xianshi" : "yincang"));
+let pwdstate = ref(true);
 
 const data = ref(""); // 输入框中的数据
 const error = ref(""); // 输入出错时报错的提示
@@ -79,6 +81,10 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
     --h: 2rem;
     position: relative;
     margin-bottom: var(--mb);
+    .svgIcon {
+        height: var(--fontsize-tiny);
+        width: var(--fontsize-tiny);
+    }
     .input {
         display: flex;
         align-items: center;
@@ -88,26 +94,29 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
             height: var(--h);
             padding: 0.1rem 0.4rem;
             &:focus-visible {
-                + i {
-                    color: var(--color-text-theme);
+                .svgIcon {
+                    fill: var(--color-text-theme);
                 }
             }
             &.ispwd {
                 padding: 0.1rem 3.5rem 0.1rem 0.4rem;
             }
         }
-        > i {
+        .icon {
             position: absolute;
             right: 1rem;
-            &::before {
-                font-size: 1.5rem !important;
+            height: var(--fontsize-default);
+            width: var(--fontsize-default);
+            .svgIcon {
+                height: inherit;
+                width: inherit;
             }
         }
         span {
             position: absolute;
             right: -2rem;
-            .icon-zhengquetishi {
-                color: var(--color-primary);
+            .svgIcon {
+                fill: var(--color-primary);
             }
         }
     }
@@ -116,8 +125,8 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
         position: absolute;
         top: calc(var(--h) + 0.2rem + 0.3rem); // 有0.2rem是Input的padding
         font-size: var(--fontsize-tiny);
-        i {
-            font-size: var(--fontsize-tiny);
+        .svgIcon {
+            fill: var(--color-error);
         }
     }
 }

@@ -4,7 +4,6 @@
         <div class="menu gusto-hiddenScrollBar">
             <MarkdownMenuChild :menuData="menuTree"></MarkdownMenuChild>
         </div>
-        <i class="iconfont icon-xiala"></i>
     </div>
 </template>
 
@@ -44,14 +43,6 @@ const menuTree = computed(() => {
         font-size: var(--fontsize-big);
         font-weight: 600;
         color: var(--color-text-theme);
-    }
-    .iconfont {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: var(--fontsize-big);
-        color: var(--color-text-theme);
-        cursor: default;
     }
 }
 </style>

@@ -9,14 +9,14 @@
                 <span class="chuyuan">{{ blogMsg?.author.email }}</span>
             </div>
             <div class="chuyuan">
-                <i class="iconfont icon-calendar-v2-full" title="创作日期"></i>
+                <SvgIcon name="blog-clock"></SvgIcon>
                 <span>
                     {{ $formatTime(blogMsg?.createdAt!, "/YYYY/-/MM/-/DD/ /HH/:/mm/ 周/W/") }}
                 </span>
                 <span>约{{ $formatNumber(blogMsg?.content!.length) }}字</span>
             </div>
             <div class="tags">
-                <i class="iconfont icon-biaoqian" title="标签"></i>
+                <SvgIcon name="blog-tag"></SvgIcon>
                 <div class="gusto-tagBox" v-for="tag of blogMsg?.tags">
                     <RouterLink :to="{ path: '/search', query: { tag: tag._id } }">
                         {{ tag.value }}
@@ -49,8 +49,9 @@ const blogMsg: BlogDetail_Inject = inject("blogDetail")!;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        i {
-            font-size: var(--fontsize-default);
+        .svgIcon {
+            height: var(--fontsize-small);
+            width: var(--fontsize-small);
             margin-right: 0.4rem;
         }
         span {

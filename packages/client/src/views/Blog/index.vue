@@ -5,7 +5,7 @@
             <Right :style="{ transform: !isMobile !== menuState ? null : 'translateX(100%)' }"></Right>
 
             <div class="menuBtn gusto-flex-center" @click="menuState = !menuState">
-                <i class="iconfont icon-fenleimulu"></i>
+                <SvgIcon name="blog-menu"></SvgIcon>
             </div>
         </div>
     </div>
@@ -87,9 +87,10 @@ let menuState = ref(false); // 手机端时控制显示菜单
             box-shadow: 0 2px 8px 0 black;
             background-color: var(--color-bg-bland);
 
-            .iconfont {
-                font-size: var(--fontsize-xlarge);
-                color: var(--color-text-theme);
+            .svgIcon {
+                width: var(--fontsize-large);
+                height: var(--fontsize-large);
+                fill: var(--color-text-theme);
             }
             @include mobile {
                 display: flex;

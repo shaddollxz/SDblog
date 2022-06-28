@@ -15,7 +15,8 @@
         "preview:server": "cd packages/server && pnpm preview",
         "pm2": "pm2 start pm2.json",
         "clearlogs": "pm2 flush",
-        "font": "cd packages/scripts && pnpm font"
+        "fontmin": "cd packages/scripts && pnpm fontmin",
+        "formateSVG": "cd packages/scripts && pnpm formateSVG"
     },
     "keywords": [],
     "author": "",

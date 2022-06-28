@@ -33,7 +33,6 @@ export {
     writeReply as writeReplyApi,
     replyList as replyListApi,
     likeReply as likeReplyApi,
-    userReplyList as userReplyListApi,
 } from "./ajax/reply";
 
 export { getAllTag as getAllTagApi, addNewTag as addNewTagApi } from "./ajax/tag";

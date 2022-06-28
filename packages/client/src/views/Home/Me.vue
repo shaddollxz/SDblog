@@ -24,7 +24,7 @@
 
         <div class="icons" v-once>
             <a v-for="item in aboutMe" :href="item.link" :title="item.title" target="_blank">
-                <i class="iconfont" :class="'icon-' + item.icon"></i>
+                <SvgIcon :name="'home-' + item.icon"></SvgIcon>
             </a>
         </div>
     </div>
@@ -121,13 +121,15 @@ const aboutMe = [
         }
         &:hover {
             text-decoration: none;
-        }
-        i {
-            margin: 0 1rem;
-            &::before {
-                font-size: var(--fontsize-large);
+            .svgIcon {
+                fill: var(--color-text-theme);
             }
         }
     }
+}
+.svgIcon {
+    margin: 0 1rem;
+    height: var(--fontsize-xlarge);
+    width: var(--fontsize-xlarge);
 }
 </style>

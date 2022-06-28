@@ -1,7 +1,7 @@
 <template>
     <div class="tagBox gusto-border">
         <p class="xingyan">
-            <i class="iconfont icon-biaoqian"></i>
+            <SvgIcon name="blog-tag"></SvgIcon>
             <span>标签</span>
         </p>
         <div v-if="tagStore.count" class="gusto-clearFloat">
@@ -40,8 +40,11 @@ export default defineComponent({
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--color-border);
         margin-top: 0.5rem;
-        i {
-            font-size: var(--fontsize-large);
+        display: flex;
+        align-items: center;
+        .svgIcon {
+            width: var(--fontsize-large);
+            height: var(--fontsize-large);
         }
     }
 

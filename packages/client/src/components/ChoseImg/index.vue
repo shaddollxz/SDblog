@@ -2,7 +2,7 @@
     <div class="choseImg">
         <div class="chose gusto-border gusto-flex-center canClick" @click="choseFile">
             <div v-if="!imgData" class="box gusto-flex-center">
-                <i class="iconfont icon-tupian"></i>
+                <SvgIcon name="replyBox-picture"></SvgIcon>
                 <slot></slot>
             </div>
             <img v-else class="gusto-fillImg" :src="imgData" alt="" />
@@ -45,9 +45,9 @@ defineExpose({ data, imgData });
             width: 100%;
             box-sizing: border-box;
             padding: 1rem 2rem;
-
-            i {
-                font-size: var(--fontsize-xxlarge);
+            .svgIcon {
+                height: var(--fontsize-xxlarge);
+                width: var(--fontsize-xxlarge);
             }
         }
     }

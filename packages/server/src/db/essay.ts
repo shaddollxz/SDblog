@@ -17,7 +17,7 @@ export class Essay implements dbBase {
     @prop({ default: 0 })
     declare likes: number;
 
-    @prop({ default: [] })
+    @prop({ default: [], maxlength: 9 })
     declare pictures: string[];
 
     @prop({ default: 0 })

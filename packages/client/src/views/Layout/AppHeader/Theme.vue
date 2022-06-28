@@ -1,15 +1,15 @@
 <template>
     <div class="theme gusto-flex-center">
-        <i class="iconfont icon-theme canClick" title="改变主题"></i>
+        <SvgIcon name="layout-theme" class="canClick"></SvgIcon>
         <div class="tools gusto-border">
             <div class="themeBg">
                 <span>主题</span>
                 <SwitchButton v-model="isDark" @onStatuChange="themeChange">
                     <template #left>
-                        <i class="iconfont icon-baitianmoshi"></i>
+                        <SvgIcon name="layout-day"></SvgIcon>
                     </template>
                     <template #right>
-                        <i class="iconfont icon-tubiaozhizuomoban1"></i>
+                        <SvgIcon name="layout-night"></SvgIcon>
                     </template>
                 </SwitchButton>
             </div>
@@ -63,9 +63,10 @@ function changeColor(color: typeof colors[number]) {
     height: 100%;
     width: $height-header;
 
-    .icon-theme {
-        font-size: var(--fontsize-large);
-        color: var(--color-text-theme);
+    .svgIcon {
+        fill: var(--color-text-theme);
+        width: var(--fontsize-xlarge);
+        height: var(--fontsize-xlarge);
     }
     &:hover {
         .tools {
@@ -83,10 +84,18 @@ function changeColor(color: typeof colors[number]) {
         > div {
             padding: 0.5rem;
         }
-        .switchButton {
+        .svgIcon {
+            fill: inherit;
+            width: var(--fontsize-big);
+            height: var(--fontsize-big);
+        }
+        :deep(.switchButton) {
             --width: 4rem;
-            i {
-                font-size: var(--fontsize-big);
+            .chosed {
+                fill: var(--color-primary-bland);
+            }
+            .notChosed {
+                fill: var(--color-error-bland);
             }
         }
 

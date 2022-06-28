@@ -45,7 +45,7 @@ let currentEmojiList = ref<keyof typeof EmojiList>("noah");
 emojis.noah = [];
 for (let i = 1; i <= 59; i++) {
     let order = i < 10 ? "0" + i : "" + i;
-    emojis.noah.push({ src: noahBaseUrl + order + ".png", content: `:noah-${order}:` });
+    // emojis.noah.push({ src: noahBaseUrl + order + ".png", content: `:noah-${order}:` });
 }
 
 //todo emoji列表

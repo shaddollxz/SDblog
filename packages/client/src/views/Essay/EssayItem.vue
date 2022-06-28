@@ -21,18 +21,18 @@
 
                 <div class="tools">
                     <div @click="liked">
-                        <i v-if="isDianzan" class="iconfont icon-dianzan_kuai"></i>
-                        <i v-else class="iconfont icon-dianzan"></i>
+                        <SvgIcon v-show="isDianzan" name="blog-like_block"></SvgIcon>
+                        <SvgIcon v-show="!isDianzan" name="blog-like"></SvgIcon>
                         {{ like }}
                     </div>
                     <div @click="isShowReply = !isShowReply">
-                        <i class="iconfont icon-kuaisuhuifu"></i>
+                        <SvgIcon name="blog-reply"></SvgIcon>
                         {{ essayData.replyCount }}
                     </div>
                 </div>
 
                 <div v-if="userStore.isAdmin" class="delete" @click="deleteEssay">
-                    <i class="iconfont icon-shanchu"></i>
+                    <SvgIcon name="public-delete"></SvgIcon>
                 </div>
             </div>
         </LazyLoadBox>
@@ -158,14 +158,19 @@ function deleteEssay() {
             font-size: var(--fontsize-small);
             margin-right: 2rem;
             cursor: pointer;
+            .svgIcon {
+                height: var(--fontsize-small);
+                width: var(--fontsize-small);
+            }
         }
     }
     .delete {
         position: absolute;
         top: 0;
         right: 0;
-        i {
-            font-size: var(--fontsize-big);
+        .svgIcon {
+            height: var(--fontsize-big);
+            width: var(--fontsize-big);
         }
     }
 }

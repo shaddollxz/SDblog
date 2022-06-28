@@ -35,16 +35,3 @@ export function likeReply(replyId: string): AxiosPromise<Success | Faild> {
         url: "reply/" + replyId,
     });
 }
-
-// 用户回复列表
-export function userReplyList(
-    page: number | NumberString
-): AxiosPromise<{ list: ReplyItemInfo[]; allPage: number }> {
-    return axios({
-        method: "get",
-        url: "reply/user",
-        params: {
-            page,
-        },
-    });
-}

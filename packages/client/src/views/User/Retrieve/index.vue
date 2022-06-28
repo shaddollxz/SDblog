@@ -21,6 +21,7 @@
                 :ispwd="true"
                 :check="rePassWordCheck"
                 placeholder="二次密码"
+                @keypress.enter="changePassWord"
             ></CheckInput>
             <CheckButton @onClick="changePassWord" :isCanClick="ispassAllCheck">修改密码</CheckButton>
         </template>
@@ -33,6 +34,7 @@ import CheckButton from "@/components/CheckButton/index.vue";
 import CheckInput from "@/components/CheckInput/CheckInput.vue";
 import type { CheckRules } from "@/components/CheckInput";
 import { changePassWordApi, sendRetrieveEmailApi } from "@apis";
+import { debounce } from "sdt3";
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 
@@ -68,7 +70,7 @@ function sendEmail() {
 }
 
 //todo 修改密码并登录
-function changePassWord() {
+function _changePassWord() {
     changePassWordApi({
         email: email.value!.passCheckData,
         newPassWord: rePassWord.value!.passCheckData,
@@ -78,4 +80,5 @@ function changePassWord() {
         router.push("/");
     });
 }
+const changePassWord = debounce(_changePassWord);
 </script>

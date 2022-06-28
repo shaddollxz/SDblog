@@ -14,7 +14,6 @@ import "@/plugins/pwa";
 import "virtual:svg-icons-register";
 
 import "./style/global/index.scss";
-import "@/assets/icon/iconfont.css";
 import "@/assets/font/index.css";
 
 createApp(App)

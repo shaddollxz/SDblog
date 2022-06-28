@@ -18,12 +18,13 @@ import GoTop from "./views/Layout/GoTop.vue";
 import isMobile from "./utils/isMobile";
 import { useTagStore } from "@/store/tags";
 import { useUserStore } from "@/store/user";
+import token from "@/storages/token";
 const Live2D = defineAsyncComponent(() => import("./views/Layout/Live2D.vue"));
 const userStore = useUserStore();
 const tagStore = useTagStore();
 
 onMounted(() => {
-    if (localStorage.getItem("access_token")) {
+    if (token.get()) {
         userStore.relogin();
     }
     tagStore.getAllTag();

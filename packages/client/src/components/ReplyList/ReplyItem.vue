@@ -10,16 +10,19 @@
                         <div class="top">
                             <div class="msg">{{ detail.author.name }}</div>
                             <div class="msg chuyuan">{{ detail.author.email }}</div>
+                            <div class="msg">
+                                {{ $formatTime(detail.createdAt, "/YYYY/-/MM/-/DD/ /HH/:/mm/") }}
+                            </div>
                         </div>
                         <span class="content">
                             <Markdown :markdown="detail.content"></Markdown>
                         </span>
                     </div>
                     <div class="foot">
-                        <div class="msg">
-                            {{ $formatTime(detail.createdAt, "/YYYY/-/MM/-/DD/ /HH/:/mm/:/ss/") }}
+                        <div class="msg reply canClick" @click="replyIt = !replyIt">
+                            <SvgIcon name="blog-reply"></SvgIcon>
+                            <span class="canClick">回复</span>
                         </div>
-                        <div class="msg reply canClick" @click="replyIt = !replyIt">回复</div>
                     </div>
                 </div>
             </div>
@@ -76,6 +79,9 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
 
 <style lang="scss" scoped>
 .replyItem {
+    --AD: 5rem; // 头像框直径
+    --ADC: 4rem; // 子回复的头像框直径
+    --Move: 4rem; // 子回复相较父回复的右移距离
     border-top: 1px solid var(--color-border);
     .main {
         display: flex;
@@ -83,8 +89,8 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
         padding-top: 1rem;
         .avatar {
             flex: 0 0 auto;
-            height: 5rem;
-            width: 5rem;
+            height: var(--AD);
+            width: var(--AD);
             margin-right: 2rem;
         }
         .right {
@@ -93,8 +99,14 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
             padding: 1rem;
             padding-top: 0;
             .msg {
+                display: flex;
+                align-items: center;
                 margin-right: 0.8rem;
                 font-size: var(--fontsize-small);
+                .svgIcon {
+                    width: var(--fontsize-small);
+                    height: var(--fontsize-small);
+                }
             }
             .head {
                 display: flex;
@@ -113,7 +125,7 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
                 .content {
                     margin: 1rem 0;
                     &:deep(.markdown) {
-                        padding: 1px 1rem;
+                        padding: 1px 0;
                         margin: 0;
                     }
                     .markdown {
@@ -126,6 +138,9 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
                 .reply {
                     &:hover {
                         color: var(--color-text-theme);
+                        .svgIcon {
+                            fill: var(--color-text-theme);
+                        }
                     }
                 }
             }
@@ -136,8 +151,8 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
         border: none;
         .main {
             .avatar {
-                width: 4rem;
-                height: 4rem;
+                width: var(--ADC);
+                height: var(--ADC);
                 margin-right: 1rem;
             }
         }
@@ -149,10 +164,10 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
             }
         }
         &.isChild {
-            margin-left: 4rem;
+            margin-left: var(--Move);
             .sendReplyReplyBox {
                 width: 100vw;
-                transform: translateX(-4rem); // 和marginleft一致
+                transform: translateX(calc(-1 * var(--Move))); // 和marginleft一致
             }
         }
     }

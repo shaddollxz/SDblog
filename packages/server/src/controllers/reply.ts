@@ -74,25 +74,3 @@ export const remove: DeleteHandler<any, { replyId: string }> = async (req, res, 
         next(e);
     }
 };
-
-/** 用户的评论列表 */
-export const userReplyList: GetHandler<any, { userId: string }> = async (req, res, next) => {
-    try {
-        const list = await Reply.find({ user: req.params.userId })
-            .select({
-                content: 1,
-                replyMainId: 1,
-                likes: 1,
-                createdAt: 1,
-                type: 1,
-            })
-            .limit(10)
-            .skip((req.query.page - 1) * 10)
-            .sort({ createdAt: -1 });
-        const count = await Reply.find({ user: req.params.userId }).count();
-
-        res.status(StatusEnum.OK).json({ list, allPage: Math.ceil(count / 10) });
-    } catch (e) {
-        next(e);
-    }
-};

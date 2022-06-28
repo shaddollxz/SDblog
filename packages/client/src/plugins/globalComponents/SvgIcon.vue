@@ -10,5 +10,11 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const symbolId = props.name.startsWith("icon-") ? "#" + props.name : "#icon-" + props.name;
+const symbolId = computed(() => (props.name.startsWith("icon-") ? "#" + props.name : "#icon-" + props.name));
 </script>
+
+<style>
+.svgIcon {
+    fill: var(--color-text-default);
+}
+</style>
