@@ -1,5 +1,5 @@
 export default function () {
-    const queryStr = document.location.search.replace("?", "");
+    const queryStr = window.location.search.replace("?", "");
     const query: Partial<Record<string, string | string[]>> = {};
 
     for (const keyValue of queryStr.split("&")) {

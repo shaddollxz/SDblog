@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { noahBaseUrl } from "@/utils/markdownExtend";
+import staticPics from "virtual:staticPics";
 
 defineEmits(["insertEmoji"]);
 
@@ -43,12 +43,10 @@ let currentEmojiList = ref<keyof typeof EmojiList>("noah");
 
 //todo 诺亚表情列表
 emojis.noah = [];
-for (let i = 1; i <= 59; i++) {
-    let order = i < 10 ? "0" + i : "" + i;
-    // emojis.noah.push({ src: noahBaseUrl + order + ".png", content: `:noah-${order}:` });
+console.log(staticPics);
+for (const url of staticPics.noahEmoji) {
+    emojis.noah.push({ src: url, content: `:noah-${url.match(/(\d+)/)?.[0]}:` });
 }
-
-//todo emoji列表
 
 defineExpose({ isShowEmojiBox });
 </script>

@@ -2,7 +2,7 @@ import type { Plugin } from "vite";
 import fs from "fs-extra";
 import { resolve } from "path";
 
-const dirs = ["headPic"];
+const dirs = ["headPic", "emojis/noahEmoji"];
 export default (Env: ImportMetaEnv) =>
     staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
         dts: resolve(__dirname, "../../src/typings/staticPics.d.ts"),
@@ -35,12 +35,13 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
                     cache = {};
                     for (const dirname of dirs) {
                         const path = resolve(staticPath, `./static/${dirname}`);
+                        const outputName = dirname.split("/").at(-1)!;
                         try {
-                            cache[dirname] = (await fs.readdir(path)).map(
+                            cache[outputName] = (await fs.readdir(path)).map(
                                 (filename) => `/assets/${dirname}/${filename}`
                             );
                         } catch {
-                            cache[dirname] = [];
+                            cache[outputName] = [];
                         }
                     }
                 }
@@ -61,7 +62,10 @@ function generateDTS(dirs: readonly string[]) {
 declare module "virtual:staticPics" {
     const staticPics: {
         ${dirs
-            .map((name, index) => name + ":string[];" + (index == dirs.length - 1 ? "" : "\r        "))
+            .map(
+                (name, index) =>
+                    name.split("/").at(-1) + ":string[];" + (index == dirs.length - 1 ? "" : "\r        ")
+            )
             .join("")}
     };
     export default staticPics;

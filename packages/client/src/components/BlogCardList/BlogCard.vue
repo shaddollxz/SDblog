@@ -109,6 +109,9 @@ let showMenu = ref(false);
 function deleteBlog() {
     deleteBlogApi(props.blogMsg._id).then(() => {
         Message.success("删除成功");
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
     });
 }
 function editBlog() {
