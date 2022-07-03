@@ -10,7 +10,6 @@
 ```
 pnpm install
 pnpm font // 生成字体文件
-pnpm dev:client
 pnpm build:client
 pnpm build:server
 pnpm pm2

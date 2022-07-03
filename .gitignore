@@ -9,5 +9,3 @@ logs
 packages/server/bin
 packages/server/logs
 packages/client/src/assets/font
-packages/client/src/typings/autoImport.d.ts
-packages/client/src/typings/staticPics.d.ts
