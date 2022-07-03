@@ -4,13 +4,13 @@
         <div class="main">
             <div class="inputs">
                 <div class="base">
-                    <div>
-                        <span>卡组数量：</span>
-                        <input type="text" v-model.number="inputs.deckSize" />
-                    </div>
-                    <div>
-                        <span>手牌数量：</span>
-                        <input type="text" v-model.number="inputs.handSize" />
+                    <div v-for="(item, key) of baseMsg">
+                        <span>{{ item.label }}</span>
+                        <input
+                            type="text"
+                            :value="item.value"
+                            @input="($event) => checkBaseInput(key)($event)"
+                        />
                     </div>
                 </div>
                 <div class="cards">
@@ -25,36 +25,17 @@
                             <td>剩余卡数</td>
                             <td>{{ surplusCard }}</td>
                         </tr>
-                        <!-- v-for不能读取getset 只能手动设置 -->
                         <tr v-for="(item, index) of cards">
-                            <td>
-                                <input
-                                    type="text"
-                                    :value="item.name"
-                                    @input="($event) => checkInput(index, 'name')($event)"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    :value="item.all"
-                                    @input="($event) => checkInput(index, 'all')($event)"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    :value="item.min"
-                                    @input="($event) => checkInput(index, 'min')($event)"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    :value="item.max"
-                                    @input="($event) => checkInput(index, 'max')($event)"
-                                />
-                            </td>
+                            <template v-for="(value, key) of item">
+                                <td v-if="key != 'id' && typeof value !== 'function'">
+                                    <input
+                                        type="text"
+                                        :value="value"
+                                        @input="($event) => checkCardInput(index, key)($event)"
+                                    />
+                                </td>
+                            </template>
+
                             <td>
                                 <strong @click="removeCard(index)" class="canClick gusto-button">✖</strong>
                             </td>
@@ -73,11 +54,11 @@
                     <strong>只</strong>
                     <span>上手一张，2代表同时上手两张，0代表一张都没上手</span>
                 </p>
-                <Table
+                <DetailTable
                     :names="calulatorResult!.names"
                     :possibles="calulatorResult!.possibles"
                     :precision="precision"
-                ></Table>
+                ></DetailTable>
             </div>
         </div>
     </div>
@@ -86,25 +67,25 @@
 <script setup lang="ts">
 import CardAnalyze from "./utils/CardAnalyze";
 import { Card } from "./utils/Card";
-import Table from "./Table.vue";
+import DetailTable from "./Table.vue";
 import { debounce, Message } from "sdt3";
 
-const inputs = reactive({
-    deckSize: 40,
-    handSize: 5,
+const baseMsg = reactive({
+    deckSize: { label: "卡组总数：", value: 40 },
+    handSize: { label: "起始手卡：", value: 5 },
 });
+const defaultCard = ["卡名", 3, 1, 3] as const;
 
-let lastId = 0;
-const cards = reactive<Card[]>([new Card(lastId++, "一张卡", 3, 1, 3)]) as Card[];
+const cards = reactive<Card[]>([new Card(...defaultCard)]) as Card[];
 function removeCard(index: number) {
     cards.splice(index, 1);
 }
 function addCard() {
-    cards.push(new Card(lastId++, "一张卡", 3, 1, 3));
+    cards.push(new Card(...defaultCard));
 }
 
-const surplusCard = computed(() => inputs.deckSize - cards.reduce((pre, cur) => pre + cur.all, 0));
-function checkInput(index: number, type: Exclude<keyof Card, "id">) {
+const surplusCard = computed(() => baseMsg.deckSize.value - cards.reduce((pre, cur) => pre + cur.all, 0));
+function checkCardInput(index: number, type: Exclude<keyof Card, "id">) {
     const row = cards[index];
     return debounce(
         (e: Event) => {
@@ -113,9 +94,32 @@ function checkInput(index: number, type: Exclude<keyof Card, "id">) {
 
             const newData = +target.value;
             if (!Number.isNaN(newData)) {
-                row[type] = newData;
+                row["change" + type](newData, baseMsg.handSize.value);
+                target.value = newData as unknown as string;
+            } else {
+                target.value = "" + row[type];
             }
-            target.value = newData as unknown as string;
+        },
+        600,
+        false
+    );
+}
+
+function checkBaseInput(key: keyof typeof baseMsg) {
+    return debounce(
+        (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const input = +target.value;
+
+            if (!Number.isNaN(input)) {
+                const maxHandSize = baseMsg.deckSize.value - cards.length * 2;
+                if (key == "handSize" && input > maxHandSize) {
+                    return (baseMsg[key].value = maxHandSize);
+                }
+                baseMsg[key].value = input;
+            } else {
+                target.value = "" + baseMsg[key].value;
+            }
         },
         600,
         false
@@ -124,9 +128,9 @@ function checkInput(index: number, type: Exclude<keyof Card, "id">) {
 
 const calulatorResult = computed(() => {
     try {
-        return new CardAnalyze(inputs.deckSize, inputs.handSize, cards);
+        return new CardAnalyze(baseMsg.deckSize.value, baseMsg.handSize.value, cards);
     } catch {
-        Message.error("参数有问题，我算不出来啊", {
+        Message.error("参数有误", {
             leaveTo: "left",
             style: {
                 marginLeft: 0,

@@ -20,7 +20,6 @@ export default class CardAnalyze {
 
         // 过滤掉总数为0的卡
         cards = cards.filter((item) => item.all > 0);
-
         this.names = cards.map((item) => item.name);
 
         // 每种卡的最小数量到最大数量所有情况的组合

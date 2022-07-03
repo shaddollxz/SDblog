@@ -1,41 +1,37 @@
-export class Card {
-    constructor(
-        readonly id: number,
-        public name: string,
-        private _all: number,
-        private _min: number,
-        private _max: number
-    ) {}
+let id = 0;
 
-    get all() {
-        return this._all;
+export class Card {
+    readonly id: number;
+    constructor(public name: string, public all: number, public min: number, public max: number) {
+        this.id = id++;
     }
-    set all(v: number) {
+
+    changename(v: string, _: number) {
+        this.name = v;
+    }
+
+    changeall(v: number, handSize: number) {
         if (v == 0) {
-            this._all = this._min = this._max = 0;
+            this.all = this.min = this.max = 0;
         } else {
-            if (v < this.max) this._all = this.max = v;
-            else if (v < this.min) this._all = this.min = v;
-            else this._all = v;
+            if (v < this.max) this.all = this.max = v;
+            else if (v < this.min) this.all = this.min = v;
+            else this.all = v;
         }
     }
 
-    get min() {
-        return this._min;
-    }
-    set min(v: number) {
-        if (v > this._max) this._min = this._max;
-        else if (v > this._all) this._min = this._all;
-        else if (v < 0) this._min = 0;
-        else this._min = v;
+    changemin(v: number, handSize: number) {
+        if (v > handSize) v = handSize;
+        if (v > this.max) this.max = v;
+        else if (v > this.all) this.min = this.all;
+        else if (v < 0) this.min = 0;
+        this.min = v;
     }
 
-    get max() {
-        return this._max;
-    }
-    set max(v: number) {
-        if (v > this._all) this._max = this._all;
-        else if (v < this._min) this._max = this._min;
-        else this._max = v;
+    changemax(v: number, handSize: number) {
+        if (v > handSize) v = handSize;
+        if (v > this.all) this.max = this.all;
+        else if (v < this.min) this.min = v;
+        this.max = v;
     }
 }
