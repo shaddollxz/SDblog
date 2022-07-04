@@ -50,12 +50,11 @@ function plural() {
 
     for filepath in $files; do
         filename=${filepath##*/}
-
+        filename=${filename%.*}
         if [ $(indexof $filename ${expect[@]}) != "-1" ]; then
             continue
         fi
 
-        filename=${filename%.*}
         if [ $(isSpecial $filename) != "0" ]; then
             echo $(isSpecial $filename)
         else
