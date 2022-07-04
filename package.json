@@ -16,7 +16,8 @@
         "pm2": "pm2 start pm2.json",
         "clearlogs": "pm2 flush",
         "fontmin": "cd packages/scripts && pnpm fontmin",
-        "formateSVG": "cd packages/scripts && pnpm formateSVG"
+        "formateSVG": "cd packages/scripts && pnpm formateSVG",
+        "exportDB": "sh ./scripts/exportDB.sh"
     },
     "keywords": [],
     "author": "",
