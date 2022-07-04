@@ -35,7 +35,6 @@ function isSpecial() {
         mice sheep sheep deer deer fish fish child children ox oxen potato potatoes tomato tomatoes)
 
     indexof=$(indexof $filename ${special[@]})
-    # printf "%s " $indexof$filename
     if [ $indexof != "-1" ]; then
         echo ${special[$(($indexof + 1))]}
         return 0
@@ -50,7 +49,7 @@ function plural() {
 
     for filepath in $files; do
         filename=${filepath##*/}
-        filename=${filename%.*}
+        filename=${filename%%.*}
         if [ $(indexof $filename ${expect[@]}) != "-1" ]; then
             continue
         fi
