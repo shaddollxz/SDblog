@@ -5,12 +5,4 @@
 
 # 运行
 
-依次运行下面的命令
-
-```
-pnpm install
-pnpm font // 生成字体文件
-pnpm build:client
-pnpm build:server
-pnpm pm2
-```
+装好依赖后运行`pnpm start`即可
