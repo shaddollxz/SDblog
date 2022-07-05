@@ -13,10 +13,9 @@
         "build:server": "cd packages/server && pnpm build",
         "preview:client": "cd packages/client && pnpm preview",
         "preview:server": "cd packages/server && pnpm preview",
-        "pm2": "pm2 start pm2.json",
-        "clearlogs": "pm2 flush",
-        "fontmin": "cd packages/scripts && pnpm fontmin",
         "formateSVG": "cd packages/scripts && pnpm formateSVG",
+        "clearlogs": "pm2 flush",
+        "start": "sh ./scripts/startBlog.sh",
         "exportDB": "sh ./scripts/exportDB.sh"
     },
     "keywords": [],
