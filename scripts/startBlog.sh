@@ -18,13 +18,16 @@ if [ -f $envPath/.env ]; then
     staticPath=$(ReadEnv $envPath/.env PUBLIC_STATIC_PATH)/static
 
     if [ ! -d "${staticPath}/headPic" ]; then
-        echo "缺少静态文件路径 headPic"
+        echo "缺少静态文件 headPic"
         exit
     fi
-    if [ ! -d "${staticPath}/emoji/noah" ]; then
-        echo "缺少静态文件路径 emoji/noah"
+    if [ ! -d "${staticPath}/emojis/noah" ]; then
+        echo "缺少静态文件 emojis/noah"
         exit
     fi
+else
+    echo "请设置环境变量文件 $envPath/.env"
+    exit
 fi
 
 pm2 delete blog

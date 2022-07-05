@@ -16,7 +16,8 @@
         "formateSVG": "cd packages/scripts && pnpm formateSVG",
         "clearlogs": "pm2 flush",
         "start": "sh ./scripts/startBlog.sh",
-        "exportDB": "sh ./scripts/exportDB.sh"
+        "exportDB": "sh ./scripts/exportDB.sh",
+        "importDB": "sh ./scripts/importDB.sh"
     },
     "keywords": [],
     "author": "",
