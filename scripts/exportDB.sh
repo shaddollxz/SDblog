@@ -5,6 +5,7 @@ envPath=$__dirname/env
 
 source ${__dirname}/scripts/utils/Array.sh
 source ${__dirname}/scripts/utils/ReadEnv.sh
+source ${__dirname}/scripts/utils/TransToPlural
 
 function main() {
     outDir=$1
@@ -24,11 +25,11 @@ function main() {
         if [ $(IndexOf $filename ${expect[@]}) != "-1" ]; then
             continue
         fi
-        tables[index]=$(TransToPlural filename)
+        tables[index]=$(TransToPlural $filename)
         ((index++))
     done
 
-    for tablename in $tables; do
+    for tablename in ${tables[@]}; do
         $(mongoexport -d $dbname -c $tablename -o ${outDir}/${tablename}.json)
     done
 
