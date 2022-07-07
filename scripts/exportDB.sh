@@ -5,7 +5,7 @@ envPath=$__dirname/env
 
 source ${__dirname}/scripts/utils/Array.sh
 source ${__dirname}/scripts/utils/ReadEnv.sh
-source ${__dirname}/scripts/utils/TransToPlural
+source ${__dirname}/scripts/utils/TransToPlural.sh
 
 function main() {
     outDir=$1
