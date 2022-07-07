@@ -4,7 +4,10 @@ import { staticPath } from "../utils/paths";
 
 function formatFilename(filename: string) {
     const arr = filename.split(".");
-    return `${arr.shift()}-${Date.now()}.${arr.join(".")}`;
+    return `${arr.shift()}-T${Date.now()}.${arr.join(".")}`;
+}
+export function originalFilename(filename: string, isSuffix = true) {
+    return isSuffix ? filename.replace(/-T\d+?\./, ".") : filename.replace(/-T\d+.*/, "");
 }
 
 const imageEngin = multer.diskStorage({

@@ -9,7 +9,7 @@
         "dev:client:nocache": "cd packages/client && pnpm dev:nocache",
         "dev:server": "cd packages/server && pnpm dev",
         "build:client": "cd packages/client && pnpm build",
-        "build:clinet:dev": "cd packages/client && pnpm build:dev",
+        "build:client:dev": "cd packages/client && pnpm build:dev",
         "build:server": "cd packages/server && pnpm build",
         "preview:client": "cd packages/client && pnpm preview",
         "preview:server": "cd packages/server && pnpm preview",

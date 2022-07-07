@@ -24,7 +24,7 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
         //* 只在开发环境使用
         plugins.push(vconsole(Env, isBuild, isDev));
         if (isBuild) {
-            plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: true })); // 依赖分析
+            plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: false })); // 依赖分析
         }
     } else {
         //* 只在生产环境使用

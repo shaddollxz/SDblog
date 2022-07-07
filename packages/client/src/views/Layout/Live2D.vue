@@ -12,7 +12,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #wife_L2D {
     position: fixed;
     bottom: -4px;
