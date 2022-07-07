@@ -2,7 +2,7 @@ import type { Plugin } from "vite";
 import fs from "fs-extra";
 import { resolve } from "path";
 
-const dirs = ["headPic", "emojis/noahEmoji"];
+const dirs: Dirs = ["headPic", { importName: "noahEmoji", realDir: "emojis/noah" }];
 export default (Env: ImportMetaEnv) =>
     staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
         dts: resolve(__dirname, "../../src/typings/staticPics.d.ts"),
@@ -10,15 +10,18 @@ export default (Env: ImportMetaEnv) =>
 
 // 插件实现👇
 
+type Dirs = (string | { importName: string; realDir: string })[];
 interface Option {
     dts: string;
 }
 
-function staticPics(staticPath: string, dirs: string[], options: Option): Plugin {
+function staticPics(staticPath: string, dirs: Dirs, options: Option): Plugin {
     const virtualModuleId = "virtual:staticPics";
     const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
     let cache: Record<string, string[]>; // 因为文件夹内文件只会在更新时变化，只需要读取一次
+    const importNames = dirs.map((item) => (typeof item == "string" ? item : item.importName));
+    const realDirs = dirs.map((item) => (typeof item == "string" ? item : item.realDir));
 
     return {
         name: "staticPics",
@@ -33,15 +36,15 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
             if (id == resolvedVirtualModuleId) {
                 if (!cache) {
                     cache = {};
-                    for (const dirname of dirs) {
-                        const path = resolve(staticPath, `./static/${dirname}`);
-                        const outputName = dirname.split("/").at(-1)!;
+                    for (let i = 0; i < realDirs.length; i++) {
+                        const path = resolve(staticPath, "./static", realDirs[i]);
+                        const importName = importNames[i];
                         try {
-                            cache[outputName] = (await fs.readdir(path)).map(
-                                (filename) => `/assets/${dirname}/${filename}`
+                            cache[importName] = (await fs.readdir(path)).map(
+                                (filename) => `/assets/${realDirs[i]}/${filename}`
                             );
                         } catch {
-                            cache[outputName] = [];
+                            cache[importName] = [];
                         }
                     }
                 }
@@ -52,20 +55,17 @@ function staticPics(staticPath: string, dirs: string[], options: Option): Plugin
 
         async buildStart() {
             await fs.remove(options.dts);
-            await fs.writeFile(options.dts, generateDTS(dirs));
+            await fs.writeFile(options.dts, generateDTS(importNames));
         },
     };
 }
 
-function generateDTS(dirs: readonly string[]) {
+function generateDTS(importNames: string[]) {
     return `// 由staticPics插件生成
 declare module "virtual:staticPics" {
     const staticPics: {
-        ${dirs
-            .map(
-                (name, index) =>
-                    name.split("/").at(-1) + ":string[];" + (index == dirs.length - 1 ? "" : "\r        ")
-            )
+        ${importNames
+            .map((name, index) => name + ":string[];" + (index == dirs.length - 1 ? "" : "\r        "))
             .join("")}
     };
     export default staticPics;
