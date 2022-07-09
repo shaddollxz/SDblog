@@ -1,6 +1,7 @@
 {
     "watch": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "../../env/.env"
     ],
     "ignore": "node_modules",
     "exec": "node --loader ts-node/esm --experimental-specifier-resolution=node src/app.ts",

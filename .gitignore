@@ -1,6 +1,7 @@
 node_modules
 *.local
-*.env
+*.env*
+!*.example
 .vscode
 stats.html
 dist
