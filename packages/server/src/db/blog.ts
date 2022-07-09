@@ -1,11 +1,11 @@
-import typegoose from "@typegoose/typegoose";
-const { prop, defaultClasses } = typegoose;
+import typegoose, { defaultClasses } from "@typegoose/typegoose";
+const { prop } = typegoose;
 import type { Ref } from "@typegoose/typegoose";
 import { User } from "./user";
 import { Tag } from "./tag";
-import type { dbBase } from "./dbBase";
+import type { DB } from "./DB";
 
-export class Blog extends defaultClasses.TimeStamps implements dbBase {
+export class Blog extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
 
     @prop({ required: true })

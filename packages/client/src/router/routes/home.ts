@@ -1,6 +1,6 @@
 export default <RouteItem>{
-    name: "Home",
     path: "/",
+    name: "Home",
     component: () => import("@/views/Home/index.vue"),
     meta: { title: "主页", keepAlive: false },
     children: [

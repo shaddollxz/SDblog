@@ -2,10 +2,10 @@ import typegoose from "@typegoose/typegoose";
 const { prop, modelOptions, Severity } = typegoose;
 import type { Ref } from "@typegoose/typegoose";
 import { User } from "./user";
-import type { dbBase } from "./dbBase";
+import type { DB } from "./DB";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
-export class Essay implements dbBase {
+export class Essay implements DB {
     declare DB: true;
 
     @prop({ required: true, ref: () => User })

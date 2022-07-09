@@ -4,12 +4,12 @@ import type { Ref } from "@typegoose/typegoose";
 import { User } from "./user";
 import type { DB } from "./DB";
 
-export class Tag implements DB {
+export class Pan implements DB {
     declare DB: true;
 
-    @prop({ required: true, unique: true })
-    declare value: string;
-
     @prop({ required: true, ref: () => User })
-    declare creater: Ref<User>;
+    declare user: Ref<User>;
+
+    @prop({ required: true })
+    declare path: string;
 }

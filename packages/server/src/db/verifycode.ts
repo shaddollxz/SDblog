@@ -1,8 +1,8 @@
 import typegoose from "@typegoose/typegoose";
 const { prop } = typegoose;
-import type { dbBase } from "./dbBase";
+import type { DB } from "./DB";
 
-export class Verifycode implements dbBase {
+export class Verifycode implements DB {
     declare DB: true;
 
     @prop({ required: true })

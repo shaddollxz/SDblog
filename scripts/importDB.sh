@@ -21,7 +21,7 @@ function main() {
     fi
 
     tablefiles=$(ls $__dirname/packages/server/src/db)
-    expect=(dbBase connect verifycode index)
+    expect=(DB connect verifycode index)
 
     index=0
     for filepath in $tablefiles; do
