@@ -1,5 +1,6 @@
 export * from "./blog";
 export * from "./essay";
+export * from "./pan";
 export * from "./public";
 export * from "./reply";
 export * from "./tag";

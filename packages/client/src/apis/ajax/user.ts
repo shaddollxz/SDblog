@@ -3,6 +3,7 @@ import type { AxiosPromise } from "axios";
 import type {
     UserInfo,
     LoginOptions,
+    LoginRes,
     GetVerifycodeOptions,
     RegisterOptions,
     RetrieveOptions,
@@ -12,7 +13,7 @@ import type {
 import { VerifycodeEnum } from "@blog/server";
 
 // 登录
-export function login(formData: LoginOptions): AxiosPromise<{ userData: UserInfo; token: string }> {
+export function login(formData: LoginOptions): AxiosPromise<LoginRes> {
     return axios({
         method: "post",
         url: "user/login",
@@ -56,7 +57,7 @@ export function register(formData: RegisterOptions): AxiosPromise<Success | Fail
 }
 
 // 获取用户信息
-export function relogin(): AxiosPromise<{ userData: UserInfo; token: string }> {
+export function relogin(): AxiosPromise<LoginRes> {
     return axios({
         method: "get",
         url: "user/relogin",

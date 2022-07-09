@@ -26,7 +26,7 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
 
         if (user) {
             if (user.passWord == md5(req.body.passWord)) {
-                const token = sign({ _id: user._id, isAdmin: user.authority == AuthorityEnum.admin }); // 七天后token无效
+                const token = sign({ _id: user._id, isAdmin: user.authority == AuthorityEnum.admin });
                 const userInfo = user.toJSON();
                 delete userInfo.passWord;
                 return res.status(StatusEnum.OK).json({ userData: userInfo, token });

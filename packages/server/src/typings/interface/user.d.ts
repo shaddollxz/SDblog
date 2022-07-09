@@ -11,7 +11,8 @@ export interface LoginOptions {
     passWord: string;
 }
 
-export interface LoginInfo {
+export interface LoginRes {
+    userData: UserInfo;
     token: string;
 }
 

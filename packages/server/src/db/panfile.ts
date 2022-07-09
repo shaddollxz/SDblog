@@ -1,14 +1,12 @@
 import typegoose, { defaultClasses } from "@typegoose/typegoose";
 const { prop } = typegoose;
-import type { Ref } from "@typegoose/typegoose";
-import { Pan } from "./pan";
 import type { DB } from "./DB";
 
 export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
 
-    @prop({ required: true, ref: () => Pan })
-    declare belong: Ref<Pan>;
+    @prop({ required: true })
+    declare belongId: string; // 文件所属的网盘id
 
     @prop({ require: true })
     declare name: string;
