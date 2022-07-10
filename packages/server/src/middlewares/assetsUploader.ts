@@ -1,6 +1,5 @@
 import multer from "multer";
 import { resolve } from "path";
-import { staticPath } from "../utils/paths";
 
 function formatFilename(filename: string) {
     const arr = filename.split(".");
@@ -11,7 +10,7 @@ export function originalFilename(filename: string, isSuffix = true) {
 }
 
 const imageEngin = multer.diskStorage({
-    destination: resolve(staticPath, "./image"),
+    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./image"),
 
     filename(req, file, cb) {
         cb(null, formatFilename(file.originalname));
@@ -19,7 +18,7 @@ const imageEngin = multer.diskStorage({
 });
 
 const avatarEngin = multer.diskStorage({
-    destination: resolve(staticPath, "./avatar"),
+    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./avatar"),
 
     filename(req, file, cb) {
         cb(null, formatFilename(file.originalname));

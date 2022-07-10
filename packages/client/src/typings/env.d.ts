@@ -14,6 +14,7 @@ interface ImportMetaEnv {
 
     readonly PUBLIC_DIST_PATH: string;
     readonly PUBLIC_STATIC_PATH: string;
+    readonly PUBLIC_STATIC_PREFIX: string;
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv;
