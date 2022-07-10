@@ -4,7 +4,8 @@
     "main": "./src/typings/interface/index.ts",
     "typings": "./src/typings/interface/index.d.ts",
     "exports": {
-        ".": "./src/typings/interface/index.ts"
+        ".": "./src/typings/interface/index.ts",
+        "./db": "./src/db"
     },
     "type": "module",
     "scripts": {

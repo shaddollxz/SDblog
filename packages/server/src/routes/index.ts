@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { mustLogin } from "../middlewares/authorization";
 
 const router = Router();
 
@@ -14,7 +15,7 @@ import UserRouter from "./user";
 router.use("/", StaticRouter);
 router.use("/blog", BlogRouter);
 router.use("/essay", EssayRouter);
-router.use("/pan", PanRouter);
+router.use("/pan", mustLogin, PanRouter);
 router.use("/reply", ReplyRouter);
 router.use("/shaddollxz", ShaddollxzRouter);
 router.use("/tag", TagRouter);

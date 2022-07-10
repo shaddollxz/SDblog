@@ -1,15 +1,16 @@
 import { Router } from "express";
 import * as Pan from "../controllers/pan";
-import { mustLogin } from "../middlewares/authorization";
 
 const router = Router();
 
-router.get("/folder", mustLogin, Pan.folderList);
-router.post("/folder", mustLogin, Pan.createFolder);
-router.delete("/folder", mustLogin, Pan.removeFolder);
+router.get("/folder", Pan.folderList);
+router.put("/folder", Pan.createFolder, Pan.folderList);
+router.delete("/folder", Pan.removeFolder, Pan.folderList);
+router.post("/folder/move");
 
-router.get("file/:fileId", mustLogin, Pan.fileDetail);
-router.post("file", mustLogin, Pan.uploadFile);
-router.delete("file", mustLogin, Pan.removeFile);
+router.get("/file/:fileId", Pan.fileDetail);
+router.post("/file", Pan.uploadFile, Pan.folderList);
+router.delete("/file", Pan.removeFile, Pan.folderList);
+router.post("/file/move");
 
 export default router;

@@ -5,24 +5,30 @@ import { SchemaToInfo } from "../tools/SchemaToInfo";
 export type PanInfo = SchemaToInfo<Pan>;
 export type PanFileInfo = SchemaToInfo<PanFile>;
 
+export type PanPath = `/${string}`;
+
+export interface FolderJson {
+    files?: { size: number; filePath: string }[];
+}
+
 export interface PanListRes {
     folderJson: string;
 }
 
 export interface CreateFolderOption {
     name: string;
-    path: string;
+    path: PanPath;
 }
 
 export interface RemoveFolderOption {
-    path: string;
+    path: PanPath;
 }
 
 export interface UploadFileOption {
     name: string;
-    path: string;
+    path: PanPath;
 }
 
 export interface RemoveFileOption {
-    path: string;
+    path: PanPath;
 }
