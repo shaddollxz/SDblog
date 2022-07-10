@@ -6,6 +6,7 @@ const dirs: Dirs = ["headPic", { importName: "noahEmoji", realDir: "emojis/noah"
 export default (Env: ImportMetaEnv) =>
     staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
         dts: resolve(__dirname, "../../src/typings/staticPics.d.ts"),
+        staticPrefix: Env.PUBLIC_STATIC_PREFIX,
     });
 
 // 插件实现👇
@@ -13,6 +14,7 @@ export default (Env: ImportMetaEnv) =>
 type Dirs = (string | { importName: string; realDir: string })[];
 interface Option {
     dts: string;
+    staticPrefix: string;
 }
 
 function staticPics(staticPath: string, dirs: Dirs, options: Option): Plugin {
@@ -37,11 +39,11 @@ function staticPics(staticPath: string, dirs: Dirs, options: Option): Plugin {
                 if (!cache) {
                     cache = {};
                     for (let i = 0; i < realDirs.length; i++) {
-                        const path = resolve(staticPath, "./static", realDirs[i]);
+                        const path = resolve(staticPath, realDirs[i]);
                         const importName = importNames[i];
                         try {
                             cache[importName] = (await fs.readdir(path)).map(
-                                (filename) => `/assets/${realDirs[i]}/${filename}`
+                                (filename) => `${options.staticPrefix}/${realDirs[i]}/${filename}`
                             );
                         } catch {
                             cache[importName] = [];

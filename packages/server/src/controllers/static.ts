@@ -1,14 +1,13 @@
 import { StatusEnum } from "#interface";
 import { resolve } from "path";
 import fs from "fs-extra";
-import { staticPath } from "../utils/paths";
 
 export const uploadImage: PostHandler = async (req, res, next) => {
     try {
         const file = req.file;
         if (file) {
             res.status(StatusEnum.OK).json({
-                imgSrc: "/assets/image/" + file.filename,
+                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + file.filename,
             });
         }
     } catch (e) {
@@ -18,9 +17,10 @@ export const uploadImage: PostHandler = async (req, res, next) => {
 
 export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next) => {
     try {
-        const dir = req.body.src.match(/(?<=^\/assets\/).+/)?.[0];
+        const regexp = new RegExp(`(?<=^${process.env.PUBLIC_STATIC_PREFIX}/).+`);
+        const dir = req.body.src.match(regexp)?.[0];
         if (dir) {
-            await fs.remove(resolve(staticPath, dir));
+            await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
         }
         res.status(StatusEnum.OK).json(null);
     } catch (e) {
@@ -33,7 +33,7 @@ export const uploadAvatar: PostHandler = async (req, res, next) => {
         const file = req.file;
         if (file) {
             res.status(StatusEnum.OK).json({
-                imgSrc: "/assets/avatar/" + file.filename,
+                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + file.filename,
             });
         }
     } catch (e) {

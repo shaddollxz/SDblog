@@ -15,7 +15,7 @@ if [ ! -d $fontPath ]; then
 fi
 
 if [ -f $envPath/.env ]; then
-    staticPath=$(ReadEnv $envPath/.env PUBLIC_STATIC_PATH)/static
+    staticPath=$(ReadEnv $envPath/.env PUBLIC_STATIC_PATH)
 
     if [ ! -d "${staticPath}/headPic" ]; then
         echo "缺少静态文件 headPic"

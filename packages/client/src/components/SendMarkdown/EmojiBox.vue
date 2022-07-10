@@ -43,7 +43,6 @@ let currentEmojiList = ref<keyof typeof EmojiList>("noah");
 
 //todo 诺亚表情列表
 emojis.noah = [];
-
 for (const url of staticPics.noahEmoji) {
     emojis.noah.push({ src: url, content: `:noah-${url.match(/(\d+)/)?.[0]}:` });
 }

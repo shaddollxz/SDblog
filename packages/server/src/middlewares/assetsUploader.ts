@@ -4,7 +4,7 @@ import { staticPath } from "../utils/paths";
 import { formateFilename } from "../utils/formateFilename";
 
 const imageEngin = multer.diskStorage({
-    destination: resolve(staticPath, "./image"),
+    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./image"),
 
     filename(req, file, cb) {
         cb(null, formateFilename(file.originalname));
@@ -12,7 +12,7 @@ const imageEngin = multer.diskStorage({
 });
 
 const avatarEngin = multer.diskStorage({
-    destination: resolve(staticPath, "./avatar"),
+    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./avatar"),
 
     filename(req, file, cb) {
         cb(null, formateFilename(file.originalname));
