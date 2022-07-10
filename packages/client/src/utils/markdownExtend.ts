@@ -2,9 +2,12 @@
 const EmojiRegexp = /:noah-(\d+?):/g; // 转换表情包
 const BlackRegexp = /~~~(.+?)~~~/g; // 转换黑幕
 export function pareMD(text: string) {
-    return text
-        .replace(EmojiRegexp, `<img src="/assets/emojis/noah/ui_sticker_$1.png" class="inline"></img>`)
-        .replace(BlackRegexp, `<del class="black">$1</del>`);
+    return (
+        text
+            // worker中无法引入虚拟模块 想办法替换这里的
+            .replace(EmojiRegexp, `<img src="/assets/emojis/noah/ui_sticker_$1.png" class="inline"></img>`)
+            .replace(BlackRegexp, `<del class="black">$1</del>`)
+    );
 }
 
 const CopyRegexp = /(?<=<pre>)(.)/g;

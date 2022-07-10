@@ -7,9 +7,7 @@ export type PanFileInfo = SchemaToInfo<PanFile>;
 
 export type PanPath = `/${string}`;
 
-export interface FolderJson {
-    files?: { size: number; filePath: string }[];
-}
+export type FolderJson = any;
 
 export interface PanListRes {
     folderJson: string;

@@ -16,14 +16,16 @@
     "dependencies": {
         "@blog/scripts": "workspace:^1.0.0",
         "@typegoose/typegoose": "^9.5.0",
+        "adm-zip": "^0.5.9",
         "compression": "^1.7.4",
         "express": "^4.17.2",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.1.4",
-        "multer": "^1.4.3",
+        "multer": "^1.4.4",
         "nodemailer": "^6.6.5"
     },
     "devDependencies": {
+        "@types/adm-zip": "^0.5.0",
         "@types/compression": "^1.7.2",
         "@types/express": "^4.17.13",
         "@types/jsonwebtoken": "^8.5.6",
