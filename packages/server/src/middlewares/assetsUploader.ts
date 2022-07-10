@@ -1,6 +1,5 @@
 import multer from "multer";
 import { resolve } from "path";
-import { staticPath } from "../utils/paths";
 import { formateFilename } from "../utils/formateFilename";
 
 const imageEngin = multer.diskStorage({

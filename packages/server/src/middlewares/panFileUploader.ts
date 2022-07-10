@@ -1,10 +1,9 @@
 import multer from "multer";
 import { resolve } from "path";
-import { panPath } from "../utils/paths";
 import { formateFilename } from "../utils/formateFilename";
 
 const privatePanFileEngin = multer.diskStorage({
-    destination: resolve(panPath, "./private"),
+    destination: resolve(process.env.PAN_PATH, "./private"),
 
     filename(req, file, cb) {
         cb(null, formateFilename(file.originalname));
@@ -12,7 +11,7 @@ const privatePanFileEngin = multer.diskStorage({
 });
 
 const publicPanFileEngin = multer.diskStorage({
-    destination: resolve(panPath, "./public"),
+    destination: resolve(process.env.PAN_PATH, "./public"),
 
     filename(req, file, cb) {
         cb(null, formateFilename(file.originalname));

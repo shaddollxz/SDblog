@@ -4,7 +4,6 @@ import type { DocumentType } from "@typegoose/typegoose";
 import type { DB } from "./DB";
 import fs from "fs-extra";
 import { resolve } from "path";
-import { panPath } from "../utils/paths";
 import type { PanPath } from "#interface";
 
 export class PanFile extends defaultClasses.TimeStamps implements DB {
@@ -35,7 +34,7 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
         this.isDelete = true;
         await this.save();
         setTimeout(() => {
-            fs.remove(resolve(panPath, this.filePath));
+            fs.remove(resolve(process.env.PAN_PATH, this.filePath));
         }, 0);
     }
 }
