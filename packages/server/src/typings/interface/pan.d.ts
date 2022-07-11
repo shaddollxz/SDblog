@@ -7,7 +7,12 @@ export type PanFileInfo = SchemaToInfo<PanFile>;
 
 export type PanPath = `/${string}`;
 
-export type FolderJson = any;
+export type Folder = {
+    id: string;
+    name: string;
+    files?: PanFileInfo[];
+    folders?: Folder[];
+};
 
 export interface PanListRes {
     folderJson: string;
@@ -19,7 +24,7 @@ export interface CreateFolderOption {
 }
 
 export interface RemoveFolderOption {
-    path: PanPath;
+    path: PanPath[];
 }
 
 export interface UploadFileOption {
