@@ -1,6 +1,6 @@
 {
     "apps": {
-        "name": "blog", // 项目名          
+        "name": "blog", // 项目名
         "script": "./packages/server/bin/app.js", // 执行文件
         "cwd": ".", // 根目录 绝对路径
         "args": "", // 传递给脚本的参数
@@ -8,7 +8,8 @@
         "interpreter_args": "", // 传递给解释器的参数
         "node_args": "--experimental-specifier-resolution=node",
         "watch": true, // 是否监听文件变动然后重启
-        "ignore_watch": [ // 不用监听的文件
+        "ignore_watch": [
+            // 不用监听的文件
             "node_modules",
             "logs",
             "static",
@@ -33,7 +34,8 @@
             "NODE_ENV": "development", // 环境参数，当前指定为开发环境 pm2 start app.js --env_dev
             "REMOTE_ADDR": ""
         },
-        "env_test": { // 环境参数，当前指定为测试环境 pm2 start app.js --env_test
+        "env_test": {
+            // 环境参数，当前指定为测试环境 pm2 start app.js --env_test
             "NODE_ENV": "test",
             "REMOTE_ADDR": ""
         }

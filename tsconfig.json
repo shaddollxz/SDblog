@@ -16,16 +16,9 @@
         "suppressImplicitAnyIndexErrors": true, // for-in 中不会报错
         "preserveValueImports": true, // 在setup块中导入某些函数后直接在模板上使用的错误
         "noImplicitOverride": true, // 子类覆盖父类方法时加上override
-        "skipLibCheck": true // 打包时跳过类型检查
+        "skipLibCheck": true, // 打包时跳过类型检查
+        "types": ["vitest/globals"]
     },
-    "lib": [
-        "esnext",
-        "dom"
-    ],
-    "exclude": [
-        "packages/server/bin",
-        "packages/server/public",
-        "*/*.js",
-        "node_modules"
-    ]
+    "lib": ["esnext", "dom"],
+    "exclude": ["dist", "bin", "node_modules", "**/*.config.js", "**/*.config.ts", "**/*.js"]
 }

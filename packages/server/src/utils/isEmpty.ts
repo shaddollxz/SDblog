@@ -6,6 +6,7 @@
  */
 export default function isEmpty(value: unknown, isCheckZero: boolean = false) {
     if (typeof value !== "object" || value == null) {
+        if (value === "") return true;
         return value == 0 ? (isCheckZero ? true : false) : !value;
     }
 
