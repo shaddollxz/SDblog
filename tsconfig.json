@@ -18,14 +18,6 @@
         "noImplicitOverride": true, // 子类覆盖父类方法时加上override
         "skipLibCheck": true // 打包时跳过类型检查
     },
-    "lib": [
-        "esnext",
-        "dom"
-    ],
-    "exclude": [
-        "packages/server/bin",
-        "packages/server/public",
-        "*/*.js",
-        "node_modules"
-    ]
+    "lib": ["esnext", "dom"],
+    "exclude": ["dist", "bin", "node_modules", "**/*.config.js", "**/*.config.ts", "**/*.js"]
 }

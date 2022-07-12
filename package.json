@@ -5,6 +5,8 @@
     "description": "",
     "type": "module",
     "scripts": {
+        "prepare": "husky install",
+        "start": "sh ./scripts/startBlog.sh",
         "dev:client": "cd packages/client && pnpm dev",
         "dev:client:nocache": "cd packages/client && pnpm dev:nocache",
         "dev:server": "cd packages/server && pnpm dev",
@@ -15,9 +17,9 @@
         "preview:server": "cd packages/server && pnpm preview",
         "formateSVG": "cd packages/scripts && pnpm formateSVG",
         "clearlogs": "pm2 flush",
-        "start": "sh ./scripts/startBlog.sh",
         "exportDB": "sh ./scripts/exportDB.sh",
-        "importDB": "sh ./scripts/importDB.sh"
+        "importDB": "sh ./scripts/importDB.sh",
+        "lint:lint-staged": "lint-staged"
     },
     "keywords": [],
     "author": "",
@@ -25,7 +27,10 @@
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
         "@types/node": "^17.0.8",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
         "nodemon": "^2.0.15",
+        "prettier": "^2.7.1",
         "ts-node": "^10.4.0",
         "typescript": "^4.7.3"
     },
