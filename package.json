@@ -15,6 +15,8 @@
         "build:server": "cd packages/server && pnpm build",
         "preview:client": "cd packages/client && pnpm preview",
         "preview:server": "cd packages/server && pnpm preview",
+        "test": "vitest",
+        "test:all": "vitest run",
         "formateSVG": "cd packages/scripts && pnpm formateSVG",
         "clearlogs": "pm2 flush",
         "exportDB": "sh ./scripts/exportDB.sh",
@@ -32,7 +34,8 @@
         "nodemon": "^2.0.15",
         "prettier": "^2.7.1",
         "ts-node": "^10.4.0",
-        "typescript": "^4.7.3"
+        "typescript": "^4.7.3",
+        "vitest": "^0.18.0"
     },
     "dependencies": {
         "axios": "^0.24.0",
