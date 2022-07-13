@@ -3,35 +3,16 @@
     "compilerOptions": {
         "skipLibCheck": true,
         "baseUrl": "./",
-        "types": [
-            "vite-plugin-svg-icons/client",
-            "vite-plugin-pwa/client",
-            "marked"
-        ],
+        "types": ["vite-plugin-svg-icons/client", "vite-plugin-pwa/client"],
         "paths": {
-            "@/*": [
-                "src/*"
-            ],
-            "#/*": [
-                "src/typings/*"
-            ],
-            "@img/*": [
-                "src/assets/img/*"
-            ],
-            "@apis": [
-                "src/apis"
-            ],
-            "@views/*": [
-                "src/views/*"
-            ],
-            "#interface": [
-                "../server/src/typings/interface/index.d.ts"
-            ]
+            "@/*": ["src/*"],
+            "#/*": ["src/typings/*"],
+            "@img/*": ["src/assets/img/*"],
+            "@apis": ["src/apis"],
+            "@views/*": ["src/views/*"],
+            "#interface": ["../server/src/typings/interface/index.d.ts"]
         },
-        "lib": [
-            "esnext",
-            "dom"
-        ]
+        "lib": ["esnext", "dom"]
     },
     "include": [
         "src/**/*.ts",
@@ -41,8 +22,5 @@
         "config/**/*.ts",
         "vite.config.ts"
     ],
-    "exclude": [
-        "src/utils/loadL2D.js",
-        "node_modules"
-    ]
+    "exclude": ["src/utils/loadL2D.js", "node_modules"]
 }

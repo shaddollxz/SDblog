@@ -1,10 +1,10 @@
 #!/bin/bash
 
 __dirname=$(pwd)
-nodeScriptPath="${__dirname}/packages/scripts/src"
+nodeScriptPath="${__dirname}/scripts/src/ts"
 envPath="${__dirname}/env"
 
-source ${__dirname}/scripts/utils/ReadEnv.sh
+source ${__dirname}/scripts/src/sh/utils/ReadEnv.sh
 
 git checkout .
 git pull

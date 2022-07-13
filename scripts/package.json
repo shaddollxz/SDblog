@@ -7,8 +7,8 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "fontmin": "node --loader ts-node/esm src/fontmin/index.ts --experimental-specifier-resolution=node",
-        "formateSVG": "node --loader ts-node/esm src/formateSVG/index.ts --experimental-specifier-resolution=node"
+        "fontmin": "node --loader ts-node/esm src/ts/fontmin/index.ts --experimental-specifier-resolution=node",
+        "formateSVG": "node --loader ts-node/esm src/ts/formateSVG/index.ts --experimental-specifier-resolution=node"
     },
     "keywords": [],
     "author": "",
