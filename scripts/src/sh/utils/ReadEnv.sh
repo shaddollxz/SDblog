@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# 读取.env文件
+# 第一个参数是文件地址 第二个是读取的键
 function ReadEnv() {
     envpath=$1
     key=$2

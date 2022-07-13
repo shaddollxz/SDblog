@@ -15,8 +15,8 @@ if [ ! -d $fontPath ]; then
     $(node --loader ts-node/esm ${nodeScriptPath}/fontmin/index.ts --experimental-specifier-resolution=node)
 fi
 
-if [ -f $envPath/.env ]; then
-    staticPath=$(ReadEnv $envPath/.env PUBLIC_STATIC_PATH)
+if [ -f ${envPath}/.env ]; then
+    staticPath=$(ReadEnv ${envPath}/.env PUBLIC_STATIC_PATH)
 
     if [ ! -d "${staticPath}/headPic" ]; then
         echo "缺少静态文件 headPic"
@@ -27,7 +27,7 @@ if [ -f $envPath/.env ]; then
         exit
     fi
 else
-    echo "请设置环境变量文件 $envPath/.env"
+    echo "请设置环境变量文件 ${envPath}/.env"
     exit
 fi
 

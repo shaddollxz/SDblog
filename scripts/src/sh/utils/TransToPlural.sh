@@ -43,6 +43,7 @@ function _SpecialTrans() {
     return 0
 }
 
+# 见单词转换为复数形式
 function TransToPlural() {
     input=$1
     if [ $(_SpecialTrans $input) != "0" ]; then

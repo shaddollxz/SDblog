@@ -2,7 +2,7 @@
 
 __dirname=$(dirname -- "$0")
 __rootDir=$(pwd)
-envPath=$__rootDir/env
+envPath=${__rootDir}/env
 
 source ${__dirname}/utils/Array.sh
 source ${__dirname}/utils/ReadEnv.sh
@@ -16,8 +16,8 @@ function main() {
         exit
     fi
 
-    files=$(ls ${__dirname}/packages/server/src/db)
-    expect=(DB connect verifycode index)
+    files=$(ls ${__rootDir}/packages/server/src/db)
+    expect=(DB connect index verifycode tempfile)
 
     index=0
     for filepath in $files; do

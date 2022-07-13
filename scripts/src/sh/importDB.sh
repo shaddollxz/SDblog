@@ -2,7 +2,7 @@
 
 __dirname=$(dirname -- "$0")
 __rootDir=$(pwd)
-envPath=$__rootDir/env
+envPath=${__rootDir}/env
 
 source ${__dirname}/utils/TransToPlural.sh
 source ${__dirname}/utils/Array.sh
@@ -15,14 +15,14 @@ function main() {
         exit
     fi
 
-    dbname=$(ReadEnv $envPath/.env DBNAME)
+    dbname=$(ReadEnv ${envPath}/.env DBNAME)
     if [ -z $dbname ]; then
         echo "缺少环境变量 DBNAME"
         exit
     fi
 
-    tablefiles=$(ls $__dirname/packages/server/src/db)
-    expect=(DB connect verifycode index)
+    tablefiles=$(ls ${__rootDir}/packages/server/src/db)
+    expect=(DB connect index verifycode tempfile)
 
     index=0
     for filepath in $tablefiles; do
