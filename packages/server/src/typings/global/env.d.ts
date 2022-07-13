@@ -8,8 +8,8 @@ declare module "process" {
                 // 公共变量
                 readonly PUBLIC_DIST_PATH: string;
                 readonly PUBLIC_STATIC_PATH: string;
-                readonly PUBLIC_TEMP_DURATION: NumberString;
                 readonly PUBLIC_STATIC_PREFIX: string;
+                readonly PUBLIC_TEMP_DAY: NumberString;
                 // 私有变量
                 readonly DBURL: string;
                 readonly DBNAME: string;
