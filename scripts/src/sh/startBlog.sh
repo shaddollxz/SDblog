@@ -1,15 +1,16 @@
 #!/bin/bash
 
-__dirname=$(pwd)
-nodeScriptPath="${__dirname}/scripts/src/ts"
-envPath="${__dirname}/env"
+__dirname=$(dirname -- "$0")
+__rootDir=$(pwd)
+nodeScriptPath="${__rootDir}/scripts/src/ts"
+envPath="${__rootDir}/env"
 
-source ${__dirname}/scripts/src/sh/utils/ReadEnv.sh
+source ${__dirname}/sh/utils/ReadEnv.sh
 
 git checkout .
 git pull
 
-fontPath="${__dirname}/packages/client/src/assets/font"
+fontPath="${__rootDir}/packages/client/src/assets/font"
 if [ ! -d $fontPath ]; then
     $(node --loader ts-node/esm ${nodeScriptPath}/fontmin/index.ts --experimental-specifier-resolution=node)
 fi
@@ -33,6 +34,6 @@ fi
 pm2 delete blog
 pnpm build:server
 pnpm build:client
-pm2 start ${__dirname}/pm2.json
+pm2 start ${__rootDir}/pm2.json
 
 echo "blog is running"

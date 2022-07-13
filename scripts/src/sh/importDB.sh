@@ -1,11 +1,12 @@
 #!/bin/bash
 
-__dirname=$(pwd)
-envPath=$__dirname/env
+__dirname=$(dirname -- "$0")
+__rootDir=$(pwd)
+envPath=$__rootDir/env
 
-source ${__dirname}/scripts/src/sh/utils/TransToPlural.sh
-source ${__dirname}/scripts/src/sh/utils/Array.sh
-source ${__dirname}/scripts/src/sh/utils/ReadEnv.sh
+source ${__dirname}/utils/TransToPlural.sh
+source ${__dirname}/utils/Array.sh
+source ${__dirname}/utils/ReadEnv.sh
 
 function main() {
     inputDir=$1
@@ -20,7 +21,7 @@ function main() {
         exit
     fi
 
-    tablefiles=$(ls $__dirname/packages/server/src/db)
+    tablefiles=$(ls $__rootDir/packages/server/src/db)
     expect=(dbBase connect verifycode index)
 
     index=0
