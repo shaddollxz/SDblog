@@ -6,15 +6,10 @@
         "sourceMap": false,
         "removeComments": true, // 打包时删除注释
         "paths": {
-            "#interface": [
-                "./src/typings/interface/index.d.ts"
-            ]
+            "#interface": ["./src/typings/interface/index.d.ts"]
         }
     },
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.d.ts"
-    ],
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
     "ts-node": {
         "files": true
     }
