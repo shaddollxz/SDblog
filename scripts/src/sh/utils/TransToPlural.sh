@@ -5,7 +5,7 @@ __dirname=$(pwd)
 source ${__dirname}/scripts/utils/Array.sh
 
 # 按规律进行转换
-function NormalTrans() {
+function _NormalTrans() {
     filename=$1
 
     vowels=(a e i o u)
@@ -29,7 +29,7 @@ function NormalTrans() {
 }
 
 # 特别的转换
-function SpecialTrans() {
+function _SpecialTrans() {
     filename=$1
     special=(goose geese foot feet tooth teech man men woman women mouse
         mice sheep sheep deer deer fish fish child children ox oxen potato potatoes tomato tomatoes)
@@ -45,9 +45,9 @@ function SpecialTrans() {
 
 function TransToPlural() {
     input=$1
-    if [ $(SpecialTrans $input) != "0" ]; then
-        echo $(SpecialTrans $input)
+    if [ $(_SpecialTrans $input) != "0" ]; then
+        echo $(_SpecialTrans $input)
     else
-        echo $(NormalTrans $input)
+        echo $(_NormalTrans $input)
     fi
 }
