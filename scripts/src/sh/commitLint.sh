@@ -9,7 +9,7 @@ msgMaxLength=20
 allows=('feat:' 'fix:' 'test:' 'chore:' 'pref:' 'style:' 'docs:' 'refactor:' 'revert:' 'Merge')
 desc=("添加新功能" "修复bug" "修改测试用例" "配置改变" "代码优化" "代码格式修改" "修改文档" "代码重构" "代码回滚" "合并代码")
 
-msg=$(echo $(cat $__rootDir/$1) | tr -d '\r')
+msg=$(echo $(cat ${__rootDir}/$1) | tr -d '\r')
 head=${msg%%[[:space:]]*}
 body=${msg#*[[:space:]]}
 

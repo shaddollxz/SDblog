@@ -2,7 +2,7 @@
 
 __dirname=$(dirname -- "$0")
 __rootDir=$(pwd)
-envPath=$__rootDir/env
+envPath=${__rootDir}/env
 
 source ${__dirname}/utils/Array.sh
 source ${__dirname}/utils/ReadEnv.sh

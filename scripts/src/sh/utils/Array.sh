@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # 指定字符在数组的哪个位置
+# 第一个参数是查找的元素 第二个参数是数组
 function IndexOf() {
     args=$@
     arr=${args#*[[:space:]]}
@@ -19,17 +20,10 @@ function IndexOf() {
 }
 
 # 用指定符号切割字符串为数组
+# 第一个参数是切割字符 第二个参数是数组
 function Split() {
     split=$1
     string=$2
 
-    index=0
-    while [ $(expr index "$string" $split) != 0 ]; do
-        start=$(expr index "$string" $split)
-        result[$index]=${string:0:$(($start - 1))}
-        string=${string:$start}
-        ((index++))
-    done
-    result[$index]=$string
-    echo ${result[@]}
+    echo $(echo $string | tr -t $split " ")
 }
