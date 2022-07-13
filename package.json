@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "prepare": "husky install",
-        "start": "sh ./scripts/startBlog.sh",
+        "start": "sh ./scripts/src/sh/startBlog.sh",
         "dev:client": "cd packages/client && pnpm dev",
         "dev:client:nocache": "cd packages/client && pnpm dev:nocache",
         "dev:server": "cd packages/server && pnpm dev",
@@ -17,10 +17,10 @@
         "preview:server": "cd packages/server && pnpm preview",
         "test": "vitest",
         "test:all": "vitest run",
-        "formateSVG": "cd packages/scripts && pnpm formateSVG",
+        "formateSVG": "cd ./scripts && pnpm formateSVG",
         "clearlogs": "pm2 flush",
-        "exportDB": "sh ./scripts/exportDB.sh",
-        "importDB": "sh ./scripts/importDB.sh",
+        "exportDB": "sh ./scripts/sh/exportDB.sh",
+        "importDB": "sh ./scripts/sh/importDB.sh",
         "lint:lint-staged": "lint-staged"
     },
     "keywords": [],

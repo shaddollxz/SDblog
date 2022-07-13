@@ -67,7 +67,7 @@ importers:
       vue: 3.2.37
       vue-router: 4.0.15_vue@3.2.37
     devDependencies:
-      '@blog/scripts': link:../scripts
+      '@blog/scripts': link:../../scripts
       '@types/marked': 4.0.3
       '@vitejs/plugin-legacy': 1.8.2_vite@2.9.10
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.10+vue@3.2.37
@@ -83,15 +83,6 @@ importers:
       vite-plugin-vconsole: 1.2.2
       vue-tsc: 0.37.3
       workbox-window: 6.5.3
-
-  packages/scripts:
-    specifiers:
-      '@types/fontmin': ^0.9.0
-      fontmin: ^0.9.9
-    dependencies:
-      fontmin: 0.9.9
-    devDependencies:
-      '@types/fontmin': 0.9.0
 
   packages/server:
     specifiers:
@@ -109,7 +100,7 @@ importers:
       multer: ^1.4.3
       nodemailer: ^6.6.5
     dependencies:
-      '@blog/scripts': link:../scripts
+      '@blog/scripts': link:../../scripts
       '@typegoose/typegoose': 9.9.0_mongoose@6.3.6
       compression: 1.7.4
       express: 4.18.1
@@ -123,6 +114,15 @@ importers:
       '@types/jsonwebtoken': 8.5.8
       '@types/multer': 1.4.7
       '@types/nodemailer': 6.4.4
+
+  scripts:
+    specifiers:
+      '@types/fontmin': ^0.9.0
+      fontmin: ^0.9.9
+    dependencies:
+      fontmin: 0.9.9
+    devDependencies:
+      '@types/fontmin': 0.9.0
 
 packages:
 
@@ -6150,7 +6150,7 @@ packages:
     dev: false
 
   /set-blocking/2.0.0:
-    resolution: {integrity: sha1-BF+XgtARrppoA93TgrJDkrPYkPc=}
+    resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
     dev: false
 
   /set-value/2.0.1:
@@ -6387,7 +6387,7 @@ packages:
     dev: false
 
   /stream-combiner/0.2.2:
-    resolution: {integrity: sha1-rsjLrBd7Vrb0+kec7YwZEs7lKFg=}
+    resolution: {integrity: sha512-6yHMqgLYDzQDcAkL+tjJDC5nSNuNIx0vZtRZeiPh7Saef7VHX9H5Ijn9l2VIol2zaNYlYEX6KyuT/237A58qEQ==}
     dependencies:
       duplexer: 0.1.2
       through: 2.3.8
@@ -6674,7 +6674,7 @@ packages:
     dev: true
 
   /to-absolute-glob/2.0.2:
-    resolution: {integrity: sha1-GGX0PZ50sIItufFFt4z/fQ98hJs=}
+    resolution: {integrity: sha512-rtwLUQEwT8ZeKQbyFJyomBRYXyE16U5VKuy0ftxLMK/PZb2fkOsg5r9kHdauuVDbsNdIBoC/HCthpidamQFXYA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       is-absolute: 1.0.0
@@ -6723,7 +6723,7 @@ packages:
     dev: true
 
   /to-through/2.0.0:
-    resolution: {integrity: sha1-/JKtq6ByZHvAtn1rA2ZKoZUJOvY=}
+    resolution: {integrity: sha512-+QIz37Ly7acM4EMdw2PRN389OneM5+d844tirkGp4dPKzI5OE72V9OsbFp+CIYJDahZ41ZV05hNtcPAQUAm9/Q==}
     engines: {node: '>= 0.10'}
     dependencies:
       through2: 2.0.5
@@ -6852,7 +6852,7 @@ packages:
     dev: true
 
   /typedarray/0.0.6:
-    resolution: {integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=}
+    resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: false
 
   /typescript/4.7.3:
@@ -6871,7 +6871,7 @@ packages:
     dev: true
 
   /unc-path-regex/0.1.2:
-    resolution: {integrity: sha1-5z3T17DXxe2G+6xrCufYxqadUPo=}
+    resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
     dev: false
 
@@ -7070,7 +7070,7 @@ packages:
     dev: true
 
   /util-deprecate/1.0.2:
-    resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
   /utils-merge/1.0.1:
     resolution: {integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=}
@@ -7078,7 +7078,7 @@ packages:
     dev: false
 
   /uuid/2.0.3:
-    resolution: {integrity: sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=}
+    resolution: {integrity: sha512-FULf7fayPdpASncVy4DLh3xydlXEJJpvIELjYjNeQWYUZ9pclcpvCZSr2gkmN2FrrGcI7G/cJsIEwk5/8vfXpg==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     dev: false
 
@@ -7094,7 +7094,7 @@ packages:
     dev: false
 
   /value-or-function/3.0.0:
-    resolution: {integrity: sha1-HCQ6ULWVwb5Up1S/7OhWO5/42BM=}
+    resolution: {integrity: sha512-jdBB2FrWvQC/pnPtIqcLsMaQgjhdb6B7tk1MMyTKapox+tQZbdRP4uLxu/JY0t7fbfDCUMnuelzEYv5GsxHhdg==}
     engines: {node: '>= 0.10'}
     dev: false
 
@@ -7135,7 +7135,7 @@ packages:
     dev: false
 
   /vinyl-sourcemap/1.1.0:
-    resolution: {integrity: sha1-kqgAWTo4cDqM2xHYswCtS+Y7PhY=}
+    resolution: {integrity: sha512-NiibMgt6VJGJmyw7vtzhctDcfKch4e4n9TBeoWlirb7FMg9/1Ov9k+A5ZRAtywBpRPiyECvQRQllYM8dECegVA==}
     engines: {node: '>= 0.10'}
     dependencies:
       append-buffer: 1.0.2
@@ -7148,7 +7148,7 @@ packages:
     dev: false
 
   /vinyl/1.2.0:
-    resolution: {integrity: sha1-XIgDbPVl5d8FVYv8kR+GVt8hiIQ=}
+    resolution: {integrity: sha512-Ci3wnR2uuSAWFMSglZuB8Z2apBdtOyz8CV7dC6/U1XbltXBC+IuutUkXQISz01P+US2ouBuesSbV6zILZ6BuzQ==}
     engines: {node: '>= 0.9'}
     dependencies:
       clone: 1.0.4
@@ -7578,7 +7578,7 @@ packages:
     dev: true
 
   /wrappy/1.0.2:
-    resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
+    resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
   /write-file-atomic/3.0.3:
     resolution: {integrity: sha512-AvHcyZ5JnSfq3ioSyjrBkH9yW4m7Ayk8/9My/DD9onKeu/94fwrMocemO2QAJFAlnnDN+ZDS+ZjAR5ua1/PV/Q==}
