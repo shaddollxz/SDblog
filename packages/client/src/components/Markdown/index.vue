@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import Loading from "../Loading/index.vue";
-import Worker from "./parse?worker"; //用webworker解析markdown
+import ParseWorker from "./parse.worker?worker"; //用webworker解析markdown
 
 interface Props {
     markdown?: string;
@@ -19,12 +19,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 let html = ref("");
 let loading = ref(props.isLoading ? true : false);
-const worker = new Worker();
+const parseWorker = new ParseWorker();
 
 watchEffect(() => {
-    worker.postMessage(props.markdown);
+    parseWorker.postMessage(props.markdown);
 });
-worker.onmessage = ({ data }: { data: { content: string; loadingTime: number } }) => {
+parseWorker.onmessage = ({ data }: { data: { content: string; loadingTime: number } }) => {
     html.value = data.content;
     setTimeout(() => {
         props.isLoading ? (loading.value = false) : null;

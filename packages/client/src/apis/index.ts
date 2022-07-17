@@ -43,4 +43,11 @@ export {
     uploadAvatar as uploadAvatarApi,
 } from "./ajax/static";
 
+export {
+    uploadPanFileStart as uploadPanFileStartApi,
+    uploadPanFile as uploadPanFileApi,
+    uploadPanFileChunk as uploadPanFileChunkApi,
+    uploadPanFileEnd as uploadPanFileEndApi,
+} from "./ajax/pan";
+
 export { default as shaddollxzDetailApi } from "./ajax/shaddollxz";

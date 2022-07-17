@@ -1,7 +1,14 @@
 import { Pan, PanFile } from "../db";
 import Folder from "../utils/Folder";
 import { StatusEnum } from "#interface";
-import type { CreateFolderOption, RemoveFolderOption } from "#interface";
+import type {
+    CreateFolderOption,
+    RemoveFolderOption,
+    UploadFileChunkOption,
+    UploadFileEndOption,
+    UploadFileStartOption,
+    RemoveFileOption,
+} from "#interface";
 
 export const folderList: GetHandler = async (req, res, next) => {
     try {
@@ -61,14 +68,28 @@ export const uploadFile: PostHandler = async (req, res, next) => {
     }
 };
 
-export const removeFile: DeleteHandler = async (req, res, next) => {
+export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, next) => {
     try {
     } catch (e) {
         next(e);
     }
 };
 
-export const fileDetail: GetHandler = async (req, res, next) => {
+export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const fileDetail: GetHandler<any, { fileId: string }> = async (req, res, next) => {
     try {
     } catch (e) {
         next(e);

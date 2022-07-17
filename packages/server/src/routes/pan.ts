@@ -10,6 +10,7 @@ router.post("/folder/move");
 
 router.get("/file/:fileId", Pan.fileDetail);
 router.post("/file", Pan.uploadFile, Pan.folderList);
+router.post("/file/end", Pan.uploadEnd);
 router.delete("/file", Pan.removeFile, Pan.folderList);
 router.post("/file/move");
 

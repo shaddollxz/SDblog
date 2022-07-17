@@ -39,9 +39,9 @@ importers:
 
   packages/client:
     specifiers:
-      '@blog/scripts': workspace:^1.0.0
       '@blog/server': workspace:^1.0.0
       '@types/marked': ^4.0.1
+      '@types/spark-md5': ^3.0.2
       '@vitejs/plugin-legacy': ^1.6.3
       '@vitejs/plugin-vue': ^2.3.3
       clipboard-polyfill: ^3.0.3
@@ -51,7 +51,8 @@ importers:
       rollup: ^2.67.1
       rollup-plugin-visualizer: ^5.5.2
       sass: ^1.49.7
-      sdt3: ^2.1.0
+      sdt3: ^2.1.1
+      spark-md5: ^3.0.2
       unplugin-auto-import: ^0.8.7
       vconsole: ^3.14.6
       vite: ^2.9.9
@@ -69,12 +70,13 @@ importers:
       highlight.js: 11.5.1
       marked: 4.0.16
       pinia: 2.0.14_vue@3.2.37
-      sdt3: 2.1.0_vue@3.2.37
+      sdt3: 2.1.1_vue@3.2.37
+      spark-md5: 3.0.2
       vue: 3.2.37
       vue-router: 4.0.15_vue@3.2.37
     devDependencies:
-      '@blog/scripts': link:../../scripts
       '@types/marked': 4.0.3
+      '@types/spark-md5': 3.0.2
       '@vitejs/plugin-legacy': 1.8.2_vite@2.9.10
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.10+vue@3.2.37
       rollup: 2.75.6
@@ -1638,6 +1640,10 @@ packages:
     dependencies:
       '@types/mime': 1.3.2
       '@types/node': 17.0.41
+    dev: true
+
+  /@types/spark-md5/3.0.2:
+    resolution: {integrity: sha512-82E/lVRaqelV9qmRzzJ1PKTpyrpnT7mwdneKNJB9hUtypZDMggloDfFUCIqRRx3lYRxteCwXSq9c+W71Vf0QnQ==}
     dev: true
 
   /@types/svgo/2.6.3:
@@ -6297,8 +6303,8 @@ packages:
     resolution: {integrity: sha512-M9gnWtn3J0W+UhJOHmBxBTwv8mZCan5i1Himp60t6vvZcor0wr+IM0URKmIglsWJ7bRujNAVVN77fp+uZaWoKg==}
     dev: true
 
-  /sdt3/2.1.0_vue@3.2.37:
-    resolution: {integrity: sha512-uDa3aGBLkpUME+CJyZO7c5fQA/uC9fbgi/itQwA7GqnRrq0CkN/zEJntsSyF7RySfjGabL3JFvJU3j6lqRXnUA==}
+  /sdt3/2.1.1_vue@3.2.37:
+    resolution: {integrity: sha512-WzMcXpEsrgoHVSgnmZYRSZwfme6gStKCqEW5zhuoKb7iCW2WzTdqTvSGWiAh7r1a/Vu3wD4jdIJ7nlcI5O4QvA==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -6548,6 +6554,10 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+
+  /spark-md5/3.0.2:
+    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
+    dev: false
 
   /sparse-bitfield/3.0.3:
     resolution: {integrity: sha1-/0rm5oZWBWuks+eSqzM004JzyhE=}
