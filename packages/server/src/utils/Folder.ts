@@ -12,7 +12,7 @@ export default class Folder {
     }
 
     findByPath(path: PanPath) {
-        if (path == "/") return { target: this.folder, father: null, index: undefined };
+        if (path == "/") return { target: this.folder, father: this.folder, index: undefined };
 
         const pathArr = path.split("/");
         pathArr.shift();
@@ -26,7 +26,7 @@ export default class Folder {
             }
             if (result && result.folders) {
                 targetIndex = result.folders.findIndex((folder) => folder.name == foldername);
-                result = targetIndex == -1 ? undefined : result.folders[index];
+                result = targetIndex == -1 ? undefined : result.folders[targetIndex];
             }
         });
         return { target: result, father, index: targetIndex };
@@ -75,7 +75,12 @@ export default class Folder {
 
             if (target) {
                 Folder.foreach(target, (item) => folderIds.push(item.id));
-                father!.folders?.splice(index!, 1);
+                father.folders?.splice(index!, 1);
+                if (path_ == "/") {
+                    // 如果是删除根目录 根目录不会被删除 要排除根目录的id
+                    folderIds.shift();
+                    delete this.folder.folders;
+                }
             } else {
                 errors.push(path_);
             }

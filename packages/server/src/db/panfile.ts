@@ -28,9 +28,6 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     @prop({ require: true })
     declare filePath: string;
 
-    @prop({ default: false })
-    declare isPublic: boolean;
-
     async deleteFile(this: DocumentType<PanFile>) {
         await this.delete();
         const temp = new TempFile(this);
