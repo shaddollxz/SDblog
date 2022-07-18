@@ -44,6 +44,10 @@ export {
 } from "./ajax/static";
 
 export {
+    panFolder as panFolderApi,
+    createPanFolder as createPanFolderApi,
+    removePanFolder as removePanFolderApi,
+    renamePanFolder as renamePanFolderApi,
     uploadPanFileStart as uploadPanFileStartApi,
     uploadPanFile as uploadPanFileApi,
     uploadPanFileChunk as uploadPanFileChunkApi,

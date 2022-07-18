@@ -1,9 +1,5 @@
 import fs from "fs-extra";
 import crypto from "crypto";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 /** 获得文件的唯一哈希值 */
 export default function fileHash(path: string) {

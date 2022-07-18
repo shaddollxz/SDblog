@@ -22,9 +22,9 @@ export function originalFilename(filename: string, isSuffix = true) {
     }
 }
 
-export function filenameMsg(filename: string) {
+export function filenameMsg(filename: string): Record<"time" | string, string> {
     const name = filename.split(".")![0];
-    const time = +name.match(/-T(\d+)/)![1];
+    const time = name.match(/-T(\d+)/)![1];
     const msgs = name.split("--O");
     msgs.shift();
     const msgObj: Record<string, string> = {};

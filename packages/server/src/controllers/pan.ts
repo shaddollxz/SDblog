@@ -1,14 +1,23 @@
-import { Pan, PanFile } from "../db";
+import { Pan, PanFile, TempFile } from "../db";
 import Folder from "../utils/Folder";
+import { originalFilename, filenameMsg, formateFilename } from "../utils/formateFilename";
+import fs from "fs-extra";
+import path from "path";
 import { StatusEnum } from "#interface";
 import type {
     CreateFolderOption,
     RemoveFolderOption,
+    RenameFolderOption,
+    MoveFolderOption,
     UploadFileChunkOption,
     UploadFileEndOption,
     UploadFileStartOption,
     RemoveFileOption,
+    RenameFileOption,
+    MoveFileOption,
 } from "#interface";
+
+//* folder
 
 export const folderList: GetHandler = async (req, res, next) => {
     try {
@@ -61,7 +70,43 @@ export const removeFolder: DeleteHandler<RemoveFolderOption> = async (req, res, 
     }
 };
 
-export const uploadFile: PostHandler = async (req, res, next) => {
+export const renameFolder: PostHandler<RenameFolderOption> = async (req, res, next) => {
+    try {
+        const folderDoc = (await Pan.findById(req.body._id!))!;
+        const folder = new Folder(folderDoc.path);
+        folder.rename(req.body.path, req.body.name);
+        folderDoc.path = folder.json();
+        await folderDoc.save();
+        next();
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const moveFolder: PostHandler<MoveFolderOption> = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+//* file
+
+export const uploadFile: PutHandler = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const renameFile: PostHandler<RenameFileOption> = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const moveFile: PostHandler<MoveFileOption> = async (req, res, next) => {
     try {
     } catch (e) {
         next(e);
@@ -75,8 +120,16 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
     }
 };
 
+export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
 export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
     try {
+        const { _id, name, folderId, hash } = req.body;
     } catch (e) {
         next(e);
     }

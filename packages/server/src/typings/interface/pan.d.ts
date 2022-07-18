@@ -27,9 +27,19 @@ export interface RemoveFolderOption {
     path: PanPath[];
 }
 
+export interface RenameFolderOption {
+    name: string;
+    path: PanPath;
+}
+
+export interface MoveFolderOption {
+    folderPath: PanPath;
+    targetPath: PanPath;
+}
+
 export interface UploadFileStartOption {
     hash: string;
-    path: PanPath;
+    folderId: string;
     name: string;
     chunks: number;
 }
@@ -48,11 +58,22 @@ export interface UploadFileChunkOption {
 
 export interface UploadFileEndOption {
     name: string;
-    path: PanPath;
+    folderId: string;
+    hash: string;
 }
 
 export interface RemoveFileOption {
     path: PanPath;
+}
+
+export interface RenameFileOption {
+    name: string;
+    fileId: string;
+}
+
+export interface MoveFileOption {
+    fileId: string;
+    folderId: string;
 }
 
 export {};

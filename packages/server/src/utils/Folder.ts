@@ -89,6 +89,11 @@ export default class Folder {
         return { folderIds, errors };
     }
 
+    rename(path: PanPath, name: string) {
+        const { target } = this.findByPath(path);
+        target.name = name;
+    }
+
     static foreach(folder: FolderJSON, cb: (item: FolderJSON) => void) {
         cb(folder);
         if (folder.folders) {

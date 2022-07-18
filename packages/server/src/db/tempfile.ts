@@ -17,6 +17,6 @@ export class TempFile implements DB {
     @prop({ required: true })
     declare filePath: string;
 
-    @prop({ default: Date.now, index: { expireAfterSeconds: +process.env.PUBLIC_TEMP_DURATION } })
+    @prop({ default: Date.now, index: { expireAfterSeconds: +process.env.PUBLIC_TEMP_DAY } })
     declare createdAt: Date;
 }
