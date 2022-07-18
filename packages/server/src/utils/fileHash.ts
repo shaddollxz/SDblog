@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 /** 获得文件的唯一哈希值 */
 export default function fileHash(path: string) {
     const stream = fs.createReadStream(path);
-    const hash = crypto.createHash("sha256");
+    const hash = crypto.createHash("md5");
 
     return new Promise((resolve, reject) => {
         stream.on("data", (data) => {
