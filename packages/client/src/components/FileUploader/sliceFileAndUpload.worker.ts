@@ -4,7 +4,7 @@ import { uploadPanFileStartApi, uploadPanFileChunkApi, uploadPanFileApi, uploadP
 import { parallelPromise } from "@/utils/parallelPromise";
 
 const PostMessage = (arg: MainOnMessage) => postMessage(arg);
-const CHUNKSIZE = 1024 ** 2 * 5; // 5MB
+const CHUNKSIZE = +import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
 
 onmessage = async ({ data: { files, isSendProgress, path, name } }: { data: MainPostMessage }) => {
     for (let i = 0; i < files.files.length; i++) {
@@ -29,7 +29,7 @@ onmessage = async ({ data: { files, isSendProgress, path, name } }: { data: Main
                         args: [{ index: chunkIndex, all: buffers.length, hash: result.hash }],
                     }))
                 );
-                folderJson = (await uploadPanFileEndApi({ path, name })).data.folderJson;
+                folderJson = (await uploadPanFileEndApi({ name })).data.folderJson;
             }
         } else {
             //* 有储存上传的文件 直接更新页面
@@ -64,11 +64,11 @@ async function hasFile(
     let buffers: ArrayBuffer[];
     if (Array.isArray(buffer)) {
         hash = getFileHash(buffer as ArrayBuffer[]);
-        data = (await uploadPanFileStartApi({ hash, path, chunks: buffer.length, name })).data;
+        data = (await uploadPanFileStartApi({ hash, chunks: buffer.length, name })).data;
         buffers = buffer;
     } else {
         hash = getFileHash([buffer] as ArrayBuffer[]);
-        data = (await uploadPanFileStartApi({ hash, path, chunks: 1, name })).data;
+        data = (await uploadPanFileStartApi({ hash, chunks: 1, name })).data;
         buffers = [buffer];
     }
 

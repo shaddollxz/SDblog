@@ -10,6 +10,7 @@ declare module "process" {
                 readonly PUBLIC_STATIC_PATH: string;
                 readonly PUBLIC_STATIC_PREFIX: string;
                 readonly PUBLIC_TEMP_DAY: NumberString;
+                readonly PUBLIC_UPLOAD_CHUNKSIZE: NumberString;
                 // 私有变量
                 readonly DBURL: string;
                 readonly DBNAME: string;

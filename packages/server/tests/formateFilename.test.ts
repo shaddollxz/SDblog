@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import { formateFilename, originalFilename, filenameMsg } from "../src/utils/formateFilename";
 
 describe("formateFilename", () => {
-    const now = new Date("2022-1-1").getDate();
-    Date.now = vi.fn(() => now);
+    const now = "" + new Date("2022-1-1").getDate();
+    Date.now = vi.fn(() => +now);
 
     it("简单文件后缀", () => {
         const filename = "aaa.png";

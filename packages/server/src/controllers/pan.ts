@@ -115,6 +115,44 @@ export const moveFile: PostHandler<MoveFileOption> = async (req, res, next) => {
 
 export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, next) => {
     try {
+        const { hash, name, folderId, chunks, _id } = req.body;
+
+        const panfile = (await PanFile.find({ hash }).limit(1))[0];
+        if (panfile) {
+            //todo 文件已经存在
+            const file = new PanFile({
+                belongId: _id,
+                folderId,
+                filePath: panfile.filePath,
+                size: panfile.size,
+                name,
+                hash,
+            });
+            await file.save();
+            next();
+        } else {
+            const files = await TempFile.find({ hash });
+            if (files.length == chunks) {
+                //todo 文件chunk已经全部凑齐
+
+                next();
+            } else {
+                //todo 缺少chunk 通知前端开始传输需要的
+                const hasChunks: Record<number, boolean> = {};
+                for (const file of files) {
+                    hasChunks[+filenameMsg(path.basename(file.filePath)).chunkIndex] = true;
+                }
+                const needChunk: number[] = [];
+                for (let i = 0; i < chunks; i++) {
+                    if (!hasChunks[i]) {
+                        needChunk.push(i);
+                    }
+                }
+
+                res.status(StatusEnum.OK).json({ needChunk });
+                return;
+            }
+        }
     } catch (e) {
         next(e);
     }

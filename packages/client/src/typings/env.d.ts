@@ -16,6 +16,7 @@ interface ImportMetaEnv {
     readonly PUBLIC_STATIC_PATH: string;
     readonly PUBLIC_STATIC_PREFIX: string;
     readonly PUBLIC_TEMP_DAY: NumberString;
+    readonly PUBLIC_UPLOAD_CHUNKSIZE: NumberString;
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv;

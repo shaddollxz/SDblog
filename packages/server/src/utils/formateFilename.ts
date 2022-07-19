@@ -1,19 +1,25 @@
-export function formateFilename(filename: string, otherMsg?: Record<string, string>) {
+export function filenameSlice(filename: string) {
     const arr = filename.split(".");
-    let name = `${arr.shift()}-T${Date.now()}`;
+    return {
+        prefix: arr.shift()!,
+        suffix: arr.length ? `.${arr.join(".")}` : "",
+        suffixArr: arr,
+    };
+}
+
+export function formateFilename(filename: string, otherMsg?: Record<string, string>) {
+    const { prefix, suffix } = filenameSlice(filename);
+    let name = `${prefix}-T${Date.now()}`;
     if (otherMsg) {
         for (let key in otherMsg) {
             name += `--O${key}-${otherMsg[key]}E`;
         }
     }
-    const suffix = arr.length ? `.${arr.join(".")}` : "";
     return name + suffix;
 }
 
 export function originalFilename(filename: string, isSuffix = true) {
-    const arr = filename.split(".");
-    let name = arr.shift()!;
-    const suffix = arr.length ? "." + arr.join(".") : "";
+    const { prefix: name, suffix } = filenameSlice(filename);
 
     if (isSuffix) {
         return name.replace(/(-T\d+)(--O[^-]+?-[^-]+?E)*/, "") + suffix;
@@ -23,7 +29,7 @@ export function originalFilename(filename: string, isSuffix = true) {
 }
 
 export function filenameMsg(filename: string): Record<"time" | string, string> {
-    const name = filename.split(".")![0];
+    const { prefix: name } = filenameSlice(filename);
     const time = name.match(/-T(\d+)/)![1];
     const msgs = name.split("--O");
     msgs.shift();

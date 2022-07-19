@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import crypto from "crypto";
 
 /** 获得文件的唯一哈希值 */
-export default function fileHash(path: string) {
+export function fileHash(path: string) {
     const stream = fs.createReadStream(path);
     const hash = crypto.createHash("md5");
 
