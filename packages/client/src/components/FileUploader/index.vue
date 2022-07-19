@@ -5,18 +5,23 @@
 <script setup lang="ts">
 import { LocalFiles } from "sdt3";
 import UploadWorker from "./sliceFileAndUpload.worker?worker";
+import { MainPostMessage, MainOnMessage } from "./types";
 
 interface Props {
     isSendProgress: boolean;
-    path: string;
+    options: {
+        path: string;
+        folderId: string;
+        name: string;
+    };
 }
 const props = withDefaults(defineProps<Props>(), {
     isSendProgress: true,
 });
 interface Emits {
     (e: "onProcess", process: number): void;
-    (e: "onFinish"): void;
-    (e: "onError"): void;
+    (e: "onFinish", filename: string, folderJson: string): void;
+    (e: "onError", errorType: MainOnMessage["error"]): void;
 }
 const emit = defineEmits<Emits>();
 
@@ -25,13 +30,20 @@ const uploadWorker = new UploadWorker();
 async function choseFile() {
     const files = await new LocalFiles();
     if (files.files.length) {
-        uploadWorker.postMessage({ files, isSendProgress: props.isSendProgress, path: props.path });
-        uploadWorker.onmessage = ({ data }) => {
+        uploadWorker.postMessage({
+            files,
+            folderId: props.options.folderId,
+            name: props.options.name,
+            isSendProgress: props.isSendProgress,
+        } as MainPostMessage);
+        const filenames = Array.isArray(files.name) ? files.name : [files.name];
+        uploadWorker.onmessage = ({ data }: { data: MainOnMessage }) => {
             if (data.error) {
-                emit("onError");
+                emit("onError", data.error);
+                return;
             }
-            if (data.finish) {
-                emit("onFinish");
+            if (data.finish && data.finishOrder && data.folderJson) {
+                emit("onFinish", filenames[data.finishOrder], data.folderJson);
             }
         };
     }

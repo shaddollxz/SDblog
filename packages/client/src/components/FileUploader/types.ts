@@ -1,17 +1,19 @@
 import type { LocalFiles } from "sdt3";
-import type { PanPath } from "#interface";
 
 export interface MainOnMessage {
     error?: "read" | "upload";
 
     finish?: boolean;
-    progress?: number;
     finishOrder?: number;
+    folderJson?: string;
+
+    progress?: number;
 }
 
 export interface MainPostMessage {
-    path: PanPath;
+    folderId: string;
     name: string;
-    isSendProgress: boolean;
     files: LocalFiles;
+
+    isSendProgress: boolean;
 }
