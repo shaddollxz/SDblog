@@ -1,11 +1,10 @@
-import typegoose, { defaultClasses } from "@typegoose/typegoose";
-const { prop } = typegoose;
 import type { DocumentType } from "@typegoose/typegoose";
-import type { DB } from "./DB";
-import { TempFile } from "./index";
+import typegoose, { defaultClasses } from "@typegoose/typegoose";
 import fs from "fs-extra";
 import { resolve } from "path";
-import type { PanPath } from "#interface";
+import type { DB } from "./DB";
+import { TempFile } from "./index";
+const { prop } = typegoose;
 
 export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
@@ -34,7 +33,7 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
         await temp.save();
 
         setTimeout(() => {
-            fs.move(resolve(process.env.PAN_PATH, this.filePath), process.env.TEMP_PATH);
+            fs.move(resolve(process.env.PAN_PATH!, this.filePath), process.env.TEMP_PATH!);
         }, 0);
     }
 }

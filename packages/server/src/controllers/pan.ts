@@ -1,8 +1,9 @@
 import { Pan, PanFile, TempFile } from "../db";
 import Folder from "../utils/Folder";
-import { originalFilename, filenameMsg, formateFilename } from "../utils/formateFilename";
+import { filenameSlice, originalFilename, filenameMsg, formateFilename } from "../utils/formateFilename";
 import fs from "fs-extra";
 import path from "path";
+import { useConcatFilesWorker } from "../workers";
 import { StatusEnum } from "#interface";
 import type {
     CreateFolderOption,
@@ -134,13 +135,30 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             const files = await TempFile.find({ hash });
             if (files.length == chunks) {
                 //todo 文件chunk已经全部凑齐
-
-                next();
+                try {
+                    const path = await useConcatFilesWorker(files.map((file) => file.filePath));
+                    const fileDetail = new PanFile({
+                        belongId: _id,
+                        folderId,
+                        filePath: path,
+                        size: (await fs.stat(path)).size,
+                        name,
+                        hash,
+                    });
+                    await fileDetail.save();
+                    next();
+                } catch (e) {
+                    console.error(e);
+                    res.status(StatusEnum.ServerError).json({
+                        isShow: true,
+                        error: "服务器错误，请稍后重试",
+                    });
+                }
             } else {
                 //todo 缺少chunk 通知前端开始传输需要的
                 const hasChunks: Record<number, boolean> = {};
                 for (const file of files) {
-                    hasChunks[+filenameMsg(path.basename(file.filePath)).chunkIndex] = true;
+                    hasChunks[+filenameMsg<TempChunkFileMsg>(path.basename(file.filePath)).chunkIndex] = true;
                 }
                 const needChunk: number[] = [];
                 for (let i = 0; i < chunks; i++) {
@@ -160,6 +178,17 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
 
 export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, next) => {
     try {
+        const { hash, index, name, all } = req.body;
+        const filePath = path.resolve(
+            process.env.TEMP_PATH,
+            formateFilename(hash + filenameSlice(name).suffix, { chunkIndex: index })
+        );
+        const tempFile = new TempFile({
+            hash,
+            filePath,
+        });
+        await tempFile.save();
+        res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {
         next(e);
     }
@@ -168,6 +197,26 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
 export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
     try {
         const { _id, name, folderId, hash } = req.body;
+        const files = await TempFile.find({ hash });
+        try {
+            const path = await useConcatFilesWorker(files.map((file) => file.filePath));
+            const fileDetail = new PanFile({
+                belongId: _id,
+                folderId,
+                filePath: path,
+                size: (await fs.stat(path)).size,
+                name,
+                hash,
+            });
+            await fileDetail.save();
+            next();
+        } catch (e) {
+            console.error(e);
+            res.status(StatusEnum.ServerError).json({
+                isShow: true,
+                error: "服务器错误，请稍后重试",
+            });
+        }
     } catch (e) {
         next(e);
     }

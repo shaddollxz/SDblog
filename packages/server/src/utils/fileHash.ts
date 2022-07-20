@@ -6,7 +6,7 @@ export function fileHash(path: string) {
     const stream = fs.createReadStream(path);
     const hash = crypto.createHash("md5");
 
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         stream.on("data", (data) => {
             hash.update(data);
         });

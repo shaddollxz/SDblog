@@ -1,13 +1,20 @@
 import { StatusEnum } from "#interface";
 import { resolve } from "path";
 import fs from "fs-extra";
+import { fileHash } from "../utils/fileHash";
+import { filenameSlice } from "../utils/formateFilename";
 
 export const uploadImage: PostHandler = async (req, res, next) => {
     try {
         const file = req.file;
         if (file) {
+            const hash = await fileHash(file.path);
+            const newName = hash + filenameSlice(file.filename).suffix;
+            if (!(await fs.pathExists(resolve(file.destination, newName)))) {
+                await fs.rename(file.path, resolve(file.destination, newName));
+            }
             res.status(StatusEnum.OK).json({
-                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + file.filename,
+                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + newName,
             });
         }
     } catch (e) {

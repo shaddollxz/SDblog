@@ -4,7 +4,7 @@ declare module "process" {
         namespace NodeJS {
             interface ProcessEnv extends Dict<string> {
                 // 开发模式
-                readonly MODE: string;
+                readonly MODE: "development" | "production";
                 // 公共变量
                 readonly PUBLIC_DIST_PATH: string;
                 readonly PUBLIC_STATIC_PATH: string;

@@ -1,8 +1,36 @@
 import AdmZip from "adm-zip";
 import path from "path";
+import fs from "fs-extra";
 import { formateFilename, originalFilename } from "./formateFilename";
+import { v4 as uuidv4 } from "uuid";
+import { fileHash } from "./fileHash";
 
-/** 压缩文件夹 */
+export function zipFiles(files: { path: string; name: string }[], outname?: string) {
+    const zip = new AdmZip();
+
+    for (const file of files) {
+        zip.addLocalFile(file.path, "", file.name);
+    }
+
+    const outDir = path.resolve(process.env.TEMP_PATH, uuidv4() + ".zip");
+    return new Promise<string>((resolve, reject) => {
+        zip.writeZip(outDir, async (e) => {
+            if (e) {
+                reject(e);
+            }
+            const finallyPath = path.resolve(process.env.TEMP_PATH, (await fileHash(outDir)) + ".zip");
+            if (await fs.pathExists(finallyPath)) {
+                await fs.rename(outDir, finallyPath);
+            }
+            resolve(finallyPath);
+        });
+    });
+}
+
+/**
+ * @deprecated
+ * 压缩文件夹
+ */
 export function zipFolder(folderPath: string, extraFiles?: string[], outname?: string) {
     const folderName = path.basename(folderPath);
     const outDir = path.resolve(process.env.TEMP_PATH, formateFilename(outname || folderName + ".zip"));

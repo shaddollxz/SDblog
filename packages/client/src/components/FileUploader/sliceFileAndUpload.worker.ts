@@ -10,6 +10,7 @@ const CHUNKSIZE = +import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
 onmessage = async ({ data: { files, folderId, name, isSendProgress } }: { data: MainPostMessage }) => {
     for (let i = 0; i < files.files.length; i++) {
         const file = files.files[i];
+        const filename: string = typeof files.name == "string" ? files.name : files.name[i];
 
         const result = await hasFile(files, i, folderId, name);
         let folderJson: string;
@@ -26,8 +27,10 @@ onmessage = async ({ data: { files, folderId, name, isSendProgress } }: { data: 
                 const { rejected } = await parallelPromise(
                     needChunk.map((chunkIndex) => ({
                         func: async (data: UploadFileChunkOption) =>
-                            await uploadPanFileChunkApi(data).catch(() => chunkIndex),
-                        args: [{ index: chunkIndex, all: buffers.length, hash: result.hash }],
+                            await uploadPanFileChunkApi(data).catch(() => {
+                                throw chunkIndex;
+                            }),
+                        args: [{ index: chunkIndex, all: buffers.length, hash: result.hash, name: filename }],
                     }))
                 );
                 if (rejected.length) {

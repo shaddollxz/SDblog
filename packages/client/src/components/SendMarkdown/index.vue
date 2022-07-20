@@ -22,7 +22,7 @@
                 @keydown="inputFormat($event)"
                 v-bind="$attrs"
             ></textarea>
-            <Markdown v-if="isPreview" :markdown="text"></Markdown>
+            <Markdown v-if="isPreview" :markdown="text" keepalive></Markdown>
         </div>
 
         <div class="buttons">
@@ -156,8 +156,19 @@ const leftList = [
         async func() {
             try {
                 const formData = new FormData();
-                // prettier-ignore
-                const file = (await new LocalFiles({ type: ["jpg", "png", "jpeg", "gif", "webp"], maxSize: 5 * 1024 })).files[0];
+                let file: File;
+                try {
+                    file = (
+                        await new LocalFiles({
+                            type: ["jpg", "png", "jpeg", "gif", "webp"],
+                            maxSize: 5 * 1024,
+                        })
+                    ).files[0];
+                } catch (e) {
+                    Message.error(e as string);
+                    return;
+                }
+
                 formData.append("image", file);
                 const { data } = await uploadImageApi(formData);
                 textArea.insert(`![](${data.imgSrc})`);

@@ -15,7 +15,7 @@ export default ({ command, mode }: ConfigEnv) => {
 
     return defineConfig({
         envPrefix, // 前缀为指定的变量才会加载进env
-        envDir: resolve("../../env"), // 环境变量文件夹位置
+        envDir: resolve(__dirname, "../../env"), // 环境变量文件夹位置
         plugins: getPlugins(Env, isBuild, isDev),
         build: getBuild(Env, isBuild, isDev),
         server: getServer(Env, isBuild, isDev),

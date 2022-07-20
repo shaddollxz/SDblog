@@ -5,16 +5,16 @@ import { formateFilename } from "../utils/formateFilename";
 const imageEngin = multer.diskStorage({
     destination: resolve(process.env.PUBLIC_STATIC_PATH, "./image"),
 
-    filename(req, file, cb) {
-        cb(null, formateFilename(file.originalname));
+    filename: async (req, file, cb) => {
+        cb(null, formateFilename(file.originalname, { T: Date.now() }));
     },
 });
 
 const avatarEngin = multer.diskStorage({
     destination: resolve(process.env.PUBLIC_STATIC_PATH, "./avatar"),
 
-    filename(req, file, cb) {
-        cb(null, formateFilename(file.originalname));
+    filename: async (req, file, cb) => {
+        cb(null, formateFilename(file.originalname, { T: Date.now() }));
     },
 });
 

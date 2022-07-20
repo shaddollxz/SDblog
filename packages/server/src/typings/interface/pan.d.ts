@@ -54,6 +54,7 @@ export interface UploadFileChunkOption {
     index: number;
     all: number;
     hash: string;
+    name: string;
 }
 
 export interface UploadFileEndOption {
