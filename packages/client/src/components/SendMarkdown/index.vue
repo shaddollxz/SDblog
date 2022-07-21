@@ -126,12 +126,12 @@ function inputFormat(e: KeyboardEvent) {
                             text.value.slice(0, type.end) +
                             text.value.slice(curCursor.start, text.value.length);
 
-                        if (type.type == "img") {
-                            const src = deleted.match(/(?<=\().+(?=\))/)?.[0];
-                            if (src) {
-                                removeImageApi(src);
-                            }
-                        }
+                        // if (type.type == "img") {
+                        //     const src = deleted.match(/(?<=\().+(?=\))/)?.[0];
+                        //     if (src) {
+                        //         removeImageApi(src);
+                        //     }
+                        // }
                     }
                 }
             }
@@ -155,7 +155,7 @@ const leftList = [
         icon: "replyBox-picture",
         async func() {
             try {
-                const formData = new FormData();
+                const formData = new FormDataT<{ image: Blob }>();
                 let file: File;
                 try {
                     file = (
@@ -171,7 +171,7 @@ const leftList = [
 
                 formData.append("image", file);
                 const { data } = await uploadImageApi(formData);
-                textArea.insert(`![](${data.imgSrc})`);
+                textArea.insert(`![${file.name}](${data.imgSrc})`);
             } catch (e) {
                 Message.error("图片上传失败");
             }

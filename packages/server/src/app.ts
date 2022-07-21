@@ -8,7 +8,7 @@ import compression from "./middlewares/compression";
 const app = express();
 
 app.use(compression); //gzip
-app.use(express.json());
+app.use(express.json({ limit: process.env.PUBLIC_UPLOAD_CHUNKSIZE + 1024 * 2 })); // 限制请求体最大为 chunkSize+2KB
 
 // 配置静态资源
 app.use("/", express.static(process.env.PUBLIC_DIST_PATH)); // 网页

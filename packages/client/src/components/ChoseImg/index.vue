@@ -24,11 +24,11 @@ async function choseFile() {
         type: ["jpg", "png", "jpeg", "gif"],
         maxSize: props.maxSize,
     });
-    imgData.value = (await img.read({ readAs: "readAsDataURL" })) as string;
+    imgData.value = (await img.read(0, { readAs: "readAsDataURL" })) as string;
     data.value = img.files[0];
 }
 
-defineExpose({ data, imgData });
+defineExpose({ file: data.value, dataUrl: imgData.value });
 </script>
 
 <style lang="scss" scoped>

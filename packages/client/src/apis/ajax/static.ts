@@ -2,7 +2,7 @@ import axios from "../axios";
 import type { AxiosPromise } from "axios";
 
 // 上传图片
-export function uploadImage(formData: FormData): AxiosPromise<{ imgSrc: string }> {
+export function uploadImage(formData: FormDataT<{ image: Blob }>): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
         url: "image",
@@ -20,7 +20,7 @@ export function removeImage(src: string) {
 }
 
 // 上传头像
-export function uploadAvatar(formData: FormData): AxiosPromise<{ imgSrc: string }> {
+export function uploadAvatar(formData: FormDataT<{ avatar: Blob }>): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
         url: "avatar",

@@ -10,8 +10,6 @@ const CHUNKSIZE = +import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
 onmessage = async ({ data: { files, folderId, name, isSendProgress } }: { data: MainPostMessage }) => {
     for (let i = 0; i < files.files.length; i++) {
         const file = files.files[i];
-        const filename: string = typeof files.name == "string" ? files.name : files.name[i];
-
         const result = await hasFile(files, i, folderId, name);
         let folderJson: string;
         if (typeof result != "string") {
@@ -30,7 +28,9 @@ onmessage = async ({ data: { files, folderId, name, isSendProgress } }: { data: 
                             await uploadPanFileChunkApi(data).catch(() => {
                                 throw chunkIndex;
                             }),
-                        args: [{ index: chunkIndex, all: buffers.length, hash: result.hash, name: filename }],
+                        args: [
+                            { index: chunkIndex, all: buffers.length, hash: result.hash, name: file.name },
+                        ],
                     }))
                 );
                 if (rejected.length) {
@@ -56,11 +56,7 @@ function getFileHash(buffers: ArrayBuffer[]) {
 }
 
 async function hasFile(file: MainPostMessage["files"], order: number, folderId: string, name: string) {
-    const buffer = (await file.read({
-        readAs: "readAsArrayBuffer",
-        order,
-        chunkSize: CHUNKSIZE,
-    })) as ArrayBuffer[] | ArrayBuffer;
+    const buffer = (await file.read(order, { chunkSize: CHUNKSIZE })) as ArrayBuffer[] | ArrayBuffer;
     let hash: string;
     let data: Awaited<UploadFileStartRes>;
     let buffers: ArrayBuffer[];

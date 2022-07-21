@@ -8,6 +8,7 @@ import "sdt3/style";
 import globalProperties from "@/plugins/globalProperties";
 import globalComponents from "@/plugins/globalComponents";
 import "@/plugins/customElements";
+import "@/plugins/globalVariables";
 
 import "@/plugins/initRem";
 import "@/plugins/pwa";

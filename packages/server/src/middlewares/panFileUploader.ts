@@ -10,13 +10,13 @@ const privatePanFileEngin = multer.diskStorage({
     },
 });
 
-const publicPanFileEngin = multer.diskStorage({
-    destination: resolve(process.env.PAN_PATH, "./public"),
-
+const chunkFileEngin = multer.diskStorage({
+    destination: process.env.TEMP_PATH,
     filename(req, file, cb) {
+        console.log(req.body);
         cb(null, formateFilename(file.originalname));
     },
 });
 
-export const publicPanFileUploader = multer({ storage: publicPanFileEngin }).array("files");
 export const privatePanFileUploader = multer({ storage: privatePanFileEngin }).array("files");
+export const chunkFileUploader = multer({ storage: chunkFileEngin }).single("chunk");

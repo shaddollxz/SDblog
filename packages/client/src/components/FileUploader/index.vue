@@ -36,14 +36,13 @@ async function choseFile() {
             name: props.options.name,
             isSendProgress: props.isSendProgress,
         } as MainPostMessage);
-        const filenames = Array.isArray(files.name) ? files.name : [files.name];
         uploadWorker.onmessage = ({ data }: { data: MainOnMessage }) => {
             if (data.error) {
                 emit("onError", data.error);
                 return;
             }
             if (data.finish && data.finishOrder && data.folderJson) {
-                emit("onFinish", filenames[data.finishOrder], data.folderJson);
+                emit("onFinish", files.names[data.finishOrder], data.folderJson);
             }
         };
     }

@@ -10,20 +10,20 @@
                 <span>预览</span>
                 <div class="avatars gusto-flex-center">
                     <div class="gusto-avatarBox">
-                        <img :src="choseImg?.imgData || userStore.avatars.avatar || $img.akarin" alt="" />
+                        <img :src="choseImg?.dataUrl || userStore.avatars.avatar || $img.akarin" alt="" />
                     </div>
                     <div
                         class="gusto-frameBox canClick"
                         title="修改头像框"
                         @click="isShowChangeAvatarFrame = !isShowChangeAvatarFrame"
                     >
-                        <img :src="choseImg?.imgData || userStore.avatars.avatar || $img.akarin" alt="" />
+                        <img :src="choseImg?.dataUrl || userStore.avatars.avatar || $img.akarin" alt="" />
                         <img :src="$img.avatarFrame[avatars.avatarFrame]" alt="" />
                     </div>
                 </div>
             </div>
         </div>
-        <CheckButton :isCanClick="!!choseImg?.data" @onClick="uploadAvatar">上传头像</CheckButton>
+        <CheckButton :isCanClick="!!choseImg?.file" @onClick="uploadAvatar">上传头像</CheckButton>
 
         <ChangeAvatarFrame
             v-if="isShowChangeAvatarFrame"
@@ -37,17 +37,22 @@ import ChoseImg from "@/components/ChoseImg/index.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
 import { uploadAvatarApi, removeImageApi } from "@apis";
 import { useUserStore } from "@/store/user";
+import { Message } from "sdt3";
 const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame.vue"));
 const userStore = useUserStore();
 const avatars = toRef(userStore, "avatars");
 
 const choseImg = shallowRef<InstanceType<typeof ChoseImg>>();
 async function uploadAvatar() {
-    const formData = new FormData();
-    formData.append("avatar", choseImg.value!.data as unknown as File);
-    const { data } = await uploadAvatarApi(formData);
-    await removeImageApi(userStore.avatars.avatar);
-    userStore.updateUserInfo({ avatar: data.imgSrc });
+    if (choseImg.value?.file) {
+        const formData = new FormDataT<{ avatar: Blob }>();
+        formData.append("avatar", choseImg.value.file);
+        const { data } = await uploadAvatarApi(formData);
+        await removeImageApi(userStore.avatars.avatar);
+        userStore.updateUserInfo({ avatar: data.imgSrc });
+    } else {
+        Message.error("请选择图片");
+    }
 }
 
 let isShowChangeAvatarFrame = ref(false);

@@ -21,7 +21,7 @@
                 <p>封面：</p>
                 <div>
                     <ChoseImg ref="choseImg">选择图片</ChoseImg>
-                    <CheckButton :isCanClick="!!choseImg?.data" @onClick="uploadImg">上传</CheckButton>
+                    <CheckButton :isCanClick="!!choseImg?.file" @onClick="uploadImg">上传</CheckButton>
                 </div>
             </section>
             <section class="description">
@@ -74,7 +74,7 @@ onMounted(async () => {
         for (const tag of data.tags) {
             selectInput.value!.selectedItems.push(tag);
         }
-        choseImg.value!.imgData = data.headPic;
+        choseImg.value!.dataUrl = data.headPic;
         description.value = data.description ?? "";
     }
 });
@@ -97,8 +97,8 @@ function addNewTag(tagValue: string, cb: (newTag: TagInfo) => void) {
 
 async function uploadImg() {
     try {
-        const formData = new FormData();
-        formData.append("image", choseImg.value!.data as unknown as File);
+        const formData = new FormDataT<{ image: Blob }>();
+        formData.append("image", choseImg.value!.file!);
         const { data } = await uploadImageApi(formData);
         imgSrc.value = data.imgSrc;
         Message.success("图片上传成功");
