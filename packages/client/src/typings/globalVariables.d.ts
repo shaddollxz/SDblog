@@ -10,7 +10,7 @@ interface FormDataT<T extends Record<string, string | Blob | number>> {
         thisArg?: any
     ): void;
 }
-declare var FormDataT: {
+declare const FormDataT: {
     prototype: FormData<T>;
     new <T extends Record<string, string | Blob | number>>(form?: HTMLFormElement): FormDataT<T>;
 };

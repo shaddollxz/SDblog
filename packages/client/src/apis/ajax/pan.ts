@@ -5,6 +5,7 @@ import type {
     CreateFolderOption,
     RemoveFolderOption,
     RenameFolderOption,
+    UploadFileOption,
     UploadFileStartOption,
     UploadFileStartRes,
     UploadFileChunkOption,
@@ -52,7 +53,7 @@ export function uploadPanFileStart(data: UploadFileStartOption): AxiosPromise<Up
     });
 }
 
-export function uploadPanFile(data: FormData): AxiosPromise<PanListRes> {
+export function uploadPanFile(data: FormDataT<UploadFileOption>): AxiosPromise<PanListRes> {
     return axios({
         method: "post",
         url: "",
@@ -60,7 +61,7 @@ export function uploadPanFile(data: FormData): AxiosPromise<PanListRes> {
     });
 }
 
-export function uploadPanFileChunk(data: UploadFileChunkOption): AxiosPromise<Success | Faild> {
+export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): AxiosPromise<Success | Faild> {
     return axios({
         method: "post",
         url: "",

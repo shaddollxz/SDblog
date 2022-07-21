@@ -6,15 +6,17 @@
                     <span>
                         {{ nav.text }}
                     </span>
-                    <div class="dropBox" v-for="item of nav.children">
-                        <RouterLink :to="item.link" custom v-slot="{ navigate }">
-                            <div
-                                class="dropItem gusto-flex-center"
-                                @click="() => (navigate(), emit('onChangeSideBarState'))"
-                            >
-                                {{ item.text }}
-                            </div>
-                        </RouterLink>
+                    <div class="dropBox">
+                        <template v-for="item of nav.children">
+                            <RouterLink :to="item.link" custom v-slot="{ navigate }">
+                                <div
+                                    class="dropItem gusto-flex-center"
+                                    @click="() => (navigate(), emit('onChangeSideBarState'))"
+                                >
+                                    {{ item.text }}
+                                </div>
+                            </RouterLink>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -59,7 +61,13 @@ const emit = defineEmits<Emits>();
 const navlist = [
     { text: "首页", link: "/" },
     { text: "留言", link: "/essay" },
-    { text: "小工具", children: [{ text: "卡手率计算器", link: "/deckCalculator" }] },
+    {
+        text: "小工具",
+        children: [
+            { text: "卡手率计算器", link: "/deckCalculator" },
+            { text: "网盘", link: "/pan" },
+        ],
+    },
     { text: "关于", link: "/about" },
 ];
 </script>

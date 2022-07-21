@@ -1,11 +1,13 @@
 <template>
-    <div class="fileUploader"></div>
+    <div class="fileUploader">
+        <slot></slot>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { LocalFiles } from "sdt3";
 import UploadWorker from "./sliceFileAndUpload.worker?worker";
-import { MainPostMessage, MainOnMessage } from "./types";
+import type { MainPostMessage, MainOnMessage } from "./types";
 
 interface Props {
     isSendProgress: boolean;
@@ -25,11 +27,10 @@ interface Emits {
 }
 const emit = defineEmits<Emits>();
 
-const uploadWorker = new UploadWorker();
-
 async function choseFile() {
     const files = await new LocalFiles();
     if (files.files.length) {
+        const uploadWorker = new UploadWorker();
         uploadWorker.postMessage({
             files,
             folderId: props.options.folderId,

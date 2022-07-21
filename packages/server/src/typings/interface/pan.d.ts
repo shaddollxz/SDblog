@@ -48,14 +48,19 @@ export interface UploadFileStartRes {
     needChunk?: number[];
 }
 
-export interface UploadFileOption {}
+export type UploadFileOption = {
+    hash: string;
+    name: string;
+    file: Blob;
+};
 
-export interface UploadFileChunkOption {
+export type UploadFileChunkOption = {
     index: number;
     all: number;
     hash: string;
     name: string;
-}
+    file: Blob;
+};
 
 export interface UploadFileEndOption {
     name: string;
@@ -64,7 +69,7 @@ export interface UploadFileEndOption {
 }
 
 export interface RemoveFileOption {
-    path: PanPath;
+    fileId: string;
 }
 
 export interface RenameFileOption {

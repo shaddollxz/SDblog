@@ -2,7 +2,8 @@ import SparkMD5 from "spark-md5";
 import type { MainOnMessage, MainPostMessage } from "./types";
 import { uploadPanFileStartApi, uploadPanFileChunkApi, uploadPanFileApi, uploadPanFileEndApi } from "@apis";
 import { parallelPromise } from "@/utils/parallelPromise";
-import type { UploadFileChunkOption, UploadFileStartRes } from "@blog/server";
+import { createFormData } from "@/utils/createFormData";
+import type { UploadFileChunkOption, UploadFileStartRes, UploadFileOption } from "@blog/server";
 
 const PostMessage = (arg: MainOnMessage) => postMessage(arg);
 const CHUNKSIZE = +import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
@@ -13,25 +14,32 @@ onmessage = async ({ data: { files, folderId, name, isSendProgress } }: { data: 
         const result = await hasFile(files, i, folderId, name);
         let folderJson: string;
         if (typeof result != "string") {
+            const { buffers, hash, needChunk } = result;
             //* 没有储存过上传的文件 上传
             if (file.size < CHUNKSIZE) {
                 // 小文件直接上传
-                const form = new FormData();
-                form.append("file", file);
+                const form = createFormData<UploadFileOption>({ file, name, hash });
                 folderJson = (await uploadPanFileApi(form)).data.folderJson;
             } else {
                 // 大文件切片上传
-                const { buffers, hash, needChunk } = result;
                 const { rejected } = await parallelPromise(
-                    needChunk.map((chunkIndex) => ({
-                        func: async (data: UploadFileChunkOption) =>
-                            await uploadPanFileChunkApi(data).catch(() => {
-                                throw chunkIndex;
-                            }),
-                        args: [
-                            { index: chunkIndex, all: buffers.length, hash: result.hash, name: file.name },
-                        ],
-                    }))
+                    needChunk.map((chunkIndex) => {
+                        return {
+                            func: async (data: UploadFileChunkOption) =>
+                                await uploadPanFileChunkApi(createFormData(data)).catch(() => {
+                                    throw chunkIndex;
+                                }),
+                            args: [
+                                {
+                                    index: chunkIndex,
+                                    all: buffers.length,
+                                    hash: result.hash,
+                                    name: file.name,
+                                    file: new File([buffers[chunkIndex]], file.name),
+                                },
+                            ],
+                        };
+                    })
                 );
                 if (rejected.length) {
                     //todo 有上传失败的切片 重新上传

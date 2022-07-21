@@ -26,6 +26,7 @@ const keyWords = [
     "小工具",
     "卡手率计算器",
     "写博客",
+    "网盘",
 ];
 
 const targetDir = path.resolve(__dirname, "../../../../packages/client/src/assets/font");
