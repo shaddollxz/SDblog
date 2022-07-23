@@ -1,21 +1,20 @@
-import { User, Verifycode } from "../db";
+import { UserDB, VerifycodeDB } from "../db";
+import { AuthorityEnum, StatusEnum, VerifycodeEnum } from "../typings/enum";
+import type {
+    GetVerifycodeOptions,
+    LoginOptions,
+    RegisterOptions,
+    RetrieveOptions,
+    UserInfo,
+} from "../typings/interface/user";
 import { sign } from "../utils/jwt";
 import md5 from "../utils/md5";
 import sendEmail from "../utils/sendMail";
-import type {
-    UserInfo,
-    RetrieveOptions,
-    LoginOptions,
-    GetVerifycodeOptions,
-    RegisterOptions,
-} from "#interface";
-import { AuthorityEnum, VerifycodeEnum } from "../typings/enum";
-import { StatusEnum } from "#interface";
 
 /** 登录 */
 export const login: PostHandler<LoginOptions> = async (req, res, next) => {
     try {
-        let user = await User.findOne({ email: req.body.email, isDelete: false }).select({
+        let user = await UserDB.findOne({ email: req.body.email, isDelete: false }).select({
             name: 1,
             email: 1,
             passWord: 1,
@@ -43,7 +42,7 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
 export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, next) => {
     try {
         const email = req.query.email;
-        const userData = await User.findOne({ email, isDelete: false });
+        const userData = await UserDB.findOne({ email, isDelete: false });
         switch (req.query.model) {
             case VerifycodeEnum.register:
                 if (userData)
@@ -56,7 +55,7 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
         }
 
         const randomCode = await sendEmail(email);
-        const verifycode = new Verifycode({ email, verifycode: randomCode });
+        const verifycode = new VerifycodeDB({ email, verifycode: randomCode });
         await verifycode.save();
 
         res.status(StatusEnum.OK).json({ success: true });
@@ -68,12 +67,12 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
 /** 检验验证码并注册 */
 export const register: PostHandler<RegisterOptions> = async (req, res, next) => {
     try {
-        const data = await Verifycode.findOne({ verifycode: req.body.verifycode });
+        const data = await VerifycodeDB.findOne({ verifycode: req.body.verifycode });
         const email = data?.email;
         if (email == req.body.email) {
             delete req.body._id;
             delete req.body.isAdmin;
-            await new User({ ...req.body }).save();
+            await new UserDB({ ...req.body }).save();
             res.status(StatusEnum.OK).json({ success: true });
         } else {
             res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });
@@ -86,7 +85,7 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
 /** 重新登录 */
 export const relogin: GetHandler = async (req, res, next) => {
     try {
-        const userData = await User.findById(req.body._id);
+        const userData = await UserDB.findById(req.body._id);
         if (userData) {
             const token = sign({ _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin });
             res.status(StatusEnum.OK).json({ userData, token });
@@ -101,7 +100,7 @@ export const relogin: GetHandler = async (req, res, next) => {
 /** 获取用户信息 */
 export const userDetail: GetHandler<any, { userId: string }> = async (req, res, next) => {
     try {
-        const userData = await User.findById(req.params.userId);
+        const userData = await UserDB.findById(req.params.userId);
         if (userData) {
             res.status(StatusEnum.OK).json({ ...userData.toJSON() });
         } else {
@@ -115,7 +114,11 @@ export const userDetail: GetHandler<any, { userId: string }> = async (req, res, 
 /** 修改用户信息 */
 export const updateUserInfo: PutHandler<UserInfo> = async (req, res, next) => {
     try {
-        const userData = await User.findByIdAndUpdate(req.body._id, { $set: { ...req.body } }, { new: true });
+        const userData = await UserDB.findByIdAndUpdate(
+            req.body._id,
+            { $set: { ...req.body } },
+            { new: true }
+        );
         res.status(StatusEnum.OK).json({ userData });
     } catch (e) {
         next(e);
@@ -126,11 +129,11 @@ export const updateUserInfo: PutHandler<UserInfo> = async (req, res, next) => {
 export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
     try {
         const { newPassWord, verifycode } = req.body;
-        const data = await Verifycode.findOne({ verifycode });
+        const data = await VerifycodeDB.findOne({ verifycode });
         if (data) {
             const email = data.email;
             if (email == req.body.email) {
-                const user = await User.findOneAndUpdate(
+                const user = await UserDB.findOneAndUpdate(
                     { email },
                     { $set: { passWord: newPassWord } },
                     { new: true }

@@ -1,5 +1,5 @@
+import { StatusEnum } from "../typings/enum";
 import { verify } from "../utils/jwt";
-import { StatusEnum } from "#interface";
 
 export const mustLogin: MiddleWare = async (req, res, next) => {
     let token = req.header("Authorization");

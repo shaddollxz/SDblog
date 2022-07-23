@@ -1,6 +1,6 @@
-import { StatusEnum } from "#interface";
-import { resolve } from "path";
 import fs from "fs-extra";
+import { resolve } from "path";
+import { StatusEnum } from "../typings/enum";
 import { fileHash } from "../utils/fileHash";
 import { filenameSlice } from "../utils/formateFilename";
 

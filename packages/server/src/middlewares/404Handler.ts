@@ -1,4 +1,4 @@
-import { StatusEnum } from "#interface";
+import { StatusEnum } from "../typings/enum";
 
 const notFound: MiddleWare = (req, res, next) => {
     res.status(StatusEnum.notFound).json({

@@ -1,28 +1,28 @@
-import { Pan, PanFile, TempFile } from "../db";
-import Folder from "../utils/Folder";
-import { filenameSlice, originalFilename, filenameMsg, formateFilename } from "../utils/formateFilename";
 import fs from "fs-extra";
 import path from "path";
-import { useConcatFilesWorker } from "../workers";
-import { StatusEnum } from "#interface";
+import { PanDB, PanFileDB, TempFileDB } from "../db";
+import { StatusEnum } from "../typings/enum";
 import type {
     CreateFolderOption,
-    RemoveFolderOption,
-    RenameFolderOption,
+    MoveFileOption,
     MoveFolderOption,
+    RemoveFileOption,
+    RemoveFolderOption,
+    RenameFileOption,
+    RenameFolderOption,
     UploadFileChunkOption,
     UploadFileEndOption,
     UploadFileStartOption,
-    RemoveFileOption,
-    RenameFileOption,
-    MoveFileOption,
-} from "#interface";
+} from "../typings/interface/pan";
+import Folder from "../utils/Folder";
+import { filenameMsg, filenameSlice, formateFilename } from "../utils/formateFilename";
+import { useConcatFilesWorker } from "../workers";
 
 //* folder
 
 export const folderList: GetHandler = async (req, res, next) => {
     try {
-        const { folderObj } = await Pan.findFolderWithFile(req.body._id!);
+        const { folderObj } = await PanDB.findFolderWithFile(req.body._id!);
         res.status(StatusEnum.OK).json({ folderJson: folderObj });
     } catch (e) {
         next(e);
@@ -32,7 +32,7 @@ export const folderList: GetHandler = async (req, res, next) => {
 export const createFolder: PutHandler<CreateFolderOption> = async (req, res, next) => {
     try {
         const _id = req.body._id!;
-        const folderDoc = (await Pan.findById(_id))!;
+        const folderDoc = (await PanDB.findById(_id))!;
         const folder = new Folder(folderDoc.path);
         folder.create(req.body.path, req.body.name);
         folderDoc.path = folder.json();
@@ -45,7 +45,7 @@ export const createFolder: PutHandler<CreateFolderOption> = async (req, res, nex
 
 export const removeFolder: DeleteHandler<RemoveFolderOption> = async (req, res, next) => {
     try {
-        const folderDoc = (await Pan.findById(req.body._id!))!;
+        const folderDoc = (await PanDB.findById(req.body._id!))!;
 
         const folder = new Folder(folderDoc.path);
         const { folderIds: deleteIds, errors } = folder.remove(req.body.path);
@@ -53,7 +53,7 @@ export const removeFolder: DeleteHandler<RemoveFolderOption> = async (req, res, 
 
         await folderDoc.save();
         setTimeout(async () => {
-            const panFiles = await PanFile.find({ belongId: folderDoc._id });
+            const panFiles = await PanFileDB.find({ belongId: folderDoc._id });
             for (const file of panFiles) {
                 if (deleteIds.includes(file.folderId)) {
                     file.deleteFile();
@@ -73,7 +73,7 @@ export const removeFolder: DeleteHandler<RemoveFolderOption> = async (req, res, 
 
 export const renameFolder: PostHandler<RenameFolderOption> = async (req, res, next) => {
     try {
-        const folderDoc = (await Pan.findById(req.body._id!))!;
+        const folderDoc = (await PanDB.findById(req.body._id!))!;
         const folder = new Folder(folderDoc.path);
         folder.rename(req.body.path, req.body.name);
         folderDoc.path = folder.json();
@@ -118,10 +118,10 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
     try {
         const { hash, name, folderId, chunks, _id } = req.body;
 
-        const panfile = (await PanFile.find({ hash }).limit(1))[0];
+        const panfile = (await PanFileDB.find({ hash }).limit(1))[0];
         if (panfile) {
             //todo 文件已经存在
-            const file = new PanFile({
+            const file = new PanFileDB({
                 belongId: _id,
                 folderId,
                 filePath: panfile.filePath,
@@ -132,12 +132,12 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             await file.save();
             next();
         } else {
-            const files = await TempFile.find({ hash });
+            const files = await TempFileDB.find({ hash });
             if (files.length == chunks) {
                 //todo 文件chunk已经全部凑齐
                 try {
                     const path = await useConcatFilesWorker(files.map((file) => file.filePath));
-                    const fileDetail = new PanFile({
+                    const fileDetail = new PanFileDB({
                         belongId: _id,
                         folderId,
                         filePath: path,
@@ -183,7 +183,7 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
             process.env.TEMP_PATH,
             formateFilename(hash + filenameSlice(name).suffix, { chunkIndex: index })
         );
-        const tempFile = new TempFile({
+        const tempFile = new TempFileDB({
             hash,
             filePath,
         });
@@ -197,10 +197,10 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
 export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
     try {
         const { _id, name, folderId, hash } = req.body;
-        const files = await TempFile.find({ hash });
+        const files = await TempFileDB.find({ hash });
         try {
             const path = await useConcatFilesWorker(files.map((file) => file.filePath));
-            const fileDetail = new PanFile({
+            const fileDetail = new PanFileDB({
                 belongId: _id,
                 folderId,
                 filePath: path,

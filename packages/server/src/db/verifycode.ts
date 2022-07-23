@@ -1,16 +1,16 @@
 import typegoose from "@typegoose/typegoose";
-const { prop } = typegoose;
 import type { DB } from "./DB";
+const { prop } = typegoose;
 
 export class Verifycode implements DB {
     declare DB: true;
 
-    @prop({ required: true })
+    @prop({ required: true, type: () => String })
     declare email: string;
 
-    @prop({ required: true, unique: true })
+    @prop({ required: true, unique: true, type: () => String })
     declare verifycode: string;
 
-    @prop({ default: Date.now, index: { expireAfterSeconds: 600 } })
+    @prop({ default: Date.now, index: { expireAfterSeconds: 600 }, type: () => Number })
     declare createdAt: Date;
 }

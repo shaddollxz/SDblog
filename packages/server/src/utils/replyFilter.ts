@@ -1,6 +1,7 @@
 import type { DocumentType } from "@typegoose/typegoose";
 import type { Reply } from "../db/reply";
-import type { ReplyItemInfo, Author } from "#interface";
+import type { Author } from "../typings/interface/public";
+import type { ReplyItemInfo } from "../typings/interface/reply";
 
 export default function (replys: DocumentType<Reply>[]): ReplyItemInfo[] {
     const result: ReplyItemInfo[] = [];

@@ -4,12 +4,9 @@
         "baseUrl": ".",
         "outDir": "bin",
         "sourceMap": false,
-        "removeComments": true, // 打包时删除注释
-        "paths": {
-            "#interface": ["./src/typings/interface/index.d.ts"]
-        }
+        "removeComments": true // 打包时删除注释
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "exports/*.*"],
     "ts-node": {
         "files": true
     }

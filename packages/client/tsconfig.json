@@ -6,11 +6,10 @@
         "types": ["vite-plugin-svg-icons/client", "vite-plugin-pwa/client"],
         "paths": {
             "@/*": ["src/*"],
-            "#/*": ["src/typings/*"],
             "@img/*": ["src/assets/img/*"],
             "@apis": ["src/apis"],
             "@views/*": ["src/views/*"],
-            "#interface": ["../server/src/typings/interface/index.d.ts"]
+            "#util": ["src/typings/utils/index.d.ts"]
         },
         "lib": ["esnext", "dom"]
     },

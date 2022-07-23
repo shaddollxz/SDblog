@@ -1,8 +1,8 @@
-import typegoose from "@typegoose/typegoose";
-const { prop, modelOptions, Severity } = typegoose;
 import type { Ref } from "@typegoose/typegoose";
-import { User } from "./user";
+import typegoose from "@typegoose/typegoose";
 import type { DB } from "./DB";
+import { User } from "./user";
+const { prop, modelOptions, Severity } = typegoose;
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Essay implements DB {
@@ -11,18 +11,18 @@ export class Essay implements DB {
     @prop({ required: true, ref: () => User })
     declare author: Ref<User>;
 
-    @prop({ required: true })
+    @prop({ required: true, type: () => String })
     declare content: string;
 
-    @prop({ default: 0 })
+    @prop({ default: 0, type: () => Number })
     declare likes: number;
 
-    @prop({ default: [] })
+    @prop({ default: [], type: () => [String] })
     declare pictures: string[];
 
-    @prop({ default: 0 })
+    @prop({ default: 0, type: () => Number })
     declare replyCount: number;
 
-    @prop({ default: Date.now })
+    @prop({ default: Date.now, type: () => Number })
     declare createdAt: Date;
 }

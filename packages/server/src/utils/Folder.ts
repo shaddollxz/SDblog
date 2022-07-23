@@ -1,5 +1,5 @@
-import type { PanPath, Folder as FolderJSON } from "#interface";
 import { v4 as uuidV4 } from "uuid";
+import type { Folder as FolderJSON, PanPath } from "../typings/interface/pan";
 
 export default class Folder {
     folder: FolderJSON;

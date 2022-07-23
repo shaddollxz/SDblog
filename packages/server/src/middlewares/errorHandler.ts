@@ -1,6 +1,6 @@
-import { format } from "util";
 import type { ErrorRequestHandler } from "express";
-import { StatusEnum } from "#interface";
+import { format } from "util";
+import { StatusEnum } from "../typings/enum";
 
 export default (): ErrorRequestHandler => (err, req, res, next) => {
     console.error(`${Date.now()}

@@ -87,7 +87,7 @@ function sendReply() {
                 font-weight: 600;
             }
         }
-        @media screen and(max-width:750px) {
+        @include mobile {
             width: 100%;
         }
     }

@@ -12,7 +12,7 @@ import type {
     UploadFileEndOption,
     Success,
     Faild,
-} from "#interface";
+} from "@blog/server";
 
 export function panFolder(): AxiosPromise<PanListRes> {
     return axios({

@@ -1,18 +1,13 @@
 {
     "name": "@blog/scripts",
     "version": "1.0.0",
-    "description": "",
-    "main": "./src/index.js",
-    "typings": "./src/index.d.ts",
+    "description": "不会在项目中直接使用的外部脚本",
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "fontmin": "node --loader ts-node/esm src/ts/fontmin/index.ts --experimental-specifier-resolution=node",
-        "formateSVG": "node --loader ts-node/esm src/ts/formateSVG/index.ts --experimental-specifier-resolution=node"
+        "fontmin": "tsx src/ts/fontmin/index.ts",
+        "formateSVG": "tsx src/ts/formateSVG/index.ts"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "fontmin": "^0.9.9"
     },

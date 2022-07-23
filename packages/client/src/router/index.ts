@@ -4,7 +4,7 @@ import { useUserStore } from "../store/user";
 import { Message } from "sdt3";
 
 const routes: RouteItem[] = [];
-const modules = import.meta.globEager("./routes/*.ts");
+const modules = import.meta.glob<{ default: RouteItem }>("./routes/*.ts", { eager: true });
 for (const route in modules) {
     routes.push(modules[route].default);
 }

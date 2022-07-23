@@ -5,7 +5,7 @@ import { resolve } from "path";
 const dirs: Dirs = ["headPic", { importName: "noahEmoji", realDir: "emojis/noah" }];
 export default (Env: ImportMetaEnv) =>
     staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
-        dts: resolve(__dirname, "../../src/typings/staticPics.d.ts"),
+        dts: resolve(__dirname, "../../src/typings/global/staticPics.d.ts"),
         staticPrefix: Env.PUBLIC_STATIC_PREFIX,
     });
 

@@ -1,6 +1,6 @@
+import { StatusEnum } from "../typings/enum";
+import type { RegisterOptions } from "../typings/interface/user";
 import Validator from "../utils/Validator";
-import { StatusEnum } from "#interface";
-import type { RegisterOptions } from "#interface";
 
 export const register: PostHandler<RegisterOptions> = (req, res, next) => {
     try {

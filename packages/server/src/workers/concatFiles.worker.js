@@ -1,6 +1,5 @@
-import { isMainThread, parentPort, getEnvironmentData } from "worker_threads";
 import path from "path";
-import fs from "fs-extra";
+import { isMainThread, parentPort } from "worker_threads";
 import { concatFiles } from "../utils/fileSlicer";
 import { filenameMsg, originalFilename } from "../utils/formateFilename";
 

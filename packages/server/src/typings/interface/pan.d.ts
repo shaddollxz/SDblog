@@ -1,6 +1,6 @@
 import { Pan } from "../../db/pan";
 import { PanFile } from "../../db/panfile";
-import { SchemaToInfo } from "../tools/SchemaToInfo";
+import type { SchemaToInfo } from "../tools/SchemaToInfo";
 
 export type PanInfo = SchemaToInfo<Pan>;
 export type PanFileInfo = SchemaToInfo<PanFile>;

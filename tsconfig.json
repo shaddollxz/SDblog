@@ -12,7 +12,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true, // 如果依赖没有默认导出，将全部导出作为默认导出
         "experimentalDecorators": true, // 开启装饰器
-        "emitDecoratorMetadata": true,
+        // "emitDecoratorMetadata": true, // typegoose需要 tsx不支持 这个选项可以不用了
         "suppressImplicitAnyIndexErrors": true, // for-in 中不会报错
         "preserveValueImports": true, // 在setup块中导入某些函数后直接在模板上使用的错误
         "noImplicitOverride": true, // 子类覆盖父类方法时加上override

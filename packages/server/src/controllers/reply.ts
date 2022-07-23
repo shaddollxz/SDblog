@@ -1,12 +1,11 @@
-import { Reply, Essay, Blog } from "../db";
-import type { WriteReplyOptions } from "#interface";
-import { ReplyEnum } from "../typings/enum";
-import { StatusEnum } from "#interface";
+import { BlogDB, EssayDB, ReplyDB } from "../db";
+import { ReplyEnum, StatusEnum } from "../typings/enum";
+import type { WriteReplyOptions } from "../typings/interface/reply";
 
 /** 评论列表 */
 export const replyList: GetHandler<any, { replyMainId: string }> = async (req, res, next) => {
     try {
-        res.status(StatusEnum.OK).json(await Reply.findReply(req.params.replyMainId));
+        res.status(StatusEnum.OK).json(await ReplyDB.findReply(req.params.replyMainId));
     } catch (e) {
         next(e);
     }
@@ -17,17 +16,17 @@ export const userWriteReply: PostHandler<WriteReplyOptions> = async (req, res, n
     try {
         const { content, replyTo, replyMainId, _id, type } = req.body;
 
-        const reply = new Reply({ user: _id, content, replyTo, replyMainId, type });
+        const reply = new ReplyDB({ user: _id, content, replyTo, replyMainId, type });
         await reply.save();
         if (type == ReplyEnum.blog) {
-            await Blog.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
+            await BlogDB.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
         } else if (type == ReplyEnum.essay) {
-            await Essay.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
+            await EssayDB.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
         } else {
             return res.status(StatusEnum.ParameterNotAllow).json({ error: "未知类型" });
         }
 
-        res.status(StatusEnum.OK).json(await Reply.findReply(replyMainId));
+        res.status(StatusEnum.OK).json(await ReplyDB.findReply(replyMainId));
     } catch (e) {
         next(e);
     }
@@ -38,17 +37,17 @@ export const visitorWriteReply: PostHandler<WriteReplyOptions> = async (req, res
     try {
         const { content, replyTo, replyMainId, visitorInfo, type } = req.body;
 
-        const reply = new Reply({ visitor: visitorInfo, content, replyTo, replyMainId, type });
+        const reply = new ReplyDB({ visitor: visitorInfo, content, replyTo, replyMainId, type });
         await reply.save();
         if (type == ReplyEnum.blog) {
-            await Blog.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
+            await BlogDB.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
         } else if (type == ReplyEnum.essay) {
-            await Essay.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
+            await EssayDB.findByIdAndUpdate(replyMainId, { $inc: { replyCount: 1 } });
         } else {
             return res.status(StatusEnum.ParameterNotAllow).json({ error: "未知类型" });
         }
 
-        res.status(StatusEnum.OK).json(await Reply.findReply(replyMainId));
+        res.status(StatusEnum.OK).json(await ReplyDB.findReply(replyMainId));
     } catch (e) {
         next(e);
     }
@@ -57,7 +56,7 @@ export const visitorWriteReply: PostHandler<WriteReplyOptions> = async (req, res
 /** 评论点赞 */
 export const like: GetHandler<any, { replyId: string }> = async (req, res, next) => {
     try {
-        await Reply.findByIdAndUpdate(req.params.replyId, { $inc: { likes: 1 } });
+        await ReplyDB.findByIdAndUpdate(req.params.replyId, { $inc: { likes: 1 } });
         res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {
         next(e);
@@ -67,8 +66,8 @@ export const like: GetHandler<any, { replyId: string }> = async (req, res, next)
 /** 删除评论 */
 export const remove: DeleteHandler<any, { replyId: string }> = async (req, res, next) => {
     try {
-        const deleteData = await Reply.findByIdAndDelete(req.params.replyId);
-        await Essay.findByIdAndUpdate(deleteData?._id, { $inc: { replyCount: -1 } });
+        const deleteData = await ReplyDB.findByIdAndDelete(req.params.replyId);
+        await EssayDB.findByIdAndUpdate(deleteData?._id, { $inc: { replyCount: -1 } });
         res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {
         next(e);

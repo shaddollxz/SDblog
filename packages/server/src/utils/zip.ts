@@ -1,9 +1,9 @@
 import AdmZip from "adm-zip";
-import path from "path";
 import fs from "fs-extra";
-import { formateFilename, originalFilename } from "./formateFilename";
+import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { fileHash } from "./fileHash";
+import { formateFilename, originalFilename } from "./formateFilename";
 
 export function zipFiles(files: { path: string; name: string }[], outname?: string) {
     const zip = new AdmZip();

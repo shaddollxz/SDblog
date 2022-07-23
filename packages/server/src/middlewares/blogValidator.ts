@@ -1,6 +1,6 @@
+import { StatusEnum } from "../typings/enum";
+import type { WriteBlogOptions } from "../typings/interface/blog";
 import Validator from "../utils/Validator";
-import { StatusEnum } from "#interface";
-import type { WriteBlogOptions } from "#interface";
 
 export const blogValidator: MiddleWare = (req, res, next) => {
     try {

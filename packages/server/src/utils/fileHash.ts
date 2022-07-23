@@ -1,5 +1,5 @@
-import fs from "fs-extra";
 import crypto from "crypto";
+import fs from "fs-extra";
 
 /** 获得文件的唯一哈希值 */
 export function fileHash(path: string) {

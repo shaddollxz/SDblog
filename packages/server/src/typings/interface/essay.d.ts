@@ -25,4 +25,5 @@ export interface RemoveEssayOptions {
 export interface LikeEssayOptions {
     essayId: string;
 }
+
 export {};
