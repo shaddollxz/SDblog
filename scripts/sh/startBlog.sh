@@ -5,35 +5,38 @@ __rootDir=$(pwd)
 nodeScriptPath="${__rootDir}/scripts/src/ts"
 envPath="${__rootDir}/env"
 
-source ${__dirname}/sh/utils/ReadEnv.sh
+source ${__dirname}/utils/ReadEnv.sh
+source ${__dirname}/utils/Log.sh
 
-git checkout .
-git pull
+# git checkout .
+# git pull
 
+cd ${__rootDir}/scripts
 fontPath="${__rootDir}/packages/client/src/assets/font"
 if [ ! -d $fontPath ]; then
-    $(node --loader ts-node/esm ${nodeScriptPath}/fontmin/index.ts --experimental-specifier-resolution=node)
+    $(pnpm tsx ${nodeScriptPath}/fontmin/index.ts)
 fi
 
 if [ -f ${envPath}/.env ]; then
     staticPath=$(ReadEnv ${envPath}/.env PUBLIC_STATIC_PATH)
 
     if [ ! -d "${staticPath}/headPic" ]; then
-        echo "缺少静态文件 headPic"
+        Error "缺少静态文件夹 headPic"
         exit
     fi
     if [ ! -d "${staticPath}/emojis/noah" ]; then
-        echo "缺少静态文件 emojis/noah"
+        Error "缺少静态文件夹 emojis/noah"
         exit
     fi
 else
-    echo "请设置环境变量文件 ${envPath}/.env"
+    Error "请设置环境变量文件 ${envPath}/.env"
     exit
 fi
 
+cd $__rootDir
 pm2 delete blog
 pnpm build:server
 pnpm build:client
 pm2 start ${__rootDir}/pm2.json
 
-echo "blog is running"
+Success "blog is running"

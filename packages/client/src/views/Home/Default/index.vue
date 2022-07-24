@@ -6,7 +6,7 @@
         @getNewData="getNewData"
         @onPageChange="pageChange"
         :limit="6"
-        :currentPage="$route.query.page ? +$route.query.page : 1"
+        :currentPage="route.query.page ? +route.query.page : 1"
         :totalPage="allPage"
     ></SplitPage>
 </template>

@@ -1,7 +1,6 @@
-import "./typings/global"; // 全局类型
 import "./utils/loadEnv"; // 加载环境变量
 import "./db/connect"; // 链接数据库
-import "./workers";
+import "./workers"; // 加载其它线程
 import express from "express";
 import compression from "./middlewares/compression";
 

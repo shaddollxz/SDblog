@@ -6,8 +6,8 @@
         "sourceMap": false,
         "removeComments": true // 打包时删除注释
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "exports/*.*"],
-    "ts-node": {
-        "files": true
-    }
+    "include": ["src/**/*.ts", "src/**/*.d.ts"]
+    // "ts-node": {
+    //     "files": true
+    // }
 }

@@ -4,6 +4,7 @@ __dirname=$(dirname -- "$0")
 __rootDir=$(pwd)
 
 source ${__dirname}/utils/Array.sh
+source ${__dirname}/utils/Log.sh
 
 msgMaxLength=90
 allows=('feat:' 'fix:' 'test:' 'chore:' 'pref:' 'style:' 'docs:' 'refactor:' 'revert:' 'Merge')
@@ -14,21 +15,17 @@ head=${msg%%[[:space:]]*}
 body=${msg#*[[:space:]]}
 
 if [ -z $body ]; then
-    tput setaf 1
-    echo "请输入提交内容"
+    Error "请输入提交内容"
     exit 1
 fi
 
 if ((${#body} > $msgMaxLength)); then
-    tput setaf 1
-    echo "提交内容过长，请限制在${msgMaxLength}个字符内"
+    Error "提交内容过长，请限制在${msgMaxLength}个字符内"
     exit 1
 fi
 
 if [ $(IndexOf $head ${allows[@]}) == -1 ]; then
-    tput setaf 1
-    echo "提交信息出错，请按照下面的格式重新编写提交信息："
-    tput setaf 7
+    Error "提交信息出错，请按照下面的格式重新编写提交信息："
     for ((i = 0; i < ${#allows[@]}; i++)); do
         printf "%-10s %s\n" ${allows[i]} ${desc[i]}
     done

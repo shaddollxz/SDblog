@@ -5,7 +5,7 @@
         v-model="blogList"
         :limit="6"
         :totalPage="allPage"
-        :currentPage="$route.query.page ? +$route.query.page : 1"
+        :currentPage="route.query.page ? +route.query.page : 1"
         @onPageChange="pageChange"
         @getNewData="getNewData"
     ></SplitPage>

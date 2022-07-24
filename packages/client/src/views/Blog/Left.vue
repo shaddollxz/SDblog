@@ -7,7 +7,7 @@
         <p id="评论" class="reply xingyan">评论：</p>
         <ReplyList
             ref="replyList"
-            :replyMainId="($route.params.blogId as string)"
+            :replyMainId="(route.params.blogId as string)"
             :type="ReplyEnum.blog"
         ></ReplyList>
     </div>
@@ -19,6 +19,7 @@ import Author from "./Author.vue";
 import Markdown from "@/components/Markdown/index.vue";
 import ReplyList from "@/components/ReplyList/index.vue";
 import { ReplyEnum } from "@blog/server";
+const route = useRoute();
 
 const updateMarkdownCountent = inject<UpdateMarkdownContent>("update:markdownContent")!;
 const updateReplyCount = inject<UpdateReplyCount>("update:replyCount")!;

@@ -22,7 +22,7 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
 
     if (isDev) {
         //* 只在开发环境使用
-        plugins.push(vconsole(Env, isBuild, isDev));
+        plugins.push(vconsole(Env, isBuild, isDev) as Plugin);
         if (isBuild) {
             plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: false })); // 依赖分析
         }

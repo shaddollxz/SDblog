@@ -10,7 +10,7 @@
         <EssayList :essayList="essayList"></EssayList>
         <SplitPage
             :totalPage="allPage"
-            :currentPage="+($route.query.page as string) ?? 1"
+            :currentPage="+(route.query.page as string) ?? 1"
             @onPageChange="pageChange"
             @getNewData="getNewData"
         ></SplitPage>

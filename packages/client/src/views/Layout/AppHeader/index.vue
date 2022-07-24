@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1 class="canClick chuyuan" @click="$router.push('/')" title="Quincy Is Watching You">
+        <h1 class="canClick chuyuan" @click="router.push('/')" title="Quincy Is Watching You">
             0v0
             <span class="chuyuan">昆~</span>
         </h1>
@@ -36,6 +36,8 @@ import UserBar from "./UserBar.vue";
 import Theme from "./Theme.vue";
 import HeaderNav from "./HeaderNav.vue";
 import isMobile from "@/utils/isMobile";
+
+const router = useRouter();
 
 //todo 在打开时根据屏幕大小判断是否显示侧边栏 在pe端上点击导航栏按钮后调用该方法隐藏侧边栏 pc中不使用该方法
 const isShowSideBar = ref(!isMobile);

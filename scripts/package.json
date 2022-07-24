@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "fontmin": "tsx src/ts/fontmin/index.ts",
+        "tsx": "tsx",
         "formateSVG": "tsx src/ts/formateSVG/index.ts"
     },
     "dependencies": {

@@ -1,5 +1,7 @@
 import type { RequestHandler } from "express";
 
+export {};
+
 interface Token {
     _id: string;
     isAdmin: boolean;

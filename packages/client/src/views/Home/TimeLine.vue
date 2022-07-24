@@ -9,7 +9,7 @@
                 <h3 class="chuyuan">{{ year }}</h3>
                 <ul v-for="(contents, month) of monthItem">
                     <h4 class="chuyuan">{{ month }}</h4>
-                    <li v-for="item of contents" class="chuyuan" @click="$router.push('/blog/' + item._id)">
+                    <li v-for="item of contents" class="chuyuan" @click="router.push('/blog/' + item._id)">
                         <div class="time">
                             {{ item.createdAt }}
                         </div>
@@ -26,6 +26,8 @@
 import NoData from "@/components/NoData/index.vue";
 import { timeLineApi } from "@apis";
 import getLine from "@/utils/timeLinePare";
+
+const router = useRouter();
 
 let timeLine = shallowRef<ReturnType<typeof getLine>>(null);
 let blogCount = ref(0);

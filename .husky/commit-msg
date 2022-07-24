@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-sh $(pwd)/scripts/src/sh/commitLint.sh $1
+sh $(pwd)/scripts/sh/commitLint.sh $1

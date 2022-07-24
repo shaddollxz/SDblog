@@ -7,17 +7,18 @@ envPath=${__rootDir}/env
 source ${__dirname}/utils/TransToPlural.sh
 source ${__dirname}/utils/Array.sh
 source ${__dirname}/utils/ReadEnv.sh
+source ${__dirname}/utils/Log.sh
 
 function main() {
     inputDir=$1
     if [ ! -d $inputDir ]; then
-        echo "没有该路径"
+        Error "没有该路径"
         exit
     fi
 
     dbname=$(ReadEnv ${envPath}/.env DBNAME)
     if [ -z $dbname ]; then
-        echo "缺少环境变量 DBNAME"
+        Error "缺少环境变量 DBNAME"
         exit
     fi
 
@@ -47,7 +48,7 @@ function main() {
 
     pnpm pm2
 
-    echo "finish"
+    Success "finish"
 }
 
 inputDir=$1

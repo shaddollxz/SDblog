@@ -9,7 +9,7 @@
                     </div>
                 </RouterLink>
             </template>
-            <div @click="userStore.logout(), $router.push('/')">
+            <div @click="userStore.logout(), router.push('/')">
                 <SvgIcon name="userCenter-logout"></SvgIcon>
                 <span>退出登录</span>
             </div>
@@ -25,7 +25,10 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
+
 const userStore = useUserStore();
+const router = useRouter();
+
 //? 不需要管理员权限的功能
 const navList = [
     { title: "个人信息", path: "/userCenter", icon: "userCenter-person", isShow: true },
