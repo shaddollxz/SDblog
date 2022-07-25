@@ -45,7 +45,5 @@ onMounted(getCacheSize);
 }
 .svgIcon {
     margin-left: 1rem;
-    height: var(--fontsize-big);
-    width: var(--fontsize-big);
 }
 </style>

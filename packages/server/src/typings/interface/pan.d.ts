@@ -40,7 +40,6 @@ export interface MoveFolderOption {
 export interface UploadFileStartOption {
     hash: string;
     folderId: string;
-    name: string;
     chunks: number;
 }
 export interface UploadFileStartRes {
@@ -50,7 +49,6 @@ export interface UploadFileStartRes {
 
 export type UploadFileOption = {
     hash: string;
-    name: string;
     file: Blob;
 };
 
@@ -58,12 +56,10 @@ export type UploadFileChunkOption = {
     index: number;
     all: number;
     hash: string;
-    name: string;
     file: Blob;
 };
 
 export interface UploadFileEndOption {
-    name: string;
     folderId: string;
     hash: string;
 }

@@ -19,5 +19,5 @@
         "skipLibCheck": true // 打包时跳过类型检查
     },
     "lib": ["esnext", "dom"],
-    "exclude": ["dist", "bin", "node_modules", "**/*.config.js", "**/*.config.ts", "**/*.js"]
+    "exclude": ["**/dist", "**/bin", "**/node_modules", "**/*.config.js", "**/*.config.ts", "**/*.js"]
 }

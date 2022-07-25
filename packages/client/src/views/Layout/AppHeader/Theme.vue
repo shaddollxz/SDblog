@@ -86,8 +86,6 @@ function changeColor(color: typeof colors[number]) {
         }
         .svgIcon {
             fill: inherit;
-            width: var(--fontsize-big);
-            height: var(--fontsize-big);
         }
         :deep(.switchButton) {
             --width: 4rem;

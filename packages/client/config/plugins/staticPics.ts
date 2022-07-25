@@ -67,7 +67,7 @@ function generateDTS(importNames: string[]) {
 declare module "virtual:staticPics" {
     const staticPics: {
         ${importNames
-            .map((name, index) => name + ":string[];" + (index == dirs.length - 1 ? "" : "\r        "))
+            .map((name, index) => name + ": string[];" + (index == dirs.length - 1 ? "" : "\r        "))
             .join("")}
     };
     export default staticPics;

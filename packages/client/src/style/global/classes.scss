@@ -7,6 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
     width: max-content;
     box-sizing: border-box;
     padding: 0.3rem 0.6rem;
@@ -78,4 +79,9 @@
     @include mobile {
         width: 80% !important;
     }
+}
+
+.svgIcon {
+    width: var(--fontsize-big);
+    height: var(--fontsize-big);
 }

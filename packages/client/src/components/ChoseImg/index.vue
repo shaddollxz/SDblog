@@ -20,10 +20,11 @@ const props = defineProps({
 const data = ref<File>(); // FileData
 const imgData = ref(""); // base64 也可以是 url
 async function choseFile() {
-    const img = await new LocalFiles({
+    const img = new LocalFiles({
         type: ["jpg", "png", "jpeg", "gif"],
         maxSize: props.maxSize,
     });
+    await img.getFile();
     imgData.value = (await img.read(0, { readAs: "readAsDataURL" })) as string;
     data.value = img.files[0];
 }

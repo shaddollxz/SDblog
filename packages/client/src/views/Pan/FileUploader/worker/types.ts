@@ -1,18 +1,22 @@
 import type { LocalFiles } from "sdt3";
 
 export interface MainOnMessage {
-    error?: "read" | "upload";
+    step: "slice" | "upload" | "end";
 
-    finish?: boolean;
-    finishOrder?: number;
-    folderJson?: string;
+    error?: "slice" | "upload";
+
+    sliceUploadData?: {
+        order: number;
+    };
+    endData?: {
+        folderJson: string;
+    };
 
     progress?: number;
 }
 
 export interface MainPostMessage {
     folderId: string;
-    name: string;
     files: LocalFiles;
 
     isSendProgress: boolean;

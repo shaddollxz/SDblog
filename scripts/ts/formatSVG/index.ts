@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 //! 需要保持为彩色的svg的文件夹名或文件名 文件名加上后缀
 const colorful = ["about"];
 
-const targetDir = path.resolve(__dirname, "../../../../packages/client/src/assets/svg");
+const targetDir = path.resolve(__dirname, "../../../packages/client/src/assets/svg");
 
 // #region 具体内容
 async function readFile(filepath: string, isColorful = false) {

@@ -39,7 +39,8 @@ function onSend() {
 }
 
 async function choseFile() {
-    const file = await new LocalFiles({ type: ["txt", "md"], count: 1 });
+    const file = new LocalFiles({ type: ["txt", "md"] });
+    await file.getFile();
     sendMarkdown.value!.text = (await file.read(0)) as string;
 }
 </script>

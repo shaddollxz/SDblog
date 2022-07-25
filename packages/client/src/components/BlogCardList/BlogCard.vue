@@ -203,10 +203,6 @@ function editBlog() {
             position: absolute;
             top: -2rem;
             right: -2rem;
-            .svgIcon {
-                height: var(--fontsize-default);
-                width: var(--fontsize-default);
-            }
             > div {
                 flex-direction: column;
                 gap: 1rem;

@@ -86,8 +86,6 @@ const qitao = [wechat, alipay];
     }
 }
 .svgIcon {
-    width: 2.4rem;
-    height: 2.4rem;
     margin-right: 0.5rem;
 }
 .qitao {

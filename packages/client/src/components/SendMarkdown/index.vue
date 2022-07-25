@@ -156,18 +156,13 @@ const leftList = [
         async func() {
             try {
                 const formData = new FormDataT<{ image: Blob }>();
-                let file: File;
-                try {
-                    file = (
-                        await new LocalFiles({
-                            type: ["jpg", "png", "jpeg", "gif", "webp"],
-                            maxSize: 5 * 1024,
-                        })
-                    ).files[0];
-                } catch (e) {
-                    Message.error(e as string);
-                    return;
-                }
+
+                const _file = new LocalFiles({
+                    type: ["jpg", "png", "jpeg", "gif", "webp"],
+                    maxSize: 5 * 1024,
+                });
+                await _file.getFile();
+                const file = _file.files[0];
 
                 formData.append("image", file);
                 const { data } = await uploadImageApi(formData);
@@ -249,8 +244,6 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
             display: flex;
             .svgIcon {
                 margin: 0 1rem;
-                height: var(--fontsize-big);
-                width: var(--fontsize-big);
                 cursor: pointer;
                 &:hover {
                     fill: var(--color-text-theme);

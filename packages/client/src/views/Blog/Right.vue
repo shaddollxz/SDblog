@@ -87,10 +87,6 @@ onBeforeRouteLeave((to, from) => sendLikes());
                 cursor: pointer;
                 font-size: var(--fontsize-small);
             }
-            .svgIcon {
-                width: var(--fontsize-big);
-                height: var(--fontsize-big);
-            }
             .liked {
                 fill: var(--color-text-theme);
             }

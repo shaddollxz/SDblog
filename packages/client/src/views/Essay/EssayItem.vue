@@ -168,10 +168,6 @@ function deleteEssay() {
         position: absolute;
         top: 0;
         right: 0;
-        .svgIcon {
-            height: var(--fontsize-big);
-            width: var(--fontsize-big);
-        }
     }
 }
 </style>
