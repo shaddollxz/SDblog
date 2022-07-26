@@ -48,23 +48,15 @@ export function renamePanFolder(data: RenameFolderOption): AxiosPromise<PanListR
 export function uploadPanFileStart(data: UploadFileStartOption): AxiosPromise<UploadFileStartRes> {
     return axios({
         method: "post",
-        url: "",
-        data,
-    });
-}
-
-export function uploadPanFile(data: FormDataT<UploadFileOption>): AxiosPromise<PanListRes> {
-    return axios({
-        method: "post",
-        url: "",
+        url: "/pan/file/start",
         data,
     });
 }
 
 export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): AxiosPromise<Success | Faild> {
     return axios({
-        method: "post",
-        url: "",
+        method: "put",
+        url: "/pan/file/chunk",
         data,
     });
 }
@@ -72,7 +64,7 @@ export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): Axio
 export function uploadPanFileEnd(data: UploadFileEndOption): AxiosPromise<PanListRes> {
     return axios({
         method: "post",
-        url: "",
+        url: "/pan/file/end",
         data,
     });
 }

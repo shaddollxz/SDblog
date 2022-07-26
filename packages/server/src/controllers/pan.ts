@@ -122,12 +122,12 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
         if (panfile) {
             //todo 文件已经存在
             const file = new PanFileDB({
+                hash,
                 belongId: _id,
                 folderId,
                 filePath: panfile.filePath,
                 size: panfile.size,
                 name,
-                hash,
             });
             await file.save();
             next();
@@ -138,12 +138,12 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                 try {
                     const path = await useConcatFilesWorker(files.map((file) => file.filePath));
                     const fileDetail = new PanFileDB({
+                        hash,
                         belongId: _id,
                         folderId,
                         filePath: path,
                         size: (await fs.stat(path)).size,
                         name,
-                        hash,
                     });
                     await fileDetail.save();
                     next();
@@ -178,7 +178,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
 
 export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, next) => {
     try {
-        const { hash, index, name, all } = req.body;
+        const { hash, index, name } = req.body;
         const filePath = path.resolve(
             process.env.TEMP_PATH,
             formateFilename(hash + filenameSlice(name).suffix, { chunkIndex: index })
@@ -201,14 +201,15 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
         try {
             const path = await useConcatFilesWorker(files.map((file) => file.filePath));
             const fileDetail = new PanFileDB({
+                hash,
                 belongId: _id,
                 folderId,
                 filePath: path,
                 size: (await fs.stat(path)).size,
                 name,
-                hash,
             });
             await fileDetail.save();
+            TempFileDB.deleteMany({ hash }).then(() => console.log("数据库相关临时数据清除结束 " + hash));
             next();
         } catch (e) {
             console.error(e);

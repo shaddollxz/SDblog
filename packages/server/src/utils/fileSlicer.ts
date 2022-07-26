@@ -57,6 +57,7 @@ export async function concatFiles(paths: string[], target: string, options: Conc
         },
         options
     );
+    await fs.createFile(target);
     const tasks = paths.map((filepath, index) => {
         const func = async () => {
             const readStream = fs.createReadStream(filepath);

@@ -49,7 +49,6 @@ export {
     removePanFolder as removePanFolderApi,
     renamePanFolder as renamePanFolderApi,
     uploadPanFileStart as uploadPanFileStartApi,
-    uploadPanFile as uploadPanFileApi,
     uploadPanFileChunk as uploadPanFileChunkApi,
     uploadPanFileEnd as uploadPanFileEndApi,
 } from "./ajax/pan";

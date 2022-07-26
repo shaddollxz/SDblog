@@ -14,6 +14,9 @@ axios.interceptors.request.use(
         if (token) {
             req.headers!.Authorization = token;
         }
+        if (req.data instanceof FormData) {
+            req.timeout = 50000;
+        }
         return req;
     },
     (error) => {

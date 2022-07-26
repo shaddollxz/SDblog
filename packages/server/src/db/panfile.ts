@@ -11,7 +11,7 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
 
     @prop({ required: true, type: () => String })
-    declare _id: string; // 使用文件hash作为id
+    declare hash: string;
 
     @prop({ required: true, type: () => String })
     declare belongId: string; // 文件所属的网盘id

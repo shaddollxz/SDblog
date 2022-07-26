@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as Pan from "../controllers/pan";
+import { chunkFileUploader } from "../middlewares/panFileUploader";
 
 const router = Router();
 
@@ -12,9 +13,8 @@ router.post("/folder/move", Pan.moveFile, Pan.folderList);
 router.get("/file/:fileId", Pan.fileDetail);
 router.post("/file/move", Pan.moveFile);
 router.post("/file/rename", Pan.renameFile, Pan.folderList);
-router.put("/file", Pan.uploadFile, Pan.folderList);
 router.post("/file/start", Pan.uploadStart, Pan.folderList);
-router.put("/file/chunk", Pan.uploadChunk);
+router.put("/file/chunk", chunkFileUploader, Pan.uploadChunk);
 router.post("/file/end", Pan.uploadEnd, Pan.folderList);
 router.delete("/file", Pan.removeFile, Pan.folderList);
 

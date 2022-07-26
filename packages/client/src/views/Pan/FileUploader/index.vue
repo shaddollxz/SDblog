@@ -5,7 +5,7 @@
                 <SvgIcon name="pan-choseFile"></SvgIcon>
                 <span>选择文件</span>
             </div>
-            <div class="gusto-button" @click="">
+            <div class="gusto-button" @click="upload">
                 <SvgIcon name="public-upload"></SvgIcon>
                 <span>上传</span>
             </div>
@@ -30,8 +30,7 @@
 <script setup lang="ts">
 import { LocalFiles } from "sdt3";
 import type { VDragType } from "sdt3";
-import { uploadWorker } from "./worker";
-import type { MainOnMessage, MainPostMessage } from "./worker";
+import { PostMessage } from "./worker";
 import { usePanStore } from "@/store/pan";
 import ChosedFileItem from "./ChosedFileItem.vue";
 
@@ -62,14 +61,22 @@ const dropOption: VDragType.TargetOptions = {
     },
 };
 
-// function upload() {
-//     if (chosedFiles.files.length) {
-//         uploaderWorker.postMessage({
-//             files: chosedFiles,
-//             folderId: panStore.currentFolderId,
-//         } as MainPostMessage);
-//     }
-// }
+async function upload() {
+    if (chosedFiles.files.length) {
+        const fileBuffers: ArrayBuffer[] = [];
+        const fileNames: string[] = [];
+
+        for (let i = 0; i < chosedFiles.files.length; i++) {
+            fileBuffers.push((await chosedFiles.read(i, { readAs: "readAsArrayBuffer" })) as ArrayBuffer);
+            fileNames.push(chosedFiles.files[i].name);
+        }
+
+        PostMessage(
+            { step: "splitBuffer", fileBuffers, fileNames, folderId: panStore.currentFolderId },
+            fileBuffers
+        );
+    }
+}
 </script>
 
 <style lang="scss" scoped>
