@@ -1,33 +1,34 @@
 <template>
     <div class="folder">
-        <div class="item">
+        <div class="item" @click="panStore.toUpperPath">
             <div class="left">
                 <SvgIcon name="pan-folder"></SvgIcon>
                 <span>..</span>
             </div>
         </div>
-        <template v-show="folder.folders?.length">
-            <div class="item" v-for="item of folder.folders" @click="panStore.toInnerPath(item.id)">
-                <div class="left">
-                    <SvgIcon name="pan-folder"></SvgIcon>
-                    <span>{{ item.name }}</span>
-                </div>
-                <div class="right">
-                    <SvgIcon name="public-delete"></SvgIcon>
-                </div>
+        <div
+            class="item"
+            v-for="item of folder.folders"
+            :key="item.id"
+            @click="panStore.toInnerPath(item.id)"
+        >
+            <div class="left">
+                <SvgIcon name="pan-folder"></SvgIcon>
+                <span>{{ item.name }}</span>
             </div>
-        </template>
-        <template v-show="folder.files?.length">
-            <div class="item" v-for="item of folder.files">
-                <div class="left">
-                    <SvgIcon name="pan-file"></SvgIcon>
-                    <span>{{ item.name }}</span>
-                </div>
-                <div class="right">
-                    <SvgIcon name="public-delete"></SvgIcon>
-                </div>
+            <div class="right">
+                <SvgIcon name="public-delete"></SvgIcon>
             </div>
-        </template>
+        </div>
+        <div class="item" v-for="item of folder.files" :key="item.hash">
+            <div class="left">
+                <SvgIcon name="pan-file"></SvgIcon>
+                <span>{{ item.name }}</span>
+            </div>
+            <div class="right">
+                <SvgIcon name="public-delete"></SvgIcon>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -36,6 +37,9 @@ import { usePanStore } from "@/store/pan";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
+// watch(folder, (n) => {
+//     console.log(n.folders);
+// });
 </script>
 
 <style lang="scss" scoped>

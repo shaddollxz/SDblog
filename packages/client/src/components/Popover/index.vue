@@ -1,7 +1,7 @@
 <template>
     <div class="popover" @click.capture="changeState" ref="popover">
         <slot></slot>
-        <div class="popup gusto-border" v-show="isShow" :style="popupStyle">
+        <div class="popup gusto-border" v-show="modelValue" :style="popupStyle">
             <div class="arrow" v-show="arrow" :style="arrowStyle"></div>
             <slot name="popup"></slot>
         </div>
@@ -13,18 +13,24 @@ import type { CSSProperties } from "vue";
 interface Props {
     directive?: "ts" | "te" | "t" | "l" | "ls" | "le" | "r" | "rs" | "re" | "b" | "bs" | "be";
     deviation?: { x: string; y: string };
-    arrow: boolean;
+    arrow?: boolean;
+    modelValue?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
     directive: "b",
     deviation: () => ({ x: "0px", y: "0px" }),
     arrow: true,
+    modelValue: false,
 });
+interface Emits {
+    (n: "onClose"): void;
+    (n: "update:modelValue", isShow: boolean): void;
+}
+const emit = defineEmits<Emits>();
 
-const isShow = ref(false);
 function changeState(e: MouseEvent) {
     if (!(e.target as HTMLDivElement).classList.contains("popup")) {
-        isShow.value = !isShow.value;
+        emit("update:modelValue", !props.modelValue);
     }
 }
 
@@ -34,7 +40,8 @@ function hidden(e: MouseEvent) {
     const target = e.target as HTMLDivElement;
     if (!target.classList.contains("popup")) {
         if (!target.classList.contains("popover")) {
-            isShow.value = false;
+            emit("update:modelValue", false);
+            emit("onClose");
         }
     }
 }
@@ -206,13 +213,13 @@ onMounted(() => {
     margin-bottom: 0.4rem;
     width: max-content;
     height: max-content;
-    background-color: var(--color-bg-deep);
     .popup {
         position: absolute;
         width: max-content;
         height: max-content;
         box-sizing: border-box;
         padding: 1rem 1.5rem;
+        background-color: var(--color-bg-deep);
         .arrow {
             position: absolute;
             width: 10%;

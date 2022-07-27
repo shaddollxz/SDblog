@@ -34,6 +34,11 @@ import { PostMessage } from "./worker";
 import { usePanStore } from "@/store/pan";
 import ChosedFileItem from "./ChosedFileItem.vue";
 
+interface Emits {
+    (n: "onBeginUpload"): void;
+}
+const emit = defineEmits<Emits>();
+
 const panStore = usePanStore();
 
 const chosedFiles = reactive(new LocalFiles({ count: 10 }));
@@ -62,6 +67,7 @@ const dropOption: VDragType.TargetOptions = {
 };
 
 async function upload() {
+    emit("onBeginUpload");
     if (chosedFiles.files.length) {
         const fileBuffers: ArrayBuffer[] = [];
         const fileNames: string[] = [];
@@ -72,7 +78,7 @@ async function upload() {
         }
 
         PostMessage(
-            { step: "splitBuffer", fileBuffers, fileNames, folderId: panStore.currentFolderId },
+            { step: "splitBuffer", fileBuffers, fileNames, folderId: panStore.currentFolder.id },
             fileBuffers
         );
     }

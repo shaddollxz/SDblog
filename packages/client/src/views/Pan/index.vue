@@ -1,30 +1,75 @@
 <template>
     <div class="pan">
-        <Popover>
-            <div class="gusto-button">上传文件</div>
-            <template #popup>
-                <FileUploader></FileUploader>
-            </template>
-        </Popover>
+        <div class="head">
+            <Popover directive="bs" v-model="isShowUploader">
+                <div class="gusto-button">上传文件</div>
+                <template #popup>
+                    <FileUploader @onBeginUpload="isShowUploader = false"></FileUploader>
+                </template>
+            </Popover>
+            <Popover v-model="isShowCreateFolder">
+                <div class="gusto-button">新建文件夹</div>
+                <template #popup>
+                    <div class="createFolder">
+                        <span>文件夹名：</span>
+                        <input type="text" v-model="folderName" />
+                        <div class="ensure">
+                            <div class="gusto-button" @click="createFolder">确认</div>
+                            <div
+                                class="gusto-button"
+                                @click="() => ((folderName = ''), (isShowCreateFolder = false))"
+                            >
+                                取消
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </Popover>
+        </div>
+        <Breadcrumb></Breadcrumb>
+        <Folder></Folder>
     </div>
 </template>
 
 <script setup lang="ts">
-import FileUploader from "./FileUploader/index.vue";
-import Folder from "./Folder.vue";
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
+import Breadcrumb from "./Breadcrumb.vue";
+import FileUploader from "./FileUploader/index.vue";
+import Folder from "./Folder.vue";
 
 const panStore = usePanStore();
 onMounted(() => panStore.getFolder());
+
+const isShowCreateFolder = ref(false);
+const isShowUploader = ref(false);
+
+const folderName = ref("");
+function createFolder() {
+    panStore.createFolder(folderName.value);
+    folderName.value = "";
+    isShowCreateFolder.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
 .pan {
     margin-left: $width-wife;
 }
-.fileUploader {
-    width: 30vw;
-    height: 30rem;
+.head {
+    display: flex;
+    gap: 0.8rem;
+    .fileUploader {
+        width: 30vw;
+        height: 30rem;
+    }
+    .createFolder {
+        .ensure {
+            display: flex;
+            gap: 0.4rem;
+            width: max-content;
+            margin: 0.4rem 0 0 auto;
+        }
+    }
 }
 </style>

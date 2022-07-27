@@ -18,6 +18,7 @@ a {
     position: relative;
     color: var(--color-text-default);
     text-decoration: none;
+    cursor: pointer;
     &::before {
         content: "";
         position: absolute;
