@@ -37,30 +37,27 @@ export const usePanStore = defineStore("panFolder", {
         },
     },
     actions: {
-        refreshFolder(folderJson: string) {
-            return (this.folder = JSON.parse(folderJson));
-        },
         async getFolder() {
             const { data } = await panFolderApi();
-            return this.refreshFolder(data.folderJson);
+            return (this.folder = data.folderJson);
         },
         async createFolder(name: string) {
             const { data } = await createPanFolderApi({ path: this.currentPath, name });
-            return this.refreshFolder(data.folderJson);
+            return (this.folder = data.folderJson);
         },
         async renameFolder(name: string) {
             const { data } = await renamePanFolderApi({ path: this.currentPath, name });
-            return this.refreshFolder(data.folderJson);
+            return (this.folder = data.folderJson);
         },
         async removeFolder(names: string[]) {
             const { data } = await removePanFolderApi({
                 path: names.map((name) => `${this.currentPath}/${name}` as PanPath),
             });
-            return this.refreshFolder(data.folderJson);
+            return (this.folder = data.folderJson);
         },
 
-        /** 指定文件夹的目录 */
-        changePath(folderId: string) {
+        /** 下一级的某一个目录 */
+        toInnerPath(folderId: string) {
             if (this.currentFolder.folders) {
                 const folder = this.currentFolder.folders.find((item) => item.id == folderId)!;
                 this._currentFolder = folder;
@@ -68,7 +65,7 @@ export const usePanStore = defineStore("panFolder", {
             }
         },
         /** 上一级目录 */
-        upperPath() {
+        toUpperPath() {
             if (this.currentPath != "/") {
                 this._currentFolder = undefined;
                 this.currentPath = this.currentPath.replace(/\/[^\/]+$/, "") as PanPath;

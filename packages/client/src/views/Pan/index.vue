@@ -1,11 +1,22 @@
 <template>
     <div class="pan">
-        <FileUploader></FileUploader>
+        <Popover>
+            <div class="gusto-button">上传文件</div>
+            <template #popup>
+                <FileUploader></FileUploader>
+            </template>
+        </Popover>
     </div>
 </template>
 
 <script setup lang="ts">
 import FileUploader from "./FileUploader/index.vue";
+import Folder from "./Folder.vue";
+import Popover from "@/components/Popover/index.vue";
+import { usePanStore } from "@/store/pan";
+
+const panStore = usePanStore();
+onMounted(() => panStore.getFolder());
 </script>
 
 <style lang="scss" scoped>
@@ -13,7 +24,7 @@ import FileUploader from "./FileUploader/index.vue";
     margin-left: $width-wife;
 }
 .fileUploader {
-    width: 60%;
+    width: 30vw;
     height: 30rem;
 }
 </style>

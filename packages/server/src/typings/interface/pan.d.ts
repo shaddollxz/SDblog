@@ -15,7 +15,7 @@ export type Folder = {
 };
 
 export interface PanListRes {
-    folderJson: string;
+    folderJson: Folder;
 }
 
 export interface CreateFolderOption {

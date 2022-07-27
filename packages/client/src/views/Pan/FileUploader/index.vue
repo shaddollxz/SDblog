@@ -1,5 +1,5 @@
 <template>
-    <div class="fileUploader gusto-border">
+    <div class="fileUploader">
         <div class="header">
             <div class="gusto-button" @click="choseFiles">
                 <SvgIcon name="pan-choseFile"></SvgIcon>
@@ -83,7 +83,6 @@ async function upload() {
 .fileUploader {
     display: flex;
     flex-direction: column;
-    padding: 0.4rem 0.5rem;
     overflow: hidden;
 
     .header {
