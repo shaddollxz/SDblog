@@ -29,7 +29,7 @@ const emit = defineEmits<Emits>();
     .left {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: $gap;
         .size {
             font-size: var(--fontsize-small);
         }

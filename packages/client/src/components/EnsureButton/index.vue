@@ -34,7 +34,7 @@ function onCancel() {
 <style lang="scss" scoped>
 .ensure {
     display: flex;
-    gap: 0.4rem;
+    gap: $gap;
     width: max-content;
     margin: 0.8rem 0 0 auto;
 }

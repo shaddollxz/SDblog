@@ -37,7 +37,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    border-radius: 0.3rem;
+    border-radius: $border-r;
     width: var(--boxWidth);
     height: var(--boxWidth);
     background: var(--color-text-theme);

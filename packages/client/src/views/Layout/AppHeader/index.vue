@@ -54,6 +54,7 @@ header {
     position: fixed;
     top: 0;
     display: flex;
+    gap: $gap-xxlarge * 2;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
@@ -69,14 +70,15 @@ header {
     }
 
     .sideBar {
+        flex: 1;
         display: flex;
         justify-content: space-between;
         height: 5rem;
         background-color: $bg-header;
-        gap: 2rem;
+        gap: $gap-xxlarge * 2;
         align-items: center;
         .search {
-            width: 30rem;
+            width: 40rem;
         }
     }
     .openSideBar,
@@ -100,7 +102,7 @@ header {
             height: 100vh;
             .search {
                 order: 1;
-                width: 80%;
+                width: 75%;
                 margin: var(--top) 3rem 2rem 0;
             }
             .loginBtn,

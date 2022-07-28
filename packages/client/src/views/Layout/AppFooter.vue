@@ -15,7 +15,6 @@
 
 <style lang="scss" scoped>
 footer {
-    height: 7rem;
     background-color: $bg-header;
     color: $color-header;
     box-sizing: border-box;
@@ -28,7 +27,7 @@ footer {
         flex-direction: column;
         justify-content: space-evenly;
         height: 100%;
-        margin-right: 15rem;
+        margin-right: $width-wife;
         text-align: center;
     }
 

@@ -18,9 +18,7 @@ import Right from "./Right.vue";
     display: flex;
     justify-content: center;
     height: 100%;
-    margin-top: calc($height-header + 3rem);
-    margin-bottom: 1rem;
-    gap: 1rem;
+    gap: $gap-large;
     .center {
         width: 45%;
         order: 2;
@@ -31,8 +29,8 @@ import Right from "./Right.vue";
         flex-direction: column;
         width: 24%;
         flex: 0 0 auto;
-        border-radius: 0.5rem;
-        gap: 1rem;
+        border-radius: $border-r-big;
+        gap: $gap-large;
     }
     .right {
         order: 3;

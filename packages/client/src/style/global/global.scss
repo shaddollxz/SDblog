@@ -51,7 +51,7 @@ input[type="passWord"] {
     color: var(--color-text-default);
     background-color: var(--color-bg-bland);
     border: 1.5px solid var(--color-border);
-    border-radius: 0.5rem;
+    border-radius: $border-r-big;
     &:focus-visible {
         outline-style: none;
         border-color: var(--color-text-theme) !important;

@@ -14,7 +14,7 @@ import TimeLine from "./TimeLine.vue";
 $paddingLeft: 2.5rem;
 .right {
     > div {
-        border-radius: 0.5rem;
+        border-radius: $border-r-big;
         border: 1px solid var(--color-border);
         background-color: var(--color-bg-bland);
     }

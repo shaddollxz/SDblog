@@ -2,7 +2,7 @@
     <div class="theme gusto-flex-center">
         <SvgIcon name="layout-theme" class="canClick"></SvgIcon>
         <div class="tools gusto-border">
-            <div class="themeBg">
+            <div class="block">
                 <span>主题</span>
                 <SwitchButton v-model="isDark" @onStatuChange="themeChange">
                     <template #left>
@@ -13,7 +13,7 @@
                     </template>
                 </SwitchButton>
             </div>
-            <div class="themeColor">
+            <div class="block">
                 <span>主题色</span>
                 <div class="colors">
                     <div
@@ -64,9 +64,11 @@ function changeColor(color: typeof colors[number]) {
     width: $height-header;
 
     .svgIcon {
-        fill: var(--color-text-theme);
         width: var(--fontsize-xlarge);
         height: var(--fontsize-xlarge);
+    }
+    > .svgIcon {
+        fill: var(--color-text-theme);
     }
     &:hover {
         .tools {
@@ -81,14 +83,12 @@ function changeColor(color: typeof colors[number]) {
         transform: translateX(-50%);
         width: 20rem;
         background-color: var(--color-bg-deep);
-        > div {
-            padding: 0.5rem;
-        }
-        .svgIcon {
-            fill: inherit;
+        .block {
+            padding: $gap;
         }
         :deep(.switchButton) {
             --width: 4rem;
+            align-items: center;
             .chosed {
                 fill: var(--color-primary-bland);
             }
@@ -100,10 +100,10 @@ function changeColor(color: typeof colors[number]) {
         .colors {
             display: flex;
             > div {
-                border-radius: 0.3rem;
-                margin: 0.5rem;
+                border-radius: $border-r;
+                margin: $gap;
                 height: 1.5rem;
-                width: 1.5rem;
+                aspect-ratio: 1 / 1;
                 cursor: pointer;
             }
         }

@@ -46,7 +46,9 @@
             </div>
             <div class="result">
                 <span class="total">
-                    所有可能合计结果:{{ $formatNumber(calulatorResult!.mainPossiable * 100, precision, false) + "%" }}
+                    所有可能合计结果:{{
+                        $formatNumber(calulatorResult!.mainPossiable * 100, precision, false) + "%"
+                    }}
                 </span>
                 <span>&nbsp;具体概率分布见下表</span>
                 <p>
@@ -151,7 +153,7 @@ const precision = ref(2);
         .inputs {
             .base {
                 display: flex;
-                gap: 3rem;
+                gap: $gap-xxlarge;
                 margin-bottom: 3rem;
             }
             .cards {

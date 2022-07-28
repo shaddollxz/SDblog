@@ -8,14 +8,16 @@
                     </span>
                     <div class="dropBox">
                         <template v-for="item of nav.children">
-                            <RouterLink :to="item.link" custom v-slot="{ navigate }">
-                                <div
-                                    class="dropItem gusto-flex-center"
-                                    @click="() => (navigate(), emit('onChangeSideBarState'))"
-                                >
-                                    {{ item.text }}
-                                </div>
-                            </RouterLink>
+                            <template v-if="item">
+                                <RouterLink :to="item.link" custom v-slot="{ navigate }">
+                                    <div
+                                        class="dropItem gusto-flex-center"
+                                        @click="() => (navigate(), emit('onChangeSideBarState'))"
+                                    >
+                                        {{ item.text }}
+                                    </div>
+                                </RouterLink>
+                            </template>
                         </template>
                     </div>
                 </div>
@@ -46,6 +48,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
+import isMobile from "@/utils/isMobile";
 
 const userSotre = useUserStore();
 
@@ -65,7 +68,7 @@ const navlist = [
         text: "小工具",
         children: [
             { text: "卡手率计算器", link: "/deckCalculator" },
-            { text: "网盘", link: "/pan" },
+            isMobile ? undefined : { text: "网盘", link: "/pan" },
         ],
     },
     { text: "关于", link: "/about" },
@@ -76,12 +79,12 @@ const navlist = [
 .navlist {
     display: flex;
     height: 100%;
-    gap: 2rem;
+    gap: $gap-xlarge;
     .navItem {
         height: 100%;
         line-height: $height-header;
         font-size: var(--fontsize-big);
-        padding: 0 2rem;
+        padding: 0 $gap-xxlarge;
         cursor: pointer;
         &:hover {
             color: var(--color-text-theme);
@@ -99,7 +102,7 @@ const navlist = [
         order: 3;
         width: 100%;
         height: 35rem;
-        margin-bottom: 3rem;
+        gap: $gap-xxlarge;
         .logout {
             display: flex !important;
         }

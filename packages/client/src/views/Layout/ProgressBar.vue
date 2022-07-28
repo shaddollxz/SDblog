@@ -9,7 +9,6 @@
     z-index: 9999;
     height: 0.2rem;
     width: 100%;
-    background: rgb(0, 255, 25);
     background: linear-gradient(
         90deg,
         rgba(0, 255, 25, 1) 0%,

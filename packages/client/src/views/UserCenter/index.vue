@@ -42,7 +42,7 @@ const navList = [
     height: calc(100vh - $height-header - 2rem);
     max-height: 100rem;
     margin: calc($height-header + 2rem) $width-wife 0;
-    gap: 2rem;
+    gap: $gap-xxlarge;
     nav {
         height: 100%;
         flex: 0 0 auto;

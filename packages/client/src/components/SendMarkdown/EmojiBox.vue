@@ -56,7 +56,7 @@ defineExpose({ isShowEmojiBox });
     box-sizing: border-box;
     padding: 0.5rem 0.9rem;
     border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
+    border-radius: $border-r-big;
     background-color: var(--color-bg-deep);
     .themes {
         height: max-content;

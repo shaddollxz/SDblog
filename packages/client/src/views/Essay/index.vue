@@ -44,7 +44,7 @@ function pageChange(page = 1) {
 
 const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
 function sendFunc() {
-    writeEssayApi(sendMarkdown.value!.text, route?.query?.page as any).then(({ data }) => {
+    writeEssayApi(sendMarkdown.value!.text, (route?.query?.page as string) ?? "1").then(({ data }) => {
         sendMarkdown.value!.text = "";
         fresh(data);
         Message.success("发送成功");

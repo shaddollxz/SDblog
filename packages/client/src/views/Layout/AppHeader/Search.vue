@@ -9,17 +9,16 @@
 </template>
 
 <script setup lang="ts">
-import useQuery from "@/utils/useQuery";
-
-const query = useQuery();
 const emit = defineEmits(["onChangeSideBarState"]);
 
 const router = useRouter();
+const route = useRoute();
 let keyWord = ref("");
 
 onMounted(() => {
-    if (query.keyWord) {
-        keyWord.value = typeof query.keyWord == "string" ? query.keyWord : query.keyWord.join(" ");
+    if (route.query.keyWord) {
+        keyWord.value =
+            typeof route.query.keyWord == "string" ? route.query.keyWord : route.query.keyWord.join(" ");
     }
 });
 

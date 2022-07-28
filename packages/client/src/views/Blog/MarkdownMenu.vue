@@ -30,7 +30,7 @@ const menuTree = computed(() => {
     position: relative;
     box-sizing: border-box;
     padding: 1rem 0.8rem 3rem 2rem;
-    border-radius: 0.5rem;
+    border-radius: $border-r-big;
     background-color: var(--color-bg-bland);
     .menu {
         height: calc(100% - var(--fontsize-big) - 4rem);

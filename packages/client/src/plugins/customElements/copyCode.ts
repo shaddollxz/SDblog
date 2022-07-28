@@ -1,6 +1,9 @@
 import * as clipboard from "clipboard-polyfill/text";
 import { Message } from "sdt3";
-import suffix from "../copy";
+
+const suffix = `
+======================
+copy from [shaddollxz的个人博客](${window.location})`;
 
 class CopyCode extends HTMLElement {
     constructor() {

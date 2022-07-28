@@ -77,11 +77,11 @@ function sendReply() {
         justify-content: space-between;
         align-items: center;
         width: 65%;
-        margin-bottom: 1.4rem;
-        > div {
-            margin-right: 1rem;
-        }
+        margin-bottom: $gap-large;
         .input {
+            display: flex;
+            flex-direction: column;
+            gap: $gap;
             span {
                 font-size: var(--fontsize-big);
                 font-weight: 600;

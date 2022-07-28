@@ -39,13 +39,9 @@ onMounted(() => getNewData(route.query.page as NumberString));
 <style lang="scss" scoped>
 .blogCardList {
     width: 100%;
-    background-color: var(--color-bg-bland);
 }
 .splitPage {
     width: 100%;
     margin: 1rem 0;
-}
-.noData {
-    background-color: var(--color-bg-bland);
 }
 </style>

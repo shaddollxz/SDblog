@@ -78,7 +78,4 @@ onMounted(() => search(route));
     width: 100%;
     margin: 1rem 0;
 }
-.noData {
-    background-color: var(--color-bg-bland);
-}
 </style>

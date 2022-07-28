@@ -129,7 +129,7 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
                         margin: 0;
                     }
                     .markdown {
-                        border-radius: 0.5rem;
+                        border-radius: $border-r-big;
                     }
                 }
             }

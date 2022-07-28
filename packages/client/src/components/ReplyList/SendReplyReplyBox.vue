@@ -96,16 +96,16 @@ function sendReply() {
 
 <style lang="scss" scoped>
 .sendReplyReplyBox {
-    margin-bottom: 1rem;
+    margin-bottom: $gap-large;
     .user {
         display: flex;
-        margin-bottom: 1.4rem;
+        gap: $gap-large;
+        margin-bottom: $gap-large;
         .input {
-            margin-right: 2rem;
+            gap: $gap;
             span {
                 font-size: var(--fontsize-default);
                 font-weight: 600;
-                margin-right: 1rem;
             }
         }
     }

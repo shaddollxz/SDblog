@@ -89,7 +89,7 @@ interface Props {
     blogMsg: BlogListItemInfo;
 }
 const props = defineProps<Props>();
-console.log(props.blogMsg.tags);
+
 const headPic = ref<HTMLImageElement | null>(null);
 
 let alreadyShow = false;
@@ -136,11 +136,11 @@ function editBlog() {
         display: flex;
         align-items: center;
         .msg {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             width: 40%;
-            flex: 1;
             margin-right: 2rem;
             .svgIcon {
                 margin-right: 0.2rem;
@@ -176,7 +176,7 @@ function editBlog() {
             }
             .foot {
                 display: flex;
-                gap: 0.5rem;
+                gap: $gap;
                 > div {
                     display: flex;
                     align-items: center;
@@ -189,9 +189,9 @@ function editBlog() {
             .tags {
                 display: flex;
                 align-items: center;
-                margin-top: 0.4rem;
+                margin-top: $gap;
                 .gusto-tagBox {
-                    margin-left: 0.4rem;
+                    margin-left: $gap;
                     --fontsize: var(--fontsize-tiny);
                 }
             }
@@ -201,7 +201,7 @@ function editBlog() {
             width: 19rem;
             @include scaleImage();
             img {
-                border-radius: 0.5rem;
+                border-radius: $border-r-big;
                 width: 100%;
             }
         }
@@ -212,13 +212,13 @@ function editBlog() {
         }
         .menuPopup {
             flex-direction: column;
-            gap: 0.8rem;
+            gap: $gap-big;
             .svgIcon {
                 width: var(--fontsize-default);
                 height: var(--fontsize-default);
             }
             .gusto-flex-center {
-                gap: 0.4rem;
+                gap: $gap;
             }
         }
         @include mobile {

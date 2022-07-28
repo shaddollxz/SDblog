@@ -8,7 +8,6 @@
         "prepare": "husky install",
         "start": "sh ./scripts/sh/startBlog.sh",
         "dev:client": "cd packages/client && pnpm dev",
-        "dev:client:nocache": "cd packages/client && pnpm dev:nocache",
         "dev:server": "cd packages/server && pnpm dev",
         "build:client": "cd packages/client && pnpm build",
         "build:client:dev": "cd packages/client && pnpm build:dev",

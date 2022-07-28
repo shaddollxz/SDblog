@@ -30,6 +30,7 @@ export default defineComponent({
 .noData {
     box-sizing: border-box;
     padding: 3rem 0;
+    background-color: var(--color-bg-bland);
     div {
         display: flex;
         flex-direction: column;

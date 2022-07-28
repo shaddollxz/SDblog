@@ -64,7 +64,7 @@ function createFolder() {
 }
 .head {
     display: flex;
-    gap: 0.8rem;
+    gap: $gap-big;
     .fileUploader {
         width: 30vw;
         height: 30rem;
@@ -72,7 +72,7 @@ function createFolder() {
     .createFolder {
         .ensure {
             display: flex;
-            gap: 0.4rem;
+            gap: $gap;
             width: max-content;
             margin: 0.4rem 0 0 auto;
         }

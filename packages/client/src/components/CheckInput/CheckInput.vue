@@ -77,10 +77,8 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
 
 <style lang="scss" scoped>
 .checkInput {
-    --mb: 1.7rem;
     --h: 2rem;
     position: relative;
-    margin-bottom: var(--mb);
     .svgIcon {
         height: var(--fontsize-tiny);
         width: var(--fontsize-tiny);

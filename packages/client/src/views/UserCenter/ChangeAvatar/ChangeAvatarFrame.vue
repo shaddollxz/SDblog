@@ -44,7 +44,7 @@ function choseFrame(index: number) {
         height: max-content;
         box-sizing: border-box;
         padding: 2rem 3rem;
-        gap: 1rem;
+        gap: $gap-large;
         background-color: var(--color-bg-bland);
         > div {
             margin: 0.5rem 0;

@@ -75,7 +75,7 @@ const aboutMe = [
     box-sizing: border-box;
     padding: 1rem 1.25rem;
     flex-direction: column;
-    gap: 1rem;
+    gap: $gap-large;
 }
 .avatar {
     margin: 0 auto;
@@ -84,11 +84,11 @@ const aboutMe = [
 .msgs {
     width: 80%;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: $gap;
     .userInfo {
         flex-direction: column;
         font-weight: 600;
-        gap: 0.3rem;
+        gap: $gap;
         margin-bottom: 1rem;
         :first-child {
             color: var(--color-text-theme);

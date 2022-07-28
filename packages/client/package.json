@@ -6,8 +6,7 @@
         "dev": "vite --mode development",
         "build": "vue-tsc --noEmit && vite build --mode production",
         "build:dev": "vue-tsc --noEmit && vite build --mode development",
-        "preview": "vite preview",
-        "dev:nocache": "vite --mode development --force"
+        "preview": "vite preview"
     },
     "dependencies": {
         "@blog/server": "workspace:^1.0.0",

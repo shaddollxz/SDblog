@@ -82,7 +82,7 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", sendLikes));
 onBeforeRouteLeave(() => sendLikes());
 
 function deleteEssay() {
-    deleteEssayApi(props.essayData._id, route?.query?.page).then(({ data }) => {
+    deleteEssayApi(props.essayData._id, (route?.query?.page as string) ?? "1").then(({ data }) => {
         Message.success("删除成功");
         emit("onDelete", data);
     });

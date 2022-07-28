@@ -1,5 +1,5 @@
 <template>
-    <div class="form gusto-border gusto-flex-center">
+    <div class="form-user gusto-border gusto-flex-center">
         <div class="box">
             <slot name="box"></slot>
         </div>
@@ -12,7 +12,7 @@
 <script setup lang="ts"></script>
 
 <style lang="scss">
-.form {
+.form-user {
     width: 33%;
     min-width: 20rem;
     height: max-content;
@@ -26,7 +26,7 @@
             font-family: "xingyan";
             font-weight: bold;
             font-size: var(--fontsize-big);
-            margin-bottom: 1.3rem;
+            margin-bottom: $gap-large;
             a {
                 position: absolute;
                 right: 0;
@@ -36,14 +36,16 @@
                 color: #0969da;
             }
         }
+        .checkInput {
+            margin-bottom: $gap-xlarge;
+        }
         .checkButton {
             width: 100%;
             height: 4rem;
             font-weight: 600;
             font-size: var(--fontsize-large);
-            padding: 0 3rem;
-            border-radius: 0.7rem;
-            margin-top: 2rem;
+            border-radius: $border-r-big;
+            margin-top: $gap-xxlarge;
         }
         .emailBox {
             .email {
@@ -59,7 +61,7 @@
                     width: 7rem;
                     height: 2.3rem;
                     padding: 0.3rem 0.3rem;
-                    border-radius: 0.5rem;
+                    border-radius: $border-r-big;
                     margin: 0 0 0 1rem;
                     @include mobile {
                         width: 8rem;

@@ -2,14 +2,14 @@
     <div class="sendMarkdown" ref="sendMarkdown">
         <div class="toolBar">
             <div class="left">
-                <div v-for="item of leftList" :title="item.title" @click="item.func">
+                <template v-for="item of leftList" :title="item.title" @click="item.func">
                     <SvgIcon :name="item.icon"></SvgIcon>
-                </div>
+                </template>
             </div>
             <div class="right">
-                <div v-for="item of rightList" :title="item.title" @click="item.func">
+                <template v-for="item of rightList" :title="item.title" @click="item.func">
                     <SvgIcon :name="item.icon"></SvgIcon>
-                </div>
+                </template>
             </div>
         </div>
 
@@ -237,13 +237,14 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
     .toolBar {
         justify-content: space-between;
         border-start-start-radius: $borderRadius;
+        border-start-end-radius: $borderRadius;
         border-bottom: 1px solid var(--color-border);
         .left,
         .right {
             margin: 0 1rem;
             display: flex;
+            gap: $gap-xxlarge;
             .svgIcon {
-                margin: 0 1rem;
                 cursor: pointer;
                 &:hover {
                     fill: var(--color-text-theme);
@@ -253,6 +254,7 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
     }
     .buttons {
         justify-content: space-between;
+        border-end-start-radius: $borderRadius;
         border-end-end-radius: $borderRadius;
         border-top: 1px solid var(--color-border);
         .left,

@@ -114,7 +114,7 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         .right {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: $gap;
         }
         .left {
             flex: 1;
