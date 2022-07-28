@@ -212,4 +212,86 @@ describe("Folder", () => {
             name: "root",
         });
     });
+
+    it("移动文件夹", () => {
+        const _folder: Folder["folder"] = {
+            id: v4(),
+            name: "root",
+            folders: [
+                {
+                    id: v4(),
+                    name: "path_2",
+                    folders: [
+                        { id: v4(), name: "path_deep", folders: [{ id: v4(), name: "path_moredeep" }] },
+                    ],
+                },
+                { id: v4(), name: "path_3" },
+            ],
+        };
+        const folderStr = JSON.stringify(_folder);
+        const folder = new Folder(folderStr);
+
+        folder.move("/path_3", "/path_2/path_deep");
+        expect(folder.folder).toEqual({
+            id: v4(),
+            name: "root",
+            folders: [
+                {
+                    id: v4(),
+                    name: "path_2",
+                    folders: [
+                        {
+                            id: v4(),
+                            name: "path_deep",
+                            folders: [
+                                { id: v4(), name: "path_moredeep" },
+                                { id: v4(), name: "path_3" },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+
+        folder.move("/path_2/path_deep/path_3", "/");
+        expect(folder.folder).toEqual({
+            id: v4(),
+            name: "root",
+            folders: [
+                {
+                    id: v4(),
+                    name: "path_2",
+                    folders: [
+                        { id: v4(), name: "path_deep", folders: [{ id: v4(), name: "path_moredeep" }] },
+                    ],
+                },
+                { id: v4(), name: "path_3" },
+            ],
+        });
+
+        folder.move("/path_2", "/path_3");
+        expect(folder.folder).toEqual({
+            id: v4(),
+            name: "root",
+            folders: [
+                {
+                    id: v4(),
+                    name: "path_3",
+                    folders: [
+                        {
+                            id: v4(),
+                            name: "path_2",
+                            folders: [
+                                {
+                                    id: v4(),
+                                    name: "path_deep",
+                                    folders: [{ id: v4(), name: "path_moredeep" }],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+    });
 });

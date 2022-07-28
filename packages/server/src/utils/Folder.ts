@@ -44,10 +44,10 @@ export default class Folder {
         }
     }
 
-    create(path: PanPath, name: string) {
+    create(path: PanPath, name: string, id?: string) {
         const folder: FolderJSON = {
             name,
-            id: uuidV4(),
+            id: id ?? uuidV4(),
         };
         const { target } = this.findByPath(path);
         if (target) {
@@ -92,6 +92,15 @@ export default class Folder {
     rename(path: PanPath, name: string) {
         const { target } = this.findByPath(path);
         target.name = name;
+    }
+
+    move(from: PanPath, to: PanPath) {
+        const { target, father, index } = this.findByPath(from);
+        if (father.folders?.length && index !== undefined) {
+            const { target: to_ } = this.findByPath(to);
+            to_?.folders?.length ? to_.folders.push(target) : (to_.folders = [target]);
+            father.folders.splice(index, 1);
+        }
     }
 
     static foreach(folder: FolderJSON, cb: (item: FolderJSON) => void) {

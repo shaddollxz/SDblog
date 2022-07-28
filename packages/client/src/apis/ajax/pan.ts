@@ -4,8 +4,8 @@ import type {
     PanListRes,
     CreateFolderOption,
     RemoveFolderOption,
+    MoveFolderOption,
     RenameFolderOption,
-    UploadFileOption,
     UploadFileStartOption,
     UploadFileStartRes,
     UploadFileChunkOption,
@@ -33,6 +33,14 @@ export function removePanFolder(data: RemoveFolderOption): AxiosPromise<PanListR
     return axios({
         method: "delete",
         url: "/pan/folder",
+        data,
+    });
+}
+
+export function movePanFolder(data: MoveFolderOption): AxiosPromise<PanListRes> {
+    return axios({
+        method: "post",
+        url: "/pan/folder/move",
         data,
     });
 }

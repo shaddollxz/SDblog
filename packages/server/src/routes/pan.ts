@@ -8,7 +8,7 @@ router.get("/folder", Pan.folderList);
 router.put("/folder", Pan.createFolder, Pan.folderList);
 router.delete("/folder", Pan.removeFolder, Pan.folderList);
 router.post("/folder", Pan.renameFolder, Pan.folderList);
-router.post("/folder/move", Pan.moveFile, Pan.folderList);
+router.post("/folder/move", Pan.moveFolder, Pan.folderList);
 
 router.get("/file/:fileId", Pan.fileDetail);
 router.post("/file/move", Pan.moveFile);

@@ -33,8 +33,8 @@ export interface RenameFolderOption {
 }
 
 export interface MoveFolderOption {
-    folderPath: PanPath;
-    targetPath: PanPath;
+    from: PanPath;
+    to: PanPath;
 }
 
 export interface UploadFileStartOption {
@@ -47,12 +47,6 @@ export interface UploadFileStartRes {
     folderJson?: string;
     needChunk?: number[];
 }
-
-export type UploadFileOption = {
-    folderId: string;
-    hash: string;
-    file: Blob;
-};
 
 export type UploadFileChunkOption = {
     index: number;

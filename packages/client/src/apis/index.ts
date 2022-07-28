@@ -47,6 +47,7 @@ export {
     panFolder as panFolderApi,
     createPanFolder as createPanFolderApi,
     removePanFolder as removePanFolderApi,
+    movePanFolder as movePanFolderApi,
     renamePanFolder as renamePanFolderApi,
     uploadPanFileStart as uploadPanFileStartApi,
     uploadPanFileChunk as uploadPanFileChunkApi,

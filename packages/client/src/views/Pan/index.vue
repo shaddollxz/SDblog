@@ -7,7 +7,10 @@
                     <span>上传文件</span>
                 </div>
                 <template #popup>
-                    <FileUploader @onBeginUpload="isShowUploader = false"></FileUploader>
+                    <FileUploader
+                        @onChosedFile="isShowUploader = true"
+                        @onBeginUpload="isShowUploader = false"
+                    ></FileUploader>
                 </template>
             </Popover>
             <Popover v-model="isShowCreateFolder">
@@ -15,7 +18,7 @@
                 <template #popup>
                     <div class="createFolder">
                         <span>文件夹名：</span>
-                        <input type="text" v-model="folderName" />
+                        <input type="text" v-model="folderName" @keypress.enter="createFolder" />
                         <div class="ensure">
                             <div class="gusto-button" @click="createFolder">确认</div>
                             <div

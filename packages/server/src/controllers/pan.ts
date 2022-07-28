@@ -86,6 +86,13 @@ export const renameFolder: PostHandler<RenameFolderOption> = async (req, res, ne
 
 export const moveFolder: PostHandler<MoveFolderOption> = async (req, res, next) => {
     try {
+        const { from, to } = req.body;
+        const folderDoc = (await PanDB.findById(req.body._id!))!;
+        const folder = new Folder(folderDoc.path);
+        folder.move(from, to);
+        folderDoc.path = folder.json();
+        await folderDoc.save();
+        next();
     } catch (e) {
         next(e);
     }

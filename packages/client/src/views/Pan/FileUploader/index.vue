@@ -36,14 +36,16 @@ import ChosedFileItem from "./ChosedFileItem.vue";
 
 interface Emits {
     (n: "onBeginUpload"): void;
+    (n: "onChosedFile"): void;
 }
 const emit = defineEmits<Emits>();
 
 const panStore = usePanStore();
 
 const chosedFiles = reactive(new LocalFiles({ count: 10 }));
-function choseFiles() {
-    chosedFiles.getFile();
+async function choseFiles() {
+    await chosedFiles.getFile();
+    emit("onChosedFile");
 }
 function removeFile(file: File) {
     chosedFiles.files.splice(
