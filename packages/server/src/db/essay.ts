@@ -2,7 +2,7 @@ import type { Ref } from "@typegoose/typegoose";
 import typegoose from "@typegoose/typegoose";
 import type { DB } from "./DB";
 import { User } from "./user";
-const { prop, modelOptions, Severity } = typegoose;
+const { prop, modelOptions, Severity, PropType } = typegoose;
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Essay implements DB {
@@ -17,7 +17,7 @@ export class Essay implements DB {
     @prop({ default: 0, type: () => Number })
     declare likes: number;
 
-    @prop({ default: [], type: () => [String] })
+    @prop({ default: [], type: () => [String] }, PropType.ARRAY)
     declare pictures: string[];
 
     @prop({ default: 0, type: () => Number })

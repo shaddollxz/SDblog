@@ -3,7 +3,7 @@ import typegoose, { defaultClasses } from "@typegoose/typegoose";
 import type { DB } from "./DB";
 import { Tag } from "./tag";
 import { User } from "./user";
-const { prop } = typegoose;
+const { prop, PropType } = typegoose;
 
 export class Blog extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
@@ -23,8 +23,8 @@ export class Blog extends defaultClasses.TimeStamps implements DB {
     @prop({ default: null, type: () => String })
     declare headPic: string;
 
-    @prop({ default: [], ref: () => Tag })
-    declare tags: Ref<Tag>[];
+    @prop({ ref: () => Tag }, PropType.ARRAY)
+    declare tags?: Ref<Tag>[];
 
     @prop({ default: 0, type: () => Number })
     declare read: number;
