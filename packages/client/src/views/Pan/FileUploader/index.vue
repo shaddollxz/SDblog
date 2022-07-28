@@ -2,11 +2,11 @@
     <div class="fileUploader">
         <div class="header">
             <div class="gusto-button" @click="choseFiles">
-                <SvgIcon name="pan-choseFile"></SvgIcon>
+                <SvgIcon name="pan-addFile"></SvgIcon>
                 <span>选择文件</span>
             </div>
             <div class="gusto-button" @click="upload">
-                <SvgIcon name="public-upload"></SvgIcon>
+                <SvgIcon name="pan-upload"></SvgIcon>
                 <span>上传</span>
             </div>
         </div>

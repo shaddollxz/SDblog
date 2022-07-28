@@ -54,10 +54,12 @@
                 <SvgIcon class="canClick" name="public-menu"></SvgIcon>
                 <template #popup>
                     <div class="menuPopup gusto-flex-center">
-                        <div class="canClick gusto-flex-center" @click="deleteBlog">
-                            <SvgIcon name="public-delete"></SvgIcon>
-                            <div>删除</div>
-                        </div>
+                        <EnsureButton text="确定删除吗" @onSure="deleteBlog">
+                            <div class="canClick gusto-flex-center">
+                                <SvgIcon name="public-delete"></SvgIcon>
+                                <div>删除</div>
+                            </div>
+                        </EnsureButton>
                         <div class="canClick gusto-flex-center" @click="editBlog">
                             <SvgIcon name="public-edit"></SvgIcon>
                             <div>修改</div>
@@ -71,6 +73,7 @@
 
 <script setup lang="ts">
 import Popover from "@/components/Popover/index.vue";
+import EnsureButton from "@/components/EnsureButton/index.vue";
 import { useUserStore } from "@/store/user";
 import isMobile from "@/utils/isMobile";
 import { deleteBlogApi } from "@apis";
@@ -210,12 +213,11 @@ function editBlog() {
         .menuPopup {
             flex-direction: column;
             gap: 0.8rem;
-            background-color: var(--color-bg-bland);
             .svgIcon {
                 width: var(--fontsize-default);
                 height: var(--fontsize-default);
             }
-            > div {
+            .gusto-flex-center {
                 gap: 0.4rem;
             }
         }

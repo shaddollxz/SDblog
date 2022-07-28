@@ -1,7 +1,7 @@
 <template>
     <div class="essayList">
         <template v-for="item of $props.essayList" :key="item._id">
-            <EssayItem :essayData="item"></EssayItem>
+            <EssayItem :essayData="item" v-bind="$attrs"></EssayItem>
         </template>
     </div>
 </template>
@@ -13,7 +13,7 @@ import type { EssayInfo } from "@blog/server";
 type Props = {
     essayList: EssayInfo[];
 };
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

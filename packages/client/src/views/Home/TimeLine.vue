@@ -57,7 +57,6 @@ onMounted(async () => {
         padding: 1.75rem $paddingLeft 0.5rem calc($paddingLeft / 2);
         margin-top: 0;
         margin-bottom: 1.3rem;
-        z-index: 10;
         &::after {
             content: "";
             display: block;

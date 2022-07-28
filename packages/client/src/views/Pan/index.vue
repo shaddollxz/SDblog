@@ -2,7 +2,10 @@
     <div class="pan">
         <div class="head">
             <Popover directive="bs" v-model="isShowUploader">
-                <div class="gusto-button">上传文件</div>
+                <div class="gusto-button">
+                    <SvgIcon name="pan-addFile"></SvgIcon>
+                    <span>上传文件</span>
+                </div>
                 <template #popup>
                     <FileUploader @onBeginUpload="isShowUploader = false"></FileUploader>
                 </template>

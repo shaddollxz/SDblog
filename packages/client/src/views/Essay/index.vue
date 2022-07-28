@@ -7,7 +7,7 @@
             @onSend="sendFunc"
             :delay="30000"
         ></SendMarkdown>
-        <EssayList :essayList="essayList"></EssayList>
+        <EssayList :essayList="essayList" @onDelete="fresh"></EssayList>
         <SplitPage
             :totalPage="allPage"
             :currentPage="+(route.query.page as string) ?? 1"
@@ -30,11 +30,12 @@ const route = useRoute();
 let essayList = shallowRef<EssayInfo[]>([]);
 let allPage = ref(1);
 
+function fresh(data: { essayList: EssayInfo[]; allPage: number }) {
+    essayList.value = data.essayList;
+    allPage.value = data.allPage;
+}
 function getNewData(page: number | NumberString = 1) {
-    essayListApi(page as number).then(({ data }) => {
-        essayList.value = data.essayList;
-        allPage.value = data.allPage;
-    });
+    essayListApi(page as number).then(({ data }) => fresh(data));
 }
 onMounted(() => getNewData(route.query.page as NumberString));
 function pageChange(page = 1) {
@@ -43,10 +44,9 @@ function pageChange(page = 1) {
 
 const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
 function sendFunc() {
-    writeEssayApi(sendMarkdown.value!.text).then(({ data }) => {
+    writeEssayApi(sendMarkdown.value!.text, route?.query?.page as any).then(({ data }) => {
         sendMarkdown.value!.text = "";
-        essayList.value = data.essayList;
-        allPage.value = data.allPage;
+        fresh(data);
         Message.success("发送成功");
     });
 }

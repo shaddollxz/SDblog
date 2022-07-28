@@ -1,6 +1,6 @@
 <template>
     <div class="breadcrumb">
-        <span>当前路径&nbsp;</span>
+        <span>当前路径：&nbsp;</span>
         <a v-for="path of panStore.currentPathFolder" @click="() => panStore.toThisPath(path.id)">
             {{ "/" + path.name }}
         </a>

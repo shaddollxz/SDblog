@@ -24,7 +24,7 @@ export class Blog extends defaultClasses.TimeStamps implements DB {
     declare headPic: string;
 
     @prop({ ref: () => Tag }, PropType.ARRAY)
-    declare tags?: Ref<Tag>[];
+    declare tags: Ref<Tag>[];
 
     @prop({ default: 0, type: () => Number })
     declare read: number;

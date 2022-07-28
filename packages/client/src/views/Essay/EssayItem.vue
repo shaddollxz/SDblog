@@ -31,9 +31,9 @@
                     </div>
                 </div>
 
-                <div v-if="userStore.isAdmin" class="delete" @click="deleteEssay">
+                <EnsureButton class="delete" v-if="userStore.isAdmin" @onSure="deleteEssay" text="确定删除吗">
                     <SvgIcon name="public-delete"></SvgIcon>
-                </div>
+                </EnsureButton>
             </div>
         </LazyLoadBox>
         <ReplyList v-if="isShowReply" :replyMainId="essayData._id" :type="ReplyEnum.essay"></ReplyList>
@@ -41,18 +41,24 @@
 </template>
 
 <script setup lang="ts">
+import EnsureButton from "@/components/EnsureButton/index.vue";
 import Markdown from "@/components/Markdown/index.vue";
-import { onBeforeRouteLeave } from "vue-router";
 import { useUserStore } from "@/store/user";
-import { Message } from "sdt3";
-import { likeEssayApi, deleteEssayApi } from "@apis";
+import { deleteEssayApi, likeEssayApi } from "@apis";
 import type { EssayInfo } from "@blog/server";
 import { ReplyEnum } from "@blog/server";
+import { Message } from "sdt3";
+import { onBeforeRouteLeave } from "vue-router";
 const ReplyList = defineAsyncComponent(() => import("@/components/ReplyList/index.vue"));
-const userStore = useUserStore();
 
+const userStore = useUserStore();
+const route = useRoute();
 type Props = { essayData: EssayInfo };
 const props = defineProps<Props>();
+interface Emits {
+    (n: "onDelete", data: any): void;
+}
+const emit = defineEmits<Emits>();
 
 let isShowReply = ref(false);
 
@@ -76,8 +82,9 @@ onBeforeUnmount(() => window.removeEventListener("beforeunload", sendLikes));
 onBeforeRouteLeave(() => sendLikes());
 
 function deleteEssay() {
-    deleteEssayApi(props.essayData._id).then(({ data }) => {
+    deleteEssayApi(props.essayData._id, route?.query?.page).then(({ data }) => {
         Message.success("删除成功");
+        emit("onDelete", data);
     });
 }
 </script>

@@ -24,24 +24,28 @@ export function essayReplyList(essayId: string): AxiosPromise<ReplyItemInfo[]> {
 }
 
 // 写随笔
-export function writeEssay(content: string): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
+export function writeEssay(
+    content: string,
+    page: string = "1"
+): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
     return axios({
         method: "post",
         url: "essay",
-        data: {
-            content,
-        },
+        data: { content },
+        params: { page },
     });
 }
 
 // 删除随笔
-export function deleteEssay(essayId: string): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
+export function deleteEssay(
+    essayId: string,
+    page: string = "1"
+): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
     return axios({
         method: "delete",
         url: "essay",
-        data: {
-            essayId,
-        },
+        data: { essayId },
+        params: { page },
     });
 }
 

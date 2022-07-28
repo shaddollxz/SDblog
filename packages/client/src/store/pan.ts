@@ -45,7 +45,10 @@ export const usePanStore = defineStore("panFolder", {
     actions: {
         async getFolder() {
             const { data } = await panFolderApi();
-            this.folder = JSON.parse(data.folderJson) as Folder;
+            this.folder =
+                typeof data.folderJson == "string"
+                    ? (JSON.parse(data.folderJson) as Folder)
+                    : (data.folderJson as unknown as Folder);
             this.currentPathFolder[0] = {
                 name: this.folder.name,
                 id: this.folder.id,
@@ -53,7 +56,10 @@ export const usePanStore = defineStore("panFolder", {
         },
         async createFolder(name: string) {
             const { data } = await createPanFolderApi({ path: this.folderPath, name });
-            this.folder = JSON.parse(data.folderJson) as Folder;
+            this.folder =
+                typeof data.folderJson == "string"
+                    ? (JSON.parse(data.folderJson) as Folder)
+                    : (data.folderJson as unknown as Folder);
             this.currentPathFolder[0] = {
                 name: this.folder.name,
                 id: this.folder.id,
@@ -62,7 +68,10 @@ export const usePanStore = defineStore("panFolder", {
         },
         async renameFolder(name: string) {
             const { data } = await renamePanFolderApi({ path: this.folderPath, name });
-            this.folder = JSON.parse(data.folderJson) as Folder;
+            this.folder =
+                typeof data.folderJson == "string"
+                    ? (JSON.parse(data.folderJson) as Folder)
+                    : (data.folderJson as unknown as Folder);
             this.currentPathFolder[0] = {
                 name: this.folder.name,
                 id: this.folder.id,
@@ -73,7 +82,10 @@ export const usePanStore = defineStore("panFolder", {
             const { data } = await removePanFolderApi({
                 path: names.map((name) => `${this.folderPath}/${name}` as PanPath),
             });
-            this.folder = JSON.parse(data.folderJson) as Folder;
+            this.folder =
+                typeof data.folderJson == "string"
+                    ? (JSON.parse(data.folderJson) as Folder)
+                    : (data.folderJson as unknown as Folder);
             this.currentPathFolder[0] = {
                 name: this.folder.name,
                 id: this.folder.id,
@@ -107,5 +119,8 @@ export const usePanStore = defineStore("panFolder", {
                 this.currentPathFolder.splice(index + 1);
             }
         },
+
+        renameFile() {},
+        removeFile(id: string) {},
     },
 });

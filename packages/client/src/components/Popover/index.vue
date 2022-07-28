@@ -219,7 +219,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .popover {
     position: relative;
-    margin-bottom: 0.4rem;
     width: max-content;
     height: max-content;
     .popup {
@@ -229,6 +228,7 @@ onMounted(() => {
         box-sizing: border-box;
         padding: 1rem 1.5rem;
         background-color: var(--color-bg-deep);
+        z-index: 254;
         .arrow {
             position: absolute;
             width: 10%;
