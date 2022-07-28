@@ -1,6 +1,6 @@
 <template>
     <section class="blogCard">
-        <LazyLoadBox :isReHidden="true" @onShow="onShow">
+        <LazyLoadBox isReHidden @onShow="onShow">
             <div class="msg">
                 <div class="time">
                     <SvgIcon name="blog-clock"></SvgIcon>
@@ -50,31 +50,35 @@
             <div class="img">
                 <img ref="headPic" alt="这里是头图" />
             </div>
-            <div v-if="userStore.isAdmin" class="menu canClick" @click="showMenu = !showMenu">
-                <SvgIcon name="blog-menu"></SvgIcon>
-                <div v-show="showMenu" class="gusto-border gusto-flex-center">
-                    <div class="canClick" @click="deleteBlog">
-                        <SvgIcon name="public-delete"></SvgIcon>
-                        <span>删除</span>
+            <Popover class="menu" v-if="userStore.isAdmin">
+                <SvgIcon class="canClick" name="public-menu"></SvgIcon>
+                <template #popup>
+                    <div class="menuPopup gusto-flex-center">
+                        <div class="canClick gusto-flex-center" @click="deleteBlog">
+                            <SvgIcon name="public-delete"></SvgIcon>
+                            <div>删除</div>
+                        </div>
+                        <div class="canClick gusto-flex-center" @click="editBlog">
+                            <SvgIcon name="public-edit"></SvgIcon>
+                            <div>修改</div>
+                        </div>
                     </div>
-                    <div class="canClick" @click="editBlog">
-                        <SvgIcon name="public-edit"></SvgIcon>
-                        <span>修改</span>
-                    </div>
-                </div>
-            </div>
+                </template>
+            </Popover>
         </LazyLoadBox>
     </section>
 </template>
 
 <script setup lang="ts">
-import { Message, Random } from "sdt3";
+import Popover from "@/components/Popover/index.vue";
+import { useUserStore } from "@/store/user";
+import isMobile from "@/utils/isMobile";
 import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
 import defaultHeadPic from "@img/blogHeadPic_default.jpg";
+import { Message, Random } from "sdt3";
 import staticPics from "virtual:staticPics";
-import isMobile from "@/utils/isMobile";
-import { useUserStore } from "@/store/user";
+
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -82,7 +86,7 @@ interface Props {
     blogMsg: BlogListItemInfo;
 }
 const props = defineProps<Props>();
-
+console.log(props.blogMsg.tags);
 const headPic = ref<HTMLImageElement | null>(null);
 
 let alreadyShow = false;
@@ -105,7 +109,6 @@ function onShow() {
 }
 onUnmounted(() => headPic.value?.removeEventListener("error", errorHandle));
 
-let showMenu = ref(false);
 function deleteBlog() {
     deleteBlogApi(props.blogMsg._id).then(() => {
         Message.success("删除成功");
@@ -125,11 +128,6 @@ function editBlog() {
     box-sizing: border-box;
     padding: 2rem 1.6rem;
     border-bottom: 2px solid var(--color-border);
-    .svgIcon {
-        margin-right: 0.2rem;
-        width: var(--fontsize-small);
-        height: var(--fontsize-small);
-    }
     .lazyLoadBox {
         min-height: 10rem;
         display: flex;
@@ -141,6 +139,11 @@ function editBlog() {
             width: 40%;
             flex: 1;
             margin-right: 2rem;
+            .svgIcon {
+                margin-right: 0.2rem;
+                width: var(--fontsize-small);
+                height: var(--fontsize-small);
+            }
             .time {
                 font-size: var(--fontsize-small);
                 span {
@@ -203,16 +206,17 @@ function editBlog() {
             position: absolute;
             top: -2rem;
             right: -2rem;
+        }
+        .menuPopup {
+            flex-direction: column;
+            gap: 0.8rem;
+            background-color: var(--color-bg-bland);
+            .svgIcon {
+                width: var(--fontsize-default);
+                height: var(--fontsize-default);
+            }
             > div {
-                flex-direction: column;
-                gap: 1rem;
-                box-sizing: border-box;
-                padding: 0.5rem 0.5rem;
-                position: absolute;
-                left: 50%;
-                top: 100%;
-                width: max-content;
-                background-color: var(--color-bg-bland);
+                gap: 0.4rem;
             }
         }
         @include mobile {

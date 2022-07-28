@@ -1,7 +1,7 @@
 <template>
     <div class="popover" @click.capture="changeState" ref="popover">
         <slot></slot>
-        <div class="popup gusto-border" v-show="modelValue" :style="popupStyle">
+        <div class="popup gusto-border" v-show="modelValue ?? isShow" :style="popupStyle">
             <div class="arrow" v-show="arrow" :style="arrowStyle"></div>
             <slot name="popup"></slot>
         </div>
@@ -12,15 +12,17 @@
 import type { CSSProperties } from "vue";
 interface Props {
     directive?: "ts" | "te" | "t" | "l" | "ls" | "le" | "r" | "rs" | "re" | "b" | "bs" | "be";
-    deviation?: { x: string; y: string };
+    x?: string;
+    y?: string;
     arrow?: boolean;
-    modelValue?: boolean;
+    modelValue?: boolean | null;
 }
 const props = withDefaults(defineProps<Props>(), {
     directive: "b",
-    deviation: () => ({ x: "0px", y: "0px" }),
+    x: "0px",
+    y: "0px",
     arrow: true,
-    modelValue: false,
+    modelValue: () => null,
 });
 interface Emits {
     (n: "onClose"): void;
@@ -28,19 +30,26 @@ interface Emits {
 }
 const emit = defineEmits<Emits>();
 
-function changeState(e: MouseEvent) {
-    if (!(e.target as HTMLDivElement).classList.contains("popup")) {
-        emit("update:modelValue", !props.modelValue);
+const popover = shallowRef<HTMLDivElement | null>(null);
+const isShow = ref(props.modelValue === null ? false : null);
+
+function setIsShow(state?: boolean) {
+    if (isShow.value === null) {
+        emit("update:modelValue", state ?? !props.modelValue);
+    } else {
+        isShow.value = state ?? !isShow.value;
     }
 }
-
-const popover = shallowRef<HTMLDivElement | null>(null);
-
+function changeState(e: MouseEvent) {
+    if (!(e.target as HTMLDivElement).classList.contains("popup")) {
+        setIsShow();
+    }
+}
 function hidden(e: MouseEvent) {
     const target = e.target as HTMLDivElement;
     if (!target.classList.contains("popup")) {
         if (!target.classList.contains("popover")) {
-            emit("update:modelValue", false);
+            setIsShow(false);
             emit("onClose");
         }
     }
@@ -54,40 +63,40 @@ onMounted(() => {
     const dom = popover.value?.children[0]! as HTMLElement;
     if (dom.classList.contains("popup")) return;
 
-    const deviation = props.deviation;
+    const { x, y } = props;
     switch (props.directive) {
         case "b":
             popupStyle.value = {
-                left: `calc(50% + ${deviation.x})`,
-                top: `calc(100% + ${deviation.y})`,
-                transform: `translate(-50%,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(50% + ${x})`,
+                top: `calc(100% + ${y})`,
+                transform: `translate(-50%,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                left: `calc(50% - ${deviation.y})`,
+                left: `calc(50% - ${y})`,
                 top: "0",
                 transform: "translate(-50%,-50%) rotate(45deg)",
             };
             break;
         case "bs":
             popupStyle.value = {
-                left: `calc(0px + ${deviation.x})`,
-                top: `calc(100% + ${deviation.y})`,
-                transform: `translate(0,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(0px + ${x})`,
+                top: `calc(100% + ${y})`,
+                transform: `translate(0,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                left: `calc(${dom.clientWidth / 2}px - ${deviation.x})`,
+                left: `calc(${dom.clientWidth / 2}px - ${x})`,
                 top: "0",
                 transform: "translate(-50%,-50%) rotate(45deg)",
             };
             break;
         case "be":
             popupStyle.value = {
-                right: `calc(0px - ${deviation.x})`,
-                top: `calc(100% + ${deviation.y})`,
-                transform: `translate(0,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                right: `calc(0px - ${x})`,
+                top: `calc(100% + ${y})`,
+                transform: `translate(0,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                right: `calc(${dom.clientWidth / 2}px + ${deviation.x})`,
+                right: `calc(${dom.clientWidth / 2}px + ${x})`,
                 top: "0",
                 transform: "translate(50%,-50%) rotate(45deg)",
             };
@@ -95,36 +104,36 @@ onMounted(() => {
 
         case "t":
             popupStyle.value = {
-                left: `calc(50% + ${deviation.x})`,
-                bottom: `calc(100% + ${deviation.y})`,
-                transform: `translate(-50%,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(50% + ${x})`,
+                bottom: `calc(100% + ${y})`,
+                transform: `translate(-50%,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                left: `calc(50% - ${deviation.x})`,
+                left: `calc(50% - ${x})`,
                 bottom: "0",
                 transform: "translate(-50%,50%) rotate(225deg)",
             };
             break;
         case "ts":
             popupStyle.value = {
-                left: `calc(0px + ${deviation.x})`,
-                bottom: `calc(100% + ${deviation.y})`,
-                transform: `translate(0px,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(0px + ${x})`,
+                bottom: `calc(100% + ${y})`,
+                transform: `translate(0px,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                left: `calc(${dom.clientWidth / 2}px - ${deviation.x})`,
+                left: `calc(${dom.clientWidth / 2}px - ${x})`,
                 bottom: "0",
                 transform: "translate(-50%,50%) rotate(225deg)",
             };
             break;
         case "te":
             popupStyle.value = {
-                right: `calc(0px - ${deviation.x})`,
-                bottom: `calc(100% + ${deviation.y})`,
-                transform: `translate(0px,${deviation.y == "0px" ? "1.2rem" : "0px"})`,
+                right: `calc(0px - ${x})`,
+                bottom: `calc(100% + ${y})`,
+                transform: `translate(0px,${y == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
-                right: `calc(${dom.clientWidth / 2}px + ${deviation.x})`,
+                right: `calc(${dom.clientWidth / 2}px + ${x})`,
                 bottom: "0",
                 transform: "translate(50%,50%) rotate(225deg)",
             };
@@ -132,74 +141,74 @@ onMounted(() => {
 
         case "l":
             popupStyle.value = {
-                right: `calc(100% - ${deviation.x})`,
-                top: `calc(50% + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "-1.2rem" : "0px"},-50%)`,
+                right: `calc(100% - ${x})`,
+                top: `calc(50% + ${y})`,
+                transform: `translate(${x == "0px" ? "-1.2rem" : "0px"},-50%)`,
             };
             arrowStyle.value = {
                 right: "0",
-                top: `calc(50% + ${deviation.x})`,
+                top: `calc(50% + ${x})`,
                 transform: "translate(50%,-50%) rotate(135deg)",
             };
             break;
         case "ls":
             popupStyle.value = {
-                right: `calc(100% - ${deviation.x})`,
-                top: `calc(0px + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "-1.2rem" : "0px"})`,
+                right: `calc(100% - ${x})`,
+                top: `calc(0px + ${y})`,
+                transform: `translate(${x == "0px" ? "-1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
                 right: "0",
-                top: `calc(${dom.clientHeight / 2}px - ${deviation.y})`,
+                top: `calc(${dom.clientHeight / 2}px - ${y})`,
                 transform: "translate(50%,-50%) rotate(135deg)",
             };
             break;
         case "le":
             popupStyle.value = {
-                right: `calc(100% - ${deviation.x})`,
-                bottom: `calc(0px + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "-1.2rem" : "0px"})`,
+                right: `calc(100% - ${x})`,
+                bottom: `calc(0px + ${y})`,
+                transform: `translate(${x == "0px" ? "-1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
                 right: "0",
-                bottom: `calc(${dom.clientHeight / 2}px - ${deviation.y})`,
+                bottom: `calc(${dom.clientHeight / 2}px - ${y})`,
                 transform: "translate(50%,50%) rotate(135deg)",
             };
             break;
 
         case "r":
             popupStyle.value = {
-                left: `calc(100% + ${deviation.x})`,
-                top: `calc(50% + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "1.2rem" : "0px"},-50%)`,
+                left: `calc(100% + ${x})`,
+                top: `calc(50% + ${y})`,
+                transform: `translate(${x == "0px" ? "1.2rem" : "0px"},-50%)`,
             };
             arrowStyle.value = {
                 left: "0",
-                top: `calc(50% - ${deviation.x})`,
+                top: `calc(50% - ${x})`,
                 transform: "translate(-50%,-50%) rotate(315deg)",
             };
             break;
         case "rs":
             popupStyle.value = {
-                left: `calc(100% + ${deviation.x})`,
-                top: `calc(0px + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(100% + ${x})`,
+                top: `calc(0px + ${y})`,
+                transform: `translate(${x == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
                 left: "0",
-                top: `calc(${dom.clientHeight / 2}px - ${deviation.y})`,
+                top: `calc(${dom.clientHeight / 2}px - ${y})`,
                 transform: "translate(-50%,-50%) rotate(315deg)",
             };
             break;
         case "re":
             popupStyle.value = {
-                left: `calc(100% + ${deviation.x})`,
-                bottom: `calc(0px + ${deviation.y})`,
-                transform: `translate(${deviation.x == "0px" ? "1.2rem" : "0px"})`,
+                left: `calc(100% + ${x})`,
+                bottom: `calc(0px + ${y})`,
+                transform: `translate(${x == "0px" ? "1.2rem" : "0px"})`,
             };
             arrowStyle.value = {
                 left: "0",
-                bottom: `calc(${dom.clientHeight / 2}px - ${deviation.y})`,
+                bottom: `calc(${dom.clientHeight / 2}px - ${y})`,
                 transform: "translate(-50%,50%) rotate(315deg)",
             };
             break;

@@ -17,6 +17,10 @@
                 <span>{{ item.name }}</span>
             </div>
             <div class="right">
+                <Popover>
+                    <SvgIcon name="public-menu"></SvgIcon>
+                    <template #popup></template>
+                </Popover>
                 <SvgIcon name="public-delete"></SvgIcon>
             </div>
         </div>
@@ -26,6 +30,10 @@
                 <span>{{ item.name }}</span>
             </div>
             <div class="right">
+                <Popover>
+                    <SvgIcon name="public-menu"></SvgIcon>
+                    <template #popup></template>
+                </Popover>
                 <SvgIcon name="public-delete"></SvgIcon>
             </div>
         </div>
@@ -34,6 +42,7 @@
 
 <script setup lang="ts">
 import { usePanStore } from "@/store/pan";
+import Popover from "@/components/Popover/index.vue";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
