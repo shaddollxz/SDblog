@@ -1,7 +1,7 @@
 <template>
     <div class="folder">
         <div class="item" @click="panStore.toUpperPath">
-            <div class="left" v-dragtarget="upperDropTargetOption">
+            <div class="left" v-show="!panStore.isRoot" v-dragtarget="upperDropTargetOption">
                 <SvgIcon name="pan-folder"></SvgIcon>
                 <span>..</span>
             </div>
@@ -20,22 +20,34 @@
                 <div class="right">
                     <Popover>
                         <SvgIcon name="public-menu"></SvgIcon>
+
                         <template #popup>
-                            <div>重命名</div>
+                            <div class="options gusto-flex-center-col">
+                                <EnsureButton
+                                    :arrow="false"
+                                    directive="be"
+                                    text="确定删除该文件夹吗，其中的文件在三天内可以通过回收站找回"
+                                    @onSure="() => panStore.removeFolder([item.name])"
+                                >
+                                    <span class="option">删除</span>
+                                </EnsureButton>
+                                <EnsureButton
+                                    :arrow="false"
+                                    directive="be"
+                                    type="input"
+                                    text=""
+                                    @onSure="(n) => panStore.renameFolder(item.name, n)"
+                                >
+                                    <span class="option">重命名</span>
+                                </EnsureButton>
+                            </div>
                         </template>
                     </Popover>
                     <SvgIcon name="pan-download"></SvgIcon>
-                    <EnsureButton
-                        directive="be"
-                        text="确定删除该文件夹吗"
-                        @onSure="() => panStore.removeFolder([item.name])"
-                    >
-                        <SvgIcon name="public-delete"></SvgIcon>
-                    </EnsureButton>
                 </div>
             </div>
         </template>
-        <template v-for="item of folder.files" :key="item.hash">
+        <template v-for="(item, index) of folder.files" :key="item.hash">
             <div class="item fileItem">
                 <div class="left" v-draggable="fileDragOption(item.name, item.hash)">
                     <SvgIcon name="pan-file"></SvgIcon>
@@ -45,17 +57,28 @@
                     <Popover>
                         <SvgIcon name="public-menu"></SvgIcon>
                         <template #popup>
-                            <div>重命名</div>
+                            <div class="options gusto-flex-center-col">
+                                <EnsureButton
+                                    :arrow="false"
+                                    directive="be"
+                                    text="确定删除该文件吗，删除文件后三天内可以在回收站内找回"
+                                    @onSure="() => panStore.removeFile(item._id)"
+                                >
+                                    <span class="option">删除</span>
+                                </EnsureButton>
+                                <EnsureButton
+                                    :arrow="false"
+                                    directive="be"
+                                    type="input"
+                                    text=""
+                                    @onSure="(n) => panStore.renameFile(item._id, n, index)"
+                                >
+                                    <span class="option">重命名</span>
+                                </EnsureButton>
+                            </div>
                         </template>
                     </Popover>
                     <SvgIcon name="pan-download"></SvgIcon>
-                    <EnsureButton
-                        directive="be"
-                        text="确定删除该文件吗"
-                        @onSure="() => panStore.removeFile(item._id)"
-                    >
-                        <SvgIcon name="public-delete"></SvgIcon>
-                    </EnsureButton>
                 </div>
             </div>
         </template>
@@ -71,35 +94,44 @@ import type { VDragType } from "sdt3";
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
 
+// #region 拖放
+const enum DragType {
+    file,
+    folder,
+}
 interface DropOption {
-    type: "file" | "folder";
+    type: DragType;
     name: string;
     id: string;
 }
+type DragOption = DropOption;
 function folderDropTargetOption(name: string, id: string): VDragType.TargetOptions<DropOption> {
     return {
         onDrop(data) {
-            if (data.type == "folder" && data.id != id) {
+            if (data.type == DragType.folder && data.id != id) {
                 panStore.moveFolderToNear(data.name, name);
+            } else if (data.type == DragType.file) {
+                panStore.moveFileTo(data.id, id);
             }
         },
     };
 }
 const upperDropTargetOption: VDragType.TargetOptions<DropOption> = {
     onDrop(data) {
-        if (data.type == "folder") {
+        if (data.type == DragType.folder) {
             panStore.moveFolderToNear(data.name, "..");
+        } else if (data.type == DragType.file) {
+            panStore.moveFileTo(data.id, panStore.currentPathFolder.at(-2)!.id);
         }
     },
 };
-
-type DragOption = DropOption;
 function fileDragOption(name: string, id: string): VDragType.DraggableOptions<DragOption> {
-    return { data: { type: "file", name, id }, draggable: true };
+    return { data: { type: DragType.file, name, id }, draggable: true };
 }
 function folderDragOption(name: string, id: string): VDragType.DraggableOptions<DragOption> {
-    return { data: { type: "folder", name, id }, draggable: true };
+    return { data: { type: DragType.folder, name, id }, draggable: true };
 }
+// #endregion
 </script>
 
 <style lang="scss" scoped>
@@ -108,6 +140,7 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
     .item {
         display: flex;
         justify-content: space-between;
+        gap: $gap-xxlarge;
         box-sizing: border-box;
         padding: 0.4rem 1rem;
         .left,
@@ -125,5 +158,8 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
             }
         }
     }
+}
+.options {
+    gap: $gap-big;
 }
 </style>

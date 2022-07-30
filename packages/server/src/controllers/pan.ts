@@ -114,8 +114,10 @@ export const renameFile: PostHandler<RenameFileOption> = async (req, res, next) 
 
 export const moveFile: PostHandler<MoveFileOption> = async (req, res, next) => {
     try {
-        const { fileId, folderId } = req.body;
-        await PanFileDB.findByIdAndUpdate(fileId, { $set: { folderId } });
+        const { fileIds, folderId } = req.body;
+        for (const fileId of fileIds) {
+            await PanFileDB.findByIdAndUpdate(fileId, { $set: { folderId } });
+        }
         next();
     } catch (e) {
         next(e);
@@ -124,9 +126,11 @@ export const moveFile: PostHandler<MoveFileOption> = async (req, res, next) => {
 
 export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next) => {
     try {
-        const { _id, fileId } = req.body;
-        const file = await PanFileDB.findById(fileId);
-        await file?.deleteFile(_id!);
+        const { _id, fileIds } = req.body;
+        for (const fileId of fileIds) {
+            const file = await PanFileDB.findById(fileId);
+            await file?.deleteFile(_id!);
+        }
         res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {
         next(e);

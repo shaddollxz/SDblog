@@ -5,6 +5,9 @@ import {
     removePanFolderApi,
     movePanFolderApi,
     renamePanFolderApi,
+    removePanFileApi,
+    renamePanFileApi,
+    movePanFileApi,
 } from "@apis";
 import type { Folder, PanPath } from "@blog/server";
 
@@ -24,19 +27,19 @@ export const usePanStore = defineStore("panFolder", {
         currentFolder(): Folder {
             if (this.currentPath == "/root") return this.folder;
             if (this._currentFolder) return this._currentFolder;
+            return this.currentPathFolder.at(-1) ?? { id: "", name: "root", folders: [], files: [] };
+            // const pathArr = this.currentPath.split("/");
+            // pathArr.splice(0, 2);
+            // let result = this.folder;
 
-            const pathArr = this.currentPath.split("/");
-            pathArr.splice(0, 2);
-            let result = this.folder;
+            // pathArr.forEach((foldername) => {
+            //     if (result && result.folders) {
+            //         const targetIndex = result.folders.findIndex((folder) => folder.name == foldername);
+            //         result = result.folders[targetIndex];
+            //     }
+            // });
 
-            pathArr.forEach((foldername) => {
-                if (result && result.folders) {
-                    const targetIndex = result.folders.findIndex((folder) => folder.name == foldername);
-                    result = result.folders[targetIndex];
-                }
-            });
-
-            return result;
+            // return result;
         },
         currentPath(): PanPath {
             return this.currentPathFolder.reduce(
@@ -47,14 +50,29 @@ export const usePanStore = defineStore("panFolder", {
         folderPath(): PanPath {
             return this.currentPath == "/root" ? "/" : (this.currentPath.replace("/root", "") as PanPath);
         },
+        isRoot(): Boolean {
+            return this.currentPathFolder.length >= 1;
+        },
     },
     actions: {
+        /** 刷新整个文件夹结构 */
         refresh(folderJson: Folder | string) {
             this.folder =
                 typeof folderJson == "string"
                     ? (JSON.parse(folderJson) as Folder)
                     : (folderJson as unknown as Folder);
             this.currentPathFolder[0] = this.folder;
+        },
+        /** 单纯路径跳转时通过缓存可以有优化，如果涉及文件（夹）修改，需要使用该函数手动刷新状态 */
+        refreshPathFolder(folderJson: Folder | string) {
+            const pathArr = this.currentPath.split("/");
+            pathArr.splice(0, 2);
+            this.refresh(folderJson);
+            const result: Folder[] = [this.folder];
+            pathArr.forEach((foldername) => {
+                result.push(result.at(-1)!.folders!.find((item) => item.name == foldername)!);
+            });
+            this.currentPathFolder = result;
         },
         async getFolder() {
             const { data } = await panFolderApi();
@@ -88,39 +106,30 @@ export const usePanStore = defineStore("panFolder", {
         // #endregion
 
         // #region 文件夹操作
-        /** 单纯路径跳转时通过缓存可以有优化，如果涉及文件（夹）路径改变，需要使用该函数手动刷新状态 */
-        refreshPathFolder(folderJson: Folder | string) {
-            const pathArr = this.currentPath.split("/");
-            pathArr.splice(0, 2);
-            this.refresh(folderJson);
-            const result: Folder[] = [this.folder];
-            console.log(pathArr);
-            pathArr.forEach((foldername) => {
-                result.push(result.at(-1)!.folders!.find((item) => item.name == foldername)!);
-            });
-            this.currentPathFolder = result;
-        },
         async createFolder(name: string) {
             const { data } = await createPanFolderApi({ path: this.folderPath, name });
             this.refreshPathFolder(data.folderJson);
             this._currentFolder = undefined;
         },
-        async renameFolder(name: string) {
-            const { data } = await renamePanFolderApi({ path: this.folderPath, name });
+        async renameFolder(oldName: string, name: string) {
+            const { data } = await renamePanFolderApi({
+                path: formatPath(`${this.folderPath}/${oldName}`),
+                name,
+            });
             this.refreshPathFolder(data.folderJson);
             this._currentFolder = undefined;
         },
         /** 删除文件夹 */
         async removeFolder(names: string[]) {
             const { data } = await removePanFolderApi({
-                path: names.map((name) => `${this.folderPath}/${name}` as PanPath),
+                path: names.map((name) => formatPath(`${this.folderPath}/${name}`) as PanPath),
             });
             this.refreshPathFolder(data.folderJson);
             this._currentFolder = undefined;
         },
         /** 移动到下一层 / 上一层 */
         async moveFolderToNear(from_: string, to_: string) {
-            const from = formatPath(this.folderPath + "/" + from_);
+            const from = formatPath(`${this.folderPath}/${from_}`);
             let to: PanPath;
             if (to_ == "..") {
                 if (this.folderPath == "/") return;
@@ -136,9 +145,23 @@ export const usePanStore = defineStore("panFolder", {
         // #endregion
 
         // #region 文件操作
-        renameFile(folderId: string, name: string) {},
-        removeFile(fileId: string) {},
-        moveFile(fileId: string, folderId: string) {},
+        async renameFile(fileId: string, name: string, index: number) {
+            await renamePanFileApi({ fileId, name });
+            this.currentFolder!.files![index].name = name;
+        },
+        async removeFile(_fileIds: string[] | string) {
+            const fileIds = typeof _fileIds == "string" ? [_fileIds] : _fileIds;
+            await removePanFileApi({ fileIds });
+            this.currentFolder.files = this.currentFolder.files?.filter(
+                (item) => !fileIds.includes(item._id)
+            );
+        },
+        async moveFileTo(_fileIds: string[] | string, folderId: string) {
+            const fileIds = typeof _fileIds == "string" ? [_fileIds] : _fileIds;
+            const { data } = await movePanFileApi({ fileIds, folderId });
+            this.refreshPathFolder(data.folderJson);
+            this._currentFolder = undefined;
+        },
         // #endregion
     },
 });

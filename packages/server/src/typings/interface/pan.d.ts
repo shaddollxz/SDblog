@@ -62,7 +62,7 @@ export interface UploadFileEndOption {
 }
 
 export interface RemoveFileOption {
-    fileId: string;
+    fileIds: string[];
 }
 
 export interface RenameFileOption {
@@ -71,7 +71,7 @@ export interface RenameFileOption {
 }
 
 export interface MoveFileOption {
-    fileId: string;
+    fileIds: string[];
     folderId: string;
 }
 
