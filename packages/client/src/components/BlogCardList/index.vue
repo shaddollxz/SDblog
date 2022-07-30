@@ -1,5 +1,5 @@
 <template>
-    <div class="blogCardList gusto-border gusto-flex-center">
+    <div class="blogCardList gusto-border gusto-flex-center-col">
         <template v-for="blogMsg of $props.blogList">
             <BlogCard :blogMsg="blogMsg"></BlogCard>
         </template>
@@ -18,7 +18,6 @@ defineProps<Props>();
 
 <style lang="scss" scoped>
 .blogCardList {
-    flex-direction: column;
     box-sizing: border-box;
     padding: 1.4rem 2.4rem;
     background-color: var(--color-bg-bland);

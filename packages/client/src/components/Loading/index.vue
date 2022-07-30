@@ -1,15 +1,14 @@
 <template>
-    <div class="loading gusto-flex-center">
+    <div class="loading gusto-flex-center-col">
         <div class="loadingBox"></div>
         <span class="text chuyuan">Loading...</span>
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .loading {
     --boxWidth: 10rem;
     --gap: 2rem;
-    flex-direction: column;
 }
 .text {
     margin-top: calc(var(--gap) + 2.5rem);

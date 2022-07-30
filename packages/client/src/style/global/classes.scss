@@ -84,6 +84,6 @@
 
 .svgIcon {
     width: var(--fontsize-big);
-    height: var(--fontsize-big);
     fill: inherit;
+    aspect-ratio: 1 / 1;
 }

@@ -80,7 +80,6 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
     --h: 2rem;
     position: relative;
     .svgIcon {
-        height: var(--fontsize-tiny);
         width: var(--fontsize-tiny);
     }
     .input {
@@ -106,7 +105,6 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
             height: var(--fontsize-default);
             width: var(--fontsize-default);
             .svgIcon {
-                height: inherit;
                 width: inherit;
             }
         }

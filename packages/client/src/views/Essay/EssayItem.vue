@@ -166,7 +166,6 @@ function deleteEssay() {
             margin-right: 2rem;
             cursor: pointer;
             .svgIcon {
-                height: var(--fontsize-small);
                 width: var(--fontsize-small);
             }
         }

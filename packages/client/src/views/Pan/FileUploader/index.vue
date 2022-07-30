@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="uploader gusto-border" v-dragtarget="dropOption">
-            <div class="tip gusto-flex-center" v-show="!chosedFiles.files.length">
+            <div class="tip gusto-flex-center-col" v-show="!chosedFiles.files.length">
                 <p>同时支持拖放文件到此处</p>
                 <p>最多选择10个文件</p>
             </div>
@@ -108,7 +108,6 @@ async function upload() {
         overflow-y: scroll;
 
         .tip {
-            flex-direction: column;
             height: 100%;
         }
 

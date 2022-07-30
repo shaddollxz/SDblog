@@ -1,5 +1,5 @@
 <template>
-    <section class="userMsg">
+    <section class="userMsg gusto-flex-center-col">
         <div class="name">
             <span>用户名：</span>
             <div>
@@ -40,10 +40,6 @@ function updateUserInfo() {
 <style lang="scss" scoped>
 .userMsg {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: var(--fontsize-large);
     .name {
         margin-bottom: 2rem;
@@ -52,7 +48,6 @@ function updateUserInfo() {
             .svgIcon {
                 margin-left: 1rem;
                 width: var(--fontsize-large);
-                height: var(--fontsize-large);
             }
         }
     }

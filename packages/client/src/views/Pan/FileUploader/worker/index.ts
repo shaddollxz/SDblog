@@ -34,7 +34,7 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
             {
                 const { buffers, fileName, folderId, hash } = data;
                 try {
-                    await uploadChunk({ name: fileName, hash, buffers });
+                    await uploadChunk({ hash, buffers });
                 } catch (notUploaded) {
                     PostMessage({ step: "uploadError", notUploaded: notUploaded as number[] });
                     return;
@@ -52,11 +52,7 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
 });
 
 async function uploadChunk(
-    {
-        name,
-        hash,
-        buffers,
-    }: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] },
+    { hash, buffers }: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] },
     count = 0
 ) {
     if (count >= 3) {
@@ -68,7 +64,7 @@ async function uploadChunk(
     const { rejected } = await parallelPromise(
         buffers.map((buffer, index) => {
             if (buffer) {
-                const file = new File([buffer], name);
+                const file = new File([buffer], "");
                 return {
                     func: (arg: FormDataT<UploadFileChunkOption>) =>
                         uploadPanFileChunkApi(arg)
@@ -77,7 +73,7 @@ async function uploadChunk(
                                 return index;
                             })
                             .catch(() => Promise.reject(index)),
-                    args: [createFormData({ name, hash, index, file })],
+                    args: [createFormData({ hash, index, file })],
                 };
             } else {
                 return {
@@ -90,7 +86,6 @@ async function uploadChunk(
     if (rejected.length) {
         return await uploadChunk(
             {
-                name,
                 hash,
                 buffers: buffers.map((buffer, index) => (rejected.includes(index) ? buffer : null)),
             },

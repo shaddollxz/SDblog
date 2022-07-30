@@ -1,5 +1,5 @@
 <template>
-    <div class="changeAvatarFrame gusto-flex-center" @click="$emit('update:isShow', false)">
+    <div class="changeAvatarFrame gusto-flex-center-col" @click="$emit('update:isShow', false)">
         <h2>修改头像</h2>
         <div class="frameItemBox gusto-border" v-fill>
             <div
@@ -37,7 +37,6 @@ function choseFrame(index: number) {
     bottom: 0;
     left: 0;
     right: 0;
-    flex-direction: column;
     background-color: rgba(0, 0, 0, 0.8);
     .frameItemBox {
         width: 45%;

@@ -1,10 +1,10 @@
 <template>
     <div class="noData">
-        <div v-if="isInternet">
+        <div class="gusto-flex-center-col" v-if="isInternet">
             <SvgIcon name="noData-noData"></SvgIcon>
             <p>没有找到相关数据</p>
         </div>
-        <div v-else>
+        <div class="gusto-flex-center-col" v-else>
             <SvgIcon name="noData-noInternet"></SvgIcon>
             <p>没有网络链接</p>
             <p>请链接网络后再刷新页面</p>
@@ -31,15 +31,8 @@ export default defineComponent({
     box-sizing: border-box;
     padding: 3rem 0;
     background-color: var(--color-bg-bland);
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        .svgIcon {
-            width: calc(var(--fontsize-xxlarge) * 2);
-            height: calc(var(--fontsize-xxlarge) * 2);
-        }
-    }
+}
+.svgIcon {
+    width: calc(var(--fontsize-xxlarge) * 2);
 }
 </style>

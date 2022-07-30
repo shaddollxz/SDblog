@@ -147,7 +147,6 @@ onMounted(async () => {
     }
 }
 .svgIcon {
-    height: var(--fontsize-large);
     width: var(--fontsize-large);
     margin-right: 1.5rem;
 }

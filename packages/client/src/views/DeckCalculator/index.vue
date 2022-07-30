@@ -1,5 +1,5 @@
 <template>
-    <div class="deckCalculator gusto-flex-center">
+    <div class="deckCalculator gusto-flex-center-col">
         <h2>卡手率计算器</h2>
         <div class="main">
             <div class="inputs">
@@ -147,7 +147,6 @@ const precision = ref(2);
 <style lang="scss" scoped>
 .deckCalculator {
     margin-left: $width-wife;
-    flex-direction: column;
     .main {
         width: 70%;
         .inputs {

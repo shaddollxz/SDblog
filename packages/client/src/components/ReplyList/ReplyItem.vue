@@ -105,7 +105,6 @@ let msgHeader = ref("回复给 @" + props.detail.author.name + "：");
                 font-size: var(--fontsize-small);
                 .svgIcon {
                     width: var(--fontsize-small);
-                    height: var(--fontsize-small);
                 }
             }
             .head {

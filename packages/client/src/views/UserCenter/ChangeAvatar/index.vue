@@ -1,12 +1,12 @@
 <template>
-    <section class="changeAvatar gusto-flex-center">
+    <section class="changeAvatar gusto-flex-center-col">
         <div class="imgBox gusto-flex-center">
-            <div class="originBox gusto-flex-center">
+            <div class="originBox gusto-flex-center-col">
                 <span class="chuyuan">原图</span>
                 <ChoseImg ref="choseImg" :maxSize="5 * 1024">选择头像</ChoseImg>
                 <span class="description chuyuan">只支持5MB以下的图片的上传</span>
             </div>
-            <div class="previewBox gusto-flex-center">
+            <div class="previewBox gusto-flex-center-col">
                 <span>预览</span>
                 <div class="avatars gusto-flex-center">
                     <div class="gusto-avatarBox">
@@ -61,11 +61,9 @@ let isShowChangeAvatarFrame = ref(false);
 <style lang="scss" scoped>
 .changeAvatar {
     height: 100%;
-    flex-direction: column;
     .imgBox {
         > div {
             padding: 2rem;
-            flex-direction: column;
             span {
                 margin-bottom: 2rem;
                 &.description {

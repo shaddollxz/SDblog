@@ -1,7 +1,7 @@
 <template>
     <div class="choseImg">
         <div class="chose gusto-border gusto-flex-center canClick" @click="choseFile">
-            <div v-if="!imgData" class="box gusto-flex-center">
+            <div v-if="!imgData" class="box gusto-flex-center-col">
                 <SvgIcon name="replyBox-picture"></SvgIcon>
                 <slot></slot>
             </div>
@@ -41,13 +41,11 @@ defineExpose({ file: data.value, dataUrl: imgData.value });
         height: 100%;
         overflow: hidden;
         .box {
-            flex-direction: column;
             height: 100%;
             width: 100%;
             box-sizing: border-box;
             padding: 1rem 2rem;
             .svgIcon {
-                height: var(--fontsize-xxlarge);
                 width: var(--fontsize-xxlarge);
             }
         }

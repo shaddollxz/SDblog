@@ -65,7 +65,6 @@ function changeColor(color: typeof colors[number]) {
 
     .svgIcon {
         width: var(--fontsize-xlarge);
-        height: var(--fontsize-xlarge);
     }
     > .svgIcon {
         fill: var(--color-text-theme);

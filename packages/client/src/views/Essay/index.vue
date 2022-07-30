@@ -1,5 +1,5 @@
 <template>
-    <div class="essay gusto-flex-center">
+    <div class="essay gusto-flex-center-col">
         <SendMarkdown
             ref="sendMarkdown"
             :isCanSend="!!sendMarkdown?.text"
@@ -55,7 +55,6 @@ function sendFunc() {
 <style lang="scss" scoped>
 .essay {
     margin: calc($height-header + 3rem) $width-wife 0;
-    flex-direction: column;
     .sendMarkdown {
         width: 100%;
         height: 20rem;

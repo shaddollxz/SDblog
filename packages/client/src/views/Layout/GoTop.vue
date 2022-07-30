@@ -1,5 +1,5 @@
 <template>
-    <div class="goTop gusto-noClick gusto-flex-center" :class="{ show }">
+    <div class="goTop gusto-noClick gusto-flex-center-col" :class="{ show }">
         <img class="gusto-fillImg" src="~@img/goTop/rope.png" alt="" />
         <img class="cat canClick" @click="rollToTop" src="~@img/goTop/cat.png" alt="" />
     </div>
@@ -25,7 +25,6 @@ const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
     position: fixed;
     right: 0;
     top: -75vh;
-    flex-direction: column;
     width: 6rem;
     height: 75vh;
     transition: all 0.7s ease-in;

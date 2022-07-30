@@ -1,11 +1,11 @@
 <template>
-    <div class="me gusto-border gusto-flex-center">
+    <div class="me gusto-border gusto-flex-center-col">
         <div class="avatar gusto-avatarBox">
             <img :src="$img.admin" alt="" />
         </div>
 
-        <div class="msgs gusto-flex-center">
-            <div class="userInfo gusto-flex-center">
+        <div class="msgs gusto-flex-center-col">
+            <div class="userInfo gusto-flex-center-col">
                 <span>{{ detail.name }}</span>
                 <span>shaddollxz@163.com</span>
             </div>
@@ -74,7 +74,6 @@ const aboutMe = [
 .me {
     box-sizing: border-box;
     padding: 1rem 1.25rem;
-    flex-direction: column;
     gap: $gap-large;
 }
 .avatar {
@@ -83,10 +82,8 @@ const aboutMe = [
 }
 .msgs {
     width: 80%;
-    flex-direction: column;
     gap: $gap;
     .userInfo {
-        flex-direction: column;
         font-weight: 600;
         gap: $gap;
         margin-bottom: 1rem;
@@ -129,7 +126,6 @@ const aboutMe = [
 }
 .svgIcon {
     margin: 0 1rem;
-    height: var(--fontsize-xlarge);
     width: var(--fontsize-xlarge);
 }
 </style>

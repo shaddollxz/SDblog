@@ -87,7 +87,6 @@ header {
     }
     .svgIcon {
         width: var(--fontsize-xlarge);
-        height: var(--fontsize-xlarge);
     }
 
     @include mobile {

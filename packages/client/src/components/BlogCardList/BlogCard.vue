@@ -53,7 +53,7 @@
             <Popover class="menu" v-if="userStore.isAdmin">
                 <SvgIcon class="canClick" name="public-menu"></SvgIcon>
                 <template #popup>
-                    <div class="menuPopup gusto-flex-center">
+                    <div class="menuPopup gusto-flex-center-col">
                         <EnsureButton text="确定删除吗" @onSure="deleteBlog">
                             <div class="canClick gusto-flex-center">
                                 <SvgIcon name="public-delete"></SvgIcon>
@@ -145,7 +145,6 @@ function editBlog() {
             .svgIcon {
                 margin-right: 0.2rem;
                 width: var(--fontsize-small);
-                height: var(--fontsize-small);
             }
             .time {
                 font-size: var(--fontsize-small);
@@ -211,11 +210,9 @@ function editBlog() {
             right: -2rem;
         }
         .menuPopup {
-            flex-direction: column;
             gap: $gap-big;
             .svgIcon {
                 width: var(--fontsize-default);
-                height: var(--fontsize-default);
             }
             .gusto-flex-center {
                 gap: $gap;

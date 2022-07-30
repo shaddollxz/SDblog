@@ -44,7 +44,6 @@ export default defineComponent({
         align-items: center;
         .svgIcon {
             width: var(--fontsize-large);
-            height: var(--fontsize-large);
         }
     }
 

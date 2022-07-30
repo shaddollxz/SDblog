@@ -43,12 +43,10 @@ function search() {
         box-sizing: border-box;
         padding: 0.3rem;
         left: 0;
-        top: 0;
         height: var(--height);
         width: var(--height);
         .svgIcon {
             --h: calc(var(--height) - 0.3rem);
-            height: var(--h);
             width: var(--h);
             fill: var(--color-text-theme);
             &:hover {

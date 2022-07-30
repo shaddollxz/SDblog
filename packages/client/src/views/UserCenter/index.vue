@@ -64,7 +64,6 @@ const navList = [
             padding: 0.5rem 1rem;
             border-bottom: 1px solid var(--color-border);
             .svgIcon {
-                height: var(--fontsize-large);
                 width: var(--fontsize-large);
                 margin-right: 1rem;
             }

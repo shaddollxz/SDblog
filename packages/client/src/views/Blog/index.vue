@@ -89,7 +89,6 @@ let menuState = ref(false); // 手机端时控制显示菜单
 
             .svgIcon {
                 width: var(--fontsize-large);
-                height: var(--fontsize-large);
                 fill: var(--color-text-theme);
             }
             @include mobile {
