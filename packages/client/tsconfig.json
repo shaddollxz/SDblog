@@ -9,7 +9,7 @@
             "@img/*": ["src/assets/img/*"],
             "@apis": ["src/apis"],
             "@views/*": ["src/views/*"],
-            "#util": ["src/typings/utils/index.d.ts"]
+            "#": ["src/typings/utils"]
         },
         "lib": ["esnext", "dom"]
     },

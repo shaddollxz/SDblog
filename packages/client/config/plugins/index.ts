@@ -1,13 +1,13 @@
-import type { PluginOption, Plugin } from "vite";
-import vue from "./vue";
+import { visualizer } from "rollup-plugin-visualizer";
+import type { Plugin, PluginOption } from "vite";
+import autoImport from "./autoImport";
+import gzip from "./gzip";
 import jsx from "./jsx";
 import pwa from "./pwa";
-import autoImport from "./autoImport";
-import svgIcons from "./svgIcons";
-import viteCompression from "vite-plugin-compression";
-import { visualizer } from "rollup-plugin-visualizer";
 import staticPics from "./staticPics";
+import svgIcons from "./svgIcons";
 import vconsole from "./vconsole";
+import vue from "./vue";
 
 export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean) {
     const plugins: PluginOption[] = [];
@@ -29,7 +29,7 @@ export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: 
     } else {
         //* 只在生产环境使用
         if (isBuild) {
-            plugins.push(viteCompression()); // gzip
+            plugins.push(gzip);
         }
     }
 

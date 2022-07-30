@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import staticPics from "virtual:staticPics";
-import type { Mutable } from "#util";
+import type { Mutable } from "#";
 
 defineEmits(["insertEmoji"]);
 
