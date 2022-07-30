@@ -1,17 +1,15 @@
 import multer from "multer";
-import { resolve } from "path";
-import { formateFilename, filenameSlice } from "../utils/formateFilename";
+import { formateFilename } from "../utils/formateFilename";
 
 const chunkFileEngin = multer.diskStorage({
     destination: process.env.TEMP_PATH,
 
     filename(req, file, cb) {
-        cb(
-            null,
-            formateFilename(req.body.hash + filenameSlice(req.body.name).suffix, {
-                chunkIndex: req.body.index,
-            })
-        );
+        const fileName = formateFilename<TempChunkFileMsg>(req.body.hash, {
+            chunkIndex: req.body.index,
+        });
+        req.body.fileName = fileName;
+        cb(null, fileName);
     },
 });
 

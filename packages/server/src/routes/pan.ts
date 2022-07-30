@@ -11,11 +11,11 @@ router.post("/folder", Pan.renameFolder, Pan.folderList);
 router.post("/folder/move", Pan.moveFolder, Pan.folderList);
 
 router.get("/file/:fileId", Pan.fileDetail);
-router.post("/file/move", Pan.moveFile);
-router.post("/file/rename", Pan.renameFile, Pan.folderList);
+router.delete("/file", Pan.removeFile, Pan.folderList);
+router.post("/file/rename", Pan.renameFile);
+router.post("/file/move", Pan.moveFile, Pan.folderList);
 router.post("/file/start", Pan.uploadStart, Pan.folderList);
 router.put("/file/chunk", chunkFileUploader, Pan.uploadChunk);
 router.post("/file/end", Pan.uploadEnd, Pan.folderList);
-router.delete("/file", Pan.removeFile, Pan.folderList);
 
 export default router;

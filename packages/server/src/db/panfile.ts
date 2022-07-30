@@ -1,10 +1,9 @@
 import type { DocumentType } from "@typegoose/typegoose";
 import typegoose, { defaultClasses } from "@typegoose/typegoose";
 import fs from "fs-extra";
-import type { ObjectId } from "mongoose";
-import { resolve } from "path";
+import path, { resolve } from "path";
 import type { DB } from "./DB";
-import { TempFileDB } from "./index";
+import { PanFileDB, TempFileDB } from "./index";
 const { prop } = typegoose;
 
 export class PanFile extends defaultClasses.TimeStamps implements DB {
@@ -26,15 +25,24 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare folderId: string;
 
     @prop({ require: true, type: () => String })
-    declare filePath: string;
+    declare fileName: string; // 储存的是文件名 且不带后缀
 
-    async deleteFile(this: DocumentType<PanFile>) {
+    async deleteFile(this: DocumentType<PanFile>, _id: string) {
         await this.delete();
-        const temp = new TempFileDB(this);
-        await temp.save();
+        const isOtherFile = (await PanFileDB.find({ hash: this.hash })).length;
+        if (!isOtherFile) {
+            const targetPath = path.resolve(process.env.TEMP_PATH!, this.hash);
+            const temp = new TempFileDB({
+                user: _id,
+                hash: this.hash,
+                name: this.name,
+                fileName: this.hash,
+            });
+            await temp.save();
 
-        setTimeout(() => {
-            fs.move(resolve(process.env.PAN_PATH!, this.filePath), process.env.TEMP_PATH!);
-        }, 0);
+            setTimeout(() => {
+                fs.move(resolve(process.env.PAN_PATH!, this.fileName), process.env.TEMP_PATH!);
+            }, 0);
+        }
     }
 }

@@ -6,6 +6,9 @@ import type {
     RemoveFolderOption,
     MoveFolderOption,
     RenameFolderOption,
+    MoveFileOption,
+    RemoveFileOption,
+    RenameFileOption,
     UploadFileStartOption,
     UploadFileStartRes,
     UploadFileChunkOption,
@@ -14,6 +17,7 @@ import type {
     Faild,
 } from "@blog/server";
 
+// #region folder
 export function panFolder(): AxiosPromise<PanListRes> {
     return axios({
         method: "get",
@@ -52,6 +56,32 @@ export function renamePanFolder(data: RenameFolderOption): AxiosPromise<PanListR
         data,
     });
 }
+// #endregion
+
+// #region file
+export function removePanFile(data: RemoveFileOption): AxiosPromise<PanListRes> {
+    return axios({
+        method: "delete",
+        url: "/pan/file",
+        data,
+    });
+}
+
+export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Faild> {
+    return axios({
+        method: "post",
+        url: "/pan/file/rename",
+        data,
+    });
+}
+
+export function movePanFile(data: MoveFileOption): AxiosPromise<PanListRes> {
+    return axios({
+        method: "post",
+        url: "/pan/file/move",
+        data,
+    });
+}
 
 export function uploadPanFileStart(data: UploadFileStartOption): AxiosPromise<UploadFileStartRes> {
     return axios({
@@ -76,3 +106,4 @@ export function uploadPanFileEnd(data: UploadFileEndOption): AxiosPromise<PanLis
         data,
     });
 }
+// #endregion

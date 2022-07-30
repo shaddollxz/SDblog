@@ -1,5 +1,6 @@
 import typegoose from "@typegoose/typegoose";
 import type { DB } from "./DB";
+import { User } from "./user";
 const { prop } = typegoose;
 
 export class TempFile implements DB {
@@ -9,7 +10,13 @@ export class TempFile implements DB {
     declare hash: string;
 
     @prop({ required: true, type: () => String })
-    declare filePath: string;
+    declare fileName: string; // 文件的实际文件名 会储存chunkIndex等信息
+
+    @prop({ ref: () => User })
+    declare user?: User; // 如果有该字段 文件则在用户的回收站中
+
+    @prop({ type: () => String })
+    declare name?: string; // 如果是用户回收站的文件 有一个name属性
 
     @prop({
         default: Date.now,

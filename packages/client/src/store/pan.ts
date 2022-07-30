@@ -61,7 +61,7 @@ export const usePanStore = defineStore("panFolder", {
             this.refresh(data.folderJson);
         },
 
-        //* 文件夹跳转
+        // #region 路径跳转
         /** 下一级的某一个目录 */
         toInnerPath(folderId: string) {
             if (this.currentFolder.folders) {
@@ -85,8 +85,9 @@ export const usePanStore = defineStore("panFolder", {
                 this.currentPathFolder.splice(index + 1);
             }
         },
+        // #endregion
 
-        //* 文件夹操作
+        // #region 文件夹操作
         /** 单纯路径跳转时通过缓存可以有优化，如果涉及文件（夹）路径改变，需要使用该函数手动刷新状态 */
         refreshPathFolder(folderJson: Folder | string) {
             const pathArr = this.currentPath.split("/");
@@ -132,10 +133,13 @@ export const usePanStore = defineStore("panFolder", {
             this.refreshPathFolder(data.folderJson);
             this._currentFolder = undefined;
         },
+        // #endregion
 
-        //* 文件操作
-        renameFile() {},
-        removeFile(id: string) {},
+        // #region 文件操作
+        renameFile(folderId: string, name: string) {},
+        removeFile(fileId: string) {},
+        moveFile(fileId: string, folderId: string) {},
+        // #endregion
     },
 });
 

@@ -51,8 +51,8 @@ export interface UploadFileStartRes {
 export type UploadFileChunkOption = {
     index: number;
     hash: string;
-    name: string;
     file: Blob;
+    fileName?: string;
 };
 
 export interface UploadFileEndOption {

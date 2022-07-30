@@ -7,7 +7,7 @@ export function filenameSlice(filename: string) {
     };
 }
 
-export function formateFilename(filename: string, msg: Record<string, string | number> = {}) {
+export function formateFilename<T extends object>(filename: string, msg: T) {
     const { prefix, suffix } = filenameSlice(filename);
 
     let name = prefix;
@@ -28,7 +28,7 @@ export function originalFilename(filename: string, isSuffix = true) {
     }
 }
 
-export function filenameMsg<T extends Object>(filename: string): T {
+export function filenameMsg<T extends object>(filename: string): T {
     const { prefix: name } = filenameSlice(filename);
     const msgs = name.split("--O");
     msgs.shift();
