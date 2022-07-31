@@ -6,8 +6,8 @@ export const uploadWorker = new Worker();
 
 import { createFormData } from "@/utils/createFormData";
 import { parallelPromise } from "@/utils/parallelPromise";
-import { uploadPanFileChunkApi, uploadPanFileEndApi, uploadPanFileStartApi } from "@apis";
-import type { UploadFileChunkOption } from "@blog/server";
+import { uploadPanFileChunkApi, uploadPanFileEndApi, uploadPanFileStartApi, isUploadEndApi } from "@apis";
+import type { UploadFileChunkOption, UploadFileEndOption, PanListRes } from "@blog/server";
 
 export const PostMessage = (data: MainPostMessage, transfer?: Transferable[]) =>
     transfer ? uploadWorker.postMessage(data, transfer) : uploadWorker.postMessage(data);
@@ -40,9 +40,7 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
                     return;
                 }
 
-                const {
-                    data: { folderJson },
-                } = await uploadPanFileEndApi({ hash, folderId, name: fileName });
+                const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
                 PostMessage({ step: "uploadEnd", folderJson, hash });
 
                 console.log("上传结束");
@@ -64,12 +62,12 @@ async function uploadChunk(
     const { rejected } = await parallelPromise(
         buffers.map((buffer, index) => {
             if (buffer) {
-                const file = new File([buffer], "");
+                const file = new File([buffer], "1"); // 文件必须有个非空的名字 否则后端收不到
                 return {
                     func: (arg: FormDataT<UploadFileChunkOption>) =>
                         uploadPanFileChunkApi(arg)
                             .then(() => {
-                                PostMessage({ step: "uploadOneChunkEnd", index });
+                                PostMessage({ step: "uploadOneChunkEnd", hash });
                                 return index;
                             })
                             .catch(() => Promise.reject(index)),
@@ -91,5 +89,28 @@ async function uploadChunk(
             },
             count++
         );
+    }
+}
+
+async function uploadFileEnd(data: UploadFileEndOption, loop = false): Promise<string> {
+    try {
+        if (loop) {
+            return new Promise((resolve) => {
+                const interval = window.setInterval(async () => {
+                    const { data: _data } = await isUploadEndApi({ hash: data.hash });
+                    if (_data.folderJson) {
+                        window.clearInterval(interval);
+                        resolve(_data.folderJson);
+                    }
+                }, 1500);
+            });
+        } else {
+            const {
+                data: { folderJson },
+            } = await uploadPanFileEndApi(data);
+            return folderJson;
+        }
+    } catch (e: any) {
+        return await uploadFileEnd(data, true);
     }
 }

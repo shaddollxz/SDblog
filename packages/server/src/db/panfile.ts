@@ -1,7 +1,7 @@
 import type { DocumentType } from "@typegoose/typegoose";
 import typegoose, { defaultClasses } from "@typegoose/typegoose";
 import fs from "fs-extra";
-import path, { resolve } from "path";
+import path from "path";
 import type { DB } from "./DB";
 import { PanFileDB, TempFileDB } from "./index";
 const { prop } = typegoose;
@@ -24,24 +24,22 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     @prop({ require: true, type: () => String })
     declare folderId: string;
 
-    @prop({ require: true, type: () => String })
-    declare fileName: string; // 储存的是文件名 且不带后缀
-
     async deleteFile(this: DocumentType<PanFile>, _id: string) {
         await this.delete();
-        const isOtherFile = (await PanFileDB.find({ hash: this.hash })).length;
+        const isOtherFile = await PanFileDB.findOne({ hash: this.hash });
         if (!isOtherFile) {
-            const targetPath = path.resolve(process.env.TEMP_PATH!, this.hash);
             const temp = new TempFileDB({
-                user: _id,
                 hash: this.hash,
-                name: this.name,
                 fileName: this.hash,
+                user: _id,
+                name: this.name,
             });
             await temp.save();
 
             setTimeout(() => {
-                fs.move(resolve(process.env.PAN_PATH!, this.fileName), process.env.TEMP_PATH!);
+                const oriPath = path.resolve(process.env.PAN_PATH!, this.hash);
+                const targetPath = path.resolve(process.env.TEMP_PATH!, this.hash);
+                fs.move(oriPath, targetPath);
             }, 0);
         }
     }

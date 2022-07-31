@@ -90,7 +90,7 @@ export const relogin: GetHandler = async (req, res, next) => {
             const token = sign({ _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin });
             res.status(StatusEnum.OK).json({ userData, token });
         } else {
-            res.status(StatusEnum.notFound).json({ error: "没有该用户", isShow: true });
+            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
         }
     } catch (e) {
         next(e);
@@ -104,7 +104,7 @@ export const userDetail: GetHandler<any, { userId: string }> = async (req, res, 
         if (userData) {
             res.status(StatusEnum.OK).json({ ...userData.toJSON() });
         } else {
-            res.status(StatusEnum.notFound).json({ error: "没有该用户", isShow: true });
+            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
         }
     } catch (e) {
         next(e);

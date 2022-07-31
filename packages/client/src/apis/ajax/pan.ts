@@ -13,6 +13,7 @@ import type {
     UploadFileStartRes,
     UploadFileChunkOption,
     UploadFileEndOption,
+    IsUploadEnd,
     Success,
     Faild,
 } from "@blog/server";
@@ -104,6 +105,15 @@ export function uploadPanFileEnd(data: UploadFileEndOption): AxiosPromise<PanLis
         method: "post",
         url: "/pan/file/end",
         data,
+        timeout: 10000,
+    });
+}
+
+export function isUploadEnd(data: IsUploadEnd): AxiosPromise<PanListRes> {
+    return axios({
+        method: "get",
+        url: "/pan/file/end",
+        params: data,
     });
 }
 // #endregion

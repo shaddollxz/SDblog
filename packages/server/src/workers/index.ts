@@ -8,7 +8,7 @@ const TEMP_PATH = process.env.TEMP_PATH;
 
 const concatFilesWorker = new Worker(path.resolve(__dirname, "./concatFiles.worker.js"));
 export function useConcatTempFilesWorker(filenames: string[]) {
-    return new Promise<{ filename: string; size: number }>((resolve, reject) => {
+    return new Promise<{ hash: string; size: number }>((resolve, reject) => {
         concatFilesWorker.postMessage(
             filenames
                 .map((name) => path.resolve(TEMP_PATH, name))
@@ -21,8 +21,8 @@ export function useConcatTempFilesWorker(filenames: string[]) {
         concatFilesWorker.once("error", (e) => {
             reject(e);
         });
-        concatFilesWorker.once("message", (filename: string, size: number) => {
-            resolve({ filename, size });
+        concatFilesWorker.once("message", (data: { hash: string; size: number }) => {
+            resolve(data);
         });
     });
 }

@@ -21,25 +21,11 @@ export const usePanStore = defineStore("panFolder", {
     state: (): State => ({
         folder: { id: "", name: "root", folders: [], files: [] },
         currentPathFolder: [],
-        _currentFolder: undefined,
     }),
     getters: {
         currentFolder(): Folder {
             if (this.currentPath == "/root") return this.folder;
-            if (this._currentFolder) return this._currentFolder;
             return this.currentPathFolder.at(-1) ?? { id: "", name: "root", folders: [], files: [] };
-            // const pathArr = this.currentPath.split("/");
-            // pathArr.splice(0, 2);
-            // let result = this.folder;
-
-            // pathArr.forEach((foldername) => {
-            //     if (result && result.folders) {
-            //         const targetIndex = result.folders.findIndex((folder) => folder.name == foldername);
-            //         result = result.folders[targetIndex];
-            //     }
-            // });
-
-            // return result;
         },
         currentPath(): PanPath {
             return this.currentPathFolder.reduce(
@@ -51,7 +37,7 @@ export const usePanStore = defineStore("panFolder", {
             return this.currentPath == "/root" ? "/" : (this.currentPath.replace("/root", "") as PanPath);
         },
         isRoot(): Boolean {
-            return this.currentPathFolder.length >= 1;
+            return this.currentPathFolder.length <= 1;
         },
     },
     actions: {
@@ -84,7 +70,7 @@ export const usePanStore = defineStore("panFolder", {
         toInnerPath(folderId: string) {
             if (this.currentFolder.folders) {
                 const folder = this.currentFolder.folders.find((item) => item.id == folderId)!;
-                this._currentFolder = folder;
+
                 this.currentPathFolder.push(folder);
             }
         },
@@ -92,14 +78,13 @@ export const usePanStore = defineStore("panFolder", {
         toUpperPath() {
             if (this.currentPath != "/root") {
                 this.currentPathFolder.pop();
-                this._currentFolder = this.currentPathFolder.at(-1);
             }
         },
         /** 指定路径跳转 */
         toThisPath(folderId: string) {
             if (this.currentPath != "/root") {
                 const index = this.currentPathFolder.findIndex((item) => item.id == folderId);
-                this._currentFolder = this.currentPathFolder[index];
+
                 this.currentPathFolder.splice(index + 1);
             }
         },
@@ -109,7 +94,6 @@ export const usePanStore = defineStore("panFolder", {
         async createFolder(name: string) {
             const { data } = await createPanFolderApi({ path: this.folderPath, name });
             this.refreshPathFolder(data.folderJson);
-            this._currentFolder = undefined;
         },
         async renameFolder(oldName: string, name: string) {
             const { data } = await renamePanFolderApi({
@@ -117,7 +101,6 @@ export const usePanStore = defineStore("panFolder", {
                 name,
             });
             this.refreshPathFolder(data.folderJson);
-            this._currentFolder = undefined;
         },
         /** 删除文件夹 */
         async removeFolder(names: string[]) {
@@ -125,7 +108,6 @@ export const usePanStore = defineStore("panFolder", {
                 path: names.map((name) => formatPath(`${this.folderPath}/${name}`) as PanPath),
             });
             this.refreshPathFolder(data.folderJson);
-            this._currentFolder = undefined;
         },
         /** 移动到下一层 / 上一层 */
         async moveFolderToNear(from_: string, to_: string) {
@@ -140,7 +122,6 @@ export const usePanStore = defineStore("panFolder", {
             to = formatPath(to);
             const { data } = await movePanFolderApi({ from, to });
             this.refreshPathFolder(data.folderJson);
-            this._currentFolder = undefined;
         },
         // #endregion
 
@@ -160,7 +141,6 @@ export const usePanStore = defineStore("panFolder", {
             const fileIds = typeof _fileIds == "string" ? [_fileIds] : _fileIds;
             const { data } = await movePanFileApi({ fileIds, folderId });
             this.refreshPathFolder(data.folderJson);
-            this._currentFolder = undefined;
         },
         // #endregion
     },

@@ -1,7 +1,7 @@
 <template>
     <div class="folder">
-        <div class="item" @click="panStore.toUpperPath">
-            <div class="left" v-show="!panStore.isRoot" v-dragtarget="upperDropTargetOption">
+        <div class="item" v-show="!panStore.isRoot" @click="panStore.toUpperPath">
+            <div class="left canClick" v-dragtarget="upperDropTargetOption">
                 <SvgIcon name="pan-folder"></SvgIcon>
                 <span>..</span>
             </div>
@@ -36,6 +36,7 @@
                                     directive="be"
                                     type="input"
                                     text=""
+                                    :defaultValue="item.name"
                                     @onSure="(n) => panStore.renameFolder(item.name, n)"
                                 >
                                     <span class="option">重命名</span>
@@ -49,7 +50,7 @@
         </template>
         <template v-for="(item, index) of folder.files" :key="item.hash">
             <div class="item fileItem">
-                <div class="left" v-draggable="fileDragOption(item.name, item.hash)">
+                <div class="left" v-draggable="fileDragOption(item.name, item._id)">
                     <SvgIcon name="pan-file"></SvgIcon>
                     <span>{{ item.name }}</span>
                 </div>
@@ -71,6 +72,7 @@
                                     directive="be"
                                     type="input"
                                     text=""
+                                    :defaultValue="item.name"
                                     @onSure="(n) => panStore.renameFile(item._id, n, index)"
                                 >
                                     <span class="option">重命名</span>
@@ -151,7 +153,6 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         }
         .left {
             flex: 1;
-            cursor: pointer;
             &:hover {
                 fill: var(--color-text-theme);
                 color: var(--color-text-theme) !important;

@@ -62,7 +62,7 @@ export async function concatFiles(paths: string[], target: string, options: Conc
         const func = async () => {
             const readStream = fs.createReadStream(filepath);
             const writeStream = fs.createWriteStream(target, {
-                start: index * options.chunkSize! + index,
+                start: index * options.chunkSize!,
                 flags: "r+", // 从start的位置开始覆盖 因为parallelProise会无序地并发执行
             });
             await pipeline(readStream, writeStream);

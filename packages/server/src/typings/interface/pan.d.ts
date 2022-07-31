@@ -55,6 +55,10 @@ export type UploadFileChunkOption = {
     fileName?: string;
 };
 
+export interface IsUploadEnd {
+    hash: string;
+}
+
 export interface UploadFileEndOption {
     folderId: string;
     name: string;

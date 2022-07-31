@@ -3,6 +3,7 @@ import path from "path";
 import { isMainThread, parentPort } from "worker_threads";
 import { concatFiles } from "../utils/fileSlicer";
 import { originalFilename } from "../utils/formateFilename";
+import { fileHash } from "../utils/fileHash";
 
 if (!isMainThread && parentPort) {
     parentPort.on("message", async (files) => {
@@ -15,7 +16,8 @@ if (!isMainThread && parentPort) {
             throw rejected;
         } else {
             const size = (await fs.stat(target)).size;
-            parentPort.postMessage({ filename, size });
+            const hash = await fileHash(target);
+            parentPort.postMessage({ hash, size });
             console.log("合并文件结束 " + filename);
             for (const filepath of files) {
                 await fs.remove(filepath);

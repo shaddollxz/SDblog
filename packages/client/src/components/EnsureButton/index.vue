@@ -6,7 +6,7 @@
                 <span>{{ text }}</span>
                 <input v-if="type == 'input'" type="text" v-model="inputValue" />
                 <div class="ensure">
-                    <div class="gusto-button" @click="$emit('onSure', inputValue)">确定</div>
+                    <div class="gusto-button" @click="onSure">确定</div>
                     <div class="gusto-button" @click="onCancel">取消</div>
                 </div>
             </div>
@@ -21,8 +21,9 @@ interface Props {
     text: string;
     type?: "input" | "string";
     maxWidth?: string;
+    defaultValue?: string;
 }
-withDefaults(defineProps<Props>(), { type: "string", maxWidth: "18rem" });
+const props = withDefaults(defineProps<Props>(), { type: "string", maxWidth: "18rem" });
 interface Emits {
     (n: "onCancel"): void;
     (n: "onSure", value: string): void;
@@ -30,12 +31,16 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 const isShow = ref(false);
+function onSure() {
+    isShow.value = false;
+    emit("onSure", inputValue.value);
+}
 function onCancel() {
     isShow.value = false;
     emit("onCancel");
 }
 
-const inputValue = ref("");
+const inputValue = ref(props.defaultValue ? props.defaultValue : "");
 </script>
 
 <style lang="scss" scoped>

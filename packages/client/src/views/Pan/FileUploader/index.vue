@@ -30,7 +30,8 @@
 <script setup lang="ts">
 import { LocalFiles } from "sdt3";
 import type { VDragType } from "sdt3";
-import { PostMessage } from "./worker";
+import { PostMessage, uploadWorker } from "./worker";
+import type { MainOnMessage } from "./worker/types";
 import { usePanStore } from "@/store/pan";
 import ChosedFileItem from "./ChosedFileItem.vue";
 
@@ -83,6 +84,15 @@ async function upload() {
             { step: "splitBuffer", fileBuffers, fileNames, folderId: panStore.currentFolder.id },
             fileBuffers
         );
+
+        function onMessage({ data }: { data: MainOnMessage }) {
+            if (data.step == "end") {
+                panStore.refresh(data.folderJson);
+                chosedFiles.files = [];
+                uploadWorker.removeEventListener("message", onMessage);
+            }
+        }
+        uploadWorker.addEventListener("message", onMessage);
     }
 }
 </script>

@@ -11,9 +11,10 @@ import type {
     UploadFileChunkOption,
     UploadFileEndOption,
     UploadFileStartOption,
+    IsUploadEnd,
 } from "../typings/interface/pan";
 import Folder from "../utils/Folder";
-import { filenameMsg } from "../utils/formateFilename";
+import { filenameMsg, formateFilename } from "../utils/formateFilename";
 import { useConcatTempFilesWorker } from "../workers";
 
 // #region folder
@@ -148,7 +149,6 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                 hash,
                 belongId: _id,
                 folderId,
-                fileName: panfile.fileName,
                 size: panfile.size,
                 name,
             });
@@ -159,14 +159,13 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             if (files.length == chunks) {
                 //todo 文件chunk已经全部凑齐
                 try {
-                    const { filename, size } = await useConcatTempFilesWorker(
+                    const { hash: _hash, size } = await useConcatTempFilesWorker(
                         files.map((item) => item.fileName)
                     );
                     const fileDetail = new PanFileDB({
-                        hash,
+                        hash: _hash,
                         belongId: _id,
                         folderId,
-                        fileName: filename,
                         size,
                         name,
                     });
@@ -223,12 +222,11 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
         const { _id, name, folderId, hash } = req.body;
         const files = await TempFileDB.find({ hash });
         try {
-            const { filename, size } = await useConcatTempFilesWorker(files.map((item) => item.fileName));
+            const { hash: _hash, size } = await useConcatTempFilesWorker(files.map((item) => item.fileName));
             const fileDetail = new PanFileDB({
-                hash,
+                hash: _hash,
                 belongId: _id,
                 folderId,
-                fileName: filename,
                 size,
                 name,
             });
@@ -241,6 +239,20 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
                 isShow: true,
                 error: "服务器错误，请稍后重试",
             });
+        }
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
+    try {
+        const file = await PanFileDB.findOne({ hash: req.query.hash });
+        console.log(!!file);
+        if (file) {
+            next();
+        } else {
+            res.status(StatusEnum.NotFound).json({ success: false });
         }
     } catch (e) {
         next(e);

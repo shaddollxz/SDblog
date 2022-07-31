@@ -1,9 +1,19 @@
 import SparkMD5 from "spark-md5";
 import type { MainOnMessage, MainPostMessage } from "./types";
 
-const PostMessage = (arg: MainOnMessage) => postMessage(arg);
+const PostMessage = (arg: MainOnMessage, buffers?: ArrayBuffer[]) => postMessage(arg, { transfer: buffers });
 
-const files = new Map<string, { folderId: string; fileName: string; chunkBuffer: ArrayBuffer[] }>();
+const chunkSize = import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
+const files = new Map<
+    string,
+    {
+        folderId: string;
+        fileName: string;
+        allchunks: number;
+        uploadedChunks: number;
+        chunkBuffer: ArrayBuffer[];
+    }
+>();
 
 self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
     switch (data.step) {
@@ -13,7 +23,15 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                 for (let i = 0; i < fileBuffers.length; i++) {
                     const chunkBuffer = splitBuffer(fileBuffers[i]);
                     const hash = getFileHash(chunkBuffer);
-                    files.has(hash) || files.set(hash, { folderId, fileName: fileNames[i], chunkBuffer });
+                    console.log(hash);
+                    files.has(hash) ||
+                        files.set(hash, {
+                            folderId,
+                            fileName: fileNames[i],
+                            allchunks: chunkBuffer.length,
+                            uploadedChunks: 0,
+                            chunkBuffer,
+                        });
                     PostMessage({
                         step: "uploadStart",
                         hash,
@@ -31,15 +49,18 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                 const { needChunks, hash } = data;
                 const file = files.get(hash);
                 if (file) {
-                    PostMessage({
-                        step: "uploadChunk",
-                        folderId: file.folderId,
-                        fileName: file.fileName,
-                        hash,
-                        buffers: file.chunkBuffer.map((buffer, index) =>
-                            needChunks.includes(index) ? buffer : null
-                        ),
-                    });
+                    PostMessage(
+                        {
+                            step: "uploadChunk",
+                            folderId: file.folderId,
+                            fileName: file.fileName,
+                            hash,
+                            buffers: file.chunkBuffer.map((buffer, index) =>
+                                needChunks.includes(index) ? buffer : null
+                            ),
+                        },
+                        file.chunkBuffer
+                    );
                     console.log("开始上传文件");
                 } else {
                     PostMessage({
@@ -50,11 +71,22 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
             }
             break;
 
+        case "uploadOneChunkEnd":
+            {
+                const { hash } = data;
+                const file = files.get(hash);
+                if (file) {
+                    file.uploadedChunks++;
+                    PostMessage({ step: "progress", all: file.allchunks, already: file.uploadedChunks });
+                }
+            }
+            break;
+
         case "uploadEnd":
             {
                 const { hash, folderJson } = data;
-                PostMessage({ step: "end", folderJson });
                 files.delete(hash);
+                PostMessage({ step: "end", folderJson });
                 console.log("文件上传完毕");
             }
             break;

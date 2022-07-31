@@ -19,12 +19,18 @@ interface UploadChunk {
     buffers: (ArrayBuffer | null)[];
 }
 
+interface Progress {
+    step: "progress";
+    all: number;
+    already: number;
+}
+
 interface UploadEnd {
     step: "end";
     folderJson: string;
 }
 
-export type MainOnMessage = UploadStart | UploadChunk | UploadEnd | Err;
+export type MainOnMessage = UploadStart | UploadChunk | Progress | UploadEnd | Err;
 
 interface SplitBuffer {
     step: "splitBuffer";
@@ -41,7 +47,7 @@ interface UploadChunks {
 
 interface UploadOneChunkEnd {
     step: "uploadOneChunkEnd";
-    index: number;
+    hash: string;
 }
 
 interface UploadFileEnd {
