@@ -52,7 +52,10 @@
             <div class="item fileItem">
                 <div class="left" v-draggable="fileDragOption(item.name, item._id)">
                     <SvgIcon name="pan-file"></SvgIcon>
-                    <span>{{ item.name }}</span>
+                    <div class="left">
+                        <span>{{ item.name }}</span>
+                        <span class="filesize">{{ $formatBit(item.size) }}</span>
+                    </div>
                 </div>
                 <div class="right">
                     <Popover>
@@ -144,7 +147,7 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         justify-content: space-between;
         gap: $gap-xxlarge;
         box-sizing: border-box;
-        padding: 0.4rem 1rem;
+        padding: $gap $gap-large;
         .left,
         .right {
             display: flex;
@@ -153,14 +156,27 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         }
         .left {
             flex: 1;
-            &:hover {
-                fill: var(--color-text-theme);
-                color: var(--color-text-theme) !important;
+            .filesize {
+                font-size: var(--fontsize-small);
+                align-self: flex-end;
             }
         }
+    }
+    .folderItem .left {
+        align-items: center;
     }
 }
 .options {
     gap: $gap-big;
+}
+.option:hover,
+.svgIcon:hover,
+.left:hover {
+    cursor: pointer;
+    fill: var(--color-text-theme);
+    color: var(--color-text-theme) !important;
+}
+.item:hover {
+    background-color: var(--color-bg-bland);
 }
 </style>
