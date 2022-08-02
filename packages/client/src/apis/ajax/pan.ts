@@ -100,12 +100,11 @@ export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): Axio
     });
 }
 
-export function uploadPanFileEnd(data: UploadFileEndOption): AxiosPromise<PanListRes> {
+export function uploadPanFileEnd(data: UploadFileEndOption) {
     return axios({
         method: "post",
         url: "/pan/file/end",
         data,
-        timeout: 10000,
     });
 }
 

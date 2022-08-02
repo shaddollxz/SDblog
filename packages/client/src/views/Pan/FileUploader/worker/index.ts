@@ -68,6 +68,7 @@ async function uploadChunk(
                         uploadPanFileChunkApi(arg)
                             .then(() => {
                                 PostMessage({ step: "uploadOneChunkEnd", hash });
+                                buffers[index] = null;
                                 return index;
                             })
                             .catch(() => Promise.reject(index)),
@@ -92,25 +93,16 @@ async function uploadChunk(
     }
 }
 
-async function uploadFileEnd(data: UploadFileEndOption, loop = false): Promise<string> {
-    try {
-        if (loop) {
-            return new Promise((resolve) => {
-                const interval = window.setInterval(async () => {
-                    const { data: _data } = await isUploadEndApi({ hash: data.hash });
-                    if (_data.folderJson) {
-                        window.clearInterval(interval);
-                        resolve(_data.folderJson);
-                    }
-                }, 1500);
-            });
-        } else {
-            const {
-                data: { folderJson },
-            } = await uploadPanFileEndApi(data);
-            return folderJson;
-        }
-    } catch (e: any) {
-        return await uploadFileEnd(data, true);
-    }
+async function uploadFileEnd(data: UploadFileEndOption): Promise<string> {
+    await uploadPanFileEndApi(data);
+
+    return new Promise((resolve) => {
+        const interval = window.setInterval(async () => {
+            const { data: _data } = await isUploadEndApi({ hash: data.hash });
+            if (_data.folderJson) {
+                window.clearInterval(interval);
+                resolve(_data.folderJson);
+            }
+        }, 1500);
+    });
 }

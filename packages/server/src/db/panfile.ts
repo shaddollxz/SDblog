@@ -36,10 +36,15 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
             });
             await temp.save();
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 const oriPath = path.resolve(process.env.PAN_PATH!, this.hash);
                 const targetPath = path.resolve(process.env.TEMP_PATH!, this.hash);
-                fs.move(oriPath, targetPath);
+                try {
+                    await fs.access(targetPath);
+                    await fs.rm(oriPath);
+                } catch {
+                    fs.move(oriPath, targetPath);
+                }
             }, 0);
         }
     }

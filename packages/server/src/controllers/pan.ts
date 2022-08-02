@@ -232,7 +232,7 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
             });
             await fileDetail.save();
             TempFileDB.deleteMany({ hash }).then(() => console.log("数据库相关临时数据清除结束 " + hash));
-            next();
+            res.status(StatusEnum.OK).json({ success: false });
         } catch (e) {
             console.error(e);
             res.status(StatusEnum.ServerError).json({
@@ -248,11 +248,11 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
 export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
     try {
         const file = await PanFileDB.findOne({ hash: req.query.hash });
-        console.log(!!file);
         if (file) {
             next();
         } else {
-            res.status(StatusEnum.NotFound).json({ success: false });
+            console.log("no");
+            res.status(StatusEnum.OK).json({ success: false });
         }
     } catch (e) {
         next(e);

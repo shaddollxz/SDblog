@@ -3,7 +3,6 @@ import type { MainOnMessage, MainPostMessage } from "./types";
 
 const PostMessage = (arg: MainOnMessage, buffers?: ArrayBuffer[]) => postMessage(arg, { transfer: buffers });
 
-const chunkSize = import.meta.env.PUBLIC_UPLOAD_CHUNKSIZE;
 const files = new Map<
     string,
     {
@@ -11,7 +10,7 @@ const files = new Map<
         fileName: string;
         allchunks: number;
         uploadedChunks: number;
-        chunkBuffer: ArrayBuffer[];
+        chunkBuffer: ArrayBuffer[] | null;
     }
 >();
 
@@ -19,11 +18,11 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
     switch (data.step) {
         case "splitBuffer":
             {
+                PostMessage({ step: "beginAnalyzeFile" });
                 const { fileBuffers, fileNames, folderId } = data;
                 for (let i = 0; i < fileBuffers.length; i++) {
                     const chunkBuffer = splitBuffer(fileBuffers[i]);
                     const hash = getFileHash(chunkBuffer);
-                    console.log(hash);
                     files.has(hash) ||
                         files.set(hash, {
                             folderId,
@@ -39,6 +38,7 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                         folderId,
                         chunks: chunkBuffer.length,
                     });
+                    PostMessage({ step: "analyzeFileEnd" });
                     console.log("文件解析完毕");
                 }
             }
@@ -55,12 +55,14 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                             folderId: file.folderId,
                             fileName: file.fileName,
                             hash,
-                            buffers: file.chunkBuffer.map((buffer, index) =>
+                            buffers: file.chunkBuffer!.map((buffer, index) =>
                                 needChunks.includes(index) ? buffer : null
                             ),
                         },
-                        file.chunkBuffer
+                        file.chunkBuffer!
                     );
+                    file.chunkBuffer = null;
+                    PostMessage({ step: "beginUploadFile" });
                     console.log("开始上传文件");
                 } else {
                     PostMessage({

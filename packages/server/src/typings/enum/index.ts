@@ -14,7 +14,9 @@ export const enum VerifycodeEnum {
 }
 
 export const enum StatusEnum {
+    Continue = 100,
     OK = 200,
+    NoResult = 204,
     Unauthorized = 401,
     NotFound = 404,
     Forbidden = 403,

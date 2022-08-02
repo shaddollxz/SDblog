@@ -16,7 +16,7 @@ router.post("/file/rename", Pan.renameFile);
 router.post("/file/move", Pan.moveFile, Pan.folderList);
 router.post("/file/start", Pan.uploadStart, Pan.folderList);
 router.put("/file/chunk", chunkFileUploader, Pan.uploadChunk);
-router.post("/file/end", Pan.uploadEnd, Pan.folderList);
+router.post("/file/end", Pan.uploadEnd);
 router.get("/file/end", Pan.isUploadEnd, Pan.folderList);
 
 export default router;
