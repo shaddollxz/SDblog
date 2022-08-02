@@ -44,7 +44,7 @@
                             </div>
                         </template>
                     </Popover>
-                    <SvgIcon name="pan-download"></SvgIcon>
+                    <SvgIcon name="pan-download" @click="() => downloadFolder(item.name)"></SvgIcon>
                 </div>
             </div>
         </template>
@@ -96,6 +96,7 @@ import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
 import { downloadWithFetch } from "@/utils/download";
 import { downloadFileApi } from "@apis";
+import { DownloadFileTypeEnum } from "@blog/server";
 import type { VDragType } from "sdt3";
 import { Message } from "sdt3";
 import type { IsMulti } from "./inject";
@@ -104,9 +105,13 @@ const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
 const isMulti = inject<IsMulti>("isMulti")!;
 
-async function downloadFile(hash: string, name: string) {
+async function downloadFile(
+    hash: string,
+    name: string,
+    type: DownloadFileTypeEnum = DownloadFileTypeEnum.file
+) {
     Message.success("开始下载文件：" + name);
-    const res = await downloadFileApi(hash);
+    const res = await downloadFileApi({ hash, type: type ?? DownloadFileTypeEnum.file });
     downloadWithFetch(name, res);
     //* 下面是进度条的监听 但是浏览器本来就会记录 不如不要了
     // const { reader, size } = await downloadWithFetch(name, res);
@@ -120,7 +125,16 @@ async function downloadFile(hash: string, name: string) {
     //     }, 800);
     // }
 }
-async function downloadFolder(folderId: string) {}
+async function downloadFolder(folderName: string) {
+    const intervalFunc = await panStore.zipFolder(folderName);
+    const interval = window.setInterval(async () => {
+        const { data } = await intervalFunc();
+        if (data.hash) {
+            window.clearInterval(interval);
+            downloadFile(data.hash, folderName + ".zip", DownloadFileTypeEnum.folder);
+        }
+    }, 800);
+}
 
 // #region 拖放
 const enum DragType {

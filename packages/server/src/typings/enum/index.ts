@@ -13,6 +13,11 @@ export const enum VerifycodeEnum {
     retrieve,
 }
 
+export const enum DownloadFileTypeEnum {
+    file,
+    folder,
+}
+
 export const enum StatusEnum {
     Continue = 100,
     OK = 200,

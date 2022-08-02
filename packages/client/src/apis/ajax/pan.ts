@@ -14,6 +14,9 @@ import type {
     UploadFileChunkOption,
     UploadFileEndOption,
     IsUploadEnd,
+    ZipFolderOption,
+    ZipFolderRes,
+    DownloadFileOption,
     Success,
     Faild,
 } from "@blog/server";
@@ -117,9 +120,25 @@ export function isUploadEnd(data: IsUploadEnd): AxiosPromise<PanListRes> {
     });
 }
 
+export function zipPanFolder(data: ZipFolderOption): AxiosPromise<ZipFolderRes> {
+    return axios({
+        method: "post",
+        url: "/pan/folder/zip",
+        data,
+    });
+}
+
+export function isZipPanFolderEnd(path: string): AxiosPromise<{ hash: string }> {
+    return axios({
+        method: "get",
+        url: "/pan/folder/zip",
+        params: { path },
+    });
+}
+
 // 使用axios浏览器会在全部接收后才开启下载 内存占用较大 fetch会在收到响应时马上开始
-export function downloadFile(hash: string) {
-    return fetch(`/api/pan/file/download?hash=${hash}`, {
+export function downloadFile(data: DownloadFileOption) {
+    return fetch(`/api/pan/file/download?hash=${data.hash}&type=${data.type}`, {
         method: "get",
         headers: {
             Authorization: Token.get()!,

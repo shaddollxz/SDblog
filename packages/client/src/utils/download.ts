@@ -1,4 +1,5 @@
 import streamSaver from "streamsaver";
+import { Message } from "sdt3";
 
 /** 下载字符串或文件类型 */
 export function download(filename: string, content: Blob): void;
@@ -19,10 +20,15 @@ export function download(filename: string, content: string | Blob) {
 
 /** 通过fetchApi下载大文件 */
 export async function downloadWithFetch(fileName: string, res: Response) {
-    const size = +res.headers.get("content-length")!;
-    const fileStream = streamSaver.createWriteStream(fileName, { size });
-    res.body!.pipeTo(fileStream).then(() => {
-        fileStream.close();
-    });
-    return { reader: res.body!.getReader(), size };
+    if (res.body) {
+        const size = +res.headers.get("content-length")!;
+        const fileStream = streamSaver.createWriteStream(fileName, { size });
+        res.body!.pipeTo(fileStream).then(() => {
+            fileStream.close();
+        });
+        return { reader: res.body!.getReader(), size };
+    } else {
+        Message.error("文件下载失败");
+        throw "";
+    }
 }

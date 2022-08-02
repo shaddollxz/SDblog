@@ -1,5 +1,5 @@
 import { PanDB, PanFileDB, TempFileDB } from "../db";
-import { StatusEnum } from "../typings/enum";
+import { StatusEnum, DownloadFileTypeEnum } from "../typings/enum";
 import type {
     CreateFolderOption,
     MoveFileOption,
@@ -12,12 +12,14 @@ import type {
     UploadFileEndOption,
     UploadFileStartOption,
     IsUploadEnd,
+    ZipFolderOption,
+    DownloadFileOption,
 } from "../typings/interface/pan";
 import Folder from "../utils/Folder";
 import { filenameMsg, formateFilename } from "../utils/formateFilename";
 import { useConcatTempFilesWorker } from "../workers";
 import path from "path";
-import { zipFiles } from "../utils/zip";
+import { zipFolder as zipPanFolder } from "../utils/zip";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
@@ -247,7 +249,7 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
             });
             await fileDetail.save();
             TempFileDB.deleteMany({ hash }).then(() => console.log("数据库相关临时数据清除结束 " + hash));
-            res.status(StatusEnum.OK).json({ success: false });
+            res.status(StatusEnum.NoResult).json({ success: true });
         } catch (e) {
             console.error(e);
             res.status(StatusEnum.ServerError).json({
@@ -274,18 +276,55 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
     }
 };
 
-export const zipFolder: PostHandler = async (req, res, next) => {
+export const zipFolder: PostHandler<ZipFolderOption> = async (req, res, next) => {
     try {
+        const { _id, path } = req.body;
+        const doc = await TempFileDB.findOne({ user: _id, name: path });
+        if (doc) {
+            res.status(StatusEnum.NoResult).json({ success: true });
+        } else {
+            res.status(StatusEnum.NoResult).json({ success: true });
+            const folderDoc = await PanDB.findFolderWithFile(_id!);
+            const { hash } = await zipPanFolder(folderDoc.folderObj, path);
+            const zip = new TempFileDB({
+                hash,
+                fileName: hash,
+                name: path,
+                user: _id,
+            });
+            await zip.save();
+        }
     } catch (e) {
         next(e);
     }
 };
 
-export const downloadFile: GetHandler = async (req, res, next) => {
+export const isZipEnd: GetHandler = async (req, res, next) => {
     try {
-        res.status(StatusEnum.OK).sendFile(path.resolve(process.env.PAN_PATH, `./${req.query.hash}`));
+        const { _id } = req.body;
+        const { path } = req.query;
+        const doc = await TempFileDB.findOne({ user: _id, name: path });
+        if (doc) {
+            res.status(StatusEnum.OK).json({ hash: doc.hash });
+        } else {
+            res.status(StatusEnum.OK).json({ success: false });
+        }
     } catch (e) {
         next(e);
+    }
+};
+
+export const downloadFile: GetHandler<DownloadFileOption> = async (req, res, next) => {
+    try {
+        const { hash, type } = req.query;
+        if (type == DownloadFileTypeEnum.file) {
+            res.status(StatusEnum.OK).sendFile(path.resolve(process.env.PAN_PATH, hash));
+        } else {
+            res.status(StatusEnum.OK).sendFile(path.resolve(process.env.TEMP_PATH, hash));
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(StatusEnum.NotFound).send(" ");
     }
 };
 // #endregion

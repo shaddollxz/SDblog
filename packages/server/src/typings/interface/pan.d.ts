@@ -1,6 +1,7 @@
 import { Pan } from "../../db/pan";
 import { PanFile } from "../../db/panfile";
 import type { SchemaToInfo } from "../tools/SchemaToInfo";
+import { DownloadFileTypeEnum } from "../enum";
 
 export type PanInfo = SchemaToInfo<Pan>;
 export type PanFileInfo = SchemaToInfo<PanFile>;
@@ -35,6 +36,13 @@ export interface RenameFolderOption {
 export interface MoveFolderOption {
     from: PanPath;
     to: PanPath;
+}
+
+export interface ZipFolderOption {
+    path: PanPath;
+}
+export interface ZipFolderRes {
+    hash: string;
 }
 
 export interface UploadFileStartOption {
@@ -79,8 +87,9 @@ export interface MoveFileOption {
     folderId: string;
 }
 
-export interface ZipFolder {
-    folderId: string;
+export interface DownloadFileOption {
+    hash: string;
+    type: DownloadFileTypeEnum;
 }
 
 export {};

@@ -5,6 +5,8 @@ import {
     removePanFolderApi,
     movePanFolderApi,
     renamePanFolderApi,
+    zipPanFolderApi,
+    isZipPanFolderEndApi,
     removePanFileApi,
     renamePanFileApi,
     movePanFileApi,
@@ -122,6 +124,12 @@ export const usePanStore = defineStore("panFolder", {
             to = formatPath(to);
             const { data } = await movePanFolderApi({ from, to });
             this.refreshPathFolder(data.folderJson);
+        },
+        /** 发送压缩文件夹请求 */
+        async zipFolder(name: string) {
+            const path = formatPath(`${this.folderPath}/${name}`);
+            await zipPanFolderApi({ path });
+            return async () => await isZipPanFolderEndApi(path);
         },
         // #endregion
 
