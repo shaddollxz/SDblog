@@ -30,6 +30,8 @@
                 </div>
             </template>
         </Popover>
+
+        <div class="gusto-button" @click="() => updateIsMulti()">批量选择</div>
     </div>
 </template>
 
@@ -37,8 +39,10 @@
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
 import FileUploader from "./FileUploader/index.vue";
+import type { UpdateIsMulti } from "./inject";
 
 const panStore = usePanStore();
+const updateIsMulti = inject<UpdateIsMulti>("updateIsMulti")!;
 
 const isShowCreateFolder = ref(false);
 const isShowUploader = ref(false);

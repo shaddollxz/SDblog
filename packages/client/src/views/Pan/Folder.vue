@@ -95,9 +95,11 @@ import EnsureButton from "@/components/EnsureButton/index.vue";
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
 import type { VDragType } from "sdt3";
+import type { IsMulti } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
+const isMulti = inject<IsMulti>("isMulti")!;
 
 // #region 拖放
 const enum DragType {
