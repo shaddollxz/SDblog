@@ -1,3 +1,4 @@
+import type { DocumentType } from "@typegoose/typegoose";
 import typegoose from "@typegoose/typegoose";
 import type { DB } from "./DB";
 import { User } from "./user";
@@ -24,4 +25,8 @@ export class TempFile implements DB {
         type: () => Number,
     })
     declare createdAt: Date;
+
+    async recoveryFile(this: DocumentType<TempFile>) {
+        //todo 回收该文件
+    }
 }

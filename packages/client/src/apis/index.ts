@@ -56,6 +56,7 @@ export {
     uploadPanFileChunk as uploadPanFileChunkApi,
     uploadPanFileEnd as uploadPanFileEndApi,
     isUploadEnd as isUploadEndApi,
+    downloadFile as downloadFileApi,
 } from "./ajax/pan";
 
 export { default as shaddollxzDetailApi } from "./ajax/shaddollxz";

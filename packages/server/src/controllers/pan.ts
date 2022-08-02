@@ -16,6 +16,8 @@ import type {
 import Folder from "../utils/Folder";
 import { filenameMsg, formateFilename } from "../utils/formateFilename";
 import { useConcatTempFilesWorker } from "../workers";
+import path from "path";
+import { zipFiles } from "../utils/zip";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
@@ -138,13 +140,21 @@ export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next
     }
 };
 
+/** 从回收站回收文件 */
+export const recoveryFile: PostHandler = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
 export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, next) => {
     try {
         const { hash, name, folderId, chunks, _id } = req.body;
 
         const panfile = (await PanFileDB.find({ hash }).limit(1))[0];
         if (panfile) {
-            //todo 文件已经存在
+            //* 文件已经存在
             const file = new PanFileDB({
                 hash,
                 belongId: _id,
@@ -155,9 +165,13 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             await file.save();
             next();
         } else {
+            const deletedFile = await TempFileDB.findOne({ hash, fileName: hash });
+            if (deletedFile) {
+                //* 回收站中有上传的文件
+            }
             const files = await TempFileDB.find({ hash });
             if (files.length == chunks) {
-                //todo 文件chunk已经全部凑齐
+                //* 文件chunk已经全部凑齐 合并文件 和下面的 uploadEnd 一致
                 try {
                     const { hash: _hash, size } = await useConcatTempFilesWorker(
                         files.map((item) => item.fileName)
@@ -173,6 +187,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                     TempFileDB.deleteMany({ hash }).then(() =>
                         console.log("数据库相关临时数据清除结束 " + hash)
                     );
+                    //todo 这里应该优化一下 通知前端开始轮询是否合并结束
                     next();
                 } catch (e) {
                     console.error(e);
@@ -182,7 +197,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                     });
                 }
             } else {
-                //todo 缺少chunk 通知前端开始传输需要的
+                //* 缺少chunk 通知前端开始传输需要的
                 const hasChunks: Record<number, boolean> = {};
                 for (const file of files) {
                     hasChunks[+filenameMsg<TempChunkFileMsg>(file.fileName).chunkIndex] = true;
@@ -254,6 +269,21 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
             console.log("no");
             res.status(StatusEnum.OK).json({ success: false });
         }
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const zipFolder: PostHandler = async (req, res, next) => {
+    try {
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const downloadFile: GetHandler = async (req, res, next) => {
+    try {
+        res.status(StatusEnum.OK).sendFile(path.resolve(process.env.PAN_PATH, `./${req.query.hash}`));
     } catch (e) {
         next(e);
     }

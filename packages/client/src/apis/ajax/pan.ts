@@ -17,6 +17,7 @@ import type {
     Success,
     Faild,
 } from "@blog/server";
+import Token from "@/storages/token";
 
 // #region folder
 export function panFolder(): AxiosPromise<PanListRes> {
@@ -113,6 +114,16 @@ export function isUploadEnd(data: IsUploadEnd): AxiosPromise<PanListRes> {
         method: "get",
         url: "/pan/file/end",
         params: data,
+    });
+}
+
+// 使用axios浏览器会在全部接收后才开启下载 内存占用较大 fetch会在收到响应时马上开始
+export function downloadFile(hash: string) {
+    return fetch(`/api/pan/file/download?hash=${hash}`, {
+        method: "get",
+        headers: {
+            Authorization: Token.get()!,
+        },
     });
 }
 // #endregion

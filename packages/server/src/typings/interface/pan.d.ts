@@ -79,4 +79,8 @@ export interface MoveFileOption {
     folderId: string;
 }
 
+export interface ZipFolder {
+    folderId: string;
+}
+
 export {};

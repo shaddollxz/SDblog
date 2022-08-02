@@ -83,7 +83,7 @@
                             </div>
                         </template>
                     </Popover>
-                    <SvgIcon name="pan-download"></SvgIcon>
+                    <SvgIcon name="pan-download" @click="() => downloadFile(item.hash, item.name)"></SvgIcon>
                 </div>
             </div>
         </template>
@@ -94,12 +94,33 @@
 import EnsureButton from "@/components/EnsureButton/index.vue";
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
+import { downloadWithFetch } from "@/utils/download";
+import { downloadFileApi } from "@apis";
 import type { VDragType } from "sdt3";
+import { Message } from "sdt3";
 import type { IsMulti } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
 const isMulti = inject<IsMulti>("isMulti")!;
+
+async function downloadFile(hash: string, name: string) {
+    Message.success("开始下载文件：" + name);
+    const res = await downloadFileApi(hash);
+    downloadWithFetch(name, res);
+    //* 下面是进度条的监听 但是浏览器本来就会记录 不如不要了
+    // const { reader, size } = await downloadWithFetch(name, res);
+    // if (reader) {
+    //     const interval = window.setInterval(async () => {
+    //         const { done, value } = await reader.read();
+    //         // value是已下载量 size是总大小
+    //         if (done) {
+    //             window.clearInterval(interval);
+    //         }
+    //     }, 800);
+    // }
+}
+async function downloadFolder(folderId: string) {}
 
 // #region 拖放
 const enum DragType {

@@ -18,5 +18,6 @@ router.post("/file/start", Pan.uploadStart, Pan.folderList);
 router.put("/file/chunk", chunkFileUploader, Pan.uploadChunk);
 router.post("/file/end", Pan.uploadEnd);
 router.get("/file/end", Pan.isUploadEnd, Pan.folderList);
+router.get("/file/download", Pan.downloadFile);
 
 export default router;
