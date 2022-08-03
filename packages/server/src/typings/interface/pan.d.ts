@@ -38,10 +38,12 @@ export interface MoveFolderOption {
     to: PanPath;
 }
 
-export interface ZipFolderOption {
-    path: PanPath;
+export interface ZipMultiOption {
+    files?: { hash: string; name: string }[];
+    folderPaths: PanPath[];
+    zipId: string;
 }
-export interface ZipFolderRes {
+export interface ZipMultiRes {
     hash: string;
 }
 

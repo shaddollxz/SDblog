@@ -56,8 +56,8 @@ export {
     uploadPanFileChunk as uploadPanFileChunkApi,
     uploadPanFileEnd as uploadPanFileEndApi,
     isUploadEnd as isUploadEndApi,
-    zipPanFolder as zipPanFolderApi,
-    isZipPanFolderEnd as isZipPanFolderEndApi,
+    zipMulti as zipMultiApi,
+    isZipEnd as isZipEndApi,
     downloadFile as downloadFileApi,
 } from "./ajax/pan";
 

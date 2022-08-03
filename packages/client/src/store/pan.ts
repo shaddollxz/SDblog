@@ -5,8 +5,8 @@ import {
     removePanFolderApi,
     movePanFolderApi,
     renamePanFolderApi,
-    zipPanFolderApi,
-    isZipPanFolderEndApi,
+    zipMultiApi,
+    isZipEndApi,
     removePanFileApi,
     renamePanFileApi,
     movePanFileApi,
@@ -17,6 +17,11 @@ interface State {
     folder: Folder;
     currentPathFolder: Folder[];
     _currentFolder?: Folder;
+}
+
+interface ZipMulti {
+    folders?: { id: string; name: string }[];
+    files?: { hash: string; name: string }[];
 }
 
 export const usePanStore = defineStore("panFolder", {
@@ -126,10 +131,20 @@ export const usePanStore = defineStore("panFolder", {
             this.refreshPathFolder(data.folderJson);
         },
         /** 发送压缩文件夹请求 */
-        async zipFolder(name: string) {
-            const path = formatPath(`${this.folderPath}/${name}`);
-            await zipPanFolderApi({ path });
-            return async () => await isZipPanFolderEndApi(path);
+        async zipFolder({ files, folders }: ZipMulti) {
+            let zipId: string = "";
+            const folderPaths: PanPath[] = [];
+            if (files) {
+                zipId = files.reduce((pre, cur) => pre + cur, zipId);
+            }
+            if (folders) {
+                for (const folder of folders) {
+                    zipId += folder.id;
+                    folderPaths.push(formatPath(`${this.folderPath}/${folder.name}`));
+                }
+            }
+            await zipMultiApi({ files, folderPaths, zipId });
+            return async () => await isZipEndApi(zipId);
         },
         // #endregion
 

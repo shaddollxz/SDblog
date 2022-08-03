@@ -14,8 +14,8 @@ import type {
     UploadFileChunkOption,
     UploadFileEndOption,
     IsUploadEnd,
-    ZipFolderOption,
-    ZipFolderRes,
+    ZipMultiOption,
+    ZipMultiRes,
     DownloadFileOption,
     Success,
     Faild,
@@ -120,7 +120,7 @@ export function isUploadEnd(data: IsUploadEnd): AxiosPromise<PanListRes> {
     });
 }
 
-export function zipPanFolder(data: ZipFolderOption): AxiosPromise<ZipFolderRes> {
+export function zipMulti(data: ZipMultiOption): AxiosPromise<ZipMultiRes> {
     return axios({
         method: "post",
         url: "/pan/folder/zip",
@@ -128,11 +128,11 @@ export function zipPanFolder(data: ZipFolderOption): AxiosPromise<ZipFolderRes> 
     });
 }
 
-export function isZipPanFolderEnd(path: string): AxiosPromise<{ hash: string }> {
+export function isZipEnd(zipId: string): AxiosPromise<{ hash: string }> {
     return axios({
         method: "get",
         url: "/pan/folder/zip",
-        params: { path },
+        params: { zipId },
     });
 }
 

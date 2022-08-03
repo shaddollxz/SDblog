@@ -87,7 +87,7 @@ async function upload() {
 
         function onMessage({ data }: { data: MainOnMessage }) {
             if (data.step == "end") {
-                panStore.refresh(data.folderJson);
+                panStore.refreshPathFolder(data.folderJson);
                 chosedFiles.files = [];
                 uploadWorker.removeEventListener("message", onMessage);
             }

@@ -9,7 +9,7 @@ router.put("/folder", Pan.createFolder, Pan.folderList);
 router.delete("/folder", Pan.removeFolder, Pan.folderList);
 router.post("/folder", Pan.renameFolder, Pan.folderList);
 router.post("/folder/move", Pan.moveFolder, Pan.folderList);
-router.post("/folder/zip", Pan.zipFolder);
+router.post("/folder/zip", Pan.zipMulti);
 router.get("/folder/zip", Pan.isZipEnd);
 
 router.get("/file/detail/:fileId", Pan.fileDetail);

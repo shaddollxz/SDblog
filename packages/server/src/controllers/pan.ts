@@ -12,14 +12,16 @@ import type {
     UploadFileEndOption,
     UploadFileStartOption,
     IsUploadEnd,
-    ZipFolderOption,
+    ZipMultiOption,
     DownloadFileOption,
 } from "../typings/interface/pan";
 import Folder from "../utils/Folder";
 import { filenameMsg, formateFilename } from "../utils/formateFilename";
 import { useConcatTempFilesWorker } from "../workers";
 import path from "path";
-import { zipFolder as zipPanFolder } from "../utils/zip";
+import { useZipWorker } from "../workers";
+import fs from "fs-extra";
+import type { Document } from "mongoose";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
@@ -155,7 +157,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
         const { hash, name, folderId, chunks, _id } = req.body;
 
         const panfile = (await PanFileDB.find({ hash }).limit(1))[0];
-        if (panfile) {
+        if (panfile && (await ensureDBFile(path.resolve(process.env.PAN_PATH, panfile.hash), panfile))) {
             //* 文件已经存在
             const file = new PanFileDB({
                 hash,
@@ -268,7 +270,6 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
         if (file) {
             next();
         } else {
-            console.log("no");
             res.status(StatusEnum.OK).json({ success: false });
         }
     } catch (e) {
@@ -276,34 +277,36 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
     }
 };
 
-export const zipFolder: PostHandler<ZipFolderOption> = async (req, res, next) => {
+export const zipMulti: PostHandler<ZipMultiOption> = async (req, res, next) => {
     try {
-        const { _id, path } = req.body;
-        const doc = await TempFileDB.findOne({ user: _id, name: path });
-        if (doc) {
-            res.status(StatusEnum.NoResult).json({ success: true });
+        const { _id, folderPaths, files, zipId } = req.body;
+        const doc = await TempFileDB.findOne({ name: zipId });
+        if (doc && (await ensureDBFile(path.resolve(process.env.TEMP_PATH, doc.hash), doc))) {
+            return res.status(StatusEnum.NoResult).json({ success: true });
         } else {
             res.status(StatusEnum.NoResult).json({ success: true });
             const folderDoc = await PanDB.findFolderWithFile(_id!);
-            const { hash } = await zipPanFolder(folderDoc.folderObj, path);
-            const zip = new TempFileDB({
+            const { hash } = await useZipWorker({
+                folder: folderDoc.folderObj,
+                folderPaths,
+                files,
+            });
+            new TempFileDB({
                 hash,
                 fileName: hash,
-                name: path,
+                name: zipId,
                 user: _id,
-            });
-            await zip.save();
+            }).save();
         }
     } catch (e) {
         next(e);
     }
 };
 
-export const isZipEnd: GetHandler = async (req, res, next) => {
+export const isZipEnd: GetHandler<{ zipId: string }> = async (req, res, next) => {
     try {
-        const { _id } = req.body;
-        const { path } = req.query;
-        const doc = await TempFileDB.findOne({ user: _id, name: path });
+        const { zipId } = req.query;
+        const doc = await TempFileDB.findOne({ name: zipId });
         if (doc) {
             res.status(StatusEnum.OK).json({ hash: doc.hash });
         } else {
@@ -328,3 +331,11 @@ export const downloadFile: GetHandler<DownloadFileOption> = async (req, res, nex
     }
 };
 // #endregion
+
+async function ensureDBFile(filePath: string, doc: Document<any>) {
+    if (!(await fs.pathExists(filePath))) {
+        await doc.delete();
+        return false;
+    }
+    return true;
+}

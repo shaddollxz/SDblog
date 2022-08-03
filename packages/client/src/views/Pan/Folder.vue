@@ -44,7 +44,7 @@
                             </div>
                         </template>
                     </Popover>
-                    <SvgIcon name="pan-download" @click="() => downloadFolder(item.name)"></SvgIcon>
+                    <SvgIcon name="pan-download" @click="() => downloadFolder(item.name, item.id)"></SvgIcon>
                 </div>
             </div>
         </template>
@@ -125,13 +125,13 @@ async function downloadFile(
     //     }, 800);
     // }
 }
-async function downloadFolder(folderName: string) {
-    const intervalFunc = await panStore.zipFolder(folderName);
+async function downloadFolder(name: string, id: string) {
+    const intervalFunc = await panStore.zipFolder({ folders: [{ name, id }] });
     const interval = window.setInterval(async () => {
         const { data } = await intervalFunc();
         if (data.hash) {
             window.clearInterval(interval);
-            downloadFile(data.hash, folderName + ".zip", DownloadFileTypeEnum.folder);
+            downloadFile(data.hash, name + ".zip", DownloadFileTypeEnum.folder);
         }
     }, 800);
 }

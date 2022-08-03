@@ -4,47 +4,39 @@ import path from "path";
 import type { Folder, PanPath } from "../typings/interface/pan";
 import { fileHash } from "./fileHash";
 import { default as FolderClass } from "./Folder";
-//todo 需要把这些移进worker
-/** 将指定文件全部压缩进一个包 */
-export function zipFiles(files: { path: string; name: string }[]) {
-    const zip = new AdmZip();
 
-    for (const file of files) {
-        zip.addLocalFile(file.path, "", file.name);
-    }
-
-    const outDir = path.resolve(process.env.TEMP_PATH, "tempZip" + Date.now());
-    return new Promise<{ zipPath: string; hash: string }>((resolve, reject) => {
-        zip.writeZip(outDir, async (e) => {
-            if (e) {
-                reject(e);
-            }
-            const hash = await fileHash(outDir);
-            const finallyPath = path.resolve(process.env.TEMP_PATH, hash);
-            if (await fs.pathExists(finallyPath)) {
-                await fs.rename(outDir, finallyPath);
-            } else {
-                fs.rm(outDir);
-            }
-            resolve({ zipPath: finallyPath, hash });
-        });
-    });
+interface ZipOptions {
+    files?: { hash: string; name: string }[];
+    folder?: Folder;
+    folderPaths?: PanPath[];
 }
 
-/** 压缩文件夹 */
-export function zipFolder(folder: Folder, folderPath: PanPath) {
-    const folderClass = new FolderClass("{}");
-    folderClass.folder = folder;
-    const { target } = folderClass.findByPath(folderPath);
+/**
+ * 压缩文件和文件夹
+ * 文件和文件夹全部在根目录
+ */
+export function zipFilesAndFolders({ files, folder, folderPaths }: ZipOptions) {
     let zip = new AdmZip();
-    zip = zipTo(zip, "", target as unknown as Folder);
 
-    const outDir = path.resolve(process.env.TEMP_PATH, "tempZip-" + Date.now());
+    if (files) {
+        for (const file of files) {
+            zip.addLocalFile(path.resolve(process.env.PAN_PATH, file.hash), "", file.name);
+        }
+    }
+    if (folder && folderPaths) {
+        const folderClass = new FolderClass("{}");
+        folderClass.folder = folder;
+        for (const folderPath of folderPaths) {
+            const { target } = folderClass.findByPath(folderPath);
+            zip = zipTo(zip, "", target as unknown as Folder);
+        }
+    }
+
     return new Promise<{ zipPath: string; hash: string }>((resolve, reject) => {
+        const outDir = path.resolve(process.env.TEMP_PATH, "tempZip" + Date.now());
         zip.writeZip(outDir, async (e) => {
-            if (e) {
-                reject(e);
-            }
+            if (e) return reject(e);
+
             const hash = await fileHash(outDir);
             const finallyPath = path.resolve(process.env.TEMP_PATH, hash);
             if (await fs.pathExists(finallyPath)) {

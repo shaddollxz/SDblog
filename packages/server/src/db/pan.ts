@@ -18,11 +18,10 @@ export class Pan implements DB {
         const folder = await this.findById(userId);
         if (folder) {
             const folderToll = new FolderTool(folder.path);
-            const files = await PanFileDB.find({ belongId: folder._id });
+            const files = (await PanFileDB.find({ belongId: folder._id })).map((item) => item.toJSON());
             FolderTool.foreach(folderToll.folder, (item) => {
-                item.files = files.filter((panfile) => {
-                    return panfile.folderId == item.id;
-                });
+                // @ts-ignore
+                item.files = files.filter((panfile) => panfile.folderId == item.id);
             });
             return { folderObj: folderToll.folder, _id: folder._id };
         } else {
