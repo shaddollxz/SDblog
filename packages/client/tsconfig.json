@@ -11,7 +11,7 @@
             "@views/*": ["src/views/*"],
             "#": ["src/typings/utils"]
         },
-        "lib": ["esnext", "dom"]
+        "lib": ["ESNext", "DOM"]
     },
     "include": [
         "src/**/*.ts",

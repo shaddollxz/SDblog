@@ -4,7 +4,8 @@
         "baseUrl": ".",
         "outDir": "bin",
         "sourceMap": false,
-        "removeComments": true // 打包时删除注释
+        "removeComments": true, // 打包时删除注释
+        "lib": ["ESNext"]
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts"]
     // "ts-node": {

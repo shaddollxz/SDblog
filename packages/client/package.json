@@ -14,7 +14,7 @@
         "highlight.js": "^11.5.1",
         "marked": "^4.0.5",
         "pinia": "^2.0.14",
-        "sdt3": "^2.3.1",
+        "sdt3": "workspace:^2.3.1",
         "spark-md5": "^3.0.2",
         "streamsaver": "^2.0.6",
         "vue": "^3.2.37",

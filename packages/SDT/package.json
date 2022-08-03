@@ -1,0 +1,36 @@
+{
+    "name": "sdt3",
+    "version": "2.3.1",
+    "description": "工具和组件库",
+    "type": "module",
+    "main": "./src/index.ts",
+    "style": "./src/style/colors.css",
+    "exports": {
+        ".": "./src/index.ts",
+        "./style": "./src/style/colors.css"
+    },
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shaddollxz/SDT.git"
+    },
+    "keywords": [
+        "vue3",
+        "typeScript"
+    ],
+    "author": "https://github.com/shaddollxz",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/shaddollxz/SDT/issues"
+    },
+    "homepage": "https://github.com/shaddollxz/SDT#readme",
+    "scripts": {},
+    "peerDependencies": {
+        "vue": "^3.2.0"
+    },
+    "devDependencies": {
+        "vue": "^3.2.37"
+    }
+}
