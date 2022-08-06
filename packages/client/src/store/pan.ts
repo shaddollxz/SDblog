@@ -58,8 +58,7 @@ export const usePanStore = defineStore("panFolder", {
         },
         /** 单纯路径跳转时通过缓存可以有优化，如果涉及文件（夹）修改，需要使用该函数手动刷新状态 */
         refreshPathFolder(folderJson: Folder | string) {
-            const pathArr = this.currentPath.split("/");
-            pathArr.splice(0, 2);
+            const pathArr = this.folderPath.slice(1).split("/");
             this.refresh(folderJson);
             const result: Folder[] = [this.folder];
             pathArr.forEach((foldername) => {

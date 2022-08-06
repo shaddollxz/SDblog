@@ -1,37 +1,42 @@
 <template>
     <div class="folderControl">
-        <Popover directive="bs" v-model="isShowUploader">
-            <div class="gusto-button">
-                <SvgIcon name="pan-addFile"></SvgIcon>
-                <span class="canClick">上传文件</span>
-            </div>
-            <template #popup>
-                <FileUploader
-                    @onChosedFile="isShowUploader = true"
-                    @onBeginUpload="isShowUploader = false"
-                ></FileUploader>
-            </template>
-        </Popover>
-        <Popover v-model="isShowCreateFolder">
-            <div class="gusto-button">新建文件夹</div>
-            <template #popup>
-                <div class="createFolder">
-                    <span>文件夹名：</span>
-                    <input type="text" v-model="folderName" @keypress.enter="createFolder" />
-                    <div class="ensure">
-                        <div class="gusto-button" @click="createFolder">确认</div>
-                        <div
-                            class="gusto-button"
-                            @click="() => ((folderName = ''), (isShowCreateFolder = false))"
-                        >
-                            取消
+        <div class="left">
+            <Popover directive="bs" v-model="isShowUploader">
+                <div class="gusto-button">
+                    <SvgIcon name="pan-addFile"></SvgIcon>
+                    <span class="canClick">上传文件</span>
+                </div>
+                <template #popup>
+                    <FileUploader
+                        @onChosedFile="isShowUploader = true"
+                        @onBeginUpload="isShowUploader = false"
+                    ></FileUploader>
+                </template>
+            </Popover>
+            <Popover v-model="isShowCreateFolder">
+                <div class="gusto-button">新建文件夹</div>
+                <template #popup>
+                    <div class="createFolder">
+                        <span>文件夹名：</span>
+                        <input type="text" v-model="folderName" @keypress.enter="createFolder" />
+                        <div class="ensure">
+                            <div class="gusto-button" @click="createFolder">确认</div>
+                            <div
+                                class="gusto-button"
+                                @click="() => ((folderName = ''), (isShowCreateFolder = false))"
+                            >
+                                取消
+                            </div>
                         </div>
                     </div>
-                </div>
-            </template>
-        </Popover>
-
-        <div class="gusto-button" @click="() => updateIsMulti()">批量选择</div>
+                </template>
+            </Popover>
+        </div>
+        <div class="right">
+            <div v-hidden="isMulti" class="gusto-button" @click="downloadMulti">批量下载</div>
+            <div v-hidden="isMulti" class="gusto-button" @click="removeMulti">批量删除</div>
+            <div class="gusto-button" @click="() => updateIsMulti()">批量选择</div>
+        </div>
     </div>
 </template>
 
@@ -39,10 +44,9 @@
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
 import FileUploader from "./FileUploader/index.vue";
-import type { UpdateIsMulti } from "./inject";
+import { isMulti, updateIsMulti, downloadMulti, removeMulti } from "./inject";
 
 const panStore = usePanStore();
-const updateIsMulti = inject<UpdateIsMulti>("updateIsMulti")!;
 
 const isShowCreateFolder = ref(false);
 const isShowUploader = ref(false);
@@ -60,7 +64,12 @@ function createFolder() {
 <style lang="scss" scoped>
 .folderControl {
     display: flex;
-    gap: $gap-big;
+    justify-content: space-between;
+    .right,
+    .left {
+        display: flex;
+        gap: $gap-big;
+    }
     .fileUploader {
         width: 30vw;
         height: 30rem;

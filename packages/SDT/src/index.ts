@@ -14,7 +14,7 @@ export default {
 };
 
 // 按需导出全局组件或指令
-export { RollText, LazyLoadBox, SplitPage, SwitchButton } from "./components";
+export { RollText, LazyLoadBox, SplitPage, SwitchButton, CheckBox } from "./components";
 export { VFill, VHidden, VDrag } from "./directives";
 
 // 导出组件或指令的类型

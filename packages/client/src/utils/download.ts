@@ -26,7 +26,7 @@ export async function downloadWithFetch(fileName: string, res: Response) {
         res.body!.pipeTo(fileStream).then(() => {
             fileStream.close();
         });
-        return { reader: res.body!.getReader(), size };
+        return { size };
     } else {
         Message.error("文件下载失败");
         throw "";

@@ -1,6 +1,7 @@
 <template>
     <div class="folder">
-        <div class="item" v-show="!panStore.isRoot" @click="panStore.toUpperPath">
+        <div class="item" v-show="!panStore.isRoot" @click="() => (isMulti ? null : panStore.toUpperPath())">
+            <CheckBox v-hidden="false"></CheckBox>
             <div class="left canClick" v-dragtarget="upperDropTargetOption">
                 <SvgIcon name="pan-folder"></SvgIcon>
                 <span>..</span>
@@ -8,9 +9,13 @@
         </div>
         <template v-for="item of folder.folders" :key="item.id">
             <div class="item folderItem">
+                <CheckBox
+                    v-hidden="isMulti"
+                    @onCheck="(state) => folderStateChange(state, item.id, item.name)"
+                ></CheckBox>
                 <div
                     class="left"
-                    @click="panStore.toInnerPath(item.id)"
+                    @click="() => (isMulti ? null : panStore.toInnerPath(item.id))"
                     v-draggable="folderDragOption(item.name, item.id)"
                     v-dragtarget="folderDropTargetOption(item.name, item.id)"
                 >
@@ -50,6 +55,10 @@
         </template>
         <template v-for="(item, index) of folder.files" :key="item.hash">
             <div class="item fileItem">
+                <CheckBox
+                    v-hidden="isMulti"
+                    @onCheck="(state) => fileStateChange(state, item.hash, item.name)"
+                ></CheckBox>
                 <div class="left" v-draggable="fileDragOption(item.name, item._id)">
                     <SvgIcon name="pan-file"></SvgIcon>
                     <div class="left">
@@ -99,12 +108,12 @@ import { downloadFileApi } from "@apis";
 import { DownloadFileTypeEnum } from "@blog/server";
 import type { VDragType } from "sdt3";
 import { Message } from "sdt3";
-import type { IsMulti } from "./inject";
+import { isMulti, folderStateChange, fileStateChange } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
-const isMulti = inject<IsMulti>("isMulti")!;
 
+// #region 单文件或文件夹下载
 async function downloadFile(
     hash: string,
     name: string,
@@ -135,6 +144,7 @@ async function downloadFolder(name: string, id: string) {
         }
     }, 800);
 }
+// #endregion
 
 // #region 拖放
 const enum DragType {
@@ -182,7 +192,8 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
     .item {
         display: flex;
         justify-content: space-between;
-        gap: $gap-xxlarge;
+        align-items: center;
+        gap: $gap-xlarge;
         box-sizing: border-box;
         padding: $gap $gap-large;
         .left,
