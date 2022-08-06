@@ -52,6 +52,7 @@ export {
     movePanFile as movePanFileApi,
     removePanFile as removePanFileApi,
     renamePanFile as renamePanFileApi,
+    editDesciption as editDesciptionApi,
     uploadPanFileStart as uploadPanFileStartApi,
     uploadPanFileChunk as uploadPanFileChunkApi,
     uploadPanFileEnd as uploadPanFileEndApi,

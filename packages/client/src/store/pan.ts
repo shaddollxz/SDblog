@@ -9,19 +9,24 @@ import {
     isZipEndApi,
     removePanFileApi,
     renamePanFileApi,
+    editDesciptionApi,
     movePanFileApi,
 } from "@apis";
 import type { Folder, PanPath } from "@blog/server";
+import { Message } from "sdt3";
 
 interface State {
     folder: Folder;
     currentPathFolder: Folder[];
     _currentFolder?: Folder;
 }
-
 interface ZipMulti {
     folders?: { id: string; name: string }[];
     files?: { hash: string; name: string }[];
+}
+export const enum EditFileTypeEnum {
+    name,
+    desc,
 }
 
 export const usePanStore = defineStore("panFolder", {
@@ -58,7 +63,8 @@ export const usePanStore = defineStore("panFolder", {
         },
         /** 单纯路径跳转时通过缓存可以有优化，如果涉及文件（夹）修改，需要使用该函数手动刷新状态 */
         refreshPathFolder(folderJson: Folder | string) {
-            const pathArr = this.folderPath.slice(1).split("/");
+            const pathArr = this.currentPath.split("/");
+            pathArr.splice(0, 2);
             this.refresh(folderJson);
             const result: Folder[] = [this.folder];
             pathArr.forEach((foldername) => {
@@ -148,9 +154,18 @@ export const usePanStore = defineStore("panFolder", {
         // #endregion
 
         // #region 文件操作
-        async renameFile(fileId: string, name: string, index: number) {
-            await renamePanFileApi({ fileId, name });
-            this.currentFolder!.files![index].name = name;
+        async editFileMsg(fileId: string, newData: string, index: number, type: EditFileTypeEnum) {
+            switch (type) {
+                case EditFileTypeEnum.name:
+                    await renamePanFileApi({ fileId, name: newData });
+                    this.currentFolder.files![index].name = newData;
+                    break;
+                case EditFileTypeEnum.desc:
+                    if (newData.length > 30) return Message.error("描述最长为30字符");
+                    await editDesciptionApi({ fileId, desciption: newData });
+                    this.currentFolder.files![index].desciption = newData;
+                    break;
+            }
         },
         async removeFile(_fileIds: string[] | string) {
             const fileIds = typeof _fileIds == "string" ? [_fileIds] : _fileIds;

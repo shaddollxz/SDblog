@@ -8,6 +8,7 @@ import type {
     RemoveFolderOption,
     RenameFileOption,
     RenameFolderOption,
+    EditDesciption,
     UploadFileChunkOption,
     UploadFileEndOption,
     UploadFileStartOption,
@@ -138,6 +139,16 @@ export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next
             const file = await PanFileDB.findById(fileId);
             await file?.deleteFile(_id!);
         }
+        res.status(StatusEnum.OK).json({ success: true });
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const editDesciption: PostHandler<EditDesciption> = async (req, res, next) => {
+    try {
+        const { fileId, desciption } = req.body;
+        await PanFileDB.findByIdAndUpdate(fileId, { $set: { desciption } });
         res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {
         next(e);

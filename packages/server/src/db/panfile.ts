@@ -22,7 +22,10 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare size: number;
 
     @prop({ require: true, type: () => String })
-    declare folderId: string;
+    declare folderId: string; // 文件所属文件夹id
+
+    @prop({ default: "", maxlength: 30, type: () => String })
+    declare desciption: string;
 
     async deleteFile(this: DocumentType<PanFile>, _id: string) {
         await this.delete();

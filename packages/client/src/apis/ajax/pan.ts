@@ -9,6 +9,7 @@ import type {
     MoveFileOption,
     RemoveFileOption,
     RenameFileOption,
+    EditDesciption,
     UploadFileStartOption,
     UploadFileStartRes,
     UploadFileChunkOption,
@@ -75,7 +76,15 @@ export function removePanFile(data: RemoveFileOption): AxiosPromise<PanListRes> 
 export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Faild> {
     return axios({
         method: "post",
-        url: "/pan/file/rename",
+        url: "/pan/file/name",
+        data,
+    });
+}
+
+export function editDesciption(data: EditDesciption): AxiosPromise<Success | Faild> {
+    return axios({
+        method: "post",
+        url: "/pan/file/desc",
         data,
     });
 }

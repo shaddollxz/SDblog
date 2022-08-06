@@ -84,6 +84,11 @@ export interface RenameFileOption {
     fileId: string;
 }
 
+export interface EditDesciption {
+    desciption: string;
+    fileId: string;
+}
+
 export interface MoveFileOption {
     fileIds: string[];
     folderId: string;

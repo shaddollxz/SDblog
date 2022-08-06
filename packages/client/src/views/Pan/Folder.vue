@@ -61,9 +61,12 @@
                 ></CheckBox>
                 <div class="left" v-draggable="fileDragOption(item.name, item._id)">
                     <SvgIcon name="pan-file"></SvgIcon>
-                    <div class="left">
+                    <div class="fileMsg">
                         <span>{{ item.name }}</span>
                         <span class="filesize">{{ $formatBit(item.size) }}</span>
+                        <div class="desciption gusto-limitTextLength" :title="item.desciption">
+                            {{ item.desciption }}
+                        </div>
                     </div>
                 </div>
                 <div class="right">
@@ -85,9 +88,23 @@
                                     type="input"
                                     text=""
                                     :defaultValue="item.name"
-                                    @onSure="(n) => panStore.renameFile(item._id, n, index)"
+                                    @onSure="
+                                        (n) => panStore.editFileMsg(item._id, n, index, EditFileTypeEnum.name)
+                                    "
                                 >
                                     <span class="option">重命名</span>
+                                </EnsureButton>
+                                <EnsureButton
+                                    :arrow="false"
+                                    directive="be"
+                                    type="input"
+                                    text=""
+                                    :defaultValue="item.desciption"
+                                    @onSure="
+                                        (n) => panStore.editFileMsg(item._id, n, index, EditFileTypeEnum.desc)
+                                    "
+                                >
+                                    <span class="option">文件描述</span>
                                 </EnsureButton>
                             </div>
                         </template>
@@ -102,13 +119,13 @@
 <script setup lang="ts">
 import EnsureButton from "@/components/EnsureButton/index.vue";
 import Popover from "@/components/Popover/index.vue";
-import { usePanStore } from "@/store/pan";
+import { usePanStore, EditFileTypeEnum } from "@/store/pan";
 import { downloadWithFetch } from "@/utils/download";
 import { downloadFileApi } from "@apis";
 import { DownloadFileTypeEnum } from "@blog/server";
 import type { VDragType } from "sdt3";
 import { Message } from "sdt3";
-import { isMulti, folderStateChange, fileStateChange } from "./inject";
+import { fileStateChange, folderStateChange, isMulti } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
@@ -196,6 +213,9 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         gap: $gap-xlarge;
         box-sizing: border-box;
         padding: $gap $gap-large;
+        .checkBox {
+            flex: 0 0 auto;
+        }
         .left,
         .right {
             display: flex;
@@ -204,14 +224,22 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
         }
         .left {
             flex: 1;
+        }
+        .fileMsg {
+            flex: 0 0;
+            display: flex;
+            align-items: center;
+            gap: $gap;
+            .desciption,
             .filesize {
                 font-size: var(--fontsize-small);
                 align-self: flex-end;
             }
+            .desciption {
+                margin-left: $gap-big;
+                max-width: 35rem;
+            }
         }
-    }
-    .folderItem .left {
-        align-items: center;
     }
 }
 .options {

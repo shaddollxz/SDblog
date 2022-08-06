@@ -14,7 +14,8 @@ router.get("/folder/zip", Pan.isZipEnd);
 
 router.get("/file/detail/:fileId", Pan.fileDetail);
 router.delete("/file", Pan.removeFile, Pan.folderList);
-router.post("/file/rename", Pan.renameFile);
+router.post("/file/name", Pan.renameFile);
+router.post("/file/desc", Pan.editDesciption);
 router.post("/file/move", Pan.moveFile, Pan.folderList);
 router.post("/file/start", Pan.uploadStart, Pan.folderList);
 router.put("/file/chunk", chunkFileUploader, Pan.uploadChunk);
