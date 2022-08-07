@@ -226,7 +226,6 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
             flex: 1;
         }
         .fileMsg {
-            flex: 0 0;
             display: flex;
             align-items: center;
             gap: $gap;
