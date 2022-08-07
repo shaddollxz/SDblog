@@ -29,7 +29,7 @@ async function choseFile() {
     data.value = img.files[0];
 }
 
-defineExpose({ file: data.value, dataUrl: imgData.value });
+defineExpose({ file: data, dataUrl: imgData });
 </script>
 
 <style lang="scss" scoped>
