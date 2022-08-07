@@ -17,8 +17,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore();
-    // todo 需要管理员才能进入的页面
-    if (to.meta.needAdmin && !userStore.isAdmin) {
+    // todo 需要权限才能进入的页面
+    if (to.meta.authority && !userStore.authorityCheck(to.meta.authority)) {
         next("/404");
         return true;
     }

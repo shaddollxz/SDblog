@@ -33,7 +33,7 @@ export function panFolder(): AxiosPromise<PanListRes> {
 
 export function createPanFolder(data: CreateFolderOption): AxiosPromise<PanListRes> {
     return axios({
-        method: "put",
+        method: "post",
         url: "/pan/folder",
         data,
     });
@@ -49,7 +49,7 @@ export function removePanFolder(data: RemoveFolderOption): AxiosPromise<PanListR
 
 export function movePanFolder(data: MoveFolderOption): AxiosPromise<PanListRes> {
     return axios({
-        method: "post",
+        method: "put",
         url: "/pan/folder/move",
         data,
     });
@@ -57,7 +57,7 @@ export function movePanFolder(data: MoveFolderOption): AxiosPromise<PanListRes> 
 
 export function renamePanFolder(data: RenameFolderOption): AxiosPromise<PanListRes> {
     return axios({
-        method: "post",
+        method: "put",
         url: "/pan/folder",
         data,
     });
@@ -75,7 +75,7 @@ export function removePanFile(data: RemoveFileOption): AxiosPromise<PanListRes> 
 
 export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Faild> {
     return axios({
-        method: "post",
+        method: "put",
         url: "/pan/file/name",
         data,
     });
@@ -83,7 +83,7 @@ export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Fa
 
 export function editDesciption(data: EditDesciption): AxiosPromise<Success | Faild> {
     return axios({
-        method: "post",
+        method: "put",
         url: "/pan/file/desc",
         data,
     });
@@ -91,7 +91,7 @@ export function editDesciption(data: EditDesciption): AxiosPromise<Success | Fai
 
 export function movePanFile(data: MoveFileOption): AxiosPromise<PanListRes> {
     return axios({
-        method: "post",
+        method: "put",
         url: "/pan/file/move",
         data,
     });
@@ -107,7 +107,7 @@ export function uploadPanFileStart(data: UploadFileStartOption): AxiosPromise<Up
 
 export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): AxiosPromise<Success | Faild> {
     return axios({
-        method: "put",
+        method: "post",
         url: "/pan/file/chunk",
         data,
     });

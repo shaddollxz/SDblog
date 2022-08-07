@@ -1,6 +1,6 @@
 import type { User } from "../../db/user";
 import type { SchemaToInfo } from "../tools/SchemaToInfo";
-import { VerifycodeEnum } from "../enum";
+import { VerifycodeEnum, AuthorityEnum } from "../enum";
 
 // 用户信息
 export type UserInfo = SchemaToInfo<User>;
@@ -38,5 +38,10 @@ export interface GetVerifycodeOptions {
 }
 
 export type ShaddollxzInfo = UserInfo & { blogCount: number };
+
+export interface EnableAuthority {
+    userId: string;
+    enabled: AuthorityEnum[]; // 启用是正数 关闭是复数
+}
 
 export {};

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { mustLogin } from "../middlewares/authorization";
+import { analyzeToken, haveAuthority } from "../middlewares/authorization";
+import { AuthorityEnum } from "../typings/enum";
 
 const router = Router();
 
@@ -15,7 +16,7 @@ import UserRouter from "./user";
 router.use("/", StaticRouter);
 router.use("/blog", BlogRouter);
 router.use("/essay", EssayRouter);
-router.use("/pan", mustLogin, PanRouter);
+router.use("/pan", analyzeToken, haveAuthority(AuthorityEnum.pan_private), PanRouter);
 router.use("/reply", ReplyRouter);
 router.use("/shaddollxz", ShaddollxzRouter);
 router.use("/tag", TagRouter);

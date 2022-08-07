@@ -50,7 +50,13 @@
             <div class="img">
                 <img ref="headPic" alt="这里是头图" />
             </div>
-            <Popover class="menu" v-if="userStore.isAdmin">
+            <Popover
+                class="menu"
+                v-if="
+                    userStore.authorityCheck(AuthorityEnum.admin) ||
+                    blogMsg.author._id == userStore.userInfo._id
+                "
+            >
                 <SvgIcon class="canClick" name="public-menu"></SvgIcon>
                 <template #popup>
                     <div class="menuPopup gusto-flex-center-col">
@@ -78,6 +84,7 @@ import { useUserStore } from "@/store/user";
 import isMobile from "@/utils/isMobile";
 import { deleteBlogApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
+import { AuthorityEnum } from "@blog/server";
 import defaultHeadPic from "@img/blogHeadPic_default.jpg";
 import { Message, Random } from "sdt3";
 import staticPics from "virtual:staticPics";

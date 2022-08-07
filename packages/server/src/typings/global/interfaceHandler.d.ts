@@ -4,7 +4,7 @@ export {};
 
 interface Token {
     _id: string;
-    isAdmin: boolean;
+    authority: number;
 }
 
 type ReqBody<T = any, P = Record<string, string>> = RequestHandler<P, any, T & Partial<Token>>;

@@ -1,3 +1,5 @@
+import { AuthorityEnum } from "@blog/server";
+
 export default <RouteItem>{
     path: "/pan",
     name: "pan",
@@ -5,6 +7,6 @@ export default <RouteItem>{
     meta: {
         keepAlive: true,
         title: "云盘",
-        // needLogin: true,
+        authority: AuthorityEnum.pan_private,
     },
 };

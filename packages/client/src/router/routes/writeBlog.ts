@@ -1,3 +1,5 @@
+import { AuthorityEnum } from "@blog/server";
+
 export default <RouteItem>{
     path: "/writeBlog",
     name: "writeBlog",
@@ -6,6 +8,6 @@ export default <RouteItem>{
         title: "写文章",
         needLogin: true,
         keepAlive: true,
-        needAdmin: true,
+        authority: AuthorityEnum.blog,
     },
 };

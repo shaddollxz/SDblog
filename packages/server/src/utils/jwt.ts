@@ -3,7 +3,7 @@ const { JWT_SECRET, JWT_LIMIT } = process.env;
 
 interface UserPayload {
     _id: string;
-    isAdmin: boolean;
+    authority: number;
 }
 
 export function sign(data: UserPayload) {

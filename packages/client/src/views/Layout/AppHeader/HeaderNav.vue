@@ -49,6 +49,7 @@
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
 import isMobile from "@/utils/isMobile";
+import { AuthorityEnum } from "@blog/server";
 
 const userSotre = useUserStore();
 
@@ -68,7 +69,9 @@ const navlist = [
         text: "小工具",
         children: [
             { text: "卡手率计算器", link: "/deckCalculator" },
-            isMobile ? undefined : { text: "网盘", link: "/pan" },
+            !isMobile && userSotre.authorityCheck(AuthorityEnum.pan_private)
+                ? { text: "网盘", link: "/pan" }
+                : undefined,
         ],
     },
     { text: "关于", link: "/about" },

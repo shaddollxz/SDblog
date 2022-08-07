@@ -10,6 +10,7 @@ export interface Faild extends Success {
 
 // 博客和随笔和回复的作者
 export interface Author {
+    _id?: string;
     name: string;
     email: string;
     avatar?: string;

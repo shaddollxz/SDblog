@@ -31,7 +31,12 @@
                     </div>
                 </div>
 
-                <EnsureButton class="delete" v-if="userStore.isAdmin" @onSure="deleteEssay" text="确定删除吗">
+                <EnsureButton
+                    class="delete"
+                    v-if="userStore.authorityCheck(AuthorityEnum.admin)"
+                    @onSure="deleteEssay"
+                    text="确定删除吗"
+                >
                     <SvgIcon name="public-delete"></SvgIcon>
                 </EnsureButton>
             </div>
@@ -46,7 +51,7 @@ import Markdown from "@/components/Markdown/index.vue";
 import { useUserStore } from "@/store/user";
 import { deleteEssayApi, likeEssayApi } from "@apis";
 import type { EssayInfo } from "@blog/server";
-import { ReplyEnum } from "@blog/server";
+import { ReplyEnum, AuthorityEnum } from "@blog/server";
 import { Message } from "sdt3";
 import { onBeforeRouteLeave } from "vue-router";
 const ReplyList = defineAsyncComponent(() => import("@/components/ReplyList/index.vue"));

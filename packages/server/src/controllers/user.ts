@@ -6,10 +6,12 @@ import type {
     RegisterOptions,
     RetrieveOptions,
     UserInfo,
+    EnableAuthority,
 } from "../typings/interface/user";
 import { sign } from "../utils/jwt";
 import md5 from "../utils/md5";
 import sendEmail from "../utils/sendMail";
+import { addAuthority, subAuthority } from "../utils/authority";
 
 /** 登录 */
 export const login: PostHandler<LoginOptions> = async (req, res, next) => {
@@ -25,7 +27,7 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
 
         if (user) {
             if (user.passWord == md5(req.body.passWord)) {
-                const token = sign({ _id: user._id, isAdmin: user.authority == AuthorityEnum.admin });
+                const token = sign({ _id: user._id, authority: user.authority });
                 const userInfo = user.toJSON();
                 delete userInfo.passWord;
                 return res.status(StatusEnum.OK).json({ userData: userInfo, token });
@@ -71,7 +73,7 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
         const email = data?.email;
         if (email == req.body.email) {
             delete req.body._id;
-            delete req.body.isAdmin;
+            delete req.body.authority;
             await new UserDB({ ...req.body }).save();
             res.status(StatusEnum.OK).json({ success: true });
         } else {
@@ -87,7 +89,7 @@ export const relogin: GetHandler = async (req, res, next) => {
     try {
         const userData = await UserDB.findById(req.body._id);
         if (userData) {
-            const token = sign({ _id: userData._id, isAdmin: userData.authority == AuthorityEnum.admin });
+            const token = sign({ _id: userData._id, authority: userData.authority });
             res.status(StatusEnum.OK).json({ userData, token });
         } else {
             res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
@@ -138,13 +140,39 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
                     { $set: { passWord: newPassWord } },
                     { new: true }
                 );
-                const token = sign({ _id: user!._id, isAdmin: user!.authority == AuthorityEnum.admin });
+                const token = sign({ _id: user!._id, authority: user!.authority });
                 return res.status(StatusEnum.OK).json({ userData: user, token });
             } else {
                 res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });
             }
         } else {
             res.status(StatusEnum.Forbidden).json({ error: "验证码错误或失效", isShow: true });
+        }
+    } catch (e) {
+        next(e);
+    }
+};
+
+/** 添加或删除权限 */
+export const enableAuthority: PostHandler<EnableAuthority> = async (req, res, next) => {
+    try {
+        const { userId, enabled } = req.body;
+        const user = await UserDB.findById(userId);
+        if (user) {
+            const en: AuthorityEnum[] = [];
+            const un: AuthorityEnum[] = [];
+            for (const item of enabled) {
+                if (item > 0) {
+                    en.push(item);
+                } else {
+                    un.push(-item);
+                }
+            }
+            const authority = subAuthority(addAuthority(user.authority, ...en), ...un);
+            user.authority = authority;
+            await user.save();
+        } else {
+            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
         }
     } catch (e) {
         next(e);

@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from "vue-router";
 interface Meta {
     title: string;
     needLogin?: boolean;
-    needAdmin?: boolean;
+    authority?: AuthorityEnum;
     keepAlive?: boolean;
 }
 

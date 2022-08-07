@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { mustLogin } from "../middlewares/authorization";
+import { analyzeToken } from "../middlewares/authorization";
 import { imageUploader, avatarUploader } from "../middlewares/assetsUploader";
 import { uploadAvatar, removeImage, uploadImage } from "../controllers/static";
 
 const router = Router();
 
-router.post("/image", mustLogin, imageUploader, mustLogin, uploadImage);
-router.delete("/image", mustLogin, removeImage);
-router.post("/avatar", mustLogin, avatarUploader, mustLogin, uploadAvatar);
+router.post("/image", analyzeToken, imageUploader, analyzeToken, uploadImage);
+router.delete("/image", analyzeToken, removeImage);
+router.post("/avatar", analyzeToken, avatarUploader, analyzeToken, uploadAvatar);
 
 export default router;

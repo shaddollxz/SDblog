@@ -1,5 +1,5 @@
 import { BlogDB } from "../db";
-import { StatusEnum } from "../typings/enum";
+import { StatusEnum, AuthorityEnum } from "../typings/enum";
 import type {
     BlogDetailInfo,
     BlogListItemInfo,
@@ -9,6 +9,7 @@ import type {
     WriteBlogOptions,
 } from "../typings/interface/blog";
 import deleteRepeat from "../utils/deleteRepeat";
+import { authorityCheck } from "../utils/authority";
 const blogPageCount = +process.env.blogPageCount;
 
 /** 获得主页博客列表 */

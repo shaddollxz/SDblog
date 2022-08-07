@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
+import { AuthorityEnum } from "@blog/server";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -33,7 +34,12 @@ const router = useRouter();
 const navList = [
     { title: "个人信息", path: "/userCenter", icon: "userCenter-person", isShow: true },
     { title: "修改头像", path: "/userCenter/avatar", icon: "userCenter-avatar", isShow: true },
-    { title: "写博客", path: "/writeBlog", icon: "userCenter-write", isShow: userStore.isAdmin },
+    {
+        title: "写博客",
+        path: "/writeBlog",
+        icon: "userCenter-write",
+        isShow: userStore.authorityCheck(AuthorityEnum.blog),
+    },
 ];
 </script>
 

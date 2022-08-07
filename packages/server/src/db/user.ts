@@ -1,15 +1,7 @@
 import typegoose, { defaultClasses } from "@typegoose/typegoose";
-import { AuthorityEnum } from "../typings/enum";
 import md5 from "../utils/md5";
 import type { DB } from "./DB";
 const { prop } = typegoose;
-
-/** 用户权限 */
-interface Authority {
-    reply: boolean;
-    blog: boolean;
-    pan: boolean;
-}
 
 export class User extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
@@ -29,8 +21,8 @@ export class User extends defaultClasses.TimeStamps implements DB {
     @prop({ default: 0, type: () => Number })
     declare avatarFrame: number;
 
-    @prop({ default: AuthorityEnum.normal, type: () => Number })
-    declare authority: AuthorityEnum;
+    @prop({ default: 0, type: () => Number })
+    declare authority: number;
 
     @prop({ default: false, select: false, type: () => Boolean })
     declare isDelete?: boolean;
