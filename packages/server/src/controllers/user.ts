@@ -1,4 +1,4 @@
-import { UserDB, VerifycodeDB } from "../db";
+import { UserDB, VerifycodeDB, PanDB } from "../db";
 import { AuthorityEnum, StatusEnum, VerifycodeEnum } from "../typings/enum";
 import type {
     GetVerifycodeOptions,
@@ -7,11 +7,13 @@ import type {
     RetrieveOptions,
     UserInfo,
     EnableAuthority,
+    DisableAuthority,
 } from "../typings/interface/user";
 import { sign } from "../utils/jwt";
 import md5 from "../utils/md5";
 import sendEmail from "../utils/sendMail";
 import { addAuthority, subAuthority } from "../utils/authority";
+import { v4 as uuid } from "uuid";
 
 /** 登录 */
 export const login: PostHandler<LoginOptions> = async (req, res, next) => {
@@ -154,23 +156,37 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
 };
 
 /** 添加或删除权限 */
-export const enableAuthority: PostHandler<EnableAuthority> = async (req, res, next) => {
+export const enableAuthority: PutHandler<EnableAuthority> = async (req, res, next) => {
     try {
-        const { userId, enabled } = req.body;
+        const { userId, auth } = req.body;
         const user = await UserDB.findById(userId);
         if (user) {
-            const en: AuthorityEnum[] = [];
-            const un: AuthorityEnum[] = [];
-            for (const item of enabled) {
-                if (item > 0) {
-                    en.push(item);
-                } else {
-                    un.push(-item);
-                }
+            switch (auth) {
+                case AuthorityEnum.pan_private:
+                    if (!(await PanDB.findById(userId)))
+                        await new PanDB({ _id: user._id, path: `{"id":"${uuid()}","name":"root"}` }).save();
+                    break;
             }
-            const authority = subAuthority(addAuthority(user.authority, ...en), ...un);
+            const authority = addAuthority(user.authority, auth);
             user.authority = authority;
             await user.save();
+            res.status(StatusEnum.OK).json({ success: true });
+        } else {
+            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
+        }
+    } catch (e) {
+        next(e);
+    }
+};
+export const disableAuthority: PutHandler<DisableAuthority> = async (req, res, next) => {
+    try {
+        const { userId, auth } = req.body;
+        const user = await UserDB.findById(userId);
+        if (user) {
+            const authority = subAuthority(user.authority, auth);
+            user.authority = authority;
+            await user.save();
+            res.status(StatusEnum.OK).json({ success: true });
         } else {
             res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
         }

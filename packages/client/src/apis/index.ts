@@ -6,6 +6,8 @@ export {
     relogin as reloginApi,
     updateUserInfo as updateUserInfoApi,
     changePassWord as changePassWordApi,
+    enableAuthority as enableAuthorityApi,
+    disableAuthority as disableAuthorityApi,
 } from "./ajax/user";
 
 export {

@@ -41,7 +41,8 @@ export type ShaddollxzInfo = UserInfo & { blogCount: number };
 
 export interface EnableAuthority {
     userId: string;
-    enabled: AuthorityEnum[]; // 启用是正数 关闭是复数
+    auth: AuthorityEnum;
 }
+export type DisableAuthority = EnableAuthority;
 
 export {};

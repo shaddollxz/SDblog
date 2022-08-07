@@ -7,6 +7,8 @@ import type {
     GetVerifycodeOptions,
     RegisterOptions,
     RetrieveOptions,
+    EnableAuthority,
+    DisableAuthority,
     Success,
     Faild,
 } from "@blog/server";
@@ -74,12 +76,25 @@ export function updateUserInfo(userInfo: Partial<UserInfo>): AxiosPromise<{ user
 }
 
 // 修改密码
-export function changePassWord(
-    formData: RetrieveOptions
-): AxiosPromise<{ userData: UserInfo; token: string }> {
+export function changePassWord(data: RetrieveOptions): AxiosPromise<{ data: UserInfo; token: string }> {
     return axios({
         method: "put",
         url: "user/retrieve",
-        data: formData,
+        data,
+    });
+}
+
+export function enableAuthority(data: EnableAuthority) {
+    return axios({
+        method: "put",
+        url: "user/authority/enable",
+        data,
+    });
+}
+export function disableAuthority(data: DisableAuthority) {
+    return axios({
+        method: "put",
+        url: "user/authority/disable",
+        data,
     });
 }
