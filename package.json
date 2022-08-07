@@ -10,7 +10,7 @@
         "dev:client": "cd packages/client && pnpm dev",
         "dev:server": "cd packages/server && pnpm dev",
         "build:client": "cd packages/client && pnpm build",
-        "build:client:dev": "cd packages/client && pnpm build:dev",
+        "build:client:dev": "sh ./scripts/sh/buildClientDev.sh",
         "build:server": "sh ./scripts/sh/buildServer.sh",
         "preview:client": "cd packages/client && pnpm preview",
         "preview:server": "cd packages/server && pnpm preview",

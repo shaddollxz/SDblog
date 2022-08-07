@@ -8,8 +8,8 @@ envPath="${__rootDir}/env"
 source ${__dirname}/utils/ReadEnv.sh
 source ${__dirname}/utils/Log.sh
 
-# git checkout .
-# git pull
+git checkout .
+git pull
 
 cd ${__rootDir}/scripts
 fontPath="${__rootDir}/packages/client/src/assets/font"

@@ -9,22 +9,23 @@ import svgIcons from "./svgIcons";
 import vconsole from "./vconsole";
 import vue from "./vue";
 
-export default function getPlugins(Env: ImportMetaEnv, isBuild: boolean, isDev: boolean) {
+export default function getPlugins(env: ImportMetaEnv, isBuild: boolean, isDev: boolean) {
     const plugins: PluginOption[] = [];
 
     //* 生产开发环境都需要配置的插件
     plugins.push(vue);
     plugins.push(jsx);
     plugins.push(svgIcons);
-    plugins.push(pwa); // pwa
+    plugins.push(pwa(env)); // pwa
     plugins.push(autoImport);
-    plugins.push(staticPics(Env));
+    plugins.push(staticPics(env));
 
     if (isDev) {
         //* 只在开发环境使用
-        plugins.push(vconsole(Env, isBuild, isDev) as Plugin);
+        plugins.push(vconsole(env, isBuild, isDev) as Plugin);
         if (isBuild) {
             plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: false })); // 依赖分析
+            plugins.push(gzip);
         }
     } else {
         //* 只在生产环境使用
