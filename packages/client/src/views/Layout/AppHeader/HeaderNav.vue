@@ -61,7 +61,6 @@ interface Emits {
 }
 defineProps<Props>();
 const emit = defineEmits<Emits>();
-
 const navlist = [
     { text: "首页", link: "/" },
     { text: "留言", link: "/essay" },
@@ -69,9 +68,9 @@ const navlist = [
         text: "小工具",
         children: [
             { text: "卡手率计算器", link: "/deckCalculator" },
-            !isMobile && userSotre.authorityCheck(AuthorityEnum.pan_private)
+            !isMobile || userSotre.authorityCheck(AuthorityEnum.pan_private)
                 ? { text: "网盘", link: "/pan" }
-                : undefined,
+                : null,
         ],
     },
     { text: "关于", link: "/about" },

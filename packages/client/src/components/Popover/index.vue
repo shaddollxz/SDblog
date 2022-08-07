@@ -234,7 +234,7 @@ onMounted(() => {
             width: 10%;
             max-width: 0.8rem;
             aspect-ratio: 1 / 1;
-            background-color: var(--color-bg-deep);
+            background-color: inherit;
             border: 1px solid var(--color-border);
             border-bottom: none;
             border-right: none;

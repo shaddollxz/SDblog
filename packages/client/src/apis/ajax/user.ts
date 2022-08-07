@@ -76,7 +76,7 @@ export function updateUserInfo(userInfo: Partial<UserInfo>): AxiosPromise<{ user
 }
 
 // 修改密码
-export function changePassWord(data: RetrieveOptions): AxiosPromise<{ data: UserInfo; token: string }> {
+export function changePassWord(data: RetrieveOptions): AxiosPromise<{ userData: UserInfo; token: string }> {
     return axios({
         method: "put",
         url: "user/retrieve",
