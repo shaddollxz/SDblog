@@ -1,8 +1,6 @@
 #!/bin/bash
 
-__dirname=$(pwd)
-
-source ${__dirname}/scripts/utils/Array.sh
+source $(pwd)/scripts/sh/utils/Array.sh
 
 # 按规律进行转换
 function _NormalTrans() {

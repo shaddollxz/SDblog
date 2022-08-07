@@ -29,7 +29,7 @@ const keyWords = [
     "网盘",
 ];
 
-const targetDir = path.resolve(__dirname, "../../../../packages/client/src/assets/font");
+const targetDir = path.resolve(__dirname, "../../../packages/client/src/assets/font");
 
 const chuyuan = new Fontmin()
     .src(path.resolve(__dirname, "./font/chuyuan.ttf"))
@@ -54,10 +54,8 @@ await fs.copy(path.resolve(__dirname, "./font/index.css"), path.resolve(targetDi
 
 chuyuan.run((err, files) => {
     if (err) console.log(err);
-    console.log("font:chuyuan compressed");
 });
 
 xingyan.run((err, files) => {
     if (err) console.log(err);
-    console.log("font:xingyan compressed");
 });

@@ -2,7 +2,7 @@
 
 __dirname=$(dirname -- "$0")
 __rootDir=$(pwd)
-nodeScriptPath="${__rootDir}/scripts/src/ts"
+nodeScriptPath="${__rootDir}/scripts/ts"
 envPath="${__rootDir}/env"
 
 source ${__dirname}/utils/ReadEnv.sh
@@ -14,7 +14,10 @@ git pull
 cd ${__rootDir}/scripts
 fontPath="${__rootDir}/packages/client/src/assets/font"
 if [ ! -d $fontPath ]; then
+    Warning "begin generate font..."
     $(pnpm tsx ${nodeScriptPath}/fontmin/index.ts)
+    echo ""
+    Success "font generate end"
 fi
 
 if [ -f ${envPath}/.env ]; then
