@@ -1,14 +1,12 @@
-import Worker from "./sliceFileAndUpload.worker.ts?worker";
-import type { MainOnMessage, MainPostMessage } from "./types";
-export type { MainOnMessage, MainPostMessage };
-
-export const uploadWorker = new Worker();
-
 import { createFormData } from "@/utils/createFormData";
 import { parallelPromise } from "@/utils/parallelPromise";
-import { uploadPanFileChunkApi, uploadPanFileEndApi, uploadPanFileStartApi, isUploadEndApi } from "@apis";
-import type { UploadFileChunkOption, UploadFileEndOption, PanListRes } from "@blog/server";
+import { isUploadEndApi, uploadPanFileChunkApi, uploadPanFileEndApi, uploadPanFileStartApi } from "@apis";
+import type { UploadFileChunkOption, UploadFileEndOption } from "@blog/server";
+import Worker from "./sliceFileAndUpload.worker.ts?worker";
+import type { MainOnMessage, MainPostMessage } from "./types";
 
+export type { MainOnMessage, MainPostMessage };
+export const uploadWorker = new Worker();
 export const PostMessage = (data: MainPostMessage, transfer?: Transferable[]) =>
     transfer ? uploadWorker.postMessage(data, transfer) : uploadWorker.postMessage(data);
 

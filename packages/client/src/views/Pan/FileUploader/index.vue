@@ -46,6 +46,7 @@ const panStore = usePanStore();
 const chosedFiles = reactive(new LocalFiles({ count: 10 }));
 async function choseFiles() {
     await chosedFiles.getFile();
+    if (chosedFiles.files.length > 1) filesRepeat(chosedFiles.files);
     emit("onChosedFile");
 }
 function removeFile(file: File) {
@@ -94,6 +95,20 @@ async function upload() {
         }
         uploadWorker.addEventListener("message", onMessage);
     }
+}
+
+/** 按文件名进行去重 */
+function filesRepeat(files: File[]) {
+    const history: object = {};
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (history[file.name]) {
+            files.splice(i, 1);
+        } else {
+            history[file.name] = true;
+        }
+    }
+    return files;
 }
 </script>
 

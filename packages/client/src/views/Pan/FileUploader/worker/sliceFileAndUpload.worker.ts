@@ -8,7 +8,7 @@ const files = new Map<
     {
         folderId: string;
         fileName: string;
-        allchunks: number;
+        chunks: number;
         uploadedChunks: number;
         chunkBuffer: ArrayBuffer[] | null;
     }
@@ -18,16 +18,17 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
     switch (data.step) {
         case "splitBuffer":
             {
-                PostMessage({ step: "beginAnalyzeFile" });
                 const { fileBuffers, fileNames, folderId } = data;
                 for (let i = 0; i < fileBuffers.length; i++) {
+                    PostMessage({ step: "beginAnalyzeFile", name: fileNames[i] });
                     const chunkBuffer = splitBuffer(fileBuffers[i]);
+                    const chunks = chunkBuffer.length;
                     const hash = getFileHash(chunkBuffer);
                     files.has(hash) ||
                         files.set(hash, {
                             folderId,
                             fileName: fileNames[i],
-                            allchunks: chunkBuffer.length,
+                            chunks,
                             uploadedChunks: 0,
                             chunkBuffer,
                         });
@@ -36,9 +37,13 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                         hash,
                         fileName: fileNames[i],
                         folderId,
-                        chunks: chunkBuffer.length,
+                        chunks,
                     });
-                    PostMessage({ step: "analyzeFileEnd" });
+                    PostMessage({
+                        step: "analyzeFileEnd",
+                        name: fileNames[i],
+                        chunks,
+                    });
                     console.log("文件解析完毕");
                 }
             }
@@ -62,7 +67,7 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                         file.chunkBuffer!
                     );
                     file.chunkBuffer = null;
-                    PostMessage({ step: "beginUploadFile" });
+                    PostMessage({ step: "beginUploadFile", name: file.fileName });
                     console.log("开始上传文件");
                 } else {
                     PostMessage({
@@ -79,7 +84,11 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                 const file = files.get(hash);
                 if (file) {
                     file.uploadedChunks++;
-                    PostMessage({ step: "progress", all: file.allchunks, already: file.uploadedChunks });
+                    PostMessage({
+                        step: "progress",
+                        already: file.uploadedChunks,
+                        name: file.fileName,
+                    });
                 }
             }
             break;
@@ -87,9 +96,11 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
         case "uploadEnd":
             {
                 const { hash, folderJson } = data;
-                files.delete(hash);
-                PostMessage({ step: "end", folderJson });
-                console.log("文件上传完毕");
+                const file = files.get(hash);
+                if (file) {
+                    files.delete(hash);
+                    PostMessage({ step: "end", folderJson, name: file.fileName });
+                }
             }
             break;
 

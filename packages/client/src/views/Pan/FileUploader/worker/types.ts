@@ -21,22 +21,27 @@ interface UploadChunk {
 
 interface BeginAnalyzeFile {
     step: "beginAnalyzeFile";
+    name: string;
 }
 interface AnalyzeFileEnd {
     step: "analyzeFileEnd";
+    name: string;
+    chunks: number;
 }
 interface BeginUploadFile {
     step: "beginUploadFile";
+    name: string;
 }
 
 interface Progress {
     step: "progress";
-    all: number;
+    name: string;
     already: number;
 }
 
 interface UploadEnd {
     step: "end";
+    name: string;
     folderJson: string;
 }
 
