@@ -12,15 +12,13 @@ import ParseWorker from "./parse.worker?worker"; //用webworker解析markdown
 interface Props {
     markdown?: string;
     isLoading?: boolean;
-    keepalive?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
     isLoading: false,
-    keepalive: false,
 });
 
 let html = ref("");
-let loading = ref(props.isLoading ? true : false);
+let loading = ref(props.isLoading);
 const parseWorker = new ParseWorker();
 
 watchEffect(() => {
@@ -28,7 +26,6 @@ watchEffect(() => {
 });
 parseWorker.onmessage = ({ data }: { data: { content: string; loadingTime: number } }) => {
     html.value = data.content;
-    props.keepalive || parseWorker.terminate();
     setTimeout(() => {
         props.isLoading ? (loading.value = false) : null;
     }, data.loadingTime);

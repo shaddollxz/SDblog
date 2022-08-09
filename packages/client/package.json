@@ -10,7 +10,6 @@
     },
     "dependencies": {
         "@blog/server": "workspace:^1.0.0",
-        "clipboard-polyfill": "^3.0.3",
         "highlight.js": "^11.5.1",
         "marked": "^4.0.5",
         "pinia": "^2.0.14",

@@ -51,7 +51,6 @@ importers:
       '@types/streamsaver': ^2.0.1
       '@vitejs/plugin-vue': ^3.0.1
       '@vitejs/plugin-vue-jsx': ^2.0.0
-      clipboard-polyfill: ^3.0.3
       highlight.js: ^11.5.1
       marked: ^4.0.5
       pinia: ^2.0.14
@@ -74,7 +73,6 @@ importers:
       workbox-window: ^6.4.2
     dependencies:
       '@blog/server': link:../server
-      clipboard-polyfill: 3.0.3
       highlight.js: 11.6.0
       marked: 4.0.18
       pinia: 2.0.17_vue@3.2.37
@@ -2496,10 +2494,6 @@ packages:
       slice-ansi: 5.0.0
       string-width: 5.1.2
     dev: true
-
-  /clipboard-polyfill/3.0.3:
-    resolution: {integrity: sha512-hts0o01ZkwjA1qHA5gFePzAj/780W7v+eyN3GdaCRyDnapzcPsKRV5aodv77gcr40NDIcyNjNmc+HvfKV+jD0g==}
-    dev: false
 
   /cliui/7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}

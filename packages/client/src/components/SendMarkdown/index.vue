@@ -22,7 +22,7 @@
                 @keydown="inputFormat($event)"
                 v-bind="$attrs"
             ></textarea>
-            <Markdown v-if="isPreview" :markdown="text" keepalive></Markdown>
+            <Markdown v-if="isPreview" :markdown="text"></Markdown>
         </div>
 
         <div class="buttons">
@@ -291,6 +291,9 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
             .markdownContent {
                 padding: 0;
             }
+        }
+        &:deep(.markdown) {
+            padding: 0 2rem;
         }
 
         @include mobile {

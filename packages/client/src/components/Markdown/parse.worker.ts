@@ -6,22 +6,16 @@ import hljs from "highlight.js/lib/core";
 import typescript from "highlight.js/lib/languages/typescript";
 import scss from "highlight.js/lib/languages/scss";
 import xml from "highlight.js/lib/languages/xml";
-import javascript from "highlight.js/lib/languages/javascript";
-import css from "highlight.js/lib/languages/css";
 import json from "highlight.js/lib/languages/json";
 import shell from "highlight.js/lib/languages/shell";
-import powershell from "highlight.js/lib/languages/powershell";
 import java from "highlight.js/lib/languages/java";
 import python from "highlight.js/lib/languages/python";
 
-hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("typescript", typescript);
 hljs.registerLanguage("scss", scss);
-hljs.registerLanguage("css", css);
 hljs.registerLanguage("xml", xml);
 hljs.registerLanguage("json", json);
 hljs.registerLanguage("shell", shell);
-hljs.registerLanguage("powershell", powershell);
 hljs.registerLanguage("java", java);
 hljs.registerLanguage("python", python);
 
@@ -48,7 +42,7 @@ onmessage = ({ data }) => {
     performance.mark("end");
     performance.measure("during", "begin", "end");
     const [during] = performance.getEntriesByName("during");
-    postMessage({ content, loadingTime: during.duration > 200 ? 2200 : 0 });
+    postMessage({ content, loadingTime: during.duration > 200 ? 2200 : 500 });
     performance.clearMarks();
     performance.clearMeasures();
 };
