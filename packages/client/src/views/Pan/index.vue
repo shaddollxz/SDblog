@@ -23,11 +23,14 @@ onMounted(() => usePanStore().getFolder());
 
 <style lang="scss" scoped>
 .pan {
+    display: flex;
+    gap: $gap-large;
     margin-left: $width-wife;
-    width: 60%;
+    width: calc(100% - $width-wife);
 }
 
 .left {
+    flex: 2;
     .folderControl {
         margin: $gap-large $gap-xlarge;
     }
@@ -37,5 +40,7 @@ onMounted(() => usePanStore().getFolder());
     }
 }
 .right {
+    flex: 1;
+    margin-right: $gap-big;
 }
 </style>

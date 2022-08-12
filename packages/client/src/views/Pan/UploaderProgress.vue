@@ -1,10 +1,23 @@
 <template>
-    <div class="uploaderProgress">
-        <template v-for="item of analyzeings">
-            <div class="item analyzeing"></div>
+    <div v-show="haveData" class="uploaderProgress gusto-border">
+        <template v-for="(value, name) of uploadings">
+            <div class="item">
+                <div>文件：{{ name }}</div>
+                <div>状态：上传中...</div>
+                <Slider v-model="value.progress"></Slider>
+            </div>
         </template>
-        <template v-for="item of uploadings">
-            <div class="item uploading"></div>
+        <template v-for="(_, name) of analyzeings">
+            <div class="item">
+                <div>文件：{{ name }}</div>
+                <div>状态：解析文件中...</div>
+            </div>
+        </template>
+        <template v-for="(_, name) of waitUploads">
+            <div class="item">
+                <div>文件：{{ name }}</div>
+                <div>状态：等待上传...</div>
+            </div>
         </template>
     </div>
 </template>
@@ -13,47 +26,68 @@
 import { uploadWorker } from "./FileUploader/worker";
 import type { MainOnMessage } from "./FileUploader/worker";
 
-const analyzeings: { name: string }[] = [];
-const uploadings: { name: string; chunks: number; uploaded: number }[] = [];
+const analyzeings: Record<string, boolean> = {};
+const waitUploads: Record<string, { chunks: number; progress: number }> = {};
+const uploadings: Record<string, { chunks: number; progress: number }> = {};
+const haveData = computed(
+    () => Object.keys(analyzeings).length && Object.keys(waitUploads).length && Object.keys(uploadings).length
+);
 
 uploadWorker.addEventListener("message", ({ data }: { data: MainOnMessage }) => {
     switch (data.step) {
         case "beginAnalyzeFile":
             {
                 const { name } = data;
-                analyzeings.push({ name });
+                if (!analyzeings[name]) {
+                    analyzeings[name] = true;
+                }
             }
             break;
         case "analyzeFileEnd":
             {
                 const { name, chunks } = data;
-                const index = analyzeings.findIndex((item) => item.name == name);
-                if (!~index) {
-                    analyzeings.splice(index, 1);
-                    uploadings.push({ name, chunks, uploaded: 0 });
-                }
+                delete analyzeings[name];
+                waitUploads[name] = { chunks, progress: 0 };
             }
             break;
         case "progress":
             {
                 const { name, already } = data;
-                const upload = uploadings.find((item) => item.name == name);
-                if (upload) {
-                    upload.uploaded = already;
+                const item = waitUploads[name];
+                if (item) {
+                    uploadings[name] = item;
+                    item.progress = already;
+                    delete waitUploads[name];
+                } else {
+                    const uploading = uploadings[name];
+                    uploading.progress = (already / uploading.chunks) * 100;
                 }
             }
             break;
         case "end":
             {
                 const { name } = data;
-                uploadings.splice(
-                    uploadings.findIndex((item) => item.name == name),
-                    1
-                );
+                delete uploadings[name];
             }
             break;
     }
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.uploaderProgress {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 2 * $height-header);
+    .item {
+        margin-top: $gap;
+        border-bottom: 1px solid var(--color-border);
+        width: 100%;
+        padding: $gap 0 $gap $gap;
+        .slider {
+            margin: $gap 0 $gap $gap;
+            width: 80%;
+        }
+    }
+}
+</style>

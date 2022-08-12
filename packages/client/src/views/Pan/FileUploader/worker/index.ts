@@ -51,35 +51,37 @@ async function uploadChunk(
     { hash, buffers }: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] },
     count = 0
 ) {
+    // count用来记录重新上传的次数 超过三次就不再重传了
     if (count >= 3) {
         const result: number[] = [];
         buffers.forEach((buffer, index) => buffer && result.push(index));
+        (buffers as unknown as null) = null;
         return result;
     }
 
-    const { rejected } = await parallelPromise(
-        buffers.map((buffer, index) => {
-            if (buffer) {
-                const file = new File([buffer], "1"); // 文件必须有个非空的名字 否则后端收不到
-                return {
-                    func: (arg: FormDataT<UploadFileChunkOption>) =>
-                        uploadPanFileChunkApi(arg)
-                            .then(() => {
-                                PostMessage({ step: "uploadOneChunkEnd", hash });
-                                buffers[index] = null;
-                                return index;
-                            })
-                            .catch(() => Promise.reject(index)),
-                    args: [createFormData({ hash, index, file })],
-                };
-            } else {
-                return {
-                    func: () => Promise.resolve(-1),
-                    args: [],
-                };
-            }
-        })
-    );
+    const tasks = buffers.map((buffer, index) => {
+        if (buffer) {
+            const file = new File([buffer], "1"); // 文件必须有个非空的名字 否则后端收不到
+            return {
+                func: (arg: FormDataT<UploadFileChunkOption>) =>
+                    uploadPanFileChunkApi(arg)
+                        .then(() => {
+                            PostMessage({ step: "uploadOneChunkEnd", hash });
+                            buffers[index] = null;
+                            return index;
+                        })
+                        .catch(() => Promise.reject(index)),
+                args: [createFormData({ hash, index, file })],
+            };
+        } else {
+            return {
+                func: () => Promise.resolve(-1),
+                args: [],
+            };
+        }
+    });
+
+    const { rejected } = await parallelPromise(tasks);
     if (rejected.length) {
         return await uploadChunk(
             {
