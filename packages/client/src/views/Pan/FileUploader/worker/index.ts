@@ -1,5 +1,5 @@
 import { createFormData } from "@/utils/createFormData";
-import { parallelPromise } from "@/utils/parallelPromise";
+import { parallelPromise, ParallelPool } from "@/utils/parallelPromise";
 import { isUploadEndApi, uploadPanFileChunkApi, uploadPanFileEndApi, uploadPanFileStartApi } from "@apis";
 import type { UploadFileChunkOption, UploadFileEndOption } from "@blog/server";
 import Worker from "./sliceFileAndUpload.worker.ts?worker";
@@ -49,10 +49,10 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
 
 async function uploadChunk(
     { hash, buffers }: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] },
-    count = 0
+    resendCount = 0
 ) {
     // count用来记录重新上传的次数 超过三次就不再重传了
-    if (count >= 3) {
+    if (resendCount >= 3) {
         const result: number[] = [];
         buffers.forEach((buffer, index) => buffer && result.push(index));
         (buffers as unknown as null) = null;
@@ -88,7 +88,7 @@ async function uploadChunk(
                 hash,
                 buffers: buffers.map((buffer, index) => (rejected.includes(index) ? buffer : null)),
             },
-            count++
+            resendCount++
         );
     }
 }
