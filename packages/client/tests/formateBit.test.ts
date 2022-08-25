@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import formateBit from "../src/utils/formateBit";
+import formateBit from "../src/plugins/globalProperties/formatBit";
 
 describe("formateBit", () => {
     it("test", () => {
