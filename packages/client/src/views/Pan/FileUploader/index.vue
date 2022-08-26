@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { LocalFiles } from "sdt3";
+import { LocalFiles, Message } from "sdt3";
 import type { VDragType } from "sdt3";
 import { PostMessage, uploadWorker } from "./worker";
 import type { MainOnMessage } from "./worker/types";
@@ -91,6 +91,9 @@ async function upload() {
                 panStore.refreshPathFolder(data.folderJson);
                 chosedFiles.files = [];
                 uploadWorker.removeEventListener("message", onMessage);
+            }
+            if (data.step == "error") {
+                Message.error(data.msg);
             }
         }
         uploadWorker.addEventListener("message", onMessage);

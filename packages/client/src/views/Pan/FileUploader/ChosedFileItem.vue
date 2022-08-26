@@ -15,7 +15,7 @@ interface Props {
 interface Emits {
     (n: "onRemove", file: File): void;
 }
-withDefaults(defineProps<Props>(), {});
+defineProps<Props>();
 const emit = defineEmits<Emits>();
 </script>
 

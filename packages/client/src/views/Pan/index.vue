@@ -6,7 +6,7 @@
             <Folder></Folder>
         </div>
         <div class="right">
-            <Uploader></Uploader>
+            <UploaderProgress></UploaderProgress>
         </div>
     </div>
 </template>
@@ -16,7 +16,7 @@ import { usePanStore } from "@/store/pan";
 import Breadcrumb from "./Breadcrumb.vue";
 import Folder from "./Folder.vue";
 import FolderControl from "./FolderControl.vue";
-import Uploader from "./UploaderProgress.vue";
+import UploaderProgress from "./UploaderProgress.vue";
 
 onMounted(() => usePanStore().getFolder());
 </script>

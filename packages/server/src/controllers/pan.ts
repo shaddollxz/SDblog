@@ -183,6 +183,8 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             const deletedFile = await TempFileDB.findOne({ hash, fileName: hash });
             if (deletedFile) {
                 //* 回收站中有上传的文件
+
+                return next();
             }
             const files = await TempFileDB.find({ hash });
             if (files.length == chunks) {
@@ -252,6 +254,7 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
         const { _id, name, folderId, hash } = req.body;
         const files = await TempFileDB.find({ hash });
         try {
+            res.status(StatusEnum.NoResult).json({ success: true });
             const { hash: _hash, size } = await useConcatTempFilesWorker(files.map((item) => item.fileName));
             const fileDetail = new PanFileDB({
                 hash: _hash,
@@ -262,7 +265,6 @@ export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next
             });
             await fileDetail.save();
             TempFileDB.deleteMany({ hash }).then(() => console.log("数据库相关临时数据清除结束 " + hash));
-            res.status(StatusEnum.NoResult).json({ success: true });
         } catch (e) {
             console.error(e);
             res.status(StatusEnum.ServerError).json({

@@ -10,6 +10,8 @@ export const uploadWorker = new Worker();
 export const PostMessage = (data: MainPostMessage, transfer?: Transferable[]) =>
     transfer ? uploadWorker.postMessage(data, transfer) : uploadWorker.postMessage(data);
 
+const parallelPool = new ParallelPool({ max: 4, parallelTaskCount: 2 });
+
 uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage }) => {
     switch (data.step) {
         case "uploadStart":
@@ -31,34 +33,25 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
         case "uploadChunk":
             {
                 const { buffers, fileName, folderId, hash } = data;
-                try {
-                    await uploadChunk({ hash, buffers });
-                } catch (notUploaded) {
-                    PostMessage({ step: "uploadError", notUploaded: notUploaded as number[] });
-                    return;
-                }
 
-                const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
-                PostMessage({ step: "uploadEnd", folderJson, hash });
+                uploadChunk({ hash, buffers });
+                parallelPool.onFinish(hash, async ({ rejected }) => {
+                    if (rejected.length) {
+                        return PostMessage({ step: "uploadError", notUploaded: rejected });
+                    }
 
-                console.log("上传结束");
+                    const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
+                    PostMessage({ step: "uploadEnd", folderJson, hash });
+                });
             }
             break;
     }
 });
 
-async function uploadChunk(
-    { hash, buffers }: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] },
-    resendCount = 0
-) {
-    // count用来记录重新上传的次数 超过三次就不再重传了
-    if (resendCount >= 3) {
-        const result: number[] = [];
-        buffers.forEach((buffer, index) => buffer && result.push(index));
-        (buffers as unknown as null) = null;
-        return result;
-    }
-
+function uploadChunk({
+    hash,
+    buffers,
+}: Omit<UploadFileChunkOption, "file" | "index"> & { buffers: (ArrayBuffer | null)[] }) {
     const tasks = buffers.map((buffer, index) => {
         if (buffer) {
             const file = new File([buffer], "1"); // 文件必须有个非空的名字 否则后端收不到
@@ -81,16 +74,8 @@ async function uploadChunk(
         }
     });
 
-    const { rejected } = await parallelPromise(tasks);
-    if (rejected.length) {
-        return await uploadChunk(
-            {
-                hash,
-                buffers: buffers.map((buffer, index) => (rejected.includes(index) ? buffer : null)),
-            },
-            resendCount++
-        );
-    }
+    parallelPool.push(hash, tasks);
+    parallelPool.end(hash);
 }
 
 async function uploadFileEnd(data: UploadFileEndOption): Promise<string> {
@@ -98,10 +83,12 @@ async function uploadFileEnd(data: UploadFileEndOption): Promise<string> {
 
     return new Promise((resolve) => {
         const interval = window.setInterval(async () => {
-            const { data: _data } = await isUploadEndApi({ hash: data.hash });
-            if (_data.folderJson) {
+            const {
+                data: { folderJson },
+            } = await isUploadEndApi({ hash: data.hash });
+            if (folderJson) {
                 window.clearInterval(interval);
-                resolve(_data.folderJson);
+                resolve(folderJson);
             }
         }, 1500);
     });

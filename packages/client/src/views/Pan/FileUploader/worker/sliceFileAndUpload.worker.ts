@@ -44,7 +44,6 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                         name: fileNames[i],
                         chunks,
                     });
-                    console.log("文件解析完毕");
                 }
             }
             break;
@@ -68,7 +67,6 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                     );
                     file.chunkBuffer = null;
                     PostMessage({ step: "beginUploadFile", name: file.fileName });
-                    console.log("开始上传文件");
                 } else {
                     PostMessage({
                         step: "error",
