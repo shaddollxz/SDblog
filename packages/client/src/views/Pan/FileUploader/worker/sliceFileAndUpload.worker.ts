@@ -16,43 +16,42 @@ const files = new Map<
 
 self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
     switch (data.step) {
-        case "splitBuffer":
-            {
-                const { fileBuffers, fileNames, folderId } = data;
-                for (let i = 0; i < fileBuffers.length; i++) {
-                    PostMessage({ step: "beginAnalyzeFile", name: fileNames[i] });
-                    const chunkBuffer = splitBuffer(fileBuffers[i]);
-                    const chunks = chunkBuffer.length;
-                    const hash = getFileHash(chunkBuffer);
-                    files.has(hash) ||
-                        files.set(hash, {
-                            folderId,
-                            fileName: fileNames[i],
-                            chunks,
-                            uploadedChunks: 0,
-                            chunkBuffer,
-                        });
-                    PostMessage({
-                        step: "uploadStart",
-                        hash,
-                        fileName: fileNames[i],
+        case "splitBuffer": {
+            const { fileBuffers, fileNames, folderId } = data;
+            for (let i = 0; i < fileBuffers.length; i++) {
+                PostMessage({ step: "beginAnalyzeFile", name: fileNames[i] });
+                const chunkBuffer = splitBuffer(fileBuffers[i]);
+                const chunks = chunkBuffer.length;
+                const hash = getFileHash(chunkBuffer);
+                files.has(hash) ||
+                    files.set(hash, {
                         folderId,
+                        fileName: fileNames[i],
                         chunks,
+                        uploadedChunks: 0,
+                        chunkBuffer,
                     });
-                    PostMessage({
-                        step: "analyzeFileEnd",
-                        name: fileNames[i],
-                        chunks,
-                    });
-                }
+                PostMessage({
+                    step: "uploadStart",
+                    hash,
+                    fileName: fileNames[i],
+                    folderId,
+                    chunks,
+                });
+                PostMessage({
+                    step: "analyzeFileEnd",
+                    name: fileNames[i],
+                    chunks,
+                });
             }
             break;
+        }
 
-        case "uploadChunks":
-            {
-                const { needChunks, hash } = data;
-                const file = files.get(hash);
-                if (file) {
+        case "uploadChunks": {
+            const { needChunks, hash } = data;
+            const file = files.get(hash);
+            if (file) {
+                if (file.chunkBuffer) {
                     PostMessage(
                         {
                             step: "uploadChunk",
@@ -68,45 +67,51 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                     file.chunkBuffer = null;
                     PostMessage({ step: "beginUploadFile", name: file.fileName });
                 } else {
-                    PostMessage({
-                        step: "error",
-                        msg: "文件缓存未找到",
-                    });
+                    PostMessage({ step: "error", msg: "解析遇到错误 请刷新页面重试" });
                 }
+            } else {
+                PostMessage({
+                    step: "error",
+                    msg: "文件缓存未找到",
+                });
             }
             break;
+        }
 
-        case "uploadOneChunkEnd":
-            {
-                const { hash } = data;
-                const file = files.get(hash);
-                if (file) {
-                    file.uploadedChunks++;
-                    PostMessage({
-                        step: "progress",
-                        already: file.uploadedChunks,
-                        name: file.fileName,
-                    });
-                }
+        case "uploadOneChunkEnd": {
+            const { hash } = data;
+            const file = files.get(hash);
+            if (file) {
+                file.uploadedChunks++;
+                PostMessage({
+                    step: "progress",
+                    already: file.uploadedChunks,
+                    name: file.fileName,
+                    chunks: file.chunks,
+                });
             }
             break;
+        }
 
-        case "uploadEnd":
-            {
-                const { hash, folderJson } = data;
-                const file = files.get(hash);
-                if (file) {
-                    files.delete(hash);
-                    PostMessage({ step: "end", folderJson, name: file.fileName });
-                }
-            }
+        case "waitUploadEnd": {
+            PostMessage({ step: "waitUploadEnd", name: data.name });
             break;
+        }
 
-        case "uploadError":
-            {
-                PostMessage({ step: "error", msg: "文件上传失败" });
+        case "uploadEnd": {
+            const { hash, folderJson } = data;
+            const file = files.get(hash);
+            if (file) {
+                files.delete(hash);
+                PostMessage({ step: "end", folderJson, name: file.fileName });
             }
             break;
+        }
+
+        case "uploadError": {
+            PostMessage({ step: "error", msg: "文件上传失败" });
+            break;
+        }
     }
 });
 

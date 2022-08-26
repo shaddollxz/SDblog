@@ -2,7 +2,12 @@
     <ProgressBar></ProgressBar>
     <AppHeader></AppHeader>
     <main>
-        <RouterView></RouterView>
+        <RouterView v-slot="{ Component, route }">
+            <KeepAlive>
+                <component :is="Component" v-if="route.meta.keepAlive" :key="route.path" />
+            </KeepAlive>
+            <component :is="Component" v-if="!route.meta.keepAlive" :key="route.path" />
+        </RouterView>
     </main>
     <AppFooter></AppFooter>
 
@@ -11,14 +16,14 @@
 </template>
 
 <script setup lang="ts">
-import ProgressBar from "./views/Layout/ProgressBar.vue";
-import AppHeader from "./views/Layout/AppHeader/index.vue";
-import AppFooter from "./views/Layout/AppFooter.vue";
-import GoTop from "./views/Layout/GoTop.vue";
-import isMobile from "./utils/isMobile";
+import token from "@/storages/token";
 import { useTagStore } from "@/store/tags";
 import { useUserStore } from "@/store/user";
-import token from "@/storages/token";
+import isMobile from "./utils/isMobile";
+import AppFooter from "./views/Layout/AppFooter.vue";
+import AppHeader from "./views/Layout/AppHeader/index.vue";
+import GoTop from "./views/Layout/GoTop.vue";
+import ProgressBar from "./views/Layout/ProgressBar.vue";
 const Live2D = defineAsyncComponent(() => import("./views/Layout/Live2D.vue"));
 const userStore = useUserStore();
 const tagStore = useTagStore();

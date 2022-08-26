@@ -14,37 +14,35 @@ const parallelPool = new ParallelPool({ max: 4, parallelTaskCount: 2 });
 
 uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage }) => {
     switch (data.step) {
-        case "uploadStart":
-            {
-                const { data: res } = await uploadPanFileStartApi({
-                    name: data.fileName,
-                    hash: data.hash,
-                    folderId: data.folderId,
-                    chunks: data.chunks,
-                });
-                if (res.folderJson) {
-                    PostMessage({ step: "uploadEnd", folderJson: res.folderJson, hash: data.hash });
-                } else if (res.needChunk) {
-                    PostMessage({ step: "uploadChunks", hash: data.hash, needChunks: res.needChunk });
+        case "uploadStart": {
+            const { data: res } = await uploadPanFileStartApi({
+                name: data.fileName,
+                hash: data.hash,
+                folderId: data.folderId,
+                chunks: data.chunks,
+            });
+            if (res.folderJson) {
+                PostMessage({ step: "uploadEnd", folderJson: res.folderJson, hash: data.hash });
+            } else if (res.needChunk) {
+                PostMessage({ step: "uploadChunks", hash: data.hash, needChunks: res.needChunk });
+            }
+            break;
+        }
+
+        case "uploadChunk": {
+            const { buffers, fileName, folderId, hash } = data;
+
+            uploadChunk({ hash, buffers });
+            parallelPool.onFinish(hash, async ({ rejected }) => {
+                if (rejected.length) {
+                    return PostMessage({ step: "uploadError", notUploaded: rejected });
                 }
-            }
+                PostMessage({ step: "waitUploadEnd", name: fileName });
+                const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
+                PostMessage({ step: "uploadEnd", folderJson, hash });
+            });
             break;
-
-        case "uploadChunk":
-            {
-                const { buffers, fileName, folderId, hash } = data;
-
-                uploadChunk({ hash, buffers });
-                parallelPool.onFinish(hash, async ({ rejected }) => {
-                    if (rejected.length) {
-                        return PostMessage({ step: "uploadError", notUploaded: rejected });
-                    }
-
-                    const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
-                    PostMessage({ step: "uploadEnd", folderJson, hash });
-                });
-            }
-            break;
+        }
     }
 });
 

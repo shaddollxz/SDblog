@@ -15,17 +15,18 @@
             </div>
         </nav>
 
-        <router-view v-slot="{ Component }">
-            <transition name="userCenterView">
+        <RouterView v-slot="{ Component }">
+            <Transition name="userCenterView">
                 <component :is="Component" />
-            </transition>
-        </router-view>
+            </Transition>
+        </RouterView>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
 import { AuthorityEnum } from "@blog/server";
+import SvgIcon from "@/plugins/globalComponents/SvgIcon.vue";
 
 const userStore = useUserStore();
 const router = useRouter();

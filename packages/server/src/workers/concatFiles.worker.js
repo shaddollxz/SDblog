@@ -10,7 +10,7 @@ if (!isMainThread && parentPort) {
         const filename = originalFilename(path.basename(files[0]));
         const target = path.resolve(process.env.PAN_PATH, filename);
         console.log("开始合并文件 " + filename);
-
+        //todo 这里要改成线程池类的形式 否则同时上传两个大文件时会只得到一个哈希值
         const { rejected } = await concatFiles(files, target, { parallelMax: 6 });
         if (rejected.length) {
             throw rejected;

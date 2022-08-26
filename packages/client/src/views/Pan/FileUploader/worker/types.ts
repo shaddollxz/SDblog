@@ -37,6 +37,12 @@ interface Progress {
     step: "progress";
     name: string;
     already: number;
+    chunks: number;
+}
+
+interface WaitUploadEnd {
+    step: "waitUploadEnd";
+    name: string;
 }
 
 interface UploadEnd {
@@ -52,6 +58,7 @@ export type MainOnMessage =
     | AnalyzeFileEnd
     | BeginUploadFile
     | Progress
+    | WaitUploadEnd
     | UploadEnd
     | Err;
 
@@ -88,5 +95,6 @@ export type MainPostMessage =
     | SplitBuffer
     | UploadChunks
     | UploadOneChunkEnd
+    | WaitUploadEnd
     | UploadFileEnd
     | UploadChunkError;
