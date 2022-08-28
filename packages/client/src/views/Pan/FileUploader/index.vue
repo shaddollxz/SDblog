@@ -85,20 +85,18 @@ async function upload() {
             { step: "splitBuffer", fileBuffers, fileNames, folderId: panStore.currentFolder.id },
             fileBuffers
         );
-
-        function onMessage({ data }: { data: MainOnMessage }) {
-            if (data.step == "end") {
-                panStore.refreshPathFolder(data.folderJson);
-                chosedFiles.files = [];
-                uploadWorker.removeEventListener("message", onMessage);
-            }
-            if (data.step == "error") {
-                Message.error(data.msg);
-            }
-        }
-        uploadWorker.addEventListener("message", onMessage);
     }
 }
+
+uploadWorker.addEventListener("message", ({ data }: { data: MainOnMessage }) => {
+    if (data.step == "end") {
+        panStore.refreshPathFolder(data.folderJson);
+        chosedFiles.files = [];
+    }
+    if (data.step == "error") {
+        Message.error(data.msg);
+    }
+});
 
 /** 按文件名进行去重 */
 function filesRepeat(files: File[]) {

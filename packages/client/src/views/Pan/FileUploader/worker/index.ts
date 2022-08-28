@@ -31,16 +31,16 @@ uploadWorker.addEventListener("message", async ({ data }: { data: MainOnMessage 
 
         case "uploadChunk": {
             const { buffers, fileName, folderId, hash } = data;
-
-            uploadChunk({ hash, buffers });
             parallelPool.onFinish(hash, async ({ rejected }) => {
                 if (rejected.length) {
                     return PostMessage({ step: "uploadError", notUploaded: rejected });
                 }
                 PostMessage({ step: "waitUploadEnd", name: fileName });
-                const folderJson = await uploadFileEnd({ hash, folderId, name: fileName });
+                await uploadPanFileEndApi({ hash, folderId, name: fileName });
+                const folderJson = await isConcatFileEnd(hash);
                 PostMessage({ step: "uploadEnd", folderJson, hash });
             });
+            uploadChunk({ hash, buffers });
             break;
         }
     }
@@ -76,17 +76,19 @@ function uploadChunk({
     parallelPool.end(hash);
 }
 
-async function uploadFileEnd(data: UploadFileEndOption): Promise<string> {
-    await uploadPanFileEndApi(data);
-
-    return new Promise((resolve) => {
+async function isConcatFileEnd(hash: string) {
+    return new Promise<string>((resolve) => {
         const interval = window.setInterval(async () => {
-            const {
-                data: { folderJson },
-            } = await isUploadEndApi({ hash: data.hash });
-            if (folderJson) {
+            try {
+                const {
+                    data: { folderJson },
+                } = await isUploadEndApi({ hash: hash });
+                if (folderJson) {
+                    window.clearInterval(interval);
+                    resolve(folderJson);
+                }
+            } catch {
                 window.clearInterval(interval);
-                resolve(folderJson);
             }
         }, 1500);
     });

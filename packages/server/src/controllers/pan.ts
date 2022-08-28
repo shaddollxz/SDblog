@@ -1,28 +1,27 @@
+import fs from "fs-extra";
+import type { Document } from "mongoose";
+import path from "path";
 import { PanDB, PanFileDB, TempFileDB } from "../db";
-import { StatusEnum, DownloadFileTypeEnum } from "../typings/enum";
+import { DownloadFileTypeEnum, StatusEnum } from "../typings/enum";
 import type {
     CreateFolderOption,
+    DownloadFileOption,
+    EditDesciption,
+    IsUploadEnd,
     MoveFileOption,
     MoveFolderOption,
     RemoveFileOption,
     RemoveFolderOption,
     RenameFileOption,
     RenameFolderOption,
-    EditDesciption,
     UploadFileChunkOption,
     UploadFileEndOption,
     UploadFileStartOption,
-    IsUploadEnd,
     ZipMultiOption,
-    DownloadFileOption,
 } from "../typings/interface/pan";
 import Folder from "../utils/Folder";
-import { filenameMsg, formateFilename } from "../utils/formateFilename";
-import { useConcatTempFilesWorker } from "../workers";
-import path from "path";
-import { useZipWorker } from "../workers";
-import fs from "fs-extra";
-import type { Document } from "mongoose";
+import { filenameMsg } from "../utils/formateFilename";
+import { useConcatTempFilesWorker, useZipWorker } from "../workers";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
@@ -136,7 +135,7 @@ export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next
     try {
         const { _id, fileIds } = req.body;
         for (const fileId of fileIds) {
-            const file = await PanFileDB.findById(fileId);
+            const file = await PanFileDB.findOne({ hash: fileId, belongId: _id });
             await file?.deleteFile(_id!);
         }
         res.status(StatusEnum.OK).json({ success: true });
@@ -188,31 +187,8 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
             }
             const files = await TempFileDB.find({ hash });
             if (files.length == chunks) {
-                //* 文件chunk已经全部凑齐 合并文件 和下面的 uploadEnd 一致
-                try {
-                    const { hash: _hash, size } = await useConcatTempFilesWorker(
-                        files.map((item) => item.fileName)
-                    );
-                    const fileDetail = new PanFileDB({
-                        hash: _hash,
-                        belongId: _id,
-                        folderId,
-                        size,
-                        name,
-                    });
-                    await fileDetail.save();
-                    TempFileDB.deleteMany({ hash }).then(() =>
-                        console.log("数据库相关临时数据清除结束 " + hash)
-                    );
-                    //todo 这里应该优化一下 通知前端开始轮询是否合并结束
-                    next();
-                } catch (e) {
-                    console.error(e);
-                    res.status(StatusEnum.ServerError).json({
-                        isShow: true,
-                        error: "服务器错误，请稍后重试",
-                    });
-                }
+                //* 文件chunk已经全部凑齐
+                return res.status(StatusEnum.OK).json({ needChunk: [] });
             } else {
                 //* 缺少chunk 通知前端开始传输需要的
                 const hasChunks: Record<number, boolean> = {};
@@ -225,9 +201,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                         needChunk.push(i);
                     }
                 }
-
-                res.status(StatusEnum.OK).json({ needChunk });
-                return;
+                return res.status(StatusEnum.OK).json({ needChunk });
             }
         }
     } catch (e) {
@@ -251,26 +225,45 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
 
 export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
     try {
+        res.status(StatusEnum.NoResult).json({ success: true });
         const { _id, name, folderId, hash } = req.body;
         const files = await TempFileDB.find({ hash });
         try {
-            res.status(StatusEnum.NoResult).json({ success: true });
-            const { hash: _hash, size } = await useConcatTempFilesWorker(files.map((item) => item.fileName));
-            const fileDetail = new PanFileDB({
-                hash: _hash,
-                belongId: _id,
-                folderId,
-                size,
-                name,
-            });
-            await fileDetail.save();
+            const { hash: resultHash, size } = await useConcatTempFilesWorker(
+                files.map((item) => item.fileName),
+                hash
+            );
+
+            if (hash == resultHash) {
+                const fileDetail = new PanFileDB({
+                    hash: hash,
+                    belongId: _id,
+                    folderId,
+                    size,
+                    name,
+                });
+                await fileDetail.save();
+            } else {
+                console.error("原文件 " + hash + " 损坏" + "现hash为 " + resultHash);
+                const fileDetail = new PanFileDB({
+                    hash: hash,
+                    folderId,
+                    name,
+                    size: 0,
+                });
+                await fileDetail.save();
+            }
+
             TempFileDB.deleteMany({ hash }).then(() => console.log("数据库相关临时数据清除结束 " + hash));
         } catch (e) {
             console.error(e);
-            res.status(StatusEnum.ServerError).json({
-                isShow: true,
-                error: "服务器错误，请稍后重试",
+            const fileDetail = new PanFileDB({
+                hash: hash,
+                folderId,
+                name,
+                size: 0,
             });
+            await fileDetail.save();
         }
     } catch (e) {
         next(e);
@@ -281,7 +274,15 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
     try {
         const file = await PanFileDB.findOne({ hash: req.query.hash });
         if (file) {
-            next();
+            if (file.belongId) {
+                next();
+            } else {
+                await file.delete();
+                res.status(StatusEnum.ParameterNotAllow).json({
+                    error: "文件传输时损坏，上传失败",
+                    isShow: true,
+                });
+            }
         } else {
             res.status(StatusEnum.OK).json({ success: false });
         }
@@ -333,10 +334,15 @@ export const isZipEnd: GetHandler<{ zipId: string }> = async (req, res, next) =>
 export const downloadFile: GetHandler<DownloadFileOption> = async (req, res, next) => {
     try {
         const { hash, type } = req.query;
-        if (type == DownloadFileTypeEnum.file) {
-            res.status(StatusEnum.OK).sendFile(path.resolve(process.env.PAN_PATH, hash));
+        const target = path.resolve(
+            type == DownloadFileTypeEnum.file ? process.env.PAN_PATH : process.env.TEMP_PATH,
+            hash
+        );
+
+        if (await fs.pathExists(target)) {
+            res.status(StatusEnum.OK).sendFile(target);
         } else {
-            res.status(StatusEnum.OK).sendFile(path.resolve(process.env.TEMP_PATH, hash));
+            res.status(StatusEnum.NotFound).json({ msg: "文件已丢失" });
         }
     } catch (e) {
         console.log(e);

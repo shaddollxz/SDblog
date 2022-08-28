@@ -58,9 +58,12 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
                             folderId: file.folderId,
                             fileName: file.fileName,
                             hash,
-                            buffers: file.chunkBuffer!.map((buffer, index) =>
-                                needChunks.includes(index) ? buffer : null
-                            ),
+                            buffers:
+                                needChunks.length == 0
+                                    ? []
+                                    : file.chunkBuffer!.map((buffer, index) =>
+                                          needChunks.includes(index) ? buffer : null
+                                      ),
                         },
                         file.chunkBuffer!
                     );

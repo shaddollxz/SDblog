@@ -11,8 +11,3 @@
 import { usePanStore } from "@/store/pan";
 const panStore = usePanStore();
 </script>
-
-<style lang="scss" scoped>
-.breadcrumb {
-}
-</style>

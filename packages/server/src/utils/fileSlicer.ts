@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import { pipeline } from "stream/promises";
 import { filenameSlice } from "./formateFilename";
-import { parallelPromise } from "./parallelPromise";
+import { parallelPool } from "./parallelPromise";
 
 interface SliceFileOption {
     formateFilename?: (filename: { prefix: string; suffix: string }, index: number) => string;
@@ -47,13 +47,11 @@ export async function sliceFile(filepath: string, targetpath: string, options: S
 
 interface ConcatFilesOption {
     chunkSize?: number;
-    parallelMax?: number;
 }
 export async function concatFiles(paths: string[], target: string, options: ConcatFilesOption = {}) {
     options = Object.assign(
         {
             chunkSize: +process.env.PUBLIC_UPLOAD_CHUNKSIZE,
-            parallelMax: 4,
         },
         options
     );
@@ -73,5 +71,7 @@ export async function concatFiles(paths: string[], target: string, options: Conc
             args: [],
         };
     });
-    return await parallelPromise(tasks, options.parallelMax);
+    parallelPool.push(target, tasks);
+    parallelPool.end(target);
+    return target;
 }

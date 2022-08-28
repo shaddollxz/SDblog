@@ -2,8 +2,8 @@ import { default as Axios } from "axios";
 import { Message } from "sdt3";
 import Token from "@/storages/token";
 
-// 这些url的错误会直接忽略
-const expect = ["pan/file/end"];
+// 这些url的超时会直接忽略
+const timeoutExclude = ["pan/file/end"];
 
 const axios = Axios.create({
     baseURL: "/api",
@@ -33,10 +33,6 @@ axios.interceptors.response.use(
     },
     (err) => {
         const e = err.toJSON();
-        // 需要忽略的错误
-        if (expect.includes(e.config.url)) {
-            return Promise.reject();
-        }
         // 后端传来的错误
         if (e.response) {
             // 该错误可以显示则显示 否则抛到调用api的地方
@@ -47,6 +43,10 @@ axios.interceptors.response.use(
                 return Promise.reject(e.response.data);
             }
         } else {
+            // 需要忽略的超时错误
+            if (timeoutExclude.includes(e.config.url)) {
+                return Promise.reject();
+            }
             Message.error("响应超时，请稍后再试");
             return Promise.reject({ error: "响应超时", timeout: true });
         }

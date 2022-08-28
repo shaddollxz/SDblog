@@ -96,6 +96,7 @@ uploadWorker.addEventListener("message", ({ data }: { data: MainOnMessage }) => 
         case "waitUploadEnd": {
             const { name } = data;
             delete uploadings[name];
+            delete waitUploads[name];
             waitConcats[name] = true;
             break;
         }

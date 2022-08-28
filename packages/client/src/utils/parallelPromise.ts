@@ -1,5 +1,3 @@
-import { Random } from "sdt3";
-
 /**
  * 并发执行队列中的异步任务
  * 第二个参数是最大并发量 浏览器最多只能同时发送6个请求
@@ -90,11 +88,16 @@ export class ParallelPool {
     /** 任务结束 必须调用该函数后才能触发结束的回调 */
     end(key: string) {
         this.state[key].taskEnd = true;
+        if (this.tasks[key].length == 0) {
+            this.useFinish(key, { fulfilled: [], rejected: [] });
+        }
     }
     /** 设置指定任务完成时的回调 */
     onFinish(key: string, cb: CallBack) {
         if (this.callbacks[key]) {
             this.callbacks[key].push(cb);
+        } else {
+            this.callbacks[key] = [cb];
         }
     }
     private useFinish(key: string, result: Result) {
@@ -249,7 +252,7 @@ export class ParallelPool {
             this.state[key] = { end: false, taskEnd: false, resolveCount: 0 };
             this.rejecteds[key] = [];
             this.fulfilleds[key] = [];
-            this.callbacks[key] = [];
+            this.callbacks[key] ||= [];
             if (this.options.parallelTaskCount == 1 && this.pool.length < this.options.max) {
                 this.setIterator();
             }
