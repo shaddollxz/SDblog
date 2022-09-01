@@ -21,6 +21,8 @@ function main() {
         Error "缺少环境变量 DBNAME"
         exit
     fi
+    username=$(ReadEnv ${envPath}/.env DBUSER)
+    password=$(ReadEnv ${envPath}/.env DBPWD)
 
     tablefiles=$(ls ${__rootDir}/packages/server/src/db)
     expect=(DB connect index verifycode tempfile)
@@ -42,11 +44,11 @@ function main() {
     for filename in $files; do
         filename=${filename%%.json}
         if [ $(IndexOf $filename ${tables[@]}) ]; then
-            $(mongoimport -d $dbname -c $filename --file ${inputDir}/${filename}.json)
+            $(mongoimport -u $username -p $password -d $dbname -c $filename --file ${inputDir}/${filename}.json)
         fi
     done
 
-    pnpm pm2
+    pm2 start ${__rootDir}/pm2.json
 
     Success "finish"
 }

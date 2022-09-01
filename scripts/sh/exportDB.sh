@@ -16,6 +16,8 @@ function main() {
         Error "缺少环境变量 DBNAME"
         exit
     fi
+    username=$(ReadEnv ${envPath}/.env DBUSER)
+    password=$(ReadEnv ${envPath}/.env DBPWD)
 
     files=$(ls ${__rootDir}/packages/server/src/db)
     expect=(DB connect index verifycode tempfile)
@@ -32,7 +34,7 @@ function main() {
     done
 
     for tablename in ${tables[@]}; do
-        $(mongoexport -d $dbname -c $tablename -o ${outDir}/${tablename}.json)
+        $(mongoexport -u $username -p $password -d $dbname -c $tablename -o ${outDir}/${tablename}.json)
     done
 
     Success "文件已导出至"

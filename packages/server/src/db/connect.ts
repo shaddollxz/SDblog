@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-const { DBURL, DBNAME } = process.env;
+const { DBURL, DBNAME, DBPWD, DBUSER } = process.env;
 
-//? 连接数据库
-mongoose.connect(DBURL + "/" + DBNAME);
-const db = mongoose.connection;
-
-db.on("error", () => {
-    console.error("链接失败");
-});
-db.on("open", () => {
-    console.log("链接成功");
-});
+try {
+    await mongoose.connect(DBURL, {
+        dbName: DBNAME,
+        auth: { username: DBUSER, password: DBPWD },
+        authSource: DBNAME,
+    });
+} catch {
+    console.error("数据库链接失败");
+    process.exit(1);
+}
