@@ -57,7 +57,7 @@
             <div class="item fileItem">
                 <CheckBox
                     v-hidden="isMulti"
-                    @onCheck="(state) => fileStateChange(state, item.hash, item.name)"
+                    @onCheck="(state) => fileStateChange(state, item.hash, item.name, item._id)"
                 ></CheckBox>
                 <div class="left" v-draggable="fileDragOption(item.name, item._id)">
                     <SvgIcon name="pan-file"></SvgIcon>
@@ -113,13 +113,15 @@
                 </div>
             </div>
         </template>
+        <NoData v-show="!folder.folders?.length && !folder.files?.length"></NoData>
     </div>
 </template>
 
 <script setup lang="ts">
 import EnsureButton from "@/components/EnsureButton/index.vue";
+import NoData from "@/components/NoData/index.vue";
 import Popover from "@/components/Popover/index.vue";
-import { usePanStore, EditFileTypeEnum } from "@/store/pan";
+import { EditFileTypeEnum, usePanStore } from "@/store/pan";
 import { downloadWithFetch } from "@/utils/download";
 import { downloadFileApi } from "@apis";
 import { DownloadFileTypeEnum } from "@blog/server";
@@ -253,5 +255,8 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
 }
 .item:hover {
     background-color: var(--color-bg-bland);
+}
+.noData {
+    background: none;
 }
 </style>

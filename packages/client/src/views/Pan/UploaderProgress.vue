@@ -1,15 +1,10 @@
 <template>
     <div v-show="haveData" class="uploaderProgress gusto-border">
-        <template v-for="(_, name) of waitAnalyzes">
+        <template v-for="(value, name) of uploadings">
             <div class="item">
                 <div>文件：{{ name }}</div>
-                <div>状态：等待解析文件...</div>
-            </div>
-        </template>
-        <template v-for="(_, name) of analyzeings">
-            <div class="item">
-                <div>文件：{{ name }}</div>
-                <div>状态：解析文件中...</div>
+                <div>状态：上传中...</div>
+                <Slider v-model="value.progress"></Slider>
             </div>
         </template>
         <template v-for="(_, name) of waitUploads">
@@ -18,11 +13,16 @@
                 <div>状态：等待上传...</div>
             </div>
         </template>
-        <template v-for="(value, name) of uploadings">
+        <template v-for="(_, name) of analyzeings">
             <div class="item">
                 <div>文件：{{ name }}</div>
-                <div>状态：上传中...</div>
-                <Slider v-model="value.progress"></Slider>
+                <div>状态：解析文件中...</div>
+            </div>
+        </template>
+        <template v-for="(_, name) of waitAnalyzes">
+            <div class="item">
+                <div>文件：{{ name }}</div>
+                <div>状态：等待解析文件...</div>
             </div>
         </template>
         <template v-for="(_, name) of waitConcats">

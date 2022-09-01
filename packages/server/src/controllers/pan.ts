@@ -135,8 +135,8 @@ export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next
     try {
         const { _id, fileIds } = req.body;
         for (const fileId of fileIds) {
-            const file = await PanFileDB.findOne({ hash: fileId, belongId: _id });
-            await file?.deleteFile(_id!);
+            const file = await PanFileDB.findOne({ _id: fileId, belongId: _id });
+            file && (await file.deleteFile(_id!));
         }
         res.status(StatusEnum.OK).json({ success: true });
     } catch (e) {

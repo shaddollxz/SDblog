@@ -17,7 +17,7 @@ export function updateIsMulti(state?: boolean) {
     }
 }
 
-const files: { hash: string; name: string }[] = [];
+const files: { _id: string; hash: string; name: string }[] = [];
 const folders: { id: string; name: string }[] = [];
 
 export function folderStateChange(state: boolean, key: string, name: string) {
@@ -28,9 +28,9 @@ export function folderStateChange(state: boolean, key: string, name: string) {
         folders.splice(folders.findIndex((item) => item.id == key), 1);
     }
 }
-export function fileStateChange(state: boolean, key: string, name: string) {
+export function fileStateChange(state: boolean, key: string, name: string, _id: string) {
     if (state) {
-        files.push({ hash: key, name });
+        files.push({ hash: key, name, _id });
     } else {
         // prettier-ignore
         files.splice(files.findIndex((item) => item.hash == key), 1);
@@ -54,7 +54,7 @@ export async function downloadMulti() {
 
 export async function removeMulti() {
     const panStore = usePanStore();
-    await panStore.removeFile(files.map((item) => item.hash));
+    await panStore.removeFile(files.map((item) => item._id));
     await panStore.removeFolder(folders.map((item) => item.name));
     clearChosed();
 }

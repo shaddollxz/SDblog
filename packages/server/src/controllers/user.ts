@@ -162,10 +162,11 @@ export const enableAuthority: PutHandler<EnableAuthority> = async (req, res, nex
         const user = await UserDB.findById(userId);
         if (user) {
             switch (auth) {
-                case AuthorityEnum.pan_private:
+                case AuthorityEnum.pan_private: {
                     if (!(await PanDB.findById(userId)))
                         await new PanDB({ _id: user._id, path: `{"id":"${uuid()}","name":"root"}` }).save();
                     break;
+                }
             }
             const authority = addAuthority(user.authority, auth);
             user.authority = authority;
