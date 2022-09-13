@@ -9,11 +9,13 @@
         >
             <template #leftBtn>
                 <CheckButton @onClick="choseFile" :isCanClick="true">选择本地文件</CheckButton>
+                <CheckButton @onClick="downloadAsFile" :isCanClick="true">下载</CheckButton>
             </template>
         </SendMarkdown>
 
         <transition name="popup">
             <Popup
+                ref="popup"
                 v-model:isShowPopup="isShowPopup"
                 :content="sendMarkdown?.text"
                 :changeContent="changeText"
@@ -27,8 +29,10 @@ import SendMarkdown from "@/components/SendMarkdown/index.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
 import Popup from "./Popup.vue";
 import { LocalFiles } from "sdt3";
+import { download } from "@/utils/download";
 
 const sendMarkdown = shallowRef<InstanceType<typeof SendMarkdown> | null>(null);
+const popup = shallowRef<InstanceType<typeof Popup> | null>(null);
 function changeText(text: string) {
     sendMarkdown.value!.text = text;
 }
@@ -43,6 +47,9 @@ async function choseFile() {
     await file.getFile();
     sendMarkdown.value!.text = (await file.read(0)) as string;
 }
+function downloadAsFile() {
+    download(`${popup.value?.title || Date.now()}.md`, sendMarkdown.value?.text || "");
+}
 </script>
 
 <style lang="scss" scoped>
@@ -50,7 +57,12 @@ async function choseFile() {
     overflow: hidden;
 }
 .sendMarkdown {
-    height: calc(100vh - $height-header);
+    height: calc(100vh - ($height-header + $gap-xlarge));
+    :deep(.buttons) {
+        .left {
+            margin-left: $width-wife;
+        }
+    }
 }
 .popup {
     width: 50%;

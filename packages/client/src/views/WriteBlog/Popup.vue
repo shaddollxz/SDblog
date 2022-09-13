@@ -121,6 +121,8 @@ async function sendBlog() {
         Message.error("发送失败");
     }
 }
+
+defineExpose({ title });
 </script>
 
 <style lang="scss" scoped>

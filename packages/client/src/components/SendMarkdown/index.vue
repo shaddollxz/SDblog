@@ -261,9 +261,7 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
         .right {
             display: flex;
             margin: 0 1.3rem;
-        }
-        .checkButton {
-            margin-right: 1rem;
+            gap: $gap-large;
         }
     }
     .emojiBox {

@@ -42,7 +42,7 @@ footer {
     height: $height-header;
 }
 main {
-    margin: $height-header + $gap-large * 1.5 0 $gap-xlarge 0;
+    margin: $height-header + $gap-xlarge 0 $gap-xlarge 0;
     min-height: calc(100vh - $height-header);
     @include mobile {
         margin-left: 2px;
