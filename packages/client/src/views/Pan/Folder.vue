@@ -11,6 +11,7 @@
             <div class="item folderItem">
                 <CheckBox
                     v-hidden="isMulti"
+                    v-model="foldersState[item.id]"
                     @onCheck="(state) => folderStateChange(state, item.id, item.name)"
                 ></CheckBox>
                 <div
@@ -57,6 +58,7 @@
             <div class="item fileItem">
                 <CheckBox
                     v-hidden="isMulti"
+                    v-model="filesState[item._id]"
                     @onCheck="(state) => fileStateChange(state, item.hash, item.name, item._id)"
                 ></CheckBox>
                 <div class="left" v-draggable="fileDragOption(item.name, item._id)">
@@ -127,7 +129,7 @@ import { downloadFileApi } from "@apis";
 import { DownloadFileTypeEnum } from "@blog/server";
 import type { VDragType } from "sdt3";
 import { Message } from "sdt3";
-import { fileStateChange, folderStateChange, isMulti } from "./inject";
+import { fileStateChange, folderStateChange, isMulti, filesState, foldersState } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");

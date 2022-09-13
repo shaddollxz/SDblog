@@ -35,6 +35,7 @@
         <div class="right">
             <div v-hidden="isMulti" class="gusto-button" @click="downloadMulti">批量下载</div>
             <div v-hidden="isMulti" class="gusto-button" @click="removeMulti">批量删除</div>
+            <div v-hidden="isMulti" class="gusto-button" @click="choseAll">全选</div>
             <div class="gusto-button" @click="() => updateIsMulti()">批量选择</div>
         </div>
     </div>
@@ -44,7 +45,7 @@
 import Popover from "@/components/Popover/index.vue";
 import { usePanStore } from "@/store/pan";
 import FileUploader from "./FileUploader/index.vue";
-import { isMulti, updateIsMulti, downloadMulti, removeMulti } from "./inject";
+import { isMulti, updateIsMulti, downloadMulti, removeMulti, choseAll } from "./inject";
 
 const panStore = usePanStore();
 
