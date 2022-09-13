@@ -124,6 +124,9 @@ export class ParallelPool {
 
         this.pause();
         this.pushTask(key, tasks);
+        if (this.keys.length <= 1) {
+            this.setIterator();
+        }
         this.play();
     }
 
@@ -147,7 +150,7 @@ export class ParallelPool {
     }
     /** 按照设置交错执行并行任务的迭代器 */
     private async *crossedGenerator(): AsyncGenerator<undefined> {
-        let recorder: Record<string, number> = {};
+        let recorder: Record<string, number> = {}; // 记录当前执行的任务的个数 this.state.resolveCount 是完成的任务个数
         while (this.keys.length) {
             if (
                 this.keys.length <= this.options.parallelTaskCount &&
@@ -166,7 +169,6 @@ export class ParallelPool {
                     const task = this.tasks[key][recorder[key]];
                     if (task) {
                         const promise = this.createTask(key, task, recorder[key]);
-                        this.tasks[key][recorder[key]] = undefined;
                         if (recorder[key] == this.tasks[key].length - 1) {
                             //* 如果一个任务将要完成时另一个任务也全部进入并行池
                             //* 这时会卡死 所以这里直接等待最后一个任务结束
@@ -197,7 +199,6 @@ export class ParallelPool {
             for (let i = 0; i < tasks.length; i++) {
                 if (tasks[i]) {
                     this.pool.push(this.createTask(key, tasks[i]!, i));
-                    tasks[i] = undefined;
                     if (this.pool.length >= this.options.max) {
                         await Promise.race(this.pool);
                         yield;
@@ -216,6 +217,7 @@ export class ParallelPool {
             .catch((e) => (this.rejecteds[key][i] = e))
             .finally(() => {
                 this.pool.splice(this.pool.indexOf(result), 1);
+                this.tasks[key][i] = undefined;
                 this.state[key].resolveCount++;
                 if (this.state[key].resolveCount == this.tasks[key].length) {
                     //* 最后一个任务

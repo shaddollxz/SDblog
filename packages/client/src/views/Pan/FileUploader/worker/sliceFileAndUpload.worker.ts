@@ -3,6 +3,8 @@ import type { MainOnMessage, MainPostMessage } from "./types";
 
 const PostMessage = (arg: MainOnMessage, buffers?: ArrayBuffer[]) => postMessage(arg, { transfer: buffers });
 
+let interval: number | null = null;
+const bufferAndNameCache: { buffers: ArrayBuffer[]; names: string[] } = { buffers: [], names: [] };
 const files = new Map<
     string,
     {
@@ -18,32 +20,51 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
     switch (data.step) {
         case "splitBuffer": {
             const { fileBuffers, fileNames, folderId } = data;
-            for (let i = 0; i < fileBuffers.length; i++) {
-                PostMessage({ step: "beginAnalyzeFile", name: fileNames[i] });
-                const chunkBuffer = splitBuffer(fileBuffers[i]);
-                const chunks = chunkBuffer.length;
-                const hash = getFileHash(chunkBuffer);
-                files.has(hash) ||
-                    files.set(hash, {
+            bufferAndNameCache.buffers.push(...fileBuffers);
+            bufferAndNameCache.names.push(...fileNames);
+            if (!interval) {
+                //* 使用setInterval做循环，在其它事件触发时它会后处理
+                let i = 0;
+                interval = self.setInterval(() => {
+                    if (i == bufferAndNameCache.buffers.length) {
+                        clearInterval(interval!);
+                        interval = null;
+                        bufferAndNameCache.names = [];
+                        bufferAndNameCache.buffers = [];
+                        return;
+                    }
+
+                    // #region 文件切片并解析hash
+                    PostMessage({ step: "beginAnalyzeFile", name: bufferAndNameCache.names[i] });
+                    const chunkBuffer = splitBuffer(bufferAndNameCache.buffers[i]);
+                    const chunks = chunkBuffer.length;
+                    const hash = getFileHash(chunkBuffer);
+                    files.has(hash) ||
+                        files.set(hash, {
+                            folderId,
+                            fileName: bufferAndNameCache.names[i],
+                            chunks,
+                            uploadedChunks: 0,
+                            chunkBuffer,
+                        });
+                    PostMessage({
+                        step: "uploadStart",
+                        hash,
+                        fileName: bufferAndNameCache.names[i],
                         folderId,
-                        fileName: fileNames[i],
                         chunks,
-                        uploadedChunks: 0,
-                        chunkBuffer,
                     });
-                PostMessage({
-                    step: "uploadStart",
-                    hash,
-                    fileName: fileNames[i],
-                    folderId,
-                    chunks,
-                });
-                PostMessage({
-                    step: "analyzeFileEnd",
-                    name: fileNames[i],
-                    chunks,
-                });
+                    PostMessage({
+                        step: "analyzeFileEnd",
+                        name: bufferAndNameCache.names[i],
+                        chunks,
+                    });
+                    // #endregion
+
+                    i++;
+                }, 500);
             }
+
             break;
         }
 
@@ -52,18 +73,19 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
             const file = files.get(hash);
             if (file) {
                 if (file.chunkBuffer) {
+                    let buffers: (ArrayBuffer | null)[] = [];
+                    if (needChunks.length != 0) {
+                        buffers = file.chunkBuffer!.map((buffer, index) =>
+                            needChunks.includes(index) ? buffer : null
+                        );
+                    }
                     PostMessage(
                         {
                             step: "uploadChunk",
                             folderId: file.folderId,
                             fileName: file.fileName,
                             hash,
-                            buffers:
-                                needChunks.length == 0
-                                    ? []
-                                    : file.chunkBuffer!.map((buffer, index) =>
-                                          needChunks.includes(index) ? buffer : null
-                                      ),
+                            buffers,
                         },
                         file.chunkBuffer!
                     );
