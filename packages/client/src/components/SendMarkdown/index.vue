@@ -2,13 +2,13 @@
     <div class="sendMarkdown" ref="sendMarkdown">
         <div class="toolBar">
             <div class="left">
-                <template v-for="item of leftList" :title="item.title" @click="item.func">
-                    <SvgIcon :name="item.icon"></SvgIcon>
+                <template v-for="item of leftList" :title="item.title">
+                    <SvgIcon :name="item.icon" @click="item.func"></SvgIcon>
                 </template>
             </div>
             <div class="right">
-                <template v-for="item of rightList" :title="item.title" @click="item.func">
-                    <SvgIcon :name="item.icon"></SvgIcon>
+                <template v-for="item of rightList" :title="item.title">
+                    <SvgIcon :name="item.icon" @click="item.func"></SvgIcon>
                 </template>
             </div>
         </div>
@@ -45,7 +45,10 @@ import EmojiBox from "./EmojiBox.vue";
 import CheckButton from "../CheckButton/index.vue";
 import { Message, LocalFiles } from "sdt3";
 import TextArea from "./TextArea";
-import { uploadImageApi, removeImageApi } from "@apis";
+import { uploadImageApi } from "@apis";
+import { formateFilenameToHash } from "@/utils/getFileHash";
+import { createFormData } from "@/utils/createFormData";
+import type { UploadImageOption } from "@blog/server";
 import fullScreen from "@/utils/fullScreen";
 const props = defineProps({
     isCanSend: {
@@ -125,13 +128,6 @@ function inputFormat(e: KeyboardEvent) {
                         text.value =
                             text.value.slice(0, type.end) +
                             text.value.slice(curCursor.start, text.value.length);
-
-                        // if (type.type == "img") {
-                        //     const src = deleted.match(/(?<=\().+(?=\))/)?.[0];
-                        //     if (src) {
-                        //         removeImageApi(src);
-                        //     }
-                        // }
                     }
                 }
             }
@@ -155,8 +151,6 @@ const leftList = [
         icon: "replyBox-picture",
         async func() {
             try {
-                const formData = new FormDataT<{ image: Blob }>();
-
                 const _file = new LocalFiles({
                     type: ["jpg", "png", "jpeg", "gif", "webp"],
                     maxSize: 5 * 1024,
@@ -164,7 +158,9 @@ const leftList = [
                 await _file.getFile();
                 const file = _file.files[0];
 
-                formData.append("image", file);
+                const formData = createFormData<UploadImageOption>({
+                    image: await formateFilenameToHash(file),
+                });
                 const { data } = await uploadImageApi(formData);
                 textArea.insert(`![${file.name}](${data.imgSrc})`);
             } catch (e) {
@@ -180,7 +176,10 @@ const leftList = [
     {
         title: "插入表格",
         icon: "replyBox-table",
-        func: () => textArea.insert("\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |"),
+        func: () => {
+            console.log("sss");
+            textArea.insert("\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |");
+        },
     },
 ];
 const rightList = reactive([

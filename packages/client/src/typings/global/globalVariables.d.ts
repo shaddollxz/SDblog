@@ -1,4 +1,4 @@
-interface FormDataT<T extends Record<string, string | Blob | number>> {
+interface FormDataT<T extends Record<string, any>> {
     append(name: keyof T, value: T[typeof name], fileName?: string): void;
     delete(name: keyof T): void;
     get(name: keyof T): FormDataEntryValue | null;
@@ -12,5 +12,5 @@ interface FormDataT<T extends Record<string, string | Blob | number>> {
 }
 declare const FormDataT: {
     prototype: FormData<T>;
-    new <T extends Record<string, string | Blob | number>>(form?: HTMLFormElement): FormDataT<T>;
+    new <T extends Record<string, any>>(form?: HTMLFormElement): FormDataT<T>;
 };

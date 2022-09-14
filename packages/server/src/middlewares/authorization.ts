@@ -5,14 +5,14 @@ import { authorityCheck, addAuthority } from "../utils/authority";
 export const analyzeToken: MiddleWare = async (req, res, next) => {
     let token = req.header("Authorization");
     if (!token) {
-        return res.status(StatusEnum.Unauthorized).json({ error: "登录再进行操作", isShow: true });
+        return res.status(StatusEnum.Unauthorized).json({ error: "登录后再进行操作", isShow: true });
     } else {
         try {
             token = token.replace(/^Bearer\s/, "");
             const { _id, authority } = verify(token);
             req.body._id = _id;
             req.body.authority = authority;
-            next();
+            return next();
         } catch (e) {
             res.status(StatusEnum.Unauthorized).json({
                 error: "登录过期，请重新登录",

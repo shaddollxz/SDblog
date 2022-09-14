@@ -5,8 +5,8 @@ import { uploadAvatar, removeImage, uploadImage } from "../controllers/static";
 
 const router = Router();
 
-router.post("/image", analyzeToken, imageUploader, analyzeToken, uploadImage);
+router.post("/image", imageUploader, uploadImage);
 router.delete("/image", analyzeToken, removeImage);
-router.post("/avatar", analyzeToken, avatarUploader, analyzeToken, uploadAvatar);
+router.post("/avatar", analyzeToken, avatarUploader, uploadAvatar);
 
 export default router;

@@ -1,5 +1,5 @@
-import SparkMD5 from "spark-md5";
 import type { MainOnMessage, MainPostMessage } from "./types";
+import { getFileHash } from "@/utils/getFileHash";
 
 const PostMessage = (arg: MainOnMessage, buffers?: ArrayBuffer[]) => postMessage(arg, { transfer: buffers });
 
@@ -139,15 +139,6 @@ self.addEventListener("message", ({ data }: { data: MainPostMessage }) => {
         }
     }
 });
-
-/** 获得文件的唯一hash */
-function getFileHash(buffers: ArrayBuffer[]) {
-    const spark = new SparkMD5.ArrayBuffer();
-    for (const buffer of buffers) {
-        spark.append(buffer);
-    }
-    return spark.end();
-}
 
 /** 给buffer切片 */
 function splitBuffer(buffer: ArrayBuffer) {

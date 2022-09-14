@@ -1,11 +1,12 @@
 import axios from "../axios";
 import type { AxiosPromise } from "axios";
+import type { UploadAvatarOption, UploadImageOption } from "@blog/server";
 
 // 上传图片
-export function uploadImage(formData: FormDataT<{ image: Blob }>): AxiosPromise<{ imgSrc: string }> {
+export function uploadImage(formData: FormDataT<UploadImageOption>): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
-        url: "image",
+        url: "static/image",
         data: formData,
     });
 }
@@ -14,16 +15,16 @@ export function uploadImage(formData: FormDataT<{ image: Blob }>): AxiosPromise<
 export function removeImage(src: string) {
     return axios({
         method: "delete",
-        url: "image",
+        url: "static/image",
         data: { src },
     });
 }
 
 // 上传头像
-export function uploadAvatar(formData: FormDataT<{ avatar: Blob }>): AxiosPromise<{ imgSrc: string }> {
+export function uploadAvatar(formData: FormDataT<UploadAvatarOption>): AxiosPromise<{ imgSrc: string }> {
     return axios({
         method: "post",
-        url: "avatar",
+        url: "static/avatar",
         data: formData,
     });
 }

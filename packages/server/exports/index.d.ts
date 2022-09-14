@@ -7,3 +7,4 @@ export * from "../src/typings/interface/tag";
 export * from "../src/typings/interface/user";
 
 export * from "../src/typings/enum";
+export { filenameSlice } from "../src/utils/formateFilename";

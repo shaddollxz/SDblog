@@ -32,23 +32,20 @@ axios.interceptors.response.use(
         return res;
     },
     (err) => {
-        const e = err.toJSON();
         // 后端传来的错误
-        if (e.response) {
+        if (err.response.data) {
             // 该错误可以显示则显示 否则抛到调用api的地方
-            if (e.response.data.isShow) {
-                Message.error(e.response.data.error);
-                return Promise.reject(e.response.data);
-            } else {
-                return Promise.reject(e.response.data);
+            if (err.response.data.isShow) {
+                Message.error(err.response.data.error);
             }
+            return Promise.reject(err.response.data);
         } else {
             // 需要忽略的超时错误
-            if (timeoutExclude.includes(e.config.url)) {
+            if (timeoutExclude.includes(err.config.url)) {
                 return Promise.reject();
             }
             Message.error("响应超时，请稍后再试");
-            return Promise.reject({ error: "响应超时", timeout: true });
+            return Promise.reject({ timeout: true });
         }
     }
 );

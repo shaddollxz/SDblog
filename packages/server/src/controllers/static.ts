@@ -8,14 +8,16 @@ export const uploadImage: PostHandler = async (req, res, next) => {
     try {
         const file = req.file;
         if (file) {
+            const fileName = file.originalname;
             const hash = await fileHash(file.path);
-            const newName = hash + filenameSlice(file.filename).suffix;
-            if (!(await fs.pathExists(resolve(file.destination, newName)))) {
-                await fs.rename(file.path, resolve(file.destination, newName));
+            if (hash == filenameSlice(fileName).prefix) {
+                res.status(StatusEnum.OK).json({
+                    imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + fileName,
+                });
+            } else {
+                res.status(StatusEnum.ServerError).json({ error: "文件传输中丢失信息", isShow: true });
+                fs.remove(file.path);
             }
-            res.status(StatusEnum.OK).json({
-                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + newName,
-            });
         }
     } catch (e) {
         next(e);
@@ -39,9 +41,16 @@ export const uploadAvatar: PostHandler = async (req, res, next) => {
     try {
         const file = req.file;
         if (file) {
-            res.status(StatusEnum.OK).json({
-                imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + file.filename,
-            });
+            const fileName = file.originalname;
+            const hash = await fileHash(file.path);
+            if (hash == filenameSlice(fileName).prefix) {
+                res.status(StatusEnum.OK).json({
+                    imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + fileName,
+                });
+            } else {
+                res.status(StatusEnum.ServerError).json({ error: "文件传输中丢失信息", isShow: true });
+                fs.remove(file.path);
+            }
         }
     } catch (e) {
         next(e);

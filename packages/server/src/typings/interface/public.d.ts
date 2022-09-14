@@ -17,4 +17,11 @@ export interface Author {
     avatarFrame: number;
 }
 
+export interface UploadAvatarOption {
+    avatar: Blob;
+}
+export interface UploadImageOption {
+    image: Blob;
+}
+
 export {};

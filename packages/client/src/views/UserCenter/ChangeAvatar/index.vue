@@ -33,10 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import ChoseImg from "@/components/ChoseImg/index.vue";
 import CheckButton from "@/components/CheckButton/index.vue";
-import { uploadAvatarApi, removeImageApi } from "@apis";
+import ChoseImg from "@/components/ChoseImg/index.vue";
 import { useUserStore } from "@/store/user";
+import { createFormData } from "@/utils/createFormData";
+import { formateFilenameToHash } from "@/utils/getFileHash";
+import { removeImageApi, uploadAvatarApi } from "@apis";
+import type { UploadAvatarOption } from "@blog/server";
 import { Message } from "sdt3";
 const ChangeAvatarFrame = defineAsyncComponent(() => import("./ChangeAvatarFrame.vue"));
 const userStore = useUserStore();
@@ -45,10 +48,11 @@ const avatars = toRef(userStore, "avatars");
 const choseImg = shallowRef<InstanceType<typeof ChoseImg>>();
 async function uploadAvatar() {
     if (choseImg.value?.file) {
-        const formData = new FormDataT<{ avatar: Blob }>();
-        formData.append("avatar", choseImg.value.file);
+        const avatar = await formateFilenameToHash(choseImg.value.file);
+        const formData = createFormData<UploadAvatarOption>({
+            avatar,
+        });
         const { data } = await uploadAvatarApi(formData);
-        await removeImageApi(userStore.avatars.avatar);
         userStore.updateUserInfo({ avatar: data.imgSrc });
     } else {
         Message.error("请选择图片");

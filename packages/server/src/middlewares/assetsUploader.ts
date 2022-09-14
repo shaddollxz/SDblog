@@ -1,20 +1,21 @@
 import multer from "multer";
 import { resolve } from "path";
-import { formateFilename } from "../utils/formateFilename";
 
 const imageEngin = multer.diskStorage({
     destination: resolve(process.env.PUBLIC_STATIC_PATH, "./image"),
 
-    filename: async (req, file, cb) => {
-        cb(null, formateFilename(file.originalname, { T: Date.now() }));
+    filename(req, file, cb) {
+        cb(null, file.originalname);
     },
 });
 
 const avatarEngin = multer.diskStorage({
     destination: resolve(process.env.PUBLIC_STATIC_PATH, "./avatar"),
 
-    filename: async (req, file, cb) => {
-        cb(null, formateFilename(file.originalname, { T: Date.now() }));
+    filename(req, file, cb) {
+        // 文件名从前端格式化为 hash+后缀 这里有问题
+        // 剩下对文件完整性的验证在下一个中间件进行
+        cb(null, file.originalname);
     },
 });
 

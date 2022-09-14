@@ -1,4 +1,4 @@
-export function createFormData<T extends Record<string, string | number | Blob>>(data: T): FormDataT<T> {
+export function createFormData<T extends object>(data: T): FormDataT<T> {
     const form = new FormDataT();
     for (let key in data) {
         form.append(key, data[key]);
