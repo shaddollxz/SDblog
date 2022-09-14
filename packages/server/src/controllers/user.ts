@@ -11,7 +11,7 @@ import type {
 } from "../typings/interface/user";
 import { sign } from "../utils/jwt";
 import md5 from "../utils/md5";
-import sendEmail from "../utils/sendMail";
+import { sendVerifyCodeMail } from "../utils/sendMail";
 import { addAuthority, subAuthority } from "../utils/authority";
 import { v4 as uuid } from "uuid";
 
@@ -48,17 +48,19 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
         const email = req.query.email;
         const userData = await UserDB.findOne({ email, isDelete: false });
         switch (req.query.model) {
-            case VerifycodeEnum.register:
+            case VerifycodeEnum.register: {
                 if (userData)
                     return res.status(StatusEnum.Forbidden).json({ error: "邮箱已注册", isShow: true });
                 break;
-            case VerifycodeEnum.retrieve:
+            }
+            case VerifycodeEnum.retrieve: {
                 if (!userData)
                     return res.status(StatusEnum.Forbidden).json({ error: "没有该用户", isShow: true });
                 break;
+            }
         }
 
-        const randomCode = await sendEmail(email);
+        const randomCode = await sendVerifyCodeMail(email);
         const verifycode = new VerifycodeDB({ email, verifycode: randomCode });
         await verifycode.save();
 
@@ -72,12 +74,12 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
 export const register: PostHandler<RegisterOptions> = async (req, res, next) => {
     try {
         const data = await VerifycodeDB.findOne({ verifycode: req.body.verifycode });
-        const email = data?.email;
-        if (email == req.body.email) {
+        if (data && data.email == req.body.email) {
             delete req.body._id;
             delete req.body.authority;
             await new UserDB({ ...req.body }).save();
             res.status(StatusEnum.OK).json({ success: true });
+            data.delete();
         } else {
             res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });
         }

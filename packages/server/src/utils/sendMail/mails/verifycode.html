@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            #main {
+                width: 100%;
+                background-color: #1c2128;
+                color: #adbac7;
+                padding: 0 20px;
+            }
+            #head {
+                font-size: xx-large;
+                padding: 10px;
+                border-bottom: 1px solid #adbac7;
+            }
+            #msg {
+                margin: 15px 0 30px;
+                text-align: center;
+            }
+            #code {
+                margin: auto;
+                font-size: xx-large;
+                color: cornflowerblue;
+                text-decoration: underline;
+                letter-spacing: 5px;
+                font-weight: 600;
+            }
+            #timer {
+                color: brown;
+            }
+            #foot {
+                font-size: small;
+                width: max-content;
+                margin: auto;
+                margin-top: 30px;
+                color: #adbac788;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <table id="main">
+            <thead>
+                <tr>
+                    <th id="head">博客的验证码</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <p>您好，</p>
+                        <p>请填写以下验证码完成邮箱验证。</p>
+                        <p>该验证码只能使用一次且具有有效时限，务必尽快填写。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="msg">
+                            <p id="code">
+                                <data>{randomCode}</data>
+                            </p>
+                            <p>
+                                有效期至
+                                <span id="timer">
+                                    <data>{endTime}</data>
+                                </span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>如果不是本人操作，请忽略。</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <div id="foot">
+                            <p>Copyright © 2022 影依贤者</p>
+                            <p>
+                                <a href="https://www.shaddollxz.space" target="_blank">
+                                    https://www.shaddollxz.space
+                                </a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>

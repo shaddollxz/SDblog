@@ -1,6 +1,6 @@
 import { createTransport } from "nodemailer";
+import { getMailHTML } from "./getMailHTML";
 const { EMAIL, EMAIL_SECRET } = process.env;
-import getMailHTML from "./getMailHTML";
 
 const transporter = createTransport({
     // @ts-ignore
@@ -13,14 +13,21 @@ const transporter = createTransport({
     },
 });
 
-export default async function (mail: string) {
-    const randomCode = Math.random().toString(36).slice(2, 8); // 生成六位随机数字字母
+export async function sendVerifyCodeMail(to: string) {
+    const randomCode = Math.random().toString(36).slice(2, 8).toUpperCase(); // 生成六位随机数字字母
+    const endTimeDate = new Date(Date.now() + 10 * 60 * 1000);
+    let seconds = endTimeDate.getSeconds().toString();
+    if (seconds.length <= 1) {
+        seconds = "0" + seconds;
+    }
+    // prettier-ignore
+    const endTime = `${endTimeDate.getFullYear()}/${endTimeDate.getMonth() + 1}/${endTimeDate.getDate()} ${endTimeDate.getHours()}:${endTimeDate.getMinutes()}:${seconds}`;
 
     const mailOptions = {
         from: EMAIL, // 发件人地址
-        to: mail, // 收件人地址，多个收件人可以使用逗号分隔
-        subject: "注册验证", // 邮件标题
-        html: await getMailHTML({ randomCode }), // 邮件内容
+        to, // 收件人地址，多个收件人可以使用逗号分隔
+        subject: "验证码", // 邮件标题
+        html: await getMailHTML("verifycode", { randomCode, endTime }), // 邮件内容
     };
     const result = await transporter.sendMail(mailOptions);
     if (!result) {
