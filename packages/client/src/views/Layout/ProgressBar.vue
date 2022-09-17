@@ -1,9 +1,9 @@
 <template>
-    <div class="progressBar"></div>
+    <div class="global-progressBar"></div>
 </template>
 
-<style lang="scss" scoped>
-.progressBar {
+<style lang="scss">
+.global-progressBar {
     position: fixed;
     top: 0;
     z-index: 9999;

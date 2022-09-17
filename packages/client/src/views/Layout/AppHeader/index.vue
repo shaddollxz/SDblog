@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header class="global-header">
         <h1 class="canClick chuyuan" @click="router.push('/')" title="Quincy Is Watching You">
             0v0
             <span class="chuyuan">昆~</span>
@@ -7,7 +7,7 @@
 
         <Theme></Theme>
 
-        <transition name="sideBar">
+        <transition name="global-sideBar">
             <div class="sideBar" v-show="isShowSideBar">
                 <Search @onChangeSideBarState="changeSideBarState"></Search>
 
@@ -48,15 +48,15 @@ function changeSideBarState() {
 }
 </script>
 
-<style lang="scss" scoped>
-header {
+<style lang="scss">
+.global-header {
     z-index: 99;
     position: fixed;
     top: 0;
     display: flex;
-    gap: $gap-xxlarge * 2;
     align-items: center;
     justify-content: space-between;
+    gap: $gap-xxlarge * 2;
     box-sizing: border-box;
     width: 100%;
     padding: 0 3rem 0 4rem;
@@ -72,11 +72,11 @@ header {
     .sideBar {
         flex: 1;
         display: flex;
+        align-items: center;
         justify-content: space-between;
         height: 5rem;
         background-color: $bg-header;
         gap: $gap-xxlarge * 2;
-        align-items: center;
         .search {
             width: 40rem;
         }
@@ -131,13 +131,13 @@ header {
         }
     }
 }
-.sideBar-enter-active,
-.sideBar-leave-active {
+.global-sideBar-enter-active,
+.global-sideBar-leave-active {
     transition: all 0.5s ease;
 }
 
-.sideBar-enter-from,
-.sideBar-leave-to {
+.global-sideBar-enter-from,
+.global-sideBar-leave-to {
     opacity: 0;
     transform: translateX(-100%);
 }

@@ -1,12 +1,12 @@
 <template>
-    <div class="loading gusto-flex-center-col">
+    <div class="global-loading gusto-flex-center-col">
         <div class="loadingBox"></div>
         <span class="text chuyuan">Loading...</span>
     </div>
 </template>
 
-<style lang="scss" scoped>
-.loading {
+<style lang="scss">
+.global-loading {
     --boxWidth: 10rem;
     --gap: 2rem;
 }

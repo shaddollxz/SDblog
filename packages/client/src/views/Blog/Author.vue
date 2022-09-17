@@ -50,12 +50,11 @@ const blogMsg: BlogDetail_Inject = inject("blogDetail")!;
         flex-direction: column;
         justify-content: space-between;
         .svgIcon {
-            height: var(--fontsize-small);
             width: var(--fontsize-small);
-            margin-right: 0.4rem;
+            margin-right: $gap;
         }
         span {
-            margin-right: 1.2rem;
+            margin-right: $gap-large;
         }
         .authorMsg {
             :nth-child(1) {
@@ -71,7 +70,6 @@ const blogMsg: BlogDetail_Inject = inject("blogDetail")!;
             display: flex;
             align-items: center;
             .gusto-tagBox {
-                margin-left: 0.2rem;
                 --fontsize: var(--fontsize-tiny);
             }
         }

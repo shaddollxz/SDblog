@@ -125,7 +125,6 @@ $height: 3rem;
                 min-width: 3rem;
                 width: 15rem;
                 border: none;
-                background-color: transparent;
                 cursor: default;
             }
         }

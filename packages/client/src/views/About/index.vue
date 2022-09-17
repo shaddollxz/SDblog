@@ -3,7 +3,7 @@
         <div class="markdownContent">
             <h2>✨关于该网站</h2>
             <p>我的博客网站，大概拿来放点学习笔记啥的，预计会再搭建几个页面干别的</p>
-            <p style="display: flex; align-items: center">
+            <p class="technology">
                 <span>前端使用</span>
                 <SvgIcon name="about-vite"></SvgIcon>
                 <SvgIcon name="about-vue"></SvgIcon>
@@ -85,8 +85,10 @@ const qitao = [wechat, alipay];
         margin: 0;
     }
 }
-.svgIcon {
-    margin-right: $gap;
+.technology {
+    display: flex;
+    align-items: center;
+    gap: $gap;
 }
 .qitao {
     p {

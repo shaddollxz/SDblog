@@ -44,7 +44,7 @@ input[type="text"],
 input[type="number"],
 input[type="passWord"] {
     color: var(--color-text-default);
-    background-color: var(--color-bg-bland);
+    background-color: transparent;
     border: 1.5px solid var(--color-border);
     border-radius: $border-r-big;
     &:focus-visible {

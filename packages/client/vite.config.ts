@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import type { ConfigEnv } from "vite";
 import { resolve } from "path";
 import getPlugins from "./config/plugins";
+import getWorker from "./config/worker";
 import getServer from "./config/server";
 import getBuild from "./config/build";
 import getCss from "./config/css";
@@ -18,6 +19,7 @@ export default ({ command, mode }: ConfigEnv) => {
         envDir: resolve(__dirname, "../../env"), // 环境变量文件夹位置
         plugins: getPlugins(Env, isBuild, isDev),
         build: getBuild(Env, isBuild, isDev),
+        worker: getWorker(Env, isBuild, isDev),
         server: getServer(Env, isBuild, isDev),
         css: getCss(Env, isBuild, isDev),
         resolve: {

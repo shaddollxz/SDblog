@@ -12,13 +12,14 @@
                 <SvgIcon v-show="pwdstate" name="replyBox-preview_close"></SvgIcon>
                 <SvgIcon v-show="!pwdstate" name="replyBox-preview"></SvgIcon>
             </div>
-            <span>
-                <SvgIcon v-show="data && !error" name="public-correct"></SvgIcon>
-            </span>
         </div>
-        <div class="error" v-show="error">
+        <div class="checkTip error" v-show="error">
             <SvgIcon name="public-error"></SvgIcon>
             <span>{{ error }}</span>
+        </div>
+        <div class="checkTip correct" v-show="data && !error">
+            <SvgIcon name="public-correct"></SvgIcon>
+            <span>验证通过</span>
         </div>
     </div>
 </template>
@@ -90,13 +91,8 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
             width: 100%;
             height: var(--h);
             padding: 0.1rem 0.4rem;
-            &:focus-visible {
-                .svgIcon {
-                    fill: var(--color-text-theme);
-                }
-            }
             &.ispwd {
-                padding: 0.1rem 3.5rem 0.1rem 0.4rem;
+                padding-right: 3.5rem;
             }
         }
         .icon {
@@ -108,22 +104,21 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
                 width: inherit;
             }
         }
-        span {
-            position: absolute;
-            right: -2rem;
-            .svgIcon {
-                fill: var(--color-primary);
-            }
-        }
     }
-    .error {
-        color: var(--color-error);
+    .checkTip {
+        display: flex;
+        align-items: center;
         position: absolute;
         top: calc(var(--h) + 0.2rem + 0.3rem); // 有0.2rem是Input的padding
         font-size: var(--fontsize-tiny);
-        .svgIcon {
-            fill: var(--color-error);
-        }
+    }
+    .error {
+        color: var(--color-error);
+        fill: var(--color-error);
+    }
+    .correct {
+        color: var(--color-primary);
+        fill: var(--color-primary);
     }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <footer class="gusto-flex-center">
+    <footer class="global-footer gusto-flex-center">
         <div class="siteMsg">
             <div>
                 Copyright © 2022
@@ -13,8 +13,8 @@
     </footer>
 </template>
 
-<style lang="scss" scoped>
-footer {
+<style lang="scss">
+.global-footer {
     background-color: $bg-header;
     color: $color-header;
     box-sizing: border-box;

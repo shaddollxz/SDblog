@@ -1,5 +1,5 @@
 <template>
-    <div class="noData">
+    <div class="global-noData">
         <div class="gusto-flex-center-col" v-if="isInternet">
             <SvgIcon name="noData-noData"></SvgIcon>
             <p>没有找到相关数据</p>
@@ -26,13 +26,13 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.noData {
+<style lang="scss">
+.global-noData {
     box-sizing: border-box;
     padding: 3rem 0;
     background-color: var(--color-bg-bland);
-}
-.svgIcon {
-    width: calc(var(--fontsize-xxlarge) * 2);
+    .svgIcon {
+        width: calc(var(--fontsize-xxlarge) * 2);
+    }
 }
 </style>

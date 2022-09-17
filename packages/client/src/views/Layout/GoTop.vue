@@ -1,9 +1,9 @@
 <template>
-    <div class="goTop gusto-noClick gusto-flex-center-col" :class="{ show }">
+    <div class="global-goTop gusto-noClick gusto-flex-center-col" :class="{ show }">
         <img class="gusto-fillImg" src="~@img/goTop/rope.png" alt="" />
         <img class="cat canClick" @click="rollToTop" src="~@img/goTop/cat.png" alt="" />
     </div>
-    <div ref="observer" class="observer"></div>
+    <div class="global-observer" ref="observer"></div>
 </template>
 
 <script setup lang="ts">
@@ -20,8 +20,8 @@ onMounted(() => io.observe(observer.value!));
 const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
 </script>
 
-<style lang="scss" scoped>
-.goTop {
+<style lang="scss">
+.global-goTop {
     position: fixed;
     right: 0;
     top: -75vh;
@@ -35,18 +35,18 @@ const rollToTop = () => scrollTo({ top: 0, left: 0, behavior: "smooth" });
             transform-origin: top;
         }
     }
+    @include mobile {
+        .cat {
+            transform: scale(70%);
+            transform-origin: top;
+        }
+    }
 }
-.show {
+.global-goTop.show {
     transform: translateY(75vh);
 }
-.observer {
+.global-observer {
     position: absolute;
     top: calc(100vh - $height-header);
-}
-@include mobile {
-    .cat {
-        transform: scale(70%);
-        transform-origin: top;
-    }
 }
 </style>

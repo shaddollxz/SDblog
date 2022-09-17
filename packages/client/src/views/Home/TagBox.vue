@@ -1,6 +1,6 @@
 <template>
     <div class="tagBox gusto-border">
-        <p class="xingyan">
+        <p class="title xingyan">
             <SvgIcon name="blog-tag"></SvgIcon>
             <span>标签</span>
         </p>
@@ -34,8 +34,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .tagBox {
     box-sizing: border-box;
-    padding: 1rem 1.25rem 0 1.25rem;
-    p {
+    padding: 1rem 1.25rem 0;
+    .title {
         font-size: var(--fontsize-large);
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--color-border);

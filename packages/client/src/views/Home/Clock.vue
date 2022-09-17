@@ -34,7 +34,6 @@ onUnmounted(() => clearInterval(interval));
         font-size: var(--fontsize-big);
     }
     .minute {
-        margin: 0.3rem;
         font-size: var(--fontsize-xxlarge);
     }
 }

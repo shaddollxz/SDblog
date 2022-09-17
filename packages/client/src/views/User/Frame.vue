@@ -31,7 +31,6 @@
                 position: absolute;
                 right: 0;
                 bottom: 0;
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: var(--fontsize-tiny);
                 color: #0969da;
             }
@@ -50,11 +49,6 @@
         .emailBox {
             .email {
                 display: flex;
-                :deep(.checkInput) {
-                    i {
-                        display: none;
-                    }
-                }
                 .checkButton {
                     font-family: "chuyuan";
                     font-size: var(--fontsize-small);
