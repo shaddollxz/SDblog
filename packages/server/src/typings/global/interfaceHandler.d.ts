@@ -16,11 +16,4 @@ declare global {
     type PutHandler<T = any, P = Record<string, string>> = ReqBody<T, P>;
     type GetHandler<T = any, P = Record<string, string>> = ReqQuery<T, P>;
     type MiddleWare = RequestHandler;
-    interface Faild {
-        error: string;
-        isShow: boolean;
-    }
-    interface Success {
-        success: true;
-    }
 }

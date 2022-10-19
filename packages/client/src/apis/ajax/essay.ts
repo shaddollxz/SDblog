@@ -1,12 +1,9 @@
 import axios from "../axios";
-import type { AxiosPromise } from "axios";
-import type { EssayInfo, EssayListOptions, ReplyItemInfo, Success, Faild } from "@blog/server";
+import type { EssayInfo, EssayListOptions, ReplyItemInfo } from "@blog/server";
 
 // 随笔列表
-export function essayList(
-    page: EssayListOptions["page"]
-): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
-    return axios({
+export function essayList(page: EssayListOptions["page"]) {
+    return axios<{ essayList: EssayInfo[]; allPage: number }>({
         method: "get",
         url: "essay/essayList",
         params: {
@@ -16,19 +13,16 @@ export function essayList(
 }
 
 // 随笔评论列表
-export function essayReplyList(essayId: string): AxiosPromise<ReplyItemInfo[]> {
-    return axios({
+export function essayReplyList(essayId: string) {
+    return axios<ReplyItemInfo[]>({
         method: "get",
         url: "essay/replys/" + essayId,
     });
 }
 
 // 写随笔
-export function writeEssay(
-    content: string,
-    page: string = "1"
-): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
-    return axios({
+export function writeEssay(content: string, page: string = "1") {
+    return axios<{ essayList: EssayInfo[]; allPage: number }>({
         method: "post",
         url: "essay",
         data: { content },
@@ -37,11 +31,8 @@ export function writeEssay(
 }
 
 // 删除随笔
-export function deleteEssay(
-    essayId: string,
-    page: string = "1"
-): AxiosPromise<{ essayList: EssayInfo[]; allPage: number }> {
-    return axios({
+export function deleteEssay(essayId: string, page: string = "1") {
+    return axios<{ essayList: EssayInfo[]; allPage: number }>({
         method: "delete",
         url: "essay",
         data: { essayId },
@@ -50,7 +41,7 @@ export function deleteEssay(
 }
 
 // 随笔点赞
-export function like(essayId: string): AxiosPromise<Success | Faild> {
+export function like(essayId: string) {
     return axios({
         method: "put",
         url: "essay/like",

@@ -3,6 +3,7 @@ import { resolve } from "path";
 import { StatusEnum } from "../typings/enum";
 import { fileHash } from "../utils/fileHash";
 import { filenameSlice } from "../utils/formateFilename";
+import { successResponse, failResponse } from "../utils/createResponse";
 
 export const uploadImage: PostHandler = async (req, res, next) => {
     try {
@@ -11,11 +12,13 @@ export const uploadImage: PostHandler = async (req, res, next) => {
             const fileName = file.originalname;
             const hash = await fileHash(file.path);
             if (hash == filenameSlice(fileName).prefix) {
-                res.status(StatusEnum.OK).json({
-                    imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + fileName,
+                successResponse(res, {
+                    data: {
+                        imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + fileName,
+                    },
                 });
             } else {
-                res.status(StatusEnum.ServerError).json({ error: "文件传输中丢失信息", isShow: true });
+                failResponse(res, { code: StatusEnum.ServerError, msg: "文件传输中丢失信息" });
                 fs.remove(file.path);
             }
         }
@@ -31,7 +34,7 @@ export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next
         if (dir) {
             await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
         }
-        res.status(StatusEnum.OK).json(null);
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -44,11 +47,13 @@ export const uploadAvatar: PostHandler = async (req, res, next) => {
             const fileName = file.originalname;
             const hash = await fileHash(file.path);
             if (hash == filenameSlice(fileName).prefix) {
-                res.status(StatusEnum.OK).json({
-                    imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + fileName,
+                successResponse(res, {
+                    data: {
+                        imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + fileName,
+                    },
                 });
             } else {
-                res.status(StatusEnum.ServerError).json({ error: "文件传输中丢失信息", isShow: true });
+                failResponse(res, { code: StatusEnum.ServerError, msg: "文件传输中丢失信息" });
                 fs.remove(file.path);
             }
         }

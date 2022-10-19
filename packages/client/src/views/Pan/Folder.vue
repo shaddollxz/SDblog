@@ -141,8 +141,12 @@ async function downloadFile(
     type: DownloadFileTypeEnum = DownloadFileTypeEnum.file
 ) {
     Message.success("开始下载文件：" + name);
-    const res = await downloadFileApi({ hash, type: type ?? DownloadFileTypeEnum.file });
-    downloadWithFetch(name, res);
+    try {
+        const res = await downloadFileApi({ hash, type: type ?? DownloadFileTypeEnum.file });
+        downloadWithFetch(name, res);
+    } catch (e) {
+        Message.error("获取文件失败");
+    }
     //* 下面是进度条的监听 但是浏览器本来就会记录 不如不要了
     // const { reader, size } = await downloadWithFetch(name, res);
     // if (reader) {
@@ -159,7 +163,7 @@ async function downloadFolder(name: string, id: string) {
     const intervalFunc = await panStore.zipFolder({ folders: [{ name, id }] });
     const interval = window.setInterval(async () => {
         const { data } = await intervalFunc();
-        if (data.hash) {
+        if (data?.hash) {
             window.clearInterval(interval);
             downloadFile(data.hash, name + ".zip", DownloadFileTypeEnum.folder);
         }

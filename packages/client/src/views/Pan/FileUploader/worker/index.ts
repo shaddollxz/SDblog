@@ -76,16 +76,15 @@ function uploadChunk({
     parallelPool.end(hash);
 }
 
+/** 轮询服务器是否合并文件结束 */
 async function isConcatFileEnd(hash: string) {
     return new Promise<string>((resolve) => {
         const interval = window.setInterval(async () => {
             try {
-                const {
-                    data: { folderJson },
-                } = await isUploadEndApi({ hash: hash });
-                if (folderJson) {
+                const { data } = await isUploadEndApi({ hash: hash });
+                if (data?.folderJson) {
                     window.clearInterval(interval);
-                    resolve(folderJson);
+                    resolve(data.folderJson);
                 }
             } catch {
                 window.clearInterval(interval);

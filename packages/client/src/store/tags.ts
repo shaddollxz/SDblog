@@ -14,6 +14,7 @@ export const useTagStore = defineStore("tags", {
     actions: {
         getAllTag() {
             getAllTagApi().then(({ data }) => {
+                console.log(data);
                 this.$state.tagList = data;
             });
         },

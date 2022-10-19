@@ -1,11 +1,8 @@
 import axios from "../axios";
-import type { AxiosPromise } from "axios";
 import type {
     WriteBlogOptions,
     BlogDetailInfo,
     BlogListItemInfo,
-    Success,
-    Faild,
     TimeLineItemInfo,
     HomePageOptions,
     SearchBlogByKeywordOptions,
@@ -13,10 +10,8 @@ import type {
 } from "@blog/server";
 
 // 主页博客列表
-export function homePageBlogList(
-    options: HomePageOptions["page"]
-): AxiosPromise<{ blogList: BlogListItemInfo[]; allPage: number }> {
-    return axios({
+export function homePageBlogList(options: HomePageOptions["page"]) {
+    return axios<{ blogList: BlogListItemInfo[]; allPage: number }>({
         method: "get",
         url: "blog/homePage",
         params: {
@@ -26,18 +21,16 @@ export function homePageBlogList(
 }
 
 // 主页时间线
-export function timeLine(): AxiosPromise<TimeLineItemInfo[]> {
-    return axios({
+export function timeLine() {
+    return axios<TimeLineItemInfo[]>({
         method: "get",
         url: "blog/timeLine",
     });
 }
 
 // 关键字查找博客
-export function searchBlogByKeyWord(
-    options: SearchBlogByKeywordOptions
-): AxiosPromise<{ blogList: BlogListItemInfo[]; allPage: number }> {
-    return axios({
+export function searchBlogByKeyWord(options: SearchBlogByKeywordOptions) {
+    return axios<{ blogList: BlogListItemInfo[]; allPage: number }>({
         method: "get",
         url: `blog/search`,
         params: options,
@@ -45,10 +38,8 @@ export function searchBlogByKeyWord(
 }
 
 // 标签查找博客
-export function searchBlogByTag(
-    options: SearchBlogByTagOptions
-): AxiosPromise<{ blogList: BlogListItemInfo[]; allPage: number }> {
-    return axios({
+export function searchBlogByTag(options: SearchBlogByTagOptions) {
+    return axios<{ blogList: BlogListItemInfo[]; allPage: number }>({
         method: "get",
         url: `blog/search`,
         params: options,
@@ -56,15 +47,15 @@ export function searchBlogByTag(
 }
 
 // 博客详情
-export function blogDetail(id: string): AxiosPromise<BlogDetailInfo> {
-    return axios({
+export function blogDetail(id: string) {
+    return axios<BlogDetailInfo>({
         method: "get",
         url: "blog/detail/" + id,
     });
 }
 
 // 写博客
-export function writeBlog(options: WriteBlogOptions["blogMsg"]): AxiosPromise<Success | Faild> {
+export function writeBlog(options: WriteBlogOptions["blogMsg"]) {
     return axios({
         method: "post",
         url: "blog",
@@ -75,7 +66,7 @@ export function writeBlog(options: WriteBlogOptions["blogMsg"]): AxiosPromise<Su
 }
 
 // 删除博客
-export function deleteBlog(blogId: string): AxiosPromise<Success | Faild> {
+export function deleteBlog(blogId: string) {
     return axios({
         method: "delete",
         url: "blog/" + blogId,
@@ -83,10 +74,7 @@ export function deleteBlog(blogId: string): AxiosPromise<Success | Faild> {
 }
 
 // 修改博客
-export function updateBlog(
-    blogId: string,
-    options: WriteBlogOptions["blogMsg"]
-): AxiosPromise<Success | Faild> {
+export function updateBlog(blogId: string, options: WriteBlogOptions["blogMsg"]) {
     return axios({
         method: "put",
         url: "blog/" + blogId,
@@ -97,7 +85,7 @@ export function updateBlog(
 }
 
 // 点赞
-export function like(blogId: string): AxiosPromise<Success | Faild> {
+export function like(blogId: string) {
     return axios({
         method: "put",
         url: "blog/like/" + blogId,
@@ -105,7 +93,7 @@ export function like(blogId: string): AxiosPromise<Success | Faild> {
 }
 
 // 点踩
-export function unlike(blogId: string): AxiosPromise<Success | Faild> {
+export function unlike(blogId: string) {
     return axios({
         method: "put",
         url: "blog/unlike" + blogId,

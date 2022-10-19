@@ -1,5 +1,4 @@
 import axios from "../axios";
-import type { AxiosPromise } from "axios";
 import type {
     PanListRes,
     CreateFolderOption,
@@ -18,45 +17,43 @@ import type {
     ZipMultiOption,
     ZipMultiRes,
     DownloadFileOption,
-    Success,
-    Faild,
 } from "@blog/server";
 import Token from "@/storages/token";
 
 // #region folder
-export function panFolder(): AxiosPromise<PanListRes> {
-    return axios({
+export function panFolder() {
+    return axios<PanListRes>({
         method: "get",
         url: "pan/folder",
     });
 }
 
-export function createPanFolder(data: CreateFolderOption): AxiosPromise<PanListRes> {
-    return axios({
+export function createPanFolder(data: CreateFolderOption) {
+    return axios<PanListRes>({
         method: "post",
         url: "pan/folder",
         data,
     });
 }
 
-export function removePanFolder(data: RemoveFolderOption): AxiosPromise<PanListRes> {
-    return axios({
+export function removePanFolder(data: RemoveFolderOption) {
+    return axios<PanListRes>({
         method: "delete",
         url: "pan/folder",
         data,
     });
 }
 
-export function movePanFolder(data: MoveFolderOption): AxiosPromise<PanListRes> {
-    return axios({
+export function movePanFolder(data: MoveFolderOption) {
+    return axios<PanListRes>({
         method: "put",
         url: "pan/folder/move",
         data,
     });
 }
 
-export function renamePanFolder(data: RenameFolderOption): AxiosPromise<PanListRes> {
-    return axios({
+export function renamePanFolder(data: RenameFolderOption) {
+    return axios<PanListRes>({
         method: "put",
         url: "pan/folder",
         data,
@@ -65,15 +62,15 @@ export function renamePanFolder(data: RenameFolderOption): AxiosPromise<PanListR
 // #endregion
 
 // #region file
-export function removePanFile(data: RemoveFileOption): AxiosPromise<PanListRes> {
-    return axios({
+export function removePanFile(data: RemoveFileOption) {
+    return axios<PanListRes>({
         method: "delete",
         url: "pan/file",
         data,
     });
 }
 
-export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Faild> {
+export function renamePanFile(data: RenameFileOption) {
     return axios({
         method: "put",
         url: "pan/file/name",
@@ -81,7 +78,7 @@ export function renamePanFile(data: RenameFileOption): AxiosPromise<Success | Fa
     });
 }
 
-export function editDesciption(data: EditDesciption): AxiosPromise<Success | Faild> {
+export function editDesciption(data: EditDesciption) {
     return axios({
         method: "put",
         url: "pan/file/desc",
@@ -89,23 +86,23 @@ export function editDesciption(data: EditDesciption): AxiosPromise<Success | Fai
     });
 }
 
-export function movePanFile(data: MoveFileOption): AxiosPromise<PanListRes> {
-    return axios({
+export function movePanFile(data: MoveFileOption) {
+    return axios<PanListRes>({
         method: "put",
         url: "pan/file/move",
         data,
     });
 }
 
-export function uploadPanFileStart(data: UploadFileStartOption): AxiosPromise<UploadFileStartRes> {
-    return axios({
+export function uploadPanFileStart(data: UploadFileStartOption) {
+    return axios<UploadFileStartRes>({
         method: "post",
         url: "pan/file/start",
         data,
     });
 }
 
-export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>): AxiosPromise<Success | Faild> {
+export function uploadPanFileChunk(data: FormDataT<UploadFileChunkOption>) {
     return axios({
         method: "post",
         url: "pan/file/chunk",
@@ -121,24 +118,24 @@ export function uploadPanFileEnd(data: UploadFileEndOption) {
     });
 }
 
-export function isUploadEnd(data: IsUploadEnd): AxiosPromise<PanListRes> {
-    return axios({
+export function isUploadEnd(data: IsUploadEnd) {
+    return axios<PanListRes>({
         method: "get",
         url: "pan/file/end",
         params: { ...data, date: Date.now() },
     });
 }
 
-export function zipMulti(data: ZipMultiOption): AxiosPromise<ZipMultiRes> {
-    return axios({
+export function zipMulti(data: ZipMultiOption) {
+    return axios<ZipMultiRes>({
         method: "post",
         url: "pan/folder/zip",
         data,
     });
 }
 
-export function isZipEnd(zipId: string): AxiosPromise<{ hash: string }> {
-    return axios({
+export function isZipEnd(zipId: string) {
+    return axios<{ hash: string }>({
         method: "get",
         url: "pan/folder/zip",
         params: { zipId },

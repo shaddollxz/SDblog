@@ -39,10 +39,10 @@ export interface GetVerifycodeOptions {
 
 export type ShaddollxzInfo = UserInfo & { blogCount: number };
 
-export interface EnableAuthority {
+export interface EnableAuthorityOptions {
     userId: string;
     auth: AuthorityEnum;
 }
-export type DisableAuthority = EnableAuthority;
+export type DisableAuthorityOptions = EnableAuthorityOptions;
 
 export {};

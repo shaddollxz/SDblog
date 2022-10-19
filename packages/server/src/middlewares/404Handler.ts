@@ -1,9 +1,8 @@
 import { StatusEnum } from "../typings/enum";
+import { failResponse } from "../utils/createResponse";
 
 const notFound: MiddleWare = (req, res, next) => {
-    res.status(StatusEnum.NotFound).json({
-        error: "not found",
-    });
+    failResponse(res, { code: StatusEnum.NotFound, msg: "not found" });
 };
 
 export default notFound;

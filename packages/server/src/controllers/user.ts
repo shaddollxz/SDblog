@@ -6,14 +6,15 @@ import type {
     RegisterOptions,
     RetrieveOptions,
     UserInfo,
-    EnableAuthority,
-    DisableAuthority,
+    EnableAuthorityOptions,
+    DisableAuthorityOptions,
 } from "../typings/interface/user";
 import { sign } from "../utils/jwt";
 import md5 from "../utils/md5";
 import { sendVerifyCodeMail } from "../utils/sendMail";
 import { addAuthority, subAuthority } from "../utils/authority";
 import { v4 as uuid } from "uuid";
+import { successResponse, failResponse } from "../utils/createResponse";
 
 /** 登录 */
 export const login: PostHandler<LoginOptions> = async (req, res, next) => {
@@ -38,7 +39,10 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
         }
         throw "邮箱不正确";
     } catch (e) {
-        res.status(StatusEnum.Forbidden).json({ error: e, isShow: true });
+        failResponse(res, {
+            code: StatusEnum.Forbidden,
+            msg: e as string,
+        });
     }
 };
 
@@ -64,7 +68,7 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
         const verifycode = new VerifycodeDB({ email, verifycode: randomCode });
         await verifycode.save();
 
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -81,10 +85,16 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
             res.status(StatusEnum.OK).json({ success: true });
             data.delete();
         } else {
-            res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });
+            failResponse(res, {
+                code: StatusEnum.Forbidden,
+                msg: "验证码不正确",
+            });
         }
     } catch (e) {
-        res.status(StatusEnum.Forbidden).json({ error: "邮箱已注册", isShow: true });
+        failResponse(res, {
+            code: StatusEnum.Forbidden,
+            msg: "邮箱已注册",
+        });
     }
 };
 
@@ -94,9 +104,9 @@ export const relogin: GetHandler = async (req, res, next) => {
         const userData = await UserDB.findById(req.body._id);
         if (userData) {
             const token = sign({ _id: userData._id, authority: userData.authority });
-            res.status(StatusEnum.OK).json({ userData, token });
+            successResponse(res, { data: { userData, token } });
         } else {
-            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
+            failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
         }
     } catch (e) {
         next(e);
@@ -108,9 +118,9 @@ export const userDetail: GetHandler<any, { userId: string }> = async (req, res, 
     try {
         const userData = await UserDB.findById(req.params.userId);
         if (userData) {
-            res.status(StatusEnum.OK).json({ ...userData.toJSON() });
+            successResponse(res, { data: { ...userData.toJSON() } });
         } else {
-            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
+            failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
         }
     } catch (e) {
         next(e);
@@ -125,7 +135,7 @@ export const updateUserInfo: PutHandler<UserInfo> = async (req, res, next) => {
             { $set: { ...req.body } },
             { new: true }
         );
-        res.status(StatusEnum.OK).json({ userData });
+        successResponse(res, { data: userData });
     } catch (e) {
         next(e);
     }
@@ -145,12 +155,12 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
                     { new: true }
                 );
                 const token = sign({ _id: user!._id, authority: user!.authority });
-                return res.status(StatusEnum.OK).json({ userData: user, token });
+                return successResponse(res, { data: { userData: user, token } });
             } else {
-                res.status(StatusEnum.Forbidden).json({ error: "验证码不正确", isShow: true });
+                failResponse(res, { code: StatusEnum.Forbidden, msg: "验证码不正确" });
             }
         } else {
-            res.status(StatusEnum.Forbidden).json({ error: "验证码错误或失效", isShow: true });
+            failResponse(res, { code: StatusEnum.Forbidden, msg: "验证码错误或失效" });
         }
     } catch (e) {
         next(e);
@@ -158,7 +168,7 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
 };
 
 /** 添加或删除权限 */
-export const enableAuthority: PutHandler<EnableAuthority> = async (req, res, next) => {
+export const EnableAuthorityOptions: PutHandler<EnableAuthorityOptions> = async (req, res, next) => {
     try {
         const { userId, auth } = req.body;
         const user = await UserDB.findById(userId);
@@ -173,15 +183,15 @@ export const enableAuthority: PutHandler<EnableAuthority> = async (req, res, nex
             const authority = addAuthority(user.authority, auth);
             user.authority = authority;
             await user.save();
-            res.status(StatusEnum.OK).json({ success: true });
+            successResponse(res);
         } else {
-            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
+            failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
         }
     } catch (e) {
         next(e);
     }
 };
-export const disableAuthority: PutHandler<DisableAuthority> = async (req, res, next) => {
+export const DisableAuthorityOptions: PutHandler<DisableAuthorityOptions> = async (req, res, next) => {
     try {
         const { userId, auth } = req.body;
         const user = await UserDB.findById(userId);
@@ -189,9 +199,9 @@ export const disableAuthority: PutHandler<DisableAuthority> = async (req, res, n
             const authority = subAuthority(user.authority, auth);
             user.authority = authority;
             await user.save();
-            res.status(StatusEnum.OK).json({ success: true });
+            successResponse(res);
         } else {
-            res.status(StatusEnum.NotFound).json({ error: "没有该用户", isShow: true });
+            failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
         }
     } catch (e) {
         next(e);

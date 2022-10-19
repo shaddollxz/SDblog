@@ -1,12 +1,13 @@
 import { TagDB } from "../db";
 import { StatusEnum } from "../typings/enum";
 import type { CreateTagOptions } from "../typings/interface/tag";
+import { successResponse, failResponse } from "../utils/createResponse";
 
 /** 获取所有标签 */
 export const getAll: GetHandler = async (req, res, next) => {
     try {
         let detail = await TagDB.find();
-        res.status(StatusEnum.OK).json(detail);
+        successResponse(res, { data: detail });
     } catch (e) {
         next(e);
     }
@@ -23,7 +24,7 @@ export const create: PostHandler<CreateTagOptions> = async (req, res, next) => {
         }
         const tag = new TagDB({ value: req.body.value, creater: req.body._id });
         await tag.save();
-        res.status(StatusEnum.OK).json(tag);
+        successResponse(res, { data: tag });
     } catch (e) {
         next(e);
     }

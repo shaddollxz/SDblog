@@ -1,18 +1,17 @@
 import axios from "../axios";
-import type { AxiosPromise } from "axios";
 import { isEmpty } from "sdt3";
-import type { ReplyItemInfo, ReplyListInfo, WriteReplyOptions, Success, Faild } from "@blog/server";
+import type { ReplyListInfo, WriteReplyOptions } from "@blog/server";
 
 // 发送回复
-export function writeReply(datas: WriteReplyOptions): AxiosPromise<ReplyListInfo> {
+export function writeReply(datas: WriteReplyOptions) {
     if (isEmpty(datas.visitorInfo)) {
-        return axios({
+        return axios<ReplyListInfo>({
             method: "post",
             url: "reply/user",
             data: datas,
         });
     } else {
-        return axios({
+        return axios<ReplyListInfo>({
             method: "post",
             url: "reply/visitor",
             data: datas,
@@ -21,15 +20,15 @@ export function writeReply(datas: WriteReplyOptions): AxiosPromise<ReplyListInfo
 }
 
 // 回复列表
-export function replyList(replyMainId: string): AxiosPromise<ReplyListInfo> {
-    return axios({
+export function replyList(replyMainId: string) {
+    return axios<ReplyListInfo>({
         method: "get",
         url: "reply/replyList/" + replyMainId,
     });
 }
 
 // 回复点赞
-export function likeReply(replyId: string): AxiosPromise<Success | Faild> {
+export function likeReply(replyId: string) {
     return axios({
         method: "put",
         url: "reply/" + replyId,

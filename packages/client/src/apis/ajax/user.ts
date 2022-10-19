@@ -1,5 +1,4 @@
 import axios from "../axios";
-import type { AxiosPromise } from "axios";
 import type {
     UserInfo,
     LoginOptions,
@@ -7,16 +6,14 @@ import type {
     GetVerifycodeOptions,
     RegisterOptions,
     RetrieveOptions,
-    EnableAuthority,
-    DisableAuthority,
-    Success,
-    Faild,
+    EnableAuthorityOptions,
+    DisableAuthorityOptions,
 } from "@blog/server";
 import { VerifycodeEnum } from "@blog/server";
 
 // 登录
-export function login(formData: LoginOptions): AxiosPromise<LoginRes> {
-    return axios({
+export function login(formData: LoginOptions) {
+    return axios<LoginRes>({
         method: "post",
         url: "user/login",
         data: formData,
@@ -24,7 +21,7 @@ export function login(formData: LoginOptions): AxiosPromise<LoginRes> {
 }
 
 // 发送注册的验证码
-export function sendRegisterEmail(email: GetVerifycodeOptions["email"]): AxiosPromise<Success | Faild> {
+export function sendRegisterEmail(email: GetVerifycodeOptions["email"]) {
     return axios({
         method: "get",
         url: "user/verifycode",
@@ -37,7 +34,7 @@ export function sendRegisterEmail(email: GetVerifycodeOptions["email"]): AxiosPr
 }
 
 // 发送找回密码的验证码
-export function sendRetrieveEmail(email: GetVerifycodeOptions["email"]): AxiosPromise<Success | Faild> {
+export function sendRetrieveEmail(email: GetVerifycodeOptions["email"]) {
     return axios({
         method: "get",
         url: "user/verifycode",
@@ -50,7 +47,7 @@ export function sendRetrieveEmail(email: GetVerifycodeOptions["email"]): AxiosPr
 }
 
 // 注册
-export function register(formData: RegisterOptions): AxiosPromise<Success | Faild> {
+export function register(formData: RegisterOptions) {
     return axios({
         method: "post",
         url: "user",
@@ -59,16 +56,16 @@ export function register(formData: RegisterOptions): AxiosPromise<Success | Fail
 }
 
 // 获取用户信息
-export function relogin(): AxiosPromise<LoginRes> {
-    return axios({
+export function relogin() {
+    return axios<LoginRes>({
         method: "get",
         url: "user/relogin",
     });
 }
 
 // 修改个人信息
-export function updateUserInfo(userInfo: Partial<UserInfo>): AxiosPromise<{ userData: UserInfo }> {
-    return axios({
+export function updateUserInfo(userInfo: Partial<UserInfo>) {
+    return axios<{ userData: UserInfo }>({
         method: "put",
         url: "user/",
         data: userInfo,
@@ -76,22 +73,22 @@ export function updateUserInfo(userInfo: Partial<UserInfo>): AxiosPromise<{ user
 }
 
 // 修改密码
-export function changePassWord(data: RetrieveOptions): AxiosPromise<{ userData: UserInfo; token: string }> {
-    return axios({
+export function changePassWord(data: RetrieveOptions) {
+    return axios<{ userData: UserInfo; token: string }>({
         method: "put",
         url: "user/retrieve",
         data,
     });
 }
 
-export function enableAuthority(data: EnableAuthority) {
+export function EnableAuthorityOptions(data: EnableAuthorityOptions) {
     return axios({
         method: "put",
         url: "user/authority/enable",
         data,
     });
 }
-export function disableAuthority(data: DisableAuthority) {
+export function DisableAuthorityOptions(data: DisableAuthorityOptions) {
     return axios({
         method: "put",
         url: "user/authority/disable",

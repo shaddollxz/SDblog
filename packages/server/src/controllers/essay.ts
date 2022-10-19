@@ -1,5 +1,6 @@
 import { EssayDB } from "../db";
 import { StatusEnum } from "../typings/enum";
+import { successResponse, failResponse } from "../utils/createResponse";
 import type {
     EssayListOptions,
     LikeEssayOptions,
@@ -19,7 +20,7 @@ export const essayList: GetHandler<EssayListOptions> = async (req, res, next) =>
             .sort({ createdAt: -1 })
             .populate("author");
 
-        res.status(StatusEnum.OK).json({ essayList, allPage });
+        successResponse(res, { data: { essayList, allPage } });
     } catch (e) {
         next(e);
     }
@@ -50,7 +51,7 @@ export const remove: DeleteHandler<RemoveEssayOptions> = async (req, res, next) 
 export const like: PutHandler<LikeEssayOptions> = async (req, res, next) => {
     try {
         await EssayDB.findByIdAndUpdate(req.body.essayId, { $inc: { likes: 1 } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }

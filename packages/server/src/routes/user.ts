@@ -13,7 +13,17 @@ router.get("/verifycode", User.getVerifycode); // 发送验证码
 router.post("/", register, User.register); // 注册
 router.put("/", analyzeToken, User.updateUserInfo); // 修改个人信息
 router.put("/retrieve", User.retrieve); // 修改密码
-router.put("/authority/enable", analyzeToken, haveAuthority(AuthorityEnum.admin), User.enableAuthority);
-router.put("/authority/disable", analyzeToken, haveAuthority(AuthorityEnum.admin), User.disableAuthority);
+router.put(
+    "/authority/enable",
+    analyzeToken,
+    haveAuthority(AuthorityEnum.admin),
+    User.EnableAuthorityOptions
+);
+router.put(
+    "/authority/disable",
+    analyzeToken,
+    haveAuthority(AuthorityEnum.admin),
+    User.DisableAuthorityOptions
+);
 
 export default router;

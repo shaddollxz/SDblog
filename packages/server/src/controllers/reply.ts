@@ -1,11 +1,14 @@
 import { BlogDB, EssayDB, ReplyDB } from "../db";
 import { ReplyEnum, StatusEnum } from "../typings/enum";
 import type { WriteReplyOptions } from "../typings/interface/reply";
+import { successResponse, failResponse } from "../utils/createResponse";
 
 /** 评论列表 */
 export const replyList: GetHandler<any, { replyMainId: string }> = async (req, res, next) => {
     try {
-        res.status(StatusEnum.OK).json(await ReplyDB.findReply(req.params.replyMainId));
+        successResponse(res, {
+            data: await ReplyDB.findReply(req.params.replyMainId),
+        });
     } catch (e) {
         next(e);
     }
@@ -26,7 +29,9 @@ export const userWriteReply: PostHandler<WriteReplyOptions> = async (req, res, n
             return res.status(StatusEnum.ParameterNotAllow).json({ error: "未知类型" });
         }
 
-        res.status(StatusEnum.OK).json(await ReplyDB.findReply(replyMainId));
+        successResponse(res, {
+            data: await ReplyDB.findReply(replyMainId),
+        });
     } catch (e) {
         next(e);
     }
@@ -47,7 +52,9 @@ export const visitorWriteReply: PostHandler<WriteReplyOptions> = async (req, res
             return res.status(StatusEnum.ParameterNotAllow).json({ error: "未知类型" });
         }
 
-        res.status(StatusEnum.OK).json(await ReplyDB.findReply(replyMainId));
+        successResponse(res, {
+            data: await ReplyDB.findReply(replyMainId),
+        });
     } catch (e) {
         next(e);
     }
@@ -57,7 +64,7 @@ export const visitorWriteReply: PostHandler<WriteReplyOptions> = async (req, res
 export const like: GetHandler<any, { replyId: string }> = async (req, res, next) => {
     try {
         await ReplyDB.findByIdAndUpdate(req.params.replyId, { $inc: { likes: 1 } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -68,7 +75,7 @@ export const remove: DeleteHandler<any, { replyId: string }> = async (req, res, 
     try {
         const deleteData = await ReplyDB.findByIdAndDelete(req.params.replyId);
         await EssayDB.findByIdAndUpdate(deleteData?._id, { $inc: { replyCount: -1 } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }

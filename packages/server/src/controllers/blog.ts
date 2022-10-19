@@ -1,5 +1,5 @@
 import { BlogDB } from "../db";
-import { StatusEnum, AuthorityEnum } from "../typings/enum";
+import { StatusEnum } from "../typings/enum";
 import type {
     BlogDetailInfo,
     BlogListItemInfo,
@@ -9,7 +9,7 @@ import type {
     WriteBlogOptions,
 } from "../typings/interface/blog";
 import deleteRepeat from "../utils/deleteRepeat";
-import { authorityCheck } from "../utils/authority";
+import { successResponse, failResponse } from "../utils/createResponse";
 const blogPageCount = +process.env.blogPageCount;
 
 /** 获得主页博客列表 */
@@ -35,12 +35,16 @@ export const homePage: GetHandler<HomePageOptions> = async (req, res, next) => {
             return result;
         });
 
-        res.status(StatusEnum.OK).json({
-            blogList: blogListSend,
-            allPage,
+        successResponse(res, {
+            data: {
+                blogList: blogListSend,
+                allPage,
+            },
         });
     } catch (e) {
-        res.status(StatusEnum.OK).json({ blogList: [], allPage: undefined });
+        successResponse(res, {
+            data: { blogList: [], allPage: undefined },
+        });
     }
 };
 
@@ -48,9 +52,9 @@ export const homePage: GetHandler<HomePageOptions> = async (req, res, next) => {
 export const timeLine: GetHandler = async (req, res, next) => {
     try {
         const timeLine = await BlogDB.find().sort({ createdAt: -1 }).select({ createdAt: 1, title: 1 });
-        res.status(StatusEnum.OK).json(timeLine);
+        successResponse(res, { data: timeLine });
     } catch (e) {
-        res.status(StatusEnum.OK).json([]);
+        successResponse(res, { data: [] });
     }
 };
 
@@ -63,9 +67,9 @@ export const getDetail: GetHandler<any, { blogId: string }> = async (req, res, n
         })
             .populate("author")
             .populate("tags");
-        res.status(StatusEnum.OK).json({ ...detail!.toJSON() });
+        successResponse(res, { data: { ...detail!.toJSON() } });
     } catch (e) {
-        res.status(StatusEnum.NotFound).json({ error: "没有找到该博客", isShow: true });
+        failResponse(res, { code: StatusEnum.NotFound, msg: "没有找到该博客" });
     }
 };
 
@@ -113,9 +117,16 @@ export const search: GetHandler<SearchBlogByKeywordOptions & SearchBlogByTagOpti
             delete result.content;
             return result as BlogListItemInfo;
         });
-        res.status(StatusEnum.OK).json({ blogList, allPage });
+        successResponse(res, {
+            data: { blogList, allPage },
+        });
     } catch (e) {
-        res.status(StatusEnum.OK).json({ blogList: [], allPage: undefined });
+        successResponse(res, {
+            data: {
+                blogList: [],
+                allPage: undefined,
+            },
+        });
     }
 };
 
@@ -125,7 +136,7 @@ export const write: PostHandler<WriteBlogOptions> = async (req, res, next) => {
         const blog = new BlogDB({ ...req.body.blogMsg, author: req.body._id });
         await blog.save();
 
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -136,7 +147,7 @@ export const remove: DeleteHandler<any, { blogId: string }> = async (req, res, n
     try {
         await BlogDB.findByIdAndRemove(req.params.blogId);
 
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -146,7 +157,7 @@ export const remove: DeleteHandler<any, { blogId: string }> = async (req, res, n
 export const update: PutHandler<WriteBlogOptions, { blogId: string }> = async (req, res, next) => {
     try {
         await BlogDB.findByIdAndUpdate(req.params.blogId, { $set: { ...req.body.blogMsg } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -156,7 +167,7 @@ export const update: PutHandler<WriteBlogOptions, { blogId: string }> = async (r
 export const like: PutHandler<any, { blogId: string }> = async (req, res, next) => {
     try {
         await BlogDB.findByIdAndUpdate(req.params.blogId, { $inc: { likes: 1 } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -166,7 +177,7 @@ export const like: PutHandler<any, { blogId: string }> = async (req, res, next) 
 export const unlike: PutHandler<any, { blogId: string }> = async (req, res, next) => {
     try {
         await BlogDB.findByIdAndUpdate(req.params.blogId, { $inc: { likes: -1 } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }

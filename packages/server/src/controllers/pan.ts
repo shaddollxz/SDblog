@@ -21,13 +21,14 @@ import type {
 } from "../typings/interface/pan";
 import Folder from "../utils/Folder";
 import { filenameMsg } from "../utils/formateFilename";
+import { successResponse, failResponse } from "../utils/createResponse";
 import { useConcatTempFilesWorker, useZipWorker } from "../workers";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
     try {
         const { folderObj } = await PanDB.findFolderWithFile(req.body._id!);
-        res.status(StatusEnum.OK).json({ folderJson: folderObj });
+        successResponse(res, { data: { folderJson: folderObj } });
     } catch (e) {
         next(e);
     }
@@ -113,7 +114,7 @@ export const renameFile: PostHandler<RenameFileOption> = async (req, res, next) 
     try {
         const { fileId, name } = req.body;
         await PanFileDB.findByIdAndUpdate(fileId, { $set: { name } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -138,7 +139,7 @@ export const removeFile: DeleteHandler<RemoveFileOption> = async (req, res, next
             const file = await PanFileDB.findOne({ _id: fileId, belongId: _id });
             file && (await file.deleteFile(_id!));
         }
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -148,7 +149,7 @@ export const editDesciption: PostHandler<EditDesciption> = async (req, res, next
     try {
         const { fileId, desciption } = req.body;
         await PanFileDB.findByIdAndUpdate(fileId, { $set: { desciption } });
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -201,7 +202,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
                         needChunk.push(i);
                     }
                 }
-                return res.status(StatusEnum.OK).json({ needChunk });
+                return successResponse(res, { data: { needChunk } });
             }
         }
     } catch (e) {
@@ -217,7 +218,7 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
             fileName,
         });
         await tempFile.save();
-        res.status(StatusEnum.OK).json({ success: true });
+        successResponse(res);
     } catch (e) {
         next(e);
     }
@@ -225,7 +226,7 @@ export const uploadChunk: PutHandler<UploadFileChunkOption> = async (req, res, n
 
 export const uploadEnd: PostHandler<UploadFileEndOption> = async (req, res, next) => {
     try {
-        res.status(StatusEnum.NoResult).json({ success: true });
+        successResponse(res, { code: StatusEnum.NoResult });
         const { _id, name, folderId, hash } = req.body;
         const files = await TempFileDB.find({ hash });
         try {
@@ -284,7 +285,7 @@ export const isUploadEnd: GetHandler<IsUploadEnd> = async (req, res, next) => {
                 });
             }
         } else {
-            res.status(StatusEnum.OK).json({ success: false });
+            successResponse(res);
         }
     } catch (e) {
         next(e);
@@ -296,9 +297,9 @@ export const zipMulti: PostHandler<ZipMultiOption> = async (req, res, next) => {
         const { _id, folderPaths, files, zipId } = req.body;
         const doc = await TempFileDB.findOne({ name: zipId });
         if (doc && (await ensureDBFile(path.resolve(process.env.TEMP_PATH, doc.hash), doc))) {
-            return res.status(StatusEnum.NoResult).json({ success: true });
+            successResponse(res, { code: StatusEnum.NoResult });
         } else {
-            res.status(StatusEnum.NoResult).json({ success: true });
+            successResponse(res, { code: StatusEnum.NoResult });
             const folderDoc = await PanDB.findFolderWithFile(_id!);
             const { hash } = await useZipWorker({
                 folder: folderDoc.folderObj,
@@ -322,9 +323,9 @@ export const isZipEnd: GetHandler<{ zipId: string }> = async (req, res, next) =>
         const { zipId } = req.query;
         const doc = await TempFileDB.findOne({ name: zipId });
         if (doc) {
-            res.status(StatusEnum.OK).json({ hash: doc.hash });
+            successResponse(res, { data: { hash: doc.hash } });
         } else {
-            res.status(StatusEnum.OK).json({ success: false });
+            successResponse(res);
         }
     } catch (e) {
         next(e);
@@ -342,10 +343,10 @@ export const downloadFile: GetHandler<DownloadFileOption> = async (req, res, nex
         if (await fs.pathExists(target)) {
             res.status(StatusEnum.OK).sendFile(target);
         } else {
-            res.status(StatusEnum.NotFound).json({ msg: "文件已丢失" });
+            failResponse(res, { code: StatusEnum.NotFound, msg: "文件已丢失" });
         }
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(StatusEnum.NotFound).send(" ");
     }
 };
