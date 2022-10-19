@@ -4,8 +4,8 @@ export const enum ReplyEnum {
 }
 
 export const enum VerifycodeEnum {
-    register,
-    retrieve,
+    register, // 注册
+    retrieve, // 找回密码
 }
 
 export const enum DownloadFileTypeEnum {

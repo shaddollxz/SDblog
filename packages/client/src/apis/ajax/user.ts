@@ -1,5 +1,6 @@
 import axios from "../axios";
 import type {
+    ShaddollxzInfo,
     UserInfo,
     LoginOptions,
     LoginRes,
@@ -10,6 +11,13 @@ import type {
     DisableAuthorityOptions,
 } from "@blog/server";
 import { VerifycodeEnum } from "@blog/server";
+
+export function shaddollxzDetail() {
+    return axios<ShaddollxzInfo>({
+        method: "get",
+        url: "shaddollxz",
+    });
+}
 
 // 登录
 export function login(formData: LoginOptions) {

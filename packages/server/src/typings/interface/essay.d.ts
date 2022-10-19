@@ -8,6 +8,7 @@ export type EssayInfo = Omit<SchemaToInfo<Essay>, "author"> & { author: Author }
 // 获取随笔列表
 export interface EssayListOptions {
     page?: number;
+    pageCount?: number;
 }
 
 // 写随笔

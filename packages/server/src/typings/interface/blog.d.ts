@@ -26,16 +26,19 @@ export interface TimeLineItemInfo {
 // 主页
 export interface HomePageOptions {
     page?: number | NumberString;
+    pageCount?: number;
 }
 
 // 查找博客
 export interface SearchBlogByTagOptions {
     tag: string;
     page: number | NumberString;
+    pageCount?: number;
 }
 export interface SearchBlogByKeywordOptions {
     keyword: string;
     page: number | NumberString;
+    pageCount?: number;
 }
 
 export {};

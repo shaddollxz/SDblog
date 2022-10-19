@@ -1,4 +1,5 @@
 export {
+    shaddollxzDetail as shaddollxzDetailApi,
     login as loginApi,
     sendRegisterEmail as sendRegisterEmailApi,
     sendRetrieveEmail as sendRetrieveEmailApi,
@@ -63,5 +64,3 @@ export {
     isZipEnd as isZipEndApi,
     downloadFile as downloadFileApi,
 } from "./ajax/pan";
-
-export { default as shaddollxzDetailApi } from "./ajax/shaddollxz";

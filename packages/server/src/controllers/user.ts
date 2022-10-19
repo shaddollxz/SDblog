@@ -168,7 +168,7 @@ export const retrieve: PutHandler<RetrieveOptions> = async (req, res, next) => {
 };
 
 /** 添加或删除权限 */
-export const EnableAuthorityOptions: PutHandler<EnableAuthorityOptions> = async (req, res, next) => {
+export const enableAuthority: PutHandler<EnableAuthorityOptions> = async (req, res, next) => {
     try {
         const { userId, auth } = req.body;
         const user = await UserDB.findById(userId);
@@ -191,7 +191,7 @@ export const EnableAuthorityOptions: PutHandler<EnableAuthorityOptions> = async 
         next(e);
     }
 };
-export const DisableAuthorityOptions: PutHandler<DisableAuthorityOptions> = async (req, res, next) => {
+export const disableAuthority: PutHandler<DisableAuthorityOptions> = async (req, res, next) => {
     try {
         const { userId, auth } = req.body;
         const user = await UserDB.findById(userId);

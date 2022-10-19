@@ -16,7 +16,7 @@ export function homePageBlogList(options: HomePageOptions["page"]) {
         url: "blog/homePage",
         params: {
             page: options,
-        },
+        } as HomePageOptions,
     });
 }
 

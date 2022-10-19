@@ -7,16 +7,17 @@ import type {
     RemoveEssayOptions,
     WriteEssayOptions,
 } from "../typings/interface/essay";
-const essayPageCount = +process.env.essayPageCount;
 
 // 随笔列表
 export const essayList: GetHandler<EssayListOptions> = async (req, res, next) => {
     try {
         const page = req.query.page || 1;
-        const allPage = Math.ceil((await EssayDB.find().count()) / essayPageCount);
+        const pageCount = req.query.pageCount ?? 10;
+
+        const allPage = Math.ceil((await EssayDB.find().count()) / pageCount);
         const essayList = await EssayDB.find()
-            .skip((page - 1) * essayPageCount)
-            .limit(essayPageCount)
+            .skip((page - 1) * pageCount)
+            .limit(pageCount)
             .sort({ createdAt: -1 })
             .populate("author");
 

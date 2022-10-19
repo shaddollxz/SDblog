@@ -10,19 +10,19 @@ import type {
 } from "../typings/interface/blog";
 import deleteRepeat from "../utils/deleteRepeat";
 import { successResponse, failResponse } from "../utils/createResponse";
-const blogPageCount = +process.env.blogPageCount;
 
 /** 获得主页博客列表 */
 export const homePage: GetHandler<HomePageOptions> = async (req, res, next) => {
     try {
-        const page = req.query.page ?? 1;
+        const page = req.query.page || 1;
+        const pageCount = req.query.pageCount ?? 10;
 
-        let allPage = Math.ceil((await BlogDB.find().count()) / blogPageCount);
+        let allPage = Math.ceil((await BlogDB.find().count()) / pageCount);
 
         let blogList = await BlogDB.find()
             .sort({ createdAt: -1 })
-            .limit(blogPageCount)
-            .skip(((page as number) - 1) * blogPageCount)
+            .limit(pageCount)
+            .skip(((page as number) - 1) * pageCount)
             .populate("author")
             .populate("tags");
 
@@ -81,15 +81,16 @@ export const search: GetHandler<SearchBlogByKeywordOptions & SearchBlogByTagOpti
 ) => {
     try {
         const { tag, keyword, page } = req.query;
+        const pageCount = req.query.pageCount ?? 10;
         let searchResult;
         let blogList: BlogListItemInfo[];
         let allPage!: number;
         //todo tag查找
         if (tag) {
-            allPage = Math.ceil((await BlogDB.find({ tags: tag }).count()) / blogPageCount);
+            allPage = Math.ceil((await BlogDB.find({ tags: tag }).count()) / pageCount);
             searchResult = await BlogDB.find({ tags: tag })
-                .limit(blogPageCount)
-                .skip(((page as number) - 1) * blogPageCount)
+                .limit(pageCount)
+                .skip(((page as number) - 1) * pageCount)
                 .populate("author")
                 .populate("tags");
         } else if (keyword) {
