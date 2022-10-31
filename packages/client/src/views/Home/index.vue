@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="center">
-            <router-view></router-view>
+            <RouterView></RouterView>
         </div>
         <Left></Left>
         <Right></Right>

@@ -64,3 +64,5 @@ export {
     isZipEnd as isZipEndApi,
     downloadFile as downloadFileApi,
 } from "./ajax/pan";
+
+export { recruit as recruitApi } from "./ajax/arKnigth";

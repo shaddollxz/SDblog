@@ -5,6 +5,7 @@ import { AuthorityEnum } from "../typings/enum";
 const router = Router();
 
 import StaticRouter from "./static";
+import ArKnightRouter from "./arKnight";
 import BlogRouter from "./blog";
 import EssayRouter from "./essay";
 import PanRouter from "./pan";
@@ -13,6 +14,7 @@ import ShaddollxzRouter from "./shaddollxz";
 import TagRouter from "./tag";
 import UserRouter from "./user";
 
+router.use("/arKnight", ArKnightRouter);
 router.use("/blog", BlogRouter);
 router.use("/essay", EssayRouter);
 router.use("/pan", analyzeToken, haveAuthority(AuthorityEnum.pan_private), PanRouter);
