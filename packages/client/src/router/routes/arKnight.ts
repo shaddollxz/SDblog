@@ -2,10 +2,7 @@ export default <RouteItem>{
     path: "/arKnight",
     name: "arKnight",
     component: () => import("@views/ArKnight/index.vue"),
-    meta: {
-        title: "粥",
-        keepAlive: true,
-    },
+    meta: { title: "粥" },
     children: [
         {
             path: "recruit",

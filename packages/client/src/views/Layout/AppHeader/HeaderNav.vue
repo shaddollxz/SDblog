@@ -68,6 +68,7 @@ const navlist = [
         text: "小工具",
         children: [
             { text: "卡手率计算器", link: "/deckCalculator" },
+            { text: "抽卡记录", link: "/arKnight/recruit" },
             !isMobile || userSotre.authorityCheck(AuthorityEnum.pan_private)
                 ? { text: "网盘", link: "/pan" }
                 : null,

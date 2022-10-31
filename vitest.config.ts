@@ -11,4 +11,9 @@ export default defineConfig({
             "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
         ],
     },
+    resolve: {
+        alias: {
+            "@": "/packages/client/src",
+        },
+    },
 });

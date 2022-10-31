@@ -5,6 +5,7 @@ export interface RecruitOptions {
 }
 
 interface RecruitListItem {
+    ts: number; // 唯一标识符 不是时间戳
     pool: string;
     chars: { name: string; rarity: number; isNew: boolean }[];
 }
