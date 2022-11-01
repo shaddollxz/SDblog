@@ -6,7 +6,7 @@ export interface AKStorageInterface {
         channelId: number;
     };
     lastTs: number;
-    recruitData: {
+    starData: {
         [name: string]: {
             3: number;
             4: number;
@@ -14,7 +14,7 @@ export interface AKStorageInterface {
             6: number;
         };
     };
-    analyzed: {
+    lastSixData: {
         lastSix: number;
         lastSix_limit: Record<string, number>;
     }; // 只记录普通池和最后一个限定池的差六星记录

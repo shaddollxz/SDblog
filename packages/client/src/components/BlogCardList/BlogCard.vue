@@ -97,7 +97,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const headPic = ref<HTMLImageElement | null>(null);
+const headPic = shallowRef<HTMLImageElement | null>(null);
 
 let alreadyShow = false;
 function errorHandle(this: HTMLImageElement) {

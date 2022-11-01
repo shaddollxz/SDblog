@@ -3,7 +3,7 @@ import type { AKStorageInterface } from "@/storages/arKnight";
 import type { RecruitInfo } from "@blog/server";
 
 // 限定池
-export const limitList = ["轴承与火星aa"];
+export const limitList = ["斩荆辟路"];
 export const limitBgList = [""];
 
 interface Result {
@@ -102,13 +102,13 @@ export function analyzeData(list: RecruitInfo["list"]) {
             }
         }
     }
-
+    console.log(result);
     return result;
 }
 
-export function compareData(result: Result): Pick<AKStorageInterface, "analyzed" | "recruitData"> {
-    const recruitData = AKStorage.getItem("recruitData");
-    const analyzed = AKStorage.getItem("analyzed");
+export function compareData(result: Result): Pick<AKStorageInterface, "lastSixData" | "starData"> {
+    const recruitData = AKStorage.getItem("starData");
+    const analyzed = AKStorage.getItem("lastSixData");
 
     if (recruitData) {
         for (let key in result.counts) {
@@ -135,7 +135,7 @@ export function compareData(result: Result): Pick<AKStorageInterface, "analyzed"
     }
 
     return {
-        recruitData: recruitData || result.counts,
-        analyzed: analyzed || { lastSix: result.lastSix, lastSix_limit: result.lastSix_limit },
+        starData: recruitData || result.counts,
+        lastSixData: analyzed || { lastSix: result.lastSix, lastSix_limit: result.lastSix_limit },
     };
 }

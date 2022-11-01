@@ -1,10 +1,10 @@
 export interface RecruitOptions {
-    page: number;
+    lastTs?: number;
     token: string;
     channelId: number;
 }
 
-interface RecruitListItem {
+export interface RecruitListItem {
     ts: number; // 唯一标识符 不是时间戳
     pool: string;
     chars: { name: string; rarity: number; isNew: boolean }[];
