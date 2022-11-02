@@ -282,9 +282,7 @@ defineExpose({ text, isPreview }); // 导出输入的源文本给父组件，让
             overflow-y: scroll;
             flex: 1;
             padding: 1.5rem 2rem;
-            font-size: var(--fontsize-default);
             background-color: var(--color-bg-bland);
-            color: var(--color-text-default);
             .markdownContent {
                 padding: 0;
             }

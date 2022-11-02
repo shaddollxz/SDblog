@@ -67,6 +67,9 @@ img {
 textarea {
     resize: none;
     border: none;
+    font-size: var(--fontsize-default);
+    background-color: var(--color-bg-bland);
+    color: var(--color-text-default);
     &:focus-visible {
         outline-style: none;
     }

@@ -1,7 +1,13 @@
 <template>
+    <div v-if="isShowTokenPoppop" class="shady gusto-flex-center">
+        <TokenPoppop @onEnsure="onEnsure" @onExit="onExit"></TokenPoppop>
+    </div>
     <div class="recruit">
-        <div class="statistics">
-            <div class="pie" ref="pieDom"></div>
+        <div class="pie" ref="pieDom"></div>
+
+        <div class="gusto-button" @click="isShowTokenPoppop = true">
+            <span>关于token</span>
+            <SvgIcon name="replyBox-help"></SvgIcon>
         </div>
 
         <div>
@@ -46,10 +52,10 @@
             </div>
         </div>
 
-        <div>
+        <!-- <div>
             <p>最近三十条记录</p>
             <span v-for="draw of nearDetailData" :class="`rarity-${draw.rarity}`">{{ draw.name }}&nbsp;</span>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -62,25 +68,47 @@ import { objectAdd } from "@/utils/objectMath";
 import { SDMath } from "sdt3";
 import { AKStorage } from "@/storages/arKnight";
 import type { AKStorageInterface } from "@/storages/arKnight";
-import { analyzeData, compareData, nearData, limitList, limitBgList } from "./analyzeRecruitData";
+import { analyzeData, compareData, nearData, limitList } from "./analyzeRecruitData";
+import TokenPoppop from "./TokenPoppop.vue";
 
+// #region 填写token
+const isShowTokenPoppop = ref(false);
+onMounted(() => {
+    const userData = AKStorage.getItem("userData");
+    if (!userData) {
+        isShowTokenPoppop.value = true;
+    }
+});
+async function onEnsure(token: string, channelId: number) {
+    AKStorage.setItem("userData", { ak_token: token, channelId });
+    console.log(token, channelId);
+    isShowTokenPoppop.value = false;
+    await getAndAnalyzedData();
+}
+function onExit() {
+    console.log("onExit");
+    isShowTokenPoppop.value = false;
+}
+// #endregion
+
+// #region 抽卡数据分析
 const pieDom = shallowRef<HTMLDivElement | null>(null);
 let chart: Echarts.ECharts;
 
 // 最近30条抽卡结果
-const nearDetailData = shallowRef<RecruitInfo["list"][number]["chars"]>([]);
+// const nearDetailData = shallowRef<RecruitInfo["list"][number]["chars"]>([]);
 // 每个卡池的星数分布和卡池距上次六星抽数
 const starData = shallowRef<AKStorageInterface["starData"]>({});
 const lastSixData = shallowRef<AKStorageInterface["lastSixData"]>({ lastSix: 0, lastSix_limit: {} });
+// 所有收集数据的统计
 const allStarData = shallowRef<AKStorageInterface["starData"][string]>({ 3: 0, 4: 0, 5: 0, 6: 0 });
 const allDraw = ref(0);
 const currentLimitPool = ref("");
 
-onMounted(async () => {
-    AKStorage.setItem("userData", { ak_token: "EXS6f2mN7Ji3lrsSZSenEk8X", channelId: 1 });
-    // AKStorage.removeItem("lastTs");
-    const userData = AKStorage.getItem("userData");
+onMounted(getAndAnalyzedData);
 
+async function getAndAnalyzedData() {
+    const userData = AKStorage.getItem("userData");
     if (userData) {
         const lastTs = AKStorage.getItem("lastTs");
         const { data } = await recruitApi({
@@ -94,7 +122,7 @@ onMounted(async () => {
 
         starData.value = _recruitData.starData;
         lastSixData.value = _recruitData.lastSixData;
-        nearDetailData.value = _nearDetailData;
+        // nearDetailData.value = _nearDetailData;
 
         data.list[0] && AKStorage.setItem("lastTs", data.list[0].ts);
         AKStorage.setItem("starData", _recruitData.starData);
@@ -103,7 +131,6 @@ onMounted(async () => {
     }
 
     const drawStarData = AKStorage.getItem("starData");
-
     if (drawStarData) {
         if (pieDom.value) {
             chart = Echarts.init(pieDom.value, void 0, { renderer: "svg" });
@@ -115,10 +142,11 @@ onMounted(async () => {
             setChartData(chartData);
         }
     }
-});
 
-function uploadData() {
-    //todo 上传数据到服务器
+    // const near30Data = AKStorage.getItem("near30Operator");
+    // if (near30Data) {
+    //     nearDetailData.value = near30Data;
+    // }
 }
 
 function setChartData(chartData: Record<string, number>) {
@@ -136,7 +164,7 @@ function setChartData(chartData: Record<string, number>) {
                     radius: "93%",
                     stillShowZeroSum: false,
                     percentPrecision: 2,
-                    color: ["#158fc5", "#a231ff", "#cc7a00", "#ee5700"],
+                    color: ["#0493d0", "#a231ff", "#d88303", "#d14e02"],
                     label: {
                         formatter: (options) => `${options.name} ${options.percent}%`,
                         color: "var(--color-text-default)",
@@ -147,30 +175,40 @@ function setChartData(chartData: Record<string, number>) {
         });
     }
 }
+// #endregion
+
+function uploadData() {
+    //todo 上传数据到服务器
+}
 </script>
 
 <style lang="scss" scoped>
+.shady {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #0000004f;
+    z-index: 998;
+}
 .recruit {
-    .statistics {
-        width: 100%;
+    .pie {
+        width: 50%;
         height: 20rem;
-        .pie {
-            width: 50%;
-            height: 80%;
-        }
     }
 }
 
 .rarity-2 {
-    color: #158fc5;
+    color: #0493d0;
 }
 .rarity-3 {
     color: #a231ff;
 }
 .rarity-4 {
-    color: #cc7a00;
+    color: #d88303;
 }
 .rarity-5 {
-    color: #ee5700;
+    color: #d14e02;
 }
 </style>

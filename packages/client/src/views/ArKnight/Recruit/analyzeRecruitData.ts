@@ -4,7 +4,6 @@ import type { RecruitInfo } from "@blog/server";
 
 // 限定池
 export const limitList = ["斩荆辟路"];
-export const limitBgList = [""];
 
 interface Result {
     lastSix: number; // 普通池距离上一个六星
@@ -35,16 +34,7 @@ export function nearData(list: RecruitInfo["list"], count: number) {
 }
 
 export function analyzeData(list: RecruitInfo["list"]) {
-    // 找到新数据
-    const lastTs = AKStorage.getItem("lastTs");
-    if (lastTs) {
-        for (let i = 0; i < list.length; i++) {
-            if (list[i].ts == lastTs) {
-                list = list.slice(0, i);
-                break;
-            }
-        }
-    }
+    // 是否为新数据已经由后端进行筛选了
 
     const result: Result = {
         lastSix: 0,
@@ -81,12 +71,14 @@ export function analyzeData(list: RecruitInfo["list"]) {
             if (!result.isHaveSix_limit[poolName]) {
                 for (let i = 0; i < pools[poolName].length; i++) {
                     if (pools[poolName][i].rarity == 5) {
-                        result.lastSix_limit[poolName] += i;
+                        result.lastSix_limit[poolName] = i;
                         result.isHaveSix_limit[poolName] = true;
                         break;
                     }
                 }
-                result.lastSix_limit[poolName] += pools[poolName].length;
+                if (result.isHaveSix_limit[poolName]) {
+                    result.lastSix_limit[poolName] += pools[poolName].length;
+                }
             }
         } else {
             // 非限定池
@@ -102,7 +94,6 @@ export function analyzeData(list: RecruitInfo["list"]) {
             }
         }
     }
-    console.log(result);
     return result;
 }
 
