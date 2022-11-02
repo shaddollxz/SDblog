@@ -115,7 +115,7 @@
                 </div>
             </div>
         </template>
-        <NoData v-show="!folder.folders?.length && !folder.files?.length"></NoData>
+        <NoData :show="!folder.folders?.length && !folder.files?.length"></NoData>
     </div>
 </template>
 

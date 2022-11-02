@@ -13,6 +13,20 @@ import Left from "./Left.vue";
 import Right from "./Right.vue";
 </script>
 
+<style lang="scss">
+.home .center .blogCardList {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.4rem 2.4rem;
+    background-color: var(--color-bg-bland);
+    .blogCard {
+        width: 100%;
+    }
+    > :last-child {
+        border-bottom: none;
+    }
+}
+</style>
 <style lang="scss" scoped>
 .home {
     display: flex;

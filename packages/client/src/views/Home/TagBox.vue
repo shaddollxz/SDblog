@@ -4,14 +4,15 @@
             <SvgIcon name="blog-tag"></SvgIcon>
             <span>标签</span>
         </p>
-        <div v-if="tagStore.count" class="gusto-clearFloat">
-            <div class="gusto-tagBox" v-for="tag of tagStore.tagList">
-                <RouterLink :to="{ path: '/search', query: { tag: tag._id } }">
-                    {{ tag.value }}
-                </RouterLink>
+        <NoData :show="!!tagStore.count">
+            <div class="gusto-clearFloat">
+                <div class="gusto-tagBox" v-for="tag of tagStore.tagList">
+                    <RouterLink :to="{ path: '/search', query: { tag: tag._id } }">
+                        {{ tag.value }}
+                    </RouterLink>
+                </div>
             </div>
-        </div>
-        <NoData v-else></NoData>
+        </NoData>
     </div>
 </template>
 

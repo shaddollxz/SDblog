@@ -1,5 +1,6 @@
 <template>
-    <div class="global-noData">
+    <slot v-if="show"></slot>
+    <div v-else class="global-noData">
         <div class="gusto-flex-center-col" v-if="isInternet">
             <SvgIcon name="noData-noData"></SvgIcon>
             <p>没有找到相关数据</p>
@@ -12,17 +13,15 @@
     </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-    name: "noData",
-    data() {
-        return {
-            isInternet: false,
-        };
-    },
-    mounted() {
-        this.isInternet = window.navigator.onLine;
-    },
+<script setup lang="ts">
+interface Props {
+    show: boolean;
+}
+defineProps<Props>();
+
+const isInternet = ref(false);
+onMounted(() => {
+    isInternet.value = window.navigator.onLine;
 });
 </script>
 

@@ -4,21 +4,26 @@
             <SvgIcon name="home-calendar"></SvgIcon>
             <span>时间轴</span>
         </p>
-        <ul v-if="timeLine" class="lines gusto-hiddenScrollBar">
-            <li v-for="(monthItem, year) of timeLine">
-                <h3 class="chuyuan">{{ year }}</h3>
-                <ul v-for="(contents, month) of monthItem">
-                    <h4 class="chuyuan">{{ month }}</h4>
-                    <li v-for="item of contents" class="chuyuan" @click="router.push('/blog/' + item._id)">
-                        <div class="time">
-                            {{ item.createdAt }}
-                        </div>
-                        <RollText :type="2" :duration="6">{{ item.title }}</RollText>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <NoData v-else></NoData>
+        <NoData :show="!!timeLine">
+            <ul class="lines gusto-hiddenScrollBar">
+                <li v-for="(monthItem, year) of timeLine">
+                    <h3 class="chuyuan">{{ year }}</h3>
+                    <ul v-for="(contents, month) of monthItem">
+                        <h4 class="chuyuan">{{ month }}</h4>
+                        <li
+                            v-for="item of contents"
+                            class="chuyuan"
+                            @click="router.push('/blog/' + item._id)"
+                        >
+                            <div class="time">
+                                {{ item.createdAt }}
+                            </div>
+                            <RollText :type="2" :duration="6">{{ item.title }}</RollText>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </NoData>
     </div>
 </template>
 
