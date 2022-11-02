@@ -1,6 +1,11 @@
 <template>
-    <BlogCardList v-if="!!blogList.length" :blogList="blogList"></BlogCardList>
-    <NoData class="gusto-border" v-else></NoData>
+    <NoData :show="!!blogList.length">
+        <div class="blogCardList gusto-border gusto-flex-center-col">
+            <template v-for="blogMsg of blogList">
+                <BlogCard :blogMsg="blogMsg"></BlogCard>
+            </template>
+        </div>
+    </NoData>
     <SplitPage
         v-model="blogList"
         @getNewData="getNewData"
@@ -12,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import BlogCardList from "@/components/BlogCardList/index.vue";
+import BlogCard from "../BlogCard.vue";
 import NoData from "@/components/NoData/index.vue";
 import { homePageBlogListApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
@@ -37,9 +42,6 @@ onMounted(() => getNewData(route.query.page as NumberString));
 </script>
 
 <style lang="scss" scoped>
-.blogCardList {
-    width: 100%;
-}
 .splitPage {
     width: 100%;
     margin: 1rem 0;

@@ -1,6 +1,12 @@
 <template>
-    <BlogCardList v-if="blogList.length" :blogList="blogList"></BlogCardList>
-    <NoData v-else></NoData>
+    <NoData :show="!!blogList.length">
+        <div class="blogCardList gusto-border gusto-flex-center-col">
+            <template v-for="blogMsg of blogList">
+                <BlogCard :blogMsg="blogMsg"></BlogCard>
+            </template>
+        </div>
+    </NoData>
+
     <SplitPage
         v-model="blogList"
         :limit="6"
@@ -12,14 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import BlogCardList from "@/components/BlogCardList/index.vue";
+import BlogCard from "../BlogCard.vue";
 import NoData from "@/components/NoData/index.vue";
 import { searchBlogByKeyWordApi, searchBlogByTagApi } from "@apis";
 import type { BlogListItemInfo } from "@blog/server";
 import { onBeforeRouteUpdate } from "vue-router";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
-
 import assert from "@/utils/assert";
+
 const router = useRouter();
 const route = useRoute();
 
@@ -70,10 +76,6 @@ onMounted(() => search(route));
 </script>
 
 <style lang="scss" scoped>
-.blogCardList {
-    width: 100%;
-    background-color: var(--color-bg-bland);
-}
 .splitPage {
     width: 100%;
     margin: 1rem 0;
