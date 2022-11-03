@@ -70,15 +70,15 @@ const direction = ref(directionMap[props.leaveTo]);
     }
     &.success {
         color: var(--color-green);
-        background-color: var(--color-green-8);
+        background-color: var(--color-green-7);
     }
     &.error {
         color: var(--color-red);
-        background-color: var(--color-red-8);
+        background-color: var(--color-red-7);
     }
     &.warning {
         color: var(--color-orange);
-        background-color: var(--color-orange-8);
+        background-color: var(--color-orange-7);
     }
     .text {
         margin-right: 1rem;
