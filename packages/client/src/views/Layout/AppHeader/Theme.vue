@@ -81,7 +81,8 @@ function changeColor(color: typeof colors[number]) {
         left: 50%;
         transform: translateX(-50%);
         width: 20rem;
-        background-color: var(--color-bg-deep);
+        background-color: var(--color-bg-bland);
+        color: var(--color-text-default);
         .block {
             padding: $gap;
         }
@@ -89,10 +90,10 @@ function changeColor(color: typeof colors[number]) {
             --width: 4rem;
             align-items: center;
             .chosed {
-                fill: var(--color-primary-bland);
+                fill: var(--color-green-1);
             }
             .notChosed {
-                fill: var(--color-error-bland);
+                fill: var(--color-red-1);
             }
         }
 

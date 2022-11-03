@@ -54,10 +54,10 @@ onMounted(() => clearInterval(interval));
     }
     &.canClick {
         pointer-events: all !important;
-        color: var(--color-primary-text);
-        background-color: var(--color-primary);
+        color: var(--color-green-8);
+        background-color: var(--color-green);
         &:hover {
-            background-color: var(--color-primary-bland);
+            background-color: var(--color-green-1);
             border-color: transparent;
         }
     }

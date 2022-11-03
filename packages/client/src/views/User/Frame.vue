@@ -32,11 +32,16 @@
                 right: 0;
                 bottom: 0;
                 font-size: var(--fontsize-tiny);
-                color: #0969da;
+                color: var(--color-blue);
             }
         }
         .checkInput {
             margin-bottom: $gap-xlarge;
+            &.noPassTip {
+                .correct {
+                    display: none;
+                }
+            }
         }
         .checkButton {
             width: 100%;

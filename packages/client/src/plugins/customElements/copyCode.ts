@@ -11,7 +11,6 @@ class CopyCode extends HTMLElement {
         this.onclick = (e) => {
             if (e.target != this) return;
             // 删除该组件内的字符
-            console.log("uses");
             const text = this.parentElement?.innerText.slice(this.innerText.length + 1);
             navigator.clipboard.writeText(text ? text + suffix : "").then(() => {
                 Message.success("复制成功", {

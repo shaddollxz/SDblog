@@ -177,7 +177,6 @@ const leftList = [
         title: "插入表格",
         icon: "replyBox-table",
         func: () => {
-            console.log("sss");
             textArea.insert("\n\r| 表头 | 表头 |\n| --- | --- |\n|  |  |");
         },
     },

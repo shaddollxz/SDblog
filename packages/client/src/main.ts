@@ -14,7 +14,7 @@ import "@/plugins/initRem";
 import "@/plugins/pwa";
 import "virtual:svg-icons-register";
 
-import "./style/global/index.scss";
+import "@/style/global/index.scss";
 import "@/assets/font/index.css";
 
 createApp(App)

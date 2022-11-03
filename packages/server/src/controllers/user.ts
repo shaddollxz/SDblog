@@ -33,7 +33,7 @@ export const login: PostHandler<LoginOptions> = async (req, res, next) => {
                 const token = sign({ _id: user._id, authority: user.authority });
                 const userInfo = user.toJSON();
                 delete userInfo.passWord;
-                return res.status(StatusEnum.OK).json({ userData: userInfo, token });
+                return successResponse(res, { data: { userData: userInfo, token } });
             }
             throw "密码不正确";
         }
@@ -53,13 +53,11 @@ export const getVerifycode: GetHandler<GetVerifycodeOptions> = async (req, res, 
         const userData = await UserDB.findOne({ email, isDelete: false });
         switch (req.query.model) {
             case VerifycodeEnum.register: {
-                if (userData)
-                    return res.status(StatusEnum.Forbidden).json({ error: "邮箱已注册", isShow: true });
+                if (userData) return failResponse(res, { code: StatusEnum.Forbidden, msg: "邮箱已注册" });
                 break;
             }
             case VerifycodeEnum.retrieve: {
-                if (!userData)
-                    return res.status(StatusEnum.Forbidden).json({ error: "没有该用户", isShow: true });
+                if (!userData) return failResponse(res, { code: StatusEnum.Forbidden, msg: "没有该用户" });
                 break;
             }
         }
@@ -82,7 +80,7 @@ export const register: PostHandler<RegisterOptions> = async (req, res, next) => 
             delete req.body._id;
             delete req.body.authority;
             await new UserDB({ ...req.body }).save();
-            res.status(StatusEnum.OK).json({ success: true });
+            successResponse(res);
             data.delete();
         } else {
             failResponse(res, {
