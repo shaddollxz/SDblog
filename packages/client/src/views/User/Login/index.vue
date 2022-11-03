@@ -8,6 +8,7 @@
                 <RouterLink to="/user/retrieve" tabindex="-1">找回密码</RouterLink>
             </div>
             <CheckInput
+                class="noPassTip"
                 ref="passWord"
                 :check="passWordCheck"
                 :ispwd="true"

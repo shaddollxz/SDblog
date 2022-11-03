@@ -1,3 +1,5 @@
+@use "sass:color";
+
 :root {
     // 主题
     &[data-theme="dark"] {
@@ -5,25 +7,56 @@
         --color-border: #444c56;
         --color-bg-deep: #1c2128;
         --color-bg-bland: #22272e;
+        // 其它自定义颜色
+        $darken: 10%;
+        --color-blue: #{color.scale(#337ecc, $blackness: $darken)};
+        --color-blue-1: #{color.scale(#409eff, $blackness: $darken)};
+        --color-blue-3: #{color.scale(#79bbff, $blackness: $darken)};
+        --color-blue-5: #{color.scale(#a0cfff, $blackness: $darken)};
+        --color-blue-7: #{color.scale(#c6e2ff, $blackness: $darken)};
+        --color-blue-8: #{color.scale(#d9ecff, $blackness: $darken)};
+        --color-blue-9: #{color.scale(#ecf5ff, $blackness: $darken)};
+        --color-green: #{color.scale(#529b2e, $blackness: $darken)};
+        --color-green-1: #{color.scale(#67c23a, $blackness: $darken)};
+        --color-green-3: #{color.scale(#95d475, $blackness: $darken)};
+        --color-green-5: #{color.scale(#b3e19d, $blackness: $darken)};
+        --color-green-7: #{color.scale(#d1edc4, $blackness: $darken)};
+        --color-green-8: #{color.scale(#e1f3d8, $blackness: $darken)};
+        --color-green-9: #{color.scale(#f0f9eb, $blackness: $darken)};
+        --color-orange: #{color.scale(#b88230, $blackness: $darken)};
+        --color-orange-1: #{color.scale(#e6a23c, $blackness: $darken)};
+        --color-orange-3: #{color.scale(#eebe77, $blackness: $darken)};
+        --color-orange-5: #{color.scale(#f3d19e, $blackness: $darken)};
+        --color-orange-7: #{color.scale(#f8e3c5, $blackness: $darken)};
+        --color-orange-8: #{color.scale(#faecd8, $blackness: $darken)};
+        --color-orange-9: #{color.scale(#fdf6ec, $blackness: $darken)};
+        --color-red: #{color.scale(#c45656, $blackness: $darken)};
+        --color-red-1: #{color.scale(#f56c6c, $blackness: $darken)};
+        --color-red-3: #{color.scale(#f89898, $blackness: $darken)};
+        --color-red-5: #{color.scale(#fab6b6, $blackness: $darken)};
+        --color-red-7: #{color.scale(#fcd3d3, $blackness: $darken)};
+        --color-red-8: #{color.scale(#fde2e2, $blackness: $darken)};
+        --color-red-9: #{color.scale(#fef0f0, $blackness: $darken)};
         // 滚动条
-        scrollbar-color: #444c56 var(--color-bg-deep);
+        scrollbar-color: var(--color-border) var(--color-bg-deep);
         ::-webkit-scrollbar {
             background-color: var(--color-bg-deep);
-            color: #444c56;
+            color: var(--color-border);
         }
         ::-webkit-scrollbar-corner {
-            background-color: #444c56;
+            background-color: var(--color-border);
         }
         ::-webkit-scrollbar-thumb {
-            background-color: #444c56;
+            background-color: var(--color-border);
         }
+        // 图片滤镜
         img {
             filter: sepia(19%);
         }
     }
     &[data-theme="light"] {
         --color-text-default: #24292fcd;
-        --color-border: rgba(27, 31, 36, 0.15);
+        --color-border: rgba(27, 31, 36, 0.25);
         --color-bg-deep: #f6f8fa;
         --color-bg-bland: #ffffff;
     }

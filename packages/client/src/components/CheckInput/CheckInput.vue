@@ -113,12 +113,12 @@ defineExpose({ passCheckData }); //? 由组件将数据抛出 父组件直接获
         font-size: var(--fontsize-tiny);
     }
     .error {
-        color: var(--color-error);
-        fill: var(--color-error);
+        color: var(--color-red);
+        fill: var(--color-red);
     }
     .correct {
-        color: var(--color-primary);
-        fill: var(--color-primary);
+        color: var(--color-green);
+        fill: var(--color-green);
     }
 }
 </style>
