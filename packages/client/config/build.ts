@@ -10,10 +10,12 @@ export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): 
         manifest: isDev,
         // assetsInlineLimit: 1024 * 6, // 内联资源的最大大小
         rollupOptions: {
-            output: {
-                chunkFileNames: "assets/[hash].js", // js输出格式
-                assetFileNames: "assets/[hash][extname]", // 其它资源输出格式 如css png
-            },
+            output: isDev
+                ? {}
+                : {
+                      chunkFileNames: "assets/[hash].js", // js输出格式
+                      assetFileNames: "assets/[hash][extname]", // 其它资源输出格式 如css png
+                  },
         },
     };
 }

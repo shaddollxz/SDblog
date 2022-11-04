@@ -42,3 +42,5 @@ export { default as SDMath } from "./methods/SDMath";
 export { default as throttle } from "./methods/throttle";
 export { default as userBrowers } from "./methods/userBrowers";
 export { default as Validator } from "./methods/Validator";
+
+export * from "./typings/utils";
