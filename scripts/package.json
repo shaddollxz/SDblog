@@ -6,7 +6,8 @@
     "scripts": {
         "build": "tsc",
         "tsx": "tsx",
-        "formatSVG": "tsx ./ts/formatSVG/index.ts"
+        "formatSVG": "tsx ./ts/formatSVG/index.ts",
+        "fontmin": "tsx ./ts/fontmin/index.ts"
     },
     "dependencies": {
         "fontmin": "^0.9.9"

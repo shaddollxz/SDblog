@@ -13,8 +13,9 @@
         <div>
             <p>保底记录</p>
             <span>自记录开始普通寻访已{{ lastSixData.lastSix }}发没有六星</span>
-            <span v-for="(drawed, name) of lastSixData.lastSix_limit">
-                自记录开始限定寻访{{ name }}已{{ drawed }}发没有六星
+            <br />
+            <span v-for="name of currentLimitPool">
+                自记录开始限定寻访{{ name }}已{{ lastSixData.lastSix_limit[name] }}发没有六星
             </span>
             <p>平均出货统计</p>
             <span>
@@ -51,24 +52,20 @@
                 </span>
             </div>
         </div>
-
-        <!-- <div>
-            <p>最近三十条记录</p>
-            <span v-for="draw of nearDetailData" :class="`rarity-${draw.rarity}`">{{ draw.name }}&nbsp;</span>
-        </div> -->
     </div>
 </template>
 
 <script setup lang="ts">
-import { recruitApi } from "@apis";
-import type { RecruitInfo } from "@blog/server";
-import Echarts from "@/utils/Echarts";
+import type { DrawTableType } from "@/db/arKnights";
+import { useDrawTable } from "@/db/arKnights";
+import type { AKStorageInterface } from "@/storages/arKnights";
+import { AKStorage } from "@/storages/arKnights";
 import type { ECOptions } from "@/utils/Echarts";
+import Echarts from "@/utils/Echarts";
 import { objectAdd } from "@/utils/objectMath";
+import { recruitApi } from "@apis";
 import { SDMath } from "sdt3";
-import { AKStorage } from "@/storages/arKnight";
-import type { AKStorageInterface } from "@/storages/arKnight";
-import { analyzeData, compareData, nearData, limitList } from "./analyzeRecruitData";
+import { analyzeData, freshData, limitList } from "./analyzeRecruitData";
 import TokenPoppop from "./TokenPoppop.vue";
 
 // #region 填写token
@@ -81,12 +78,10 @@ onMounted(() => {
 });
 async function onEnsure(token: string, channelId: number) {
     AKStorage.setItem("userData", { ak_token: token, channelId });
-    console.log(token, channelId);
     isShowTokenPoppop.value = false;
     await getAndAnalyzedData();
 }
 function onExit() {
-    console.log("onExit");
     isShowTokenPoppop.value = false;
 }
 // #endregion
@@ -95,15 +90,13 @@ function onExit() {
 const pieDom = shallowRef<HTMLDivElement | null>(null);
 let chart: Echarts.ECharts;
 
-// 最近30条抽卡结果
-// const nearDetailData = shallowRef<RecruitInfo["list"][number]["chars"]>([]);
 // 每个卡池的星数分布和卡池距上次六星抽数
-const starData = shallowRef<AKStorageInterface["starData"]>({});
+const starData = shallowRef<Record<string, DrawTableType["star"]>>({});
 const lastSixData = shallowRef<AKStorageInterface["lastSixData"]>({ lastSix: 0, lastSix_limit: {} });
 // 所有收集数据的统计
-const allStarData = shallowRef<AKStorageInterface["starData"][string]>({ 3: 0, 4: 0, 5: 0, 6: 0 });
+const allStarData = shallowRef<DrawTableType["star"]>({ 3: 0, 4: 0, 5: 0, 6: 0 });
 const allDraw = ref(0);
-const currentLimitPool = ref("");
+const currentLimitPool = shallowRef<string[]>([]);
 
 onMounted(getAndAnalyzedData);
 
@@ -117,36 +110,25 @@ async function getAndAnalyzedData() {
             channelId: userData.channelId,
         });
 
-        const _nearDetailData = nearData(data.list, 30);
-        const _recruitData = compareData(analyzeData(data.list)); // 对新数据进行分析 与以前数据进行拼接
-
+        const _recruitData = await freshData(await analyzeData(data.list)); // 对新数据进行分析 与以前数据进行拼接
         starData.value = _recruitData.starData;
         lastSixData.value = _recruitData.lastSixData;
-        // nearDetailData.value = _nearDetailData;
 
         data.list[0] && AKStorage.setItem("lastTs", data.list[0].ts);
-        AKStorage.setItem("starData", _recruitData.starData);
         AKStorage.setItem("lastSixData", _recruitData.lastSixData);
-        AKStorage.setItem("near30Operator", _nearDetailData);
+        currentLimitPool.value = _recruitData.currentLimitPool;
     }
-
-    const drawStarData = AKStorage.getItem("starData");
-    if (drawStarData) {
+    const drawTable = await useDrawTable();
+    const drawStarData = (await drawTable.findAll()).map((table) => table.star);
+    if (drawStarData.length) {
         if (pieDom.value) {
             chart = Echarts.init(pieDom.value, void 0, { renderer: "svg" });
-            const chartData = objectAdd(
-                ...Object.keys(drawStarData).map((key) => drawStarData[key])
-            ) as AKStorageInterface["starData"][string];
+            const chartData = objectAdd(...drawStarData) as DrawTableType["star"];
             allStarData.value = chartData;
             allDraw.value = [6, 5, 4, 3].reduce((pre, cur) => pre + chartData[cur], 0);
             setChartData(chartData);
         }
     }
-
-    // const near30Data = AKStorage.getItem("near30Operator");
-    // if (near30Data) {
-    //     nearDetailData.value = near30Data;
-    // }
 }
 
 function setChartData(chartData: Record<string, number>) {

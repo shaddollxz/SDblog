@@ -1,11 +1,11 @@
 <template>
-    <div class="arKnight">
+    <div class="arKnights">
         <RouterView></RouterView>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.arKnight {
+.arKnights {
     margin-left: $width-wife;
 }
 </style>

@@ -16,6 +16,7 @@
         "preview:server": "cd packages/server && pnpm preview",
         "test": "vitest",
         "formatSVG": "cd ./scripts && pnpm formatSVG",
+        "fontmin": "cd ./scripts && pnpm fontmin",
         "clearlogs": "pm2 flush",
         "exportDB": "sh ./scripts/sh/exportDB.sh",
         "importDB": "sh ./scripts/sh/importDB.sh",

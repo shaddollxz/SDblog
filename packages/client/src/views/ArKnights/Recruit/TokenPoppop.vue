@@ -1,7 +1,10 @@
 <template>
     <div class="tokenPoppop gusto-border gusto-flex-center-col">
         <p>选择服务器</p>
-        <div class="btns"></div>
+        <div class="btns">
+            <div class="gusto-button" @click="channelId = 1" :class="{ chosed: channelId == 1 }">官服</div>
+            <div class="gusto-button" @click="channelId = 2" :class="{ chosed: channelId == 2 }">B服</div>
+        </div>
         <p>输入token</p>
         <textarea v-model="_token"></textarea>
         <div class="btns gusto-flex-center">
@@ -13,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { AKStorage } from "@/storages/arKnight";
+import { AKStorage } from "@/storages/arKnights";
 import CheckButton from "@/components/CheckButton/index.vue";
 
 interface Emits {
@@ -47,9 +50,13 @@ onMounted(() => {
     }
     .btns {
         gap: $gap-big;
+        .chosed {
+            background-color: var(--color-blue);
+            color: var(--color-blue-8);
+        }
         .errorBtn {
-            background-color: var(--color-error);
-            color: var(--color-error-text);
+            background-color: var(--color-red);
+            color: var(--color-red-8);
         }
     }
 }

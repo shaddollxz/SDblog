@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { RecruitOptions, RecruitInfo, RecruitListItem } from "../typings/interface/arKnight";
+import type { RecruitOptions, RecruitInfo, RecruitListItem } from "../typings/interface/arKnights";
 import { successResponse, failResponse } from "../utils/createResponse";
 
 export const recruit: GetHandler<RecruitOptions> = async (req, res, next) => {

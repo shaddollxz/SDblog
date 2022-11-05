@@ -3,7 +3,7 @@ import type { RecruitOptions, RecruitInfo } from "@blog/server";
 
 export function recruit(params: RecruitOptions) {
     return axios<RecruitInfo>({
-        url: "/arKnight/recruit",
+        url: "/arKnights/recruit",
         method: "get",
         params,
     });

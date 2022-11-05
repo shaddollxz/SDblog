@@ -1,4 +1,4 @@
-export * from "../src/typings/interface/arKnight";
+export * from "../src/typings/interface/arKnights";
 export * from "../src/typings/interface/blog";
 export * from "../src/typings/interface/essay";
 export * from "../src/typings/interface/pan";

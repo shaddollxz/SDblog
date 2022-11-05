@@ -1,5 +1,5 @@
 import express from "express";
-import * as AK from "../controllers/arKnight";
+import * as AK from "../controllers/arKnights";
 
 const router = express.Router();
 
