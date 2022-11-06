@@ -21,7 +21,6 @@ interface Result {
 
 export async function analyzeData(list: RecruitInfo["list"]) {
     // 是否为新数据已经由后端进行筛选了
-    const drawTable = await useDrawTable();
     const result: Result = {
         lastSix: 0,
         isHaveSix: false,
@@ -31,10 +30,13 @@ export async function analyzeData(list: RecruitInfo["list"]) {
         newPools: "",
         counts: {},
     };
-
     if (list.length == 0) return result;
 
-    // 整理新数据里的角色和星级
+    const currentFlag = AKStorage.getItem("currentFlag");
+    if (!currentFlag) return result;
+
+    const drawTable = await useDrawTable(currentFlag);
+    // 整理新数据里的角色和星级 并更新数据库中卡池数据
     const pools: Record<string, { chars: RecruitListItem["chars"]; ts: number }> = {};
     const counts: Result["counts"] = {};
     for (const draw of list) {
@@ -111,16 +113,17 @@ export async function analyzeData(list: RecruitInfo["list"]) {
 }
 
 interface ExportData {
-    lastSixData: AKStorageInterface["lastSixData"];
+    lastSixData: AKStorageInterface["poolData"][string]["lastSixData"];
     starData: Result["counts"];
     currentLimitPool: string[];
 }
 
 export async function freshData(result: Result): Promise<ExportData> {
-    const drawTable = await useDrawTable();
+    const currentFlag = AKStorage.getItem("currentFlag") as string;
+    const drawTable = await useDrawTable(currentFlag);
     const drawData = drawTable.keypathObj(await drawTable.findAll());
 
-    const analyzed = AKStorage.getItem("lastSixData");
+    const lastSixData = AKStorage.getItem("poolData")?.[currentFlag]?.lastSixData;
 
     // 更新卡池星级记录
     const starData: Result["counts"] = {};
@@ -138,22 +141,22 @@ export async function freshData(result: Result): Promise<ExportData> {
         }
     }
     // 更新上次保底数据
-    if (analyzed) {
+    if (lastSixData) {
         for (let key in result.lastSix_limit) {
-            if (analyzed.lastSix_limit[key]) {
-                analyzed.lastSix_limit[key] = result.isHaveSix_limit[key]
+            if (lastSixData.lastSix_limit[key]) {
+                lastSixData.lastSix_limit[key] = result.isHaveSix_limit[key]
                     ? result.lastSix_limit[key]
-                    : analyzed.lastSix_limit[key] + result.lastSix_limit[key];
+                    : lastSixData.lastSix_limit[key] + result.lastSix_limit[key];
             } else {
-                analyzed.lastSix_limit[key] = result.lastSix_limit[key];
+                lastSixData.lastSix_limit[key] = result.lastSix_limit[key];
             }
         }
-        analyzed.lastSix = result.isHaveSix ? result.lastSix : analyzed.lastSix + result.lastSix;
+        lastSixData.lastSix = result.isHaveSix ? result.lastSix : lastSixData.lastSix + result.lastSix;
     }
 
     return {
         starData: isEmpty(starData) ? result.counts : starData,
-        lastSixData: analyzed || { lastSix: result.lastSix, lastSix_limit: result.lastSix_limit },
+        lastSixData: lastSixData || { lastSix: result.lastSix, lastSix_limit: result.lastSix_limit },
         currentLimitPool: result.currentLimitPool,
     };
 }

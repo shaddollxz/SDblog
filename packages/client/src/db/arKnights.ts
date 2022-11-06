@@ -1,5 +1,4 @@
 import { SDIDB } from "sdt3";
-import type { SDIDBTable } from "sdt3";
 import type { RecruitListItem } from "@blog/server";
 
 export interface DrawTableType {
@@ -9,18 +8,11 @@ export interface DrawTableType {
     ts: number;
 }
 
-let drawTable: SDIDBTable<DrawTableType, "operators">;
-export async function useDrawTable() {
-    if (drawTable) return drawTable;
-
+export async function useDrawTable(flag: string) {
     const db = await new SDIDB("arKnights");
-    drawTable = await db.defineTable<DrawTableType, "operators">("draw", {
+
+    return await db.defineTable<DrawTableType, "operators">(flag, {
         keypath: "poolName",
         index: { operators: {} },
     });
-    console.log(db.version);
-    await db.open("arKnights");
-    db.close();
-    console.log(await drawTable.findAll());
-    return drawTable;
 }

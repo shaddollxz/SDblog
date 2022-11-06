@@ -41,6 +41,8 @@ export { default as SDIDB } from "./methods/SDIDB";
 export type { SDIDBTable } from "./methods/SDIDB";
 export { default as SDMath } from "./methods/SDMath";
 export { default as throttle } from "./methods/throttle";
+export { default as updateProperties } from "./methods/updateProperties";
+export type { UpdatePropertiesOptions } from "./methods/updateProperties";
 export { default as userBrowers } from "./methods/userBrowers";
 export { default as Validator } from "./methods/Validator";
 

@@ -76,9 +76,19 @@ onMounted(() => {
         isShowTokenPoppop.value = true;
     }
 });
-async function onEnsure(token: string, channelId: number) {
-    AKStorage.setItem("userData", { ak_token: token, channelId });
+async function onEnsure(token: string, channelId: number, flag: string) {
     isShowTokenPoppop.value = false;
+    if (AKStorage.getItem("currentFlag") == flag) return;
+
+    const userData = AKStorage.getItem("userData");
+    const newUserData = { ak_token: token, channelId };
+    if (userData) {
+        userData[flag] = newUserData;
+        AKStorage.setItem("userData", userData);
+    } else {
+        AKStorage.setItem("userData", { [flag]: newUserData });
+    }
+    AKStorage.setItem("currentFlag", flag);
     await getAndAnalyzedData();
 }
 function onExit() {
@@ -92,7 +102,10 @@ let chart: Echarts.ECharts;
 
 // 每个卡池的星数分布和卡池距上次六星抽数
 const starData = shallowRef<Record<string, DrawTableType["star"]>>({});
-const lastSixData = shallowRef<AKStorageInterface["lastSixData"]>({ lastSix: 0, lastSix_limit: {} });
+const lastSixData = shallowRef<AKStorageInterface["poolData"][string]["lastSixData"]>({
+    lastSix: 0,
+    lastSix_limit: {},
+});
 // 所有收集数据的统计
 const allStarData = shallowRef<DrawTableType["star"]>({ 3: 0, 4: 0, 5: 0, 6: 0 });
 const allDraw = ref(0);
@@ -101,9 +114,14 @@ const currentLimitPool = shallowRef<string[]>([]);
 onMounted(getAndAnalyzedData);
 
 async function getAndAnalyzedData() {
-    const userData = AKStorage.getItem("userData");
-    if (userData) {
-        const lastTs = AKStorage.getItem("lastTs");
+    const allUserData = AKStorage.getItem("userData");
+    const currentFlag = AKStorage.getItem("currentFlag");
+    if (!currentFlag) return;
+
+    if (allUserData && currentFlag && allUserData[currentFlag]) {
+        const userData = allUserData[currentFlag];
+        const poolData = AKStorage.getItem("poolData");
+        const lastTs = poolData?.[currentFlag]?.lastTs;
         const { data } = await recruitApi({
             lastTs: lastTs ? lastTs : undefined,
             token: userData.ak_token,
@@ -114,11 +132,22 @@ async function getAndAnalyzedData() {
         starData.value = _recruitData.starData;
         lastSixData.value = _recruitData.lastSixData;
 
-        data.list[0] && AKStorage.setItem("lastTs", data.list[0].ts);
-        AKStorage.setItem("lastSixData", _recruitData.lastSixData);
-        currentLimitPool.value = _recruitData.currentLimitPool;
+        if (poolData) {
+            // @ts-ignore
+            poolData[currentFlag] = {};
+            poolData[currentFlag].lastSixData = _recruitData.lastSixData;
+            data.list[0] && (poolData[currentFlag].lastTs = data.list[0].ts);
+            AKStorage.setItem("poolData", poolData);
+        } else {
+            AKStorage.setItem("poolData", {
+                [currentFlag]: {
+                    lastTs: data.list[0].ts,
+                    lastSixData: _recruitData.lastSixData,
+                },
+            });
+        }
     }
-    const drawTable = await useDrawTable();
+    const drawTable = await useDrawTable(currentFlag);
     const drawStarData = (await drawTable.findAll()).map((table) => table.star);
     if (drawStarData.length) {
         if (pieDom.value) {
