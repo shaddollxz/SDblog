@@ -67,7 +67,6 @@ function changeCurrentFlag(newFlag: string) {
         flag.value = newFlag;
     }
 }
-function onEnsure() {}
 </script>
 
 <style lang="scss" scoped>

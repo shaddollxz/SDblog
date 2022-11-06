@@ -15,11 +15,13 @@ describe("isSame", () => {
         expect(isSame(arr1, arr2)).toBe(true);
         const arr3 = ["aaa", "ccc"];
         expect(isSame(arr1, arr3)).toBe(false);
+        expect(isSame(arr1, arr1)).toBe(true);
     });
     it("对象", () => {
         const obj1 = { data: "data", number: 123 };
         const obj2 = { data: "data", number: 123 };
         expect(isSame(obj1, obj2)).toBe(true);
+        expect(isSame(obj1, obj1)).toBe(true);
     });
     it("特殊对象", () => {
         expect(isSame(null, null)).toBe(true);
