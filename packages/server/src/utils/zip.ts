@@ -4,6 +4,7 @@ import path from "path";
 import type { Folder, PanPath } from "../typings/interface/pan";
 import { fileHash } from "./fileHash";
 import { default as FolderClass } from "./Folder";
+import { panFileRealPath, tempFileRealPath } from "./assetsPath";
 
 interface ZipOptions {
     files?: { hash: string; name: string }[];
@@ -20,7 +21,7 @@ export function zipFilesAndFolders({ files, folder, folderPaths }: ZipOptions) {
 
     if (files) {
         for (const file of files) {
-            zip.addLocalFile(path.resolve(process.env.PAN_PATH, file.hash), "", file.name);
+            zip.addLocalFile(path.resolve(panFileRealPath, file.hash), "", file.name);
         }
     }
     if (folder && folderPaths) {
@@ -33,12 +34,12 @@ export function zipFilesAndFolders({ files, folder, folderPaths }: ZipOptions) {
     }
 
     return new Promise<{ zipPath: string; hash: string }>((resolve, reject) => {
-        const outDir = path.resolve(process.env.TEMP_PATH, "tempZip" + Date.now());
+        const outDir = path.resolve(tempFileRealPath, "tempZip" + Date.now());
         zip.writeZip(outDir, async (e) => {
             if (e) return reject(e);
 
             const hash = await fileHash(outDir);
-            const finallyPath = path.resolve(process.env.TEMP_PATH, hash);
+            const finallyPath = path.resolve(tempFileRealPath, hash);
             if (await fs.pathExists(finallyPath)) {
                 fs.rm(outDir);
             } else {
@@ -52,7 +53,7 @@ export function zipFilesAndFolders({ files, folder, folderPaths }: ZipOptions) {
 function zipTo(zip: AdmZip, zipPath: string, folder: Folder) {
     if (folder.files) {
         for (const file of folder.files) {
-            zip.addLocalFile(path.resolve(process.env.PAN_PATH, file.hash), zipPath, file.name);
+            zip.addLocalFile(path.resolve(panFileRealPath, file.hash), zipPath, file.name);
         }
     }
     if (folder.folders) {

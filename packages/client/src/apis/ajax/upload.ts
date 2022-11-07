@@ -5,7 +5,7 @@ import type { UploadAvatarOption, UploadImageOption } from "@blog/server";
 export function uploadImage(formData: FormDataT<UploadImageOption>) {
     return axios<{ imgSrc: string }>({
         method: "post",
-        url: "static/image",
+        url: "upload/image",
         data: formData,
     });
 }
@@ -14,7 +14,7 @@ export function uploadImage(formData: FormDataT<UploadImageOption>) {
 export function removeImage(src: string) {
     return axios({
         method: "delete",
-        url: "static/image",
+        url: "upload/image",
         data: { src },
     });
 }
@@ -23,7 +23,7 @@ export function removeImage(src: string) {
 export function uploadAvatar(formData: FormDataT<UploadAvatarOption>) {
     return axios<{ imgSrc: string }>({
         method: "post",
-        url: "static/avatar",
+        url: "upload/avatar",
         data: formData,
     });
 }

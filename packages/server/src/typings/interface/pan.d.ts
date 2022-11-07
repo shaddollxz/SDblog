@@ -98,5 +98,8 @@ export interface DownloadFileOption {
     hash: string;
     type: DownloadFileTypeEnum;
 }
+export interface DownloadFileRes {
+    path: string;
+}
 
 export {};

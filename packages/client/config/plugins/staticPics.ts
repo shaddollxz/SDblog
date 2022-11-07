@@ -4,9 +4,9 @@ import { resolve } from "path";
 
 const dirs: Dirs = ["headPic", { importName: "noahEmoji", realDir: "emojis/noah" }];
 export default (Env: ImportMetaEnv) =>
-    staticPics(Env.PUBLIC_STATIC_PATH, dirs, {
+    staticPics(Env.PUBLIC_STATIC_PATH + Env.PUBLIC_ASSETS_PATH, dirs, {
         dts: resolve(__dirname, "../../src/typings/global/staticPics.d.ts"),
-        staticPrefix: Env.PUBLIC_STATIC_PREFIX,
+        staticPrefix: Env.PUBLIC_STATIC_PREFIX + Env.PUBLIC_ASSETS_PATH,
     });
 
 // 插件实现👇

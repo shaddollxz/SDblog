@@ -5,6 +5,7 @@ import path from "path";
 import type { DB } from "./DB";
 import { PanFileDB, TempFileDB } from "./index";
 const { prop } = typegoose;
+import { panFileRealPath, tempFileRealPath } from "../utils/assetsPath";
 
 export class PanFile extends defaultClasses.TimeStamps implements DB {
     declare DB: true;
@@ -31,7 +32,7 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
     async deleteFile(this: DocumentType<PanFile>, _id: string) {
         await this.delete();
         // 如果文件已经被物理删除 这里就只删除数据库数据
-        const oriPath = path.resolve(process.env.PAN_PATH!, this.hash);
+        const oriPath = path.resolve(panFileRealPath, this.hash);
         if (await fs.pathExists(oriPath)) {
             // 是否有其它用户储存了该文件 有的话就只删除数据库里的这条数据
             const isOtherFile = await PanFileDB.findOne({ hash: this.hash });
@@ -46,7 +47,7 @@ export class PanFile extends defaultClasses.TimeStamps implements DB {
                 await temp.save();
 
                 setTimeout(async () => {
-                    const targetPath = path.resolve(process.env.TEMP_PATH!, this.hash);
+                    const targetPath = path.resolve(tempFileRealPath, this.hash);
                     if (await fs.pathExists(targetPath)) {
                         await fs.rm(oriPath);
                     } else {

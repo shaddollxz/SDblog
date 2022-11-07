@@ -17,6 +17,7 @@ import type {
     ZipMultiOption,
     ZipMultiRes,
     DownloadFileOption,
+    DownloadFileRes,
 } from "@blog/server";
 import Token from "@/storages/token";
 
@@ -144,11 +145,10 @@ export function isZipEnd(zipId: string) {
 
 // 使用axios浏览器会在全部接收后才开启下载 内存占用较大 fetch会在收到响应时马上开始
 export function downloadFile(data: DownloadFileOption) {
-    return fetch(`/api/pan/file/download?hash=${data.hash}&type=${data.type}`, {
+    return axios<DownloadFileRes>({
         method: "get",
-        headers: {
-            Authorization: Token.get()!,
-        },
+        url: "pan/file/download",
+        params: data,
     });
 }
 // #endregion

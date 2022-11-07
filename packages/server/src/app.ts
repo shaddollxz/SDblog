@@ -3,6 +3,7 @@ import "./db/connect"; // 链接数据库
 import "./workers"; // 加载其它线程
 import express from "express";
 import compression from "./middlewares/compression";
+import * as ASSETSPATH from "./utils/assetsPath";
 
 const app = express();
 
@@ -11,10 +12,11 @@ app.use(express.json({ limit: process.env.PUBLIC_UPLOAD_CHUNKSIZE + 1024 * 2 }))
 
 // 配置静态资源
 app.use("/", express.static(process.env.PUBLIC_DIST_PATH)); // 网页
-app.use(process.env.PUBLIC_STATIC_PREFIX, express.static(process.env.PUBLIC_STATIC_PATH)); // 上传的资源
+app.use(process.env.PUBLIC_STATIC_PREFIX, express.static(process.env.PUBLIC_STATIC_PATH)); // 其它资源
 
 // 配置接口
 import routes from "./routes";
+// app.use("/api", routes);
 app.use(routes);
 
 // 404和错误处理

@@ -5,11 +5,12 @@ import { concatFiles } from "../utils/fileSlicer";
 import { originalFilename } from "../utils/formateFilename";
 import { fileHash } from "../utils/fileHash";
 import { parallelPool } from "../utils/parallelPromise";
+import { panFileRealPath } from "../utils/assetsPath";
 
 if (!isMainThread && parentPort) {
     parentPort.on("message", async ({ files, hash }) => {
         const filename = originalFilename(path.basename(files[0]));
-        const target = path.resolve(process.env.PAN_PATH, filename);
+        const target = path.resolve(panFileRealPath, filename);
         console.log("开始合并文件 " + filename);
         const key = await concatFiles(files, target, { parallelMax: 6 });
 

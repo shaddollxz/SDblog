@@ -6,10 +6,12 @@ export default async function (env: ImportMetaEnv) {
         workbox: {
             globPatterns: ["**/*.{js,css,html,ico,svg,jpg,png,ttf,woff2,moc,mtn,json}"], // 缓存的文件后缀
             maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 缓存的文件最大大小 这里是5M
+            navigateFallback: env.PUBLIC_WEBSITE, // 没有命中的缓存被重新导航到这个地址 如果不设置会返回主页的html
+            runtimeCaching: [],
         },
         manifest: {
             lang: "zh",
-            start_url: "https://www.shaddollxz.space/", // 必须在这个url下才能安装 不写是当前网页的路径
+            start_url: env.PUBLIC_WEBSITE, // 必须在这个url下才能安装 不写是当前网页的路径
             name: "影依贤者的博客",
             short_name: "博客",
             description: "个人博客",
