@@ -115,7 +115,7 @@
                 </div>
             </div>
         </template>
-        <NoData :show="!folder.folders?.length && !folder.files?.length"></NoData>
+        <NoData :show="!!folder.folders?.length || !!folder.files?.length"></NoData>
     </div>
 </template>
 
@@ -124,12 +124,12 @@ import EnsureButton from "@/components/EnsureButton/index.vue";
 import NoData from "@/components/NoData/index.vue";
 import Popover from "@/components/Popover/index.vue";
 import { EditFileTypeEnum, usePanStore } from "@/store/pan";
-import { downloadWithFetch } from "@/utils/download";
+import { downloadWithUrl } from "@/utils/download";
 import { downloadFileApi } from "@apis";
 import { DownloadFileTypeEnum } from "@blog/server";
 import type { VDragType } from "sdt3";
 import { Message } from "sdt3";
-import { fileStateChange, folderStateChange, isMulti, filesState, foldersState } from "./inject";
+import { filesState, fileStateChange, foldersState, folderStateChange, isMulti } from "./inject";
 
 const panStore = usePanStore();
 const folder = toRef(panStore, "currentFolder");
@@ -141,23 +141,8 @@ async function downloadFile(
     type: DownloadFileTypeEnum = DownloadFileTypeEnum.file
 ) {
     Message.success("开始下载文件：" + name);
-    try {
-        const res = await downloadFileApi({ hash, type: type ?? DownloadFileTypeEnum.file });
-        downloadWithFetch(name, res);
-    } catch (e) {
-        Message.error("获取文件失败");
-    }
-    //* 下面是进度条的监听 但是浏览器本来就会记录 不如不要了
-    // const { reader, size } = await downloadWithFetch(name, res);
-    // if (reader) {
-    //     const interval = window.setInterval(async () => {
-    //         const { done, value } = await reader.read();
-    //         // value是已下载量 size是总大小
-    //         if (done) {
-    //             window.clearInterval(interval);
-    //         }
-    //     }, 800);
-    // }
+    const { data } = await downloadFileApi({ hash, type });
+    downloadWithUrl(name, data.path);
 }
 async function downloadFolder(name: string, id: string) {
     const intervalFunc = await panStore.zipFolder({ folders: [{ name, id }] });
@@ -262,7 +247,7 @@ function folderDragOption(name: string, id: string): VDragType.DraggableOptions<
 .item:hover {
     background-color: var(--color-bg-bland);
 }
-.noData {
+.global-noData {
     background: none;
 }
 </style>

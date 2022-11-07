@@ -23,6 +23,7 @@ import Folder from "../utils/Folder";
 import { filenameMsg } from "../utils/formateFilename";
 import { successResponse, failResponse } from "../utils/createResponse";
 import { useConcatTempFilesWorker, useZipWorker } from "../workers";
+import { panFileRealPath, tempFileRealPath, panFileViewPath, tempFileViewPath } from "../utils/assetsPath";
 
 // #region folder
 export const folderList: GetHandler = async (req, res, next) => {
@@ -168,7 +169,7 @@ export const uploadStart: PostHandler<UploadFileStartOption> = async (req, res, 
         const { hash, name, folderId, chunks, _id } = req.body;
 
         const panfile = (await PanFileDB.find({ hash }).limit(1))[0];
-        if (panfile && (await ensureDBFile(path.resolve(process.env.PAN_PATH, panfile.hash), panfile))) {
+        if (panfile && (await ensureDBFile(path.resolve(panFileRealPath, panfile.hash), panfile))) {
             //* 文件已经存在
             const file = new PanFileDB({
                 hash,
@@ -296,7 +297,7 @@ export const zipMulti: PostHandler<ZipMultiOption> = async (req, res, next) => {
     try {
         const { _id, folderPaths, files, zipId } = req.body;
         const doc = await TempFileDB.findOne({ name: zipId });
-        if (doc && (await ensureDBFile(path.resolve(process.env.TEMP_PATH, doc.hash), doc))) {
+        if (doc && (await ensureDBFile(path.resolve(tempFileRealPath, doc.hash), doc))) {
             successResponse(res, { code: StatusEnum.NoResult });
         } else {
             successResponse(res, { code: StatusEnum.NoResult });
@@ -336,12 +337,13 @@ export const downloadFile: GetHandler<DownloadFileOption> = async (req, res, nex
     try {
         const { hash, type } = req.query;
         const target = path.resolve(
-            type == DownloadFileTypeEnum.file ? process.env.PAN_PATH : process.env.TEMP_PATH,
+            type == DownloadFileTypeEnum.file ? panFileRealPath : tempFileRealPath,
             hash
         );
 
         if (await fs.pathExists(target)) {
-            res.status(StatusEnum.OK).sendFile(target);
+            const path = `${type == DownloadFileTypeEnum.file ? panFileViewPath : tempFileViewPath}/${hash}`;
+            successResponse(res, { data: { path } });
         } else {
             failResponse(res, { code: StatusEnum.NotFound, msg: "文件已丢失" });
         }

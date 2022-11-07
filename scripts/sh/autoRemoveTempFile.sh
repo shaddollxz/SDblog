@@ -2,7 +2,7 @@
 
 # 这个脚本通过crontab定时运行
 # 使用 crontab -e 然后添加
-# 0 4 * * * 当前这个文件的位置
+# 0 4 * * * cd 当前这个文件的位置 && sh 脚本名
 # 会在每天凌晨4点运行一次这个脚本
 # 关于crontab https://linux265.com/news/3099.html
 

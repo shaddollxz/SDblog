@@ -5,13 +5,13 @@ import type { Folder, PanPath } from "../typings/interface/pan";
 import { filenameMsg } from "../utils/formateFilename";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const TEMP_PATH = process.env.TEMP_PATH;
+import { tempFileRealPath } from "../utils/assetsPath";
 
 const concatFilesWorker = new Worker(path.resolve(__dirname, "./concatFiles.worker.js"));
 export function useConcatTempFilesWorker(filenames: string[], hash: string) {
     return new Promise<{ hash: string; size: number }>((resolve, reject) => {
         const paths = filenames
-            .map((name) => path.resolve(TEMP_PATH, name))
+            .map((name) => path.resolve(tempFileRealPath, name))
             .sort((a, b) => {
                 const fileIndexa = +filenameMsg<TempChunkFileMsg>(path.basename(a)).chunkIndex;
                 const fileIndexb = +filenameMsg<TempChunkFileMsg>(path.basename(b)).chunkIndex;

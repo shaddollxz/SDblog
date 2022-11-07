@@ -1,7 +1,7 @@
 import { usePanStore } from "@/store/pan";
 import { SDDate, Message } from "sdt3";
 import { downloadFileApi } from "@apis";
-import { downloadWithFetch } from "@/utils/download";
+import { downloadWithUrl } from "@/utils/download";
 import { DownloadFileTypeEnum } from "@blog/server";
 
 export let isMulti = ref(false);
@@ -89,8 +89,11 @@ export async function downloadMulti() {
         if (data.hash) {
             window.clearInterval(interval);
             Message.success("开始下载文件：" + SDDate.formatNow() + ".zip");
-            const res = await downloadFileApi({ hash: data.hash, type: DownloadFileTypeEnum.folder });
-            downloadWithFetch(SDDate.formatNow() + ".zip", res);
+            const { data: res } = await downloadFileApi({
+                hash: data.hash,
+                type: DownloadFileTypeEnum.folder,
+            });
+            downloadWithUrl(SDDate.formatNow() + ".zip", res.path);
         }
     }, 800);
 }

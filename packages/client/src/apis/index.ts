@@ -44,7 +44,7 @@ export {
     uploadImage as uploadImageApi,
     removeImage as removeImageApi,
     uploadAvatar as uploadAvatarApi,
-} from "./ajax/static";
+} from "./ajax/upload";
 
 export {
     panFolder as panFolderApi,

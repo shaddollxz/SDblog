@@ -22,7 +22,7 @@ export default function (Env: ImportMetaEnv, isBuild: boolean, isDev: boolean): 
     if (Env.VITE_PROXY_LOCAL == "1") {
         proxySetting = { target: "http://localhost:3000", rewriteto: "" };
     } else {
-        proxySetting = { target: "https://www.shaddollxz.space", rewriteto: "/api" }; // 配置代理
+        proxySetting = { target: Env.PUBLIC_WEBSITE, rewriteto: "/api" }; // 配置代理
     }
 
     return {

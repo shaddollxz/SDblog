@@ -16,14 +16,12 @@
         "pinia": "^2.0.14",
         "sdt3": "workspace:^2.3.1",
         "spark-md5": "^3.0.2",
-        "streamsaver": "^2.0.6",
         "vue": "^3.2.37",
         "vue-router": "^4.0.12"
     },
     "devDependencies": {
         "@types/marked": "^4.0.1",
         "@types/spark-md5": "^3.0.2",
-        "@types/streamsaver": "^2.0.1",
         "@vitejs/plugin-vue": "^3.0.1",
         "@vitejs/plugin-vue-jsx": "^2.0.0",
         "rollup": "^2.77.0",

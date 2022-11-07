@@ -6,9 +6,11 @@ declare module "process" {
                 // 开发模式
                 readonly MODE: "development" | "production";
                 // 公共变量
+                readonly PUBLIC_WEBSITE: string;
                 readonly PUBLIC_DIST_PATH: string;
                 readonly PUBLIC_STATIC_PATH: string;
                 readonly PUBLIC_STATIC_PREFIX: string;
+                readonly PUBLIC_ASSETS_PATH: string;
                 readonly PUBLIC_TEMP_DAY: NumberString;
                 readonly PUBLIC_UPLOAD_CHUNKSIZE: NumberString;
                 // 私有变量

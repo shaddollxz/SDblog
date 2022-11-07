@@ -48,7 +48,6 @@ importers:
       '@blog/server': workspace:^1.0.0
       '@types/marked': ^4.0.1
       '@types/spark-md5': ^3.0.2
-      '@types/streamsaver': ^2.0.1
       '@vitejs/plugin-vue': ^3.0.1
       '@vitejs/plugin-vue-jsx': ^2.0.0
       echarts: ^5.4.0
@@ -60,7 +59,6 @@ importers:
       sass: ^1.54.0
       sdt3: workspace:^2.3.1
       spark-md5: ^3.0.2
-      streamsaver: ^2.0.6
       unplugin-auto-import: ^0.8.8
       vconsole: ^3.14.6
       vite: ^3.0.2
@@ -80,13 +78,11 @@ importers:
       pinia: 2.0.17_vue@3.2.37
       sdt3: link:../SDT
       spark-md5: 3.0.2
-      streamsaver: 2.0.6
       vue: 3.2.37
       vue-router: 4.1.3_vue@3.2.37
     devDependencies:
       '@types/marked': 4.0.3
       '@types/spark-md5': 3.0.2
-      '@types/streamsaver': 2.0.1
       '@vitejs/plugin-vue': 3.0.1_vite@3.0.4+vue@3.2.37
       '@vitejs/plugin-vue-jsx': 2.0.0_vite@3.0.4+vue@3.2.37
       rollup: 2.77.2
@@ -1713,10 +1709,6 @@ packages:
 
   /@types/spark-md5/3.0.2:
     resolution: {integrity: sha512-82E/lVRaqelV9qmRzzJ1PKTpyrpnT7mwdneKNJB9hUtypZDMggloDfFUCIqRRx3lYRxteCwXSq9c+W71Vf0QnQ==}
-    dev: true
-
-  /@types/streamsaver/2.0.1:
-    resolution: {integrity: sha512-I49NtT8w6syBI3Zg3ixCyygTHoTVMY0z2TMRcTgccdIsVd2MwlKk7ITLHLsJtgchUHcOd7QEARG9h0ifcA6l2Q==}
     dev: true
 
   /@types/svgo/2.6.3:
@@ -6762,10 +6754,6 @@ packages:
 
   /stream-shift/1.0.1:
     resolution: {integrity: sha512-AiisoFqQ0vbGcZgQPY1cdP2I76glaVA/RauYR4G4thNFgkTqr90yXTo4LYX60Jl+sIlPNHHdGSwo01AvbKUSVQ==}
-    dev: false
-
-  /streamsaver/2.0.6:
-    resolution: {integrity: sha512-LK4e7TfCV8HzuM0PKXuVUfKyCB1FtT9L0EGxsFk5Up8njj0bXK8pJM9+Wq2Nya7/jslmCQwRK39LFm55h7NBTw==}
     dev: false
 
   /streamsearch/0.1.2:
