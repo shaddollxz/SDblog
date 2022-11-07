@@ -53,28 +53,13 @@
             <p>男，来自大非洲，2000年生，所以现在17岁（</p>
             <p>前端程序猿</p>
             <p>喜欢玩魂类，银河城类游戏还喜欢玩橙汁，可以在首页找到联系我的方式</p>
-
-            <h2>🎉赞助</h2>
-            <p>如果喜欢本博客，可以为我分担一点服务器和域名的租金</p>
-            <div class="qitao">
-                <p>
-                    <span @click="index = 0">微信</span>
-                    |
-                    <span @click="index = 1">支付宝</span>
-                </p>
-                <img :src="qitao[index]" alt="" />
-            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import isMobile from "@/utils/isMobile";
-import wechat from "@img/qitao/wechat.png";
-import alipay from "@img/qitao/alipay.png";
 import Caches from "./Caches.vue";
-let index = ref(0);
-const qitao = [wechat, alipay];
 </script>
 
 <style lang="scss" scoped>
@@ -89,21 +74,5 @@ const qitao = [wechat, alipay];
     display: flex;
     align-items: center;
     gap: $gap;
-}
-.qitao {
-    p {
-        margin: 1rem auto;
-        width: max-content;
-        color: var(--color-text-theme);
-        span {
-            cursor: pointer;
-        }
-    }
-    img {
-        width: 20%;
-        @include mobile {
-            width: 50%;
-        }
-    }
 }
 </style>
