@@ -112,18 +112,18 @@ export const relogin: GetHandler = async (req, res, next) => {
 };
 
 /** 获取用户信息 */
-export const userDetail: GetHandler<any, { userId: string }> = async (req, res, next) => {
-    try {
-        const userData = await UserDB.findById(req.params.userId);
-        if (userData) {
-            successResponse(res, { data: { ...userData.toJSON() } });
-        } else {
-            failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
-        }
-    } catch (e) {
-        next(e);
-    }
-};
+// export const userDetail: GetHandler<any, { userId: string }> = async (req, res, next) => {
+//     try {
+//         const userData = await UserDB.findById(req.params.userId);
+//         if (userData) {
+//             successResponse(res, { data: { ...userData.toJSON() } });
+//         } else {
+//             failResponse(res, { code: StatusEnum.NotFound, msg: "没有该用户" });
+//         }
+//     } catch (e) {
+//         next(e);
+//     }
+// };
 
 /** 修改用户信息 */
 export const updateUserInfo: PutHandler<UserInfo> = async (req, res, next) => {
@@ -133,7 +133,7 @@ export const updateUserInfo: PutHandler<UserInfo> = async (req, res, next) => {
             { $set: { ...req.body } },
             { new: true }
         );
-        successResponse(res, { data: userData });
+        successResponse(res, { data: { userData } });
     } catch (e) {
         next(e);
     }

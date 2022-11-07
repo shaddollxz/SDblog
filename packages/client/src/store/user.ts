@@ -5,13 +5,12 @@ import { AuthorityEnum } from "@blog/server";
 import Token from "@/storages/token";
 import { Message } from "sdt3";
 
-type User = { userInfo: Partial<UserInfo>; isLogin: boolean; authority: number };
+type User = { userInfo: Partial<UserInfo>; isLogin: boolean };
 
 export const useUserStore = defineStore("user", {
     state: (): User => ({
         userInfo: {},
         isLogin: false,
-        authority: 0,
     }),
     getters: {
         avatars(): Pick<UserInfo, "avatar" | "avatarFrame"> {
@@ -21,7 +20,6 @@ export const useUserStore = defineStore("user", {
     actions: {
         refreshUserInfo(data: UserInfo) {
             this.isLogin = true;
-            this.authority = data.authority;
             this.userInfo = data;
         },
 
@@ -55,13 +53,13 @@ export const useUserStore = defineStore("user", {
         logout() {
             Token.remove();
             this.isLogin = false;
-            this.authority = 0;
             Message.success("退出成功");
         },
         /** 验证权限 */
         authorityCheck(check: AuthorityEnum) {
-            if (this.authority & 1) return true;
-            return !!(this.authority & check);
+            const authority = this.userInfo.authority ?? 0;
+            if (authority & 1) return true;
+            return !!(authority & check);
         },
         /** 多个权限用该方法合并 */
         multiAuthority(...authories: AuthorityEnum[]) {

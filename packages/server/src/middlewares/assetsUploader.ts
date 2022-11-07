@@ -1,8 +1,9 @@
 import multer from "multer";
 import { resolve } from "path";
+import { assetsRealPath } from "../utils/assetsPath";
 
 const imageEngin = multer.diskStorage({
-    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./image"),
+    destination: resolve(assetsRealPath, "./image"),
 
     filename(req, file, cb) {
         cb(null, file.originalname);
@@ -10,7 +11,7 @@ const imageEngin = multer.diskStorage({
 });
 
 const avatarEngin = multer.diskStorage({
-    destination: resolve(process.env.PUBLIC_STATIC_PATH, "./avatar"),
+    destination: resolve(assetsRealPath, "./avatar"),
 
     filename(req, file, cb) {
         // 文件名从前端格式化为 hash+后缀 这里有问题

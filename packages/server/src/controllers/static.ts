@@ -4,6 +4,7 @@ import { StatusEnum } from "../typings/enum";
 import { fileHash } from "../utils/fileHash";
 import { filenameSlice } from "../utils/formateFilename";
 import { successResponse, failResponse } from "../utils/createResponse";
+import { assetsViewPath, assetsRealPath } from "../utils/assetsPath";
 
 export const uploadImage: PostHandler = async (req, res, next) => {
     try {
@@ -14,7 +15,7 @@ export const uploadImage: PostHandler = async (req, res, next) => {
             if (hash == filenameSlice(fileName).prefix) {
                 successResponse(res, {
                     data: {
-                        imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/image/" + fileName,
+                        imgSrc: assetsViewPath + "/image/" + fileName,
                     },
                 });
             } else {
@@ -29,10 +30,10 @@ export const uploadImage: PostHandler = async (req, res, next) => {
 
 export const removeImage: DeleteHandler<{ src: string }> = async (req, res, next) => {
     try {
-        const regexp = new RegExp(`(?<=^${process.env.PUBLIC_STATIC_PREFIX}/).+`);
+        const regexp = new RegExp(`(?<=^${assetsViewPath}/).+`);
         const dir = req.body.src.match(regexp)?.[0];
         if (dir) {
-            await fs.remove(resolve(process.env.PUBLIC_STATIC_PATH, dir));
+            await fs.remove(resolve(assetsRealPath, dir));
         }
         successResponse(res);
     } catch (e) {
@@ -49,7 +50,7 @@ export const uploadAvatar: PostHandler = async (req, res, next) => {
             if (hash == filenameSlice(fileName).prefix) {
                 successResponse(res, {
                     data: {
-                        imgSrc: process.env.PUBLIC_STATIC_PREFIX + "/avatar/" + fileName,
+                        imgSrc: assetsViewPath + "/avatar/" + fileName,
                     },
                 });
             } else {

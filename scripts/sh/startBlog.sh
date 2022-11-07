@@ -11,6 +11,7 @@ source ${__dirname}/utils/Log.sh
 git checkout .
 git pull
 
+# 检查字体文件
 cd ${__rootDir}/scripts
 fontPath="${__rootDir}/packages/client/src/assets/font"
 if [ ! -d $fontPath ]; then
@@ -20,16 +21,52 @@ if [ ! -d $fontPath ]; then
     Success "font generate end"
 fi
 
+# 检查静态资源
 if [ -f ${envPath}/.env ]; then
-    staticPath=$(ReadEnv ${envPath}/.env PUBLIC_STATIC_PATH)
+    staticBasePath=$(ReadEnv ${envPath}/.env PUBLIC_STATIC_PATH)
+    assetsPath=$(ReadEnv ${envPath}/.env PUBLIC_ASSETS_PATH)
+    panPath=$(ReadEnv ${envPath}/.env PAN_PATH)
+    tempPath=$(ReadEnv ${envPath}/.env TEMP_PATH)
 
-    if [ ! -d "${staticPath}/headPic" ]; then
-        Error "缺少静态文件夹 headPic"
+    if [ -z $staticBasePath ]; then
+        Error "缺少环境变量 PUBLIC_STATIC_PATH"
         exit
     fi
-    if [ ! -d "${staticPath}/emojis/noah" ]; then
-        Error "缺少静态文件夹 emojis/noah"
+    if [ -z $assetsPath ]; then
+        Error "缺少环境变量 PUBLIC_ASSETS_PATH"
         exit
+    fi
+    if [ -z $panPath ]; then
+        Error "缺少环境变量 PAN_PATH"
+        exit
+    fi
+    if [ -z $tempPath ]; then
+        Error "缺少环境变量 TEMP_PATH"
+        exit
+    fi
+    if [ ! -d $staticBasePath ]; then
+        mkdir $staticBasePath
+        Error "缺少静态资源文件夹 $staticBasePath 已生成该文件夹"
+    fi
+    if [ ! -d "${staticBasePath}${assetsPath}/headPic" ]; then
+        mkdir "${staticBasePath}${assetsPath}/headPic"
+        Error "缺少静态资源文件夹 ${staticBasePath}${assetsPath}/headPic 已生成该文件夹"
+    fi
+    if [ ! -d "${staticBasePath}${assetsPath}/emojis" ]; then
+        mkdir "${staticBasePath}${assetsPath}/emojis"
+        Error "缺少静态资源文件夹 ${staticBasePath}${assetsPath}/emojis 已生成该文件夹"
+    fi
+    if [ ! -d "${staticBasePath}${assetsPath}/emojis/noah"]; then
+        mkdir "${staticBasePath}${assetsPath}/emojis/noah"
+        Error "缺少静态资源文件夹 ${staticBasePath}${assetsPath}/emojis/noah 已生成该文件夹"
+    fi
+    if [ ! -d "${staticBasePath}${panPath}" ]; then
+        mkdir "${staticBasePath}${panPath}"
+        Error "缺少静态资源文件夹 ${staticBasePath}${panPath} 已生成该文件夹"
+    fi
+    if [ ! -d "${staticBasePath}${tempPath}" ]; then
+        mkdir "${staticBasePath}${tempPath}"
+        Error "缺少静态资源文件夹 ${staticBasePath}${tempPath} 已生成该文件夹"
     fi
 else
     Error "请设置环境变量文件 ${envPath}/.env"
@@ -41,5 +78,7 @@ pm2 delete blog
 pnpm build:server
 pnpm build:client
 pm2 start ${__rootDir}/pm2.json
+pm2 update
+pm2 list
 
 Success "blog is running"
