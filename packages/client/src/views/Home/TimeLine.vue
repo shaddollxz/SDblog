@@ -5,7 +5,7 @@
             <span>时间轴</span>
         </p>
         <NoData :show="!!timeLine">
-            <ul class="lines gusto-hiddenScrollBar">
+            <ul class="lines">
                 <li v-for="(monthItem, year) of timeLine">
                     <h3 class="chuyuan">{{ year }}</h3>
                     <ul v-for="(contents, month) of monthItem">
@@ -76,6 +76,7 @@ onMounted(async () => {
     .lines {
         height: calc(100% - $titleHeight - 0.5rem - 1.3rem);
         overflow-y: scroll;
+        @include scrollBarSize("thin");
         // 线
         &::after {
             content: "";

@@ -43,6 +43,7 @@ a {
 input[type="text"],
 input[type="number"],
 input[type="passWord"] {
+    padding: 0.15rem 0.3rem;
     color: var(--color-text-default);
     background-color: transparent;
     border: 1.5px solid var(--color-border);

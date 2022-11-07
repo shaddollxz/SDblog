@@ -9,11 +9,11 @@
 .global-loading {
     --boxWidth: 10rem;
     --gap: 2rem;
-}
-.text {
-    margin-top: calc(var(--gap) + 2.5rem);
-    font-size: var(--fontsize-large);
-    font-weight: 600;
+    .text {
+        margin-top: calc(var(--gap) + 2.5rem);
+        font-size: var(--fontsize-large);
+        font-weight: 600;
+    }
 }
 .loadingBox {
     width: var(--boxWidth);

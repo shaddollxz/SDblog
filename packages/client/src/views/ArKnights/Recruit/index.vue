@@ -1,12 +1,12 @@
 <template>
-    <div v-if="isShowTokenPoppop" class="shady gusto-flex-center">
+    <div v-show="isShowTokenPoppop" class="shady gusto-flex-center">
         <TokenPoppop @onEnsure="onEnsure" @onExit="onExit"></TokenPoppop>
     </div>
     <div class="recruit">
         <div class="pie" ref="pieDom"></div>
 
         <div class="gusto-button" @click="isShowTokenPoppop = true">
-            <span>关于token</span>
+            <span>token管理</span>
             <SvgIcon name="replyBox-help"></SvgIcon>
         </div>
 
@@ -64,7 +64,7 @@ import type { ECOptions } from "@/utils/Echarts";
 import Echarts from "@/utils/Echarts";
 import { objectAdd } from "@/utils/objectMath";
 import { recruitApi } from "@apis";
-import { SDMath } from "sdt3";
+import { SDMath, isSame } from "sdt3";
 import { analyzeData, freshData, limitList } from "./analyzeRecruitData";
 import TokenPoppop from "./TokenPoppop.vue";
 
@@ -78,10 +78,10 @@ onMounted(() => {
 });
 async function onEnsure(token: string, channelId: number, flag: string) {
     isShowTokenPoppop.value = false;
-    if (AKStorage.getItem("currentFlag") == flag) return;
-
     const userData = AKStorage.getItem("userData");
     const newUserData = { ak_token: token, channelId };
+    if (AKStorage.getItem("currentFlag") == flag && isSame(userData?.[flag], newUserData)) return;
+
     if (userData) {
         userData[flag] = newUserData;
         AKStorage.setItem("userData", userData);
@@ -89,7 +89,7 @@ async function onEnsure(token: string, channelId: number, flag: string) {
         AKStorage.setItem("userData", { [flag]: newUserData });
     }
     AKStorage.setItem("currentFlag", flag);
-    await getAndAnalyzedData();
+    // await getAndAnalyzedData();
 }
 function onExit() {
     isShowTokenPoppop.value = false;
@@ -111,7 +111,7 @@ const allStarData = shallowRef<DrawTableType["star"]>({ 3: 0, 4: 0, 5: 0, 6: 0 }
 const allDraw = ref(0);
 const currentLimitPool = shallowRef<string[]>([]);
 
-onMounted(getAndAnalyzedData);
+// onMounted(getAndAnalyzedData);
 
 async function getAndAnalyzedData() {
     const allUserData = AKStorage.getItem("userData");
@@ -200,8 +200,16 @@ function uploadData() {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: #0000004f;
+    background-color: #00000069;
     z-index: 998;
+    .tokenPoppop {
+        width: 33%;
+        height: 70%;
+        overflow-y: scroll;
+        @include mobile {
+            width: 100%;
+        }
+    }
 }
 .recruit {
     .pie {

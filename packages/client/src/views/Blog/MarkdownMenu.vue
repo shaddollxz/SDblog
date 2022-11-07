@@ -1,7 +1,7 @@
 <template>
     <div class="markdownMenu">
         <p class="xingyan">目录</p>
-        <div class="menu gusto-hiddenScrollBar">
+        <div class="menu">
             <MarkdownMenuChild :menuData="menuTree"></MarkdownMenuChild>
         </div>
     </div>
@@ -36,6 +36,7 @@ const menuTree = computed(() => {
         height: calc(100% - var(--fontsize-big) - 4rem);
         width: 100%;
         overflow-y: scroll;
+        @include scrollBarSize("none");
     }
     p {
         height: var(--fontsize-big);

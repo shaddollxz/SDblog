@@ -11,3 +11,17 @@
         @content;
     }
 }
+
+@mixin scrollBarSize($size) {
+    @if $size == "none" {
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    } @else if $size == "thin" {
+        scrollbar-width: thin;
+        &::-webkit-scrollbar {
+            width: 0.65rem;
+        }
+    }
+}
