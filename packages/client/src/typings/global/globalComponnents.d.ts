@@ -19,5 +19,6 @@ declare module "vue" {
         SplitPage: typeof import("sdt3/src/components/SplitPage/SplitPage.vue").default;
         SwitchButton: typeof import("sdt3/src/components/SwitchButton/SwitchButton.vue").default;
         CheckBox: typeof import("sdt3/src/components/CheckBox/CheckBox.vue").default;
+        DropDown: typeof import("sdt3/src/components/DropDown/DropDown.vue").default;
     }
 }

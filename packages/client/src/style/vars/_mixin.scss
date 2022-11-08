@@ -22,6 +22,9 @@
         scrollbar-width: thin;
         &::-webkit-scrollbar {
             width: 0.65rem;
+            @include mobile() {
+                width: 0.3rem;
+            }
         }
     }
 }

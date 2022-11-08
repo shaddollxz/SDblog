@@ -1,6 +1,6 @@
 <template>
     <section class="blogCard">
-        <LazyLoadBox isReHidden @onShow="onShow">
+        <LazyLoadBox reHidden lazyRender>
             <div class="msg">
                 <div class="time">
                     <SvgIcon name="blog-clock"></SvgIcon>
@@ -47,8 +47,8 @@
                     </div>
                 </div>
             </div>
-            <div class="img">
-                <img ref="headPic" alt="这里是头图" />
+            <div class="img" v-if="!isMobile">
+                <img :src="headPic" @error="errorHandle" loading="lazy" />
             </div>
             <Popover
                 class="menu"
@@ -91,33 +91,17 @@ import staticPics from "virtual:staticPics";
 
 const router = useRouter();
 const userStore = useUserStore();
-
 interface Props {
     blogMsg: BlogListItemInfo;
 }
 const props = defineProps<Props>();
 
-const headPic = shallowRef<HTMLImageElement | null>(null);
-
-let alreadyShow = false;
-function errorHandle(this: HTMLImageElement) {
-    this.src = defaultHeadPic;
-    this.removeEventListener("error", errorHandle);
+const headPic = props.blogMsg.headPic || Random.array(staticPics.headPic);
+function errorHandle(e: Event) {
+    const el = e.target as HTMLImageElement;
+    el.src = defaultHeadPic;
+    el.removeEventListener("error", errorHandle);
 }
-function onShow() {
-    if (isMobile) return;
-
-    if (!alreadyShow) {
-        alreadyShow = true;
-        if (props.blogMsg.headPic) {
-            headPic.value!.src = props.blogMsg.headPic;
-        } else {
-            headPic.value!.src = Random.array(staticPics.headPic);
-        }
-        headPic.value!.addEventListener("error", errorHandle);
-    }
-}
-onUnmounted(() => headPic.value?.removeEventListener("error", errorHandle));
 
 function deleteBlog() {
     deleteBlogApi(props.blogMsg._id).then(() => {
