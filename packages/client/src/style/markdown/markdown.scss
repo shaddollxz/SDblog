@@ -53,6 +53,11 @@
         overflow-wrap: break-word;
     }
 
+    ul,
+    ol {
+        padding-left: var(--fontsize-big);
+    }
+
     p,
     li,
     ul,
@@ -84,8 +89,8 @@
             height: 1rem;
             border-radius: 50%;
             position: absolute;
-            top: 0.4rem;
-            left: 2rem;
+            top: 0.8rem;
+            left: 1rem;
             background-color: #fc625d;
             box-shadow: 2rem 0 #fdbc40, 4rem 0 #35cd4b;
         }
@@ -98,6 +103,7 @@
             margin: 0;
             line-height: inherit;
             background: 0 0;
+            @include scrollBarSize("thin");
             &::before {
                 display: block;
                 position: absolute;

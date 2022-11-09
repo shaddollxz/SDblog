@@ -1,5 +1,5 @@
 import type { DrawTableType } from "@/db/arKnights";
-import { useDrawTable } from "@/db/arKnights";
+import { useDrawTable, isCharData } from "@/db/arKnights";
 import type { AKStorageInterface } from "@/storages/arKnights";
 import { AKStorage } from "@/storages/arKnights";
 import { objectAdd } from "@/utils/objectMath";
@@ -7,14 +7,16 @@ import type { RecruitInfo, RecruitListItem } from "@blog/server";
 import { isEmpty } from "sdt3";
 
 // 限定池
-export const limitList = ["斩荆辟路"];
+const limitList = "斩荆辟路";
+export function isLimit(poolName: string) {
+    return new RegExp(poolName).test(limitList);
+}
 
 interface Result {
     lastSix: number; // 普通池距离上一个六星
     isHaveSix: boolean; // 这次分析的普通池数据中是否有六星 用来和以前的数据进行拼接使用
     lastSix_limit: Record<string, number>;
     isHaveSix_limit: Record<string, boolean>;
-    currentLimitPool: string[];
     newPools: string; // 新卡池的卡池名 空格隔开 也可以不隔
     counts: Record<string, DrawTableType["star"]>; // 每个池子的星数记录
 }
@@ -26,7 +28,6 @@ export async function analyzeData(list: RecruitInfo["list"]) {
         isHaveSix: false,
         lastSix_limit: {},
         isHaveSix_limit: {},
-        currentLimitPool: [],
         newPools: "",
         counts: {},
     };
@@ -35,9 +36,8 @@ export async function analyzeData(list: RecruitInfo["list"]) {
     const currentFlag = AKStorage.getItem("currentFlag");
     if (!currentFlag) return result;
 
-    const drawTable = await useDrawTable(currentFlag);
     // 整理新数据里的角色和星级 并更新数据库中卡池数据
-    const pools: Record<string, { chars: RecruitListItem["chars"]; ts: number }> = {};
+    const pools: Record<string, DrawTableType["operators"]> = {};
     const counts: Result["counts"] = {};
     for (const draw of list) {
         const poolName = draw.pool;
@@ -46,47 +46,31 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             counts[poolName][char.rarity + 1]++;
         }
         if (pools[poolName]) {
-            pools[poolName].chars.push(...draw.chars);
-            pools[poolName].ts = draw.ts;
+            pools[poolName].push(draw.ts);
+            pools[poolName].push(...draw.chars);
         } else {
-            pools[poolName] = { chars: draw.chars, ts: draw.ts };
-        }
-    }
-    for (let poolName in pools) {
-        const cacheChars = drawTable.keypathObj(await drawTable.findByKeypath(poolName));
-        if (cacheChars) {
-            // 已有的卡池 只先更新角色和ts 星数分布在下面比对后更新
-            const newChars = [...pools[poolName].chars];
-            newChars.push(...cacheChars[poolName].operators);
-            await drawTable.findByKeypathAndUpdate(poolName, {
-                $set: { operators: newChars, ts: pools[poolName].ts },
-            });
-        } else {
-            // 新的卡池 所有数据都插入
-            result.newPools += `${poolName} `;
-            await drawTable.insert({
-                poolName,
-                operators: pools[poolName].chars,
-                star: counts[poolName],
-                ts: pools[poolName].ts,
-            });
+            pools[poolName] = [draw.ts, ...draw.chars];
         }
     }
     result.counts = counts;
+    const drawTable = await useDrawTable(currentFlag);
+    for (let poolName in pools) {
+        await drawTable.findByKeypathAndUpdate(poolName, { $set: { operators: pools[poolName] } });
+    }
 
     // 计算保底数据
     const keys = Object.keys(pools);
     for (let n = 0; n < keys.length; n++) {
         const poolName = keys[n];
-        const poolChars = pools[poolName].chars;
-        if (limitList.includes(poolName)) {
-            result.currentLimitPool.push(poolName);
+        const poolChars = pools[poolName];
+        if (isLimit(poolName)) {
             // 限定池
             result.lastSix_limit[poolName] = 0;
             result.isHaveSix_limit[poolName] = false;
 
             for (let i = 0; i < poolChars.length; i++) {
-                if (poolChars[i].rarity == 5) {
+                const charData = poolChars[i];
+                if (isCharData(charData) && charData.rarity == 5) {
                     result.lastSix_limit[poolName] = i;
                     result.isHaveSix_limit[poolName] = true;
                     break;
@@ -99,7 +83,8 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             // 非限定池
             if (!result.isHaveSix) {
                 for (let i = 0; i < poolChars.length; i++) {
-                    if (poolChars[i].rarity == 5) {
+                    const charData = poolChars[i];
+                    if (isCharData(charData) && charData.rarity == 5) {
                         result.lastSix += i;
                         result.isHaveSix = true;
                         break;
@@ -115,7 +100,6 @@ export async function analyzeData(list: RecruitInfo["list"]) {
 interface ExportData {
     lastSixData: AKStorageInterface["poolData"][string]["lastSixData"];
     starData: Result["counts"];
-    currentLimitPool: string[];
 }
 
 export async function freshData(result: Result): Promise<ExportData> {
@@ -157,6 +141,5 @@ export async function freshData(result: Result): Promise<ExportData> {
     return {
         starData: isEmpty(starData) ? result.counts : starData,
         lastSixData: lastSixData || { lastSix: result.lastSix, lastSix_limit: result.lastSix_limit },
-        currentLimitPool: result.currentLimitPool,
     };
 }

@@ -10,46 +10,63 @@
             <SvgIcon name="replyBox-help"></SvgIcon>
         </div>
 
-        <div>
-            <p>保底记录</p>
-            <span>自记录开始普通寻访已{{ lastSixData.lastSix }}发没有六星</span>
-            <br />
-            <span v-for="name of currentLimitPool">
-                自记录开始限定寻访{{ name }}已{{ lastSixData.lastSix_limit[name] }}发没有六星
-            </span>
-            <p>平均出货统计</p>
-            <span>
-                六星平均{{ allStarData[6] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[6]), 2) }}发
-            </span>
-            <span>
-                五星平均{{ allStarData[5] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[5]), 2) }}发
-            </span>
-        </div>
+        <div class="dataAnalyze">
+            <div class="distribution">
+                <p>保底记录</p>
+                <span>自记录开始普通寻访已{{ lastSixData.lastSix }}发没有六星</span>
+                <span>限定池的记录请在下面查阅</span>
+            </div>
 
-        <div class="distribution">
-            <p>抽卡统计</p>
-            <span>合计{{ allDraw }}发</span>
-            <span v-for="(count, rarity) in allStarData" :class="`rarity-${rarity - 1}`">
-                {{ rarity }}星{{ count }}个
-            </span>
-        </div>
+            <div class="distribution">
+                <p>平均出货统计</p>
+                <!-- prettier-ignore -->
+                <span>
+                    六星平均{{ allStarData[6] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[6]), 2) }}发
+                </span>
+                <!-- prettier-ignore -->
+                <span>
+                    五星平均{{ allStarData[5] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[5]), 2) }}发
+                </span>
+            </div>
 
-        <div>
-            <p>单个卡池分析（点击查看饼图分析）</p>
-            <div
-                v-for="(value, name) in starData"
-                class="distribution"
-                @click="() => setChartData(starData[name])"
-            >
-                <p>
-                    <span>卡池名：{{ name }}</span>
-                    <span class="limit" v-show="limitList.includes(name as string)">限定</span>
-                </p>
-
-                <span>合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发</span>
-                <span v-for="(count, rarity) in value" :class="`rarity-${rarity - 1}`">
+            <div class="distribution">
+                <p>抽卡统计</p>
+                <span>合计{{ allDraw }}发</span>
+                <span v-for="(count, rarity) in allStarData" :class="`rarity-${rarity - 1}`">
                     {{ rarity }}星{{ count }}个
                 </span>
+            </div>
+
+            <div class="distribution">
+                <p>单个卡池分析（打开查看饼图分析）</p>
+                <DropDown
+                    v-for="(value, name) in starData"
+                    lazyRender
+                    @onOpen="() => getPoolDrawDataAndSetChart(name)"
+                >
+                    <template #title>
+                        <span>{{ name }}</span>
+                        <span class="limit" v-if="isLimit(name)">限定</span>
+                    </template>
+                    <template #content>
+                        <div class="starData">
+                            <span v-if="isLimit(name)">
+                                卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
+                            </span>
+                            <span>合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发</span>
+                            <span v-for="(count, rarity) in value" :class="`rarity-${rarity - 1}`">
+                                {{ rarity }}星{{ count }}个
+                            </span>
+                        </div>
+                        <div class="drawData">
+                            <span v-for="(chars, time) in poolDrawData[name]">
+                                <span v-for="char of chars" :class="`rarity-${char.rarity}`">
+                                    {{ char }}
+                                </span>
+                            </span>
+                        </div>
+                    </template>
+                </DropDown>
             </div>
         </div>
     </div>
@@ -57,16 +74,17 @@
 
 <script setup lang="ts">
 import type { DrawTableType } from "@/db/arKnights";
-import { useDrawTable } from "@/db/arKnights";
+import { useDrawTable, operatorsWithTime } from "@/db/arKnights";
 import type { AKStorageInterface } from "@/storages/arKnights";
 import { AKStorage } from "@/storages/arKnights";
 import type { ECOptions } from "@/utils/Echarts";
 import Echarts from "@/utils/Echarts";
 import { objectAdd } from "@/utils/objectMath";
 import { recruitApi } from "@apis";
-import { SDMath, isSame } from "sdt3";
-import { analyzeData, freshData, limitList } from "./analyzeRecruitData";
+import { isSame, SDMath } from "sdt3";
+import { analyzeData, freshData, isLimit } from "./analyzeRecruitData";
 import TokenPoppop from "./TokenPoppop.vue";
+import type { RecruitListItem } from "@blog/server";
 
 // #region 填写token
 const isShowTokenPoppop = ref(false);
@@ -89,7 +107,7 @@ async function onEnsure(token: string, channelId: number, flag: string) {
         AKStorage.setItem("userData", { [flag]: newUserData });
     }
     AKStorage.setItem("currentFlag", flag);
-    // await getAndAnalyzedData();
+    await getAndAnalyzedData();
 }
 function onExit() {
     isShowTokenPoppop.value = false;
@@ -109,9 +127,10 @@ const lastSixData = shallowRef<AKStorageInterface["poolData"][string]["lastSixDa
 // 所有收集数据的统计
 const allStarData = shallowRef<DrawTableType["star"]>({ 3: 0, 4: 0, 5: 0, 6: 0 });
 const allDraw = ref(0);
-const currentLimitPool = shallowRef<string[]>([]);
+// 每个卡池的抽卡结果
+const poolDrawData = shallowReactive<Record<string, Record<string, RecruitListItem["chars"]>>>({});
 
-// onMounted(getAndAnalyzedData);
+onMounted(getAndAnalyzedData);
 
 async function getAndAnalyzedData() {
     const allUserData = AKStorage.getItem("userData");
@@ -155,12 +174,12 @@ async function getAndAnalyzedData() {
             const chartData = objectAdd(...drawStarData) as DrawTableType["star"];
             allStarData.value = chartData;
             allDraw.value = [6, 5, 4, 3].reduce((pre, cur) => pre + chartData[cur], 0);
-            setChartData(chartData);
+            setChart(chartData);
         }
     }
 }
 
-function setChartData(chartData: Record<string, number>) {
+function setChart(chartData: DrawTableType["star"]) {
     if (chart) {
         const result: { value: number; name: string }[] = [];
         for (let key in chartData) {
@@ -186,8 +205,20 @@ function setChartData(chartData: Record<string, number>) {
         });
     }
 }
+async function getPoolDrawDataAndSetChart(poolName: string) {
+    if (!poolDrawData[poolName]) {
+        const currentFlag = AKStorage.getItem("currentFlag");
+        if (!currentFlag) return;
+        const drawTable = await useDrawTable(currentFlag);
+        const poolData = await drawTable.findByKeypath(poolName);
+        if (poolData[0]) {
+            const drawDataWithTime = operatorsWithTime(poolData[0].operators);
+            poolDrawData[poolName] = drawDataWithTime;
+        }
+    }
+    setChart(starData[poolName]);
+}
 // #endregion
-
 function uploadData() {
     //todo 上传数据到服务器
 }
@@ -212,9 +243,25 @@ function uploadData() {
     }
 }
 .recruit {
+    --rarity-2: #0493d0;
+    --rarity-3: #a231ff;
+    --rarity-4: #d88303;
+    --rarity-5: #d14e02;
+    display: flex;
+    justify-content: space-evenly;
     .pie {
         width: 50%;
         height: 20rem;
+    }
+    @include mobile {
+        flex-direction: column;
+        .pie {
+            width: 100%;
+        }
+    }
+    .dataAnalyze {
+        .distribution {
+        }
     }
 }
 
@@ -229,5 +276,7 @@ function uploadData() {
 }
 .rarity-5 {
     color: #d14e02;
+}
+.limit {
 }
 </style>

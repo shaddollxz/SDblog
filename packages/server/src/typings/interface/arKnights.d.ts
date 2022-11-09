@@ -5,7 +5,7 @@ export interface RecruitOptions {
 }
 
 export interface RecruitListItem {
-    ts: number; // 唯一标识符 不是时间戳
+    ts: number; // 时间戳 乘以1000后为正常时间
     pool: string;
     chars: { name: string; rarity: number; isNew: boolean }[];
 }
