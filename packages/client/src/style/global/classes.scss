@@ -79,14 +79,6 @@
     user-select: none;
 }
 
-.message {
-    @include mobile {
-        width: 80% !important;
-    }
-}
-
-.svgIcon {
-    width: var(--fontsize-big);
-    fill: inherit;
-    aspect-ratio: 1 / 1;
+.scrollSmooth {
+    scroll-behavior: smooth;
 }

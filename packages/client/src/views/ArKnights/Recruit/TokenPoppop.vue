@@ -95,7 +95,6 @@ onMounted(() => {
     const currentFlag = AKStorage.getItem("currentFlag");
     if (currentFlag && userData && userData[currentFlag]) {
         channelId.value = userData[currentFlag].channelId;
-        console.log(channelId.value);
         currentUserFlag.value = currentFlag;
         userFlags.value = Object.keys(userData);
         token.value = userData[currentFlag].ak_token;

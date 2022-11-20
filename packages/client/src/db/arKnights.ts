@@ -25,8 +25,8 @@ export function isCharData(
 
 export function operatorsWithTime(operators: DrawTableType["operators"]) {
     const drawDataWithTime: Record<string, RecruitListItem["chars"]> = {};
+    let time = "";
     for (const char of operators) {
-        let time = "";
         if (isCharData(char)) {
             drawDataWithTime[time].push(char);
         } else {

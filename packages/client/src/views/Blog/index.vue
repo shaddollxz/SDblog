@@ -1,5 +1,5 @@
 <template>
-    <div class="blog">
+    <div class="blog scrollSmooth">
         <div class="content">
             <Left></Left>
             <Right :style="{ transform: !isMobile !== menuState ? null : 'translateX(100%)' }"></Right>

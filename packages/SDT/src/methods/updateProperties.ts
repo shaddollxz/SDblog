@@ -20,7 +20,7 @@ export default function <Original extends object>(
     _original: Original,
     updateOption: UpdatePropertiesOptions<Original>
 ) {
-    const original = deepClone(_original);
+    const original: Original = _original ? deepClone(_original) : ({} as Original);
     for (let updateMethod in updateOption) {
         const changedTo = updateOption[updateMethod]!;
         switch (updateMethod as keyof UpdatePropertiesOptions<Original>) {

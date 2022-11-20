@@ -230,6 +230,11 @@ class IDBTable<TableType extends object, IndexNames extends string> {
         this.store = this.transaction.objectStore(this.tableName);
     }
 
+    /** 当前数据库的所有主键值 */
+    async getAllKeys(): Promise<string[]> {
+        return (await this.CURDHandler(this.store.getAllKeys())) as string[];
+    }
+
     /** 给表添加数据 */
     async insert(value: TableType): Promise<boolean>;
     async insert(value: TableType, key: IDBValidKey): Promise<boolean>;
@@ -268,21 +273,21 @@ class IDBTable<TableType extends object, IndexNames extends string> {
         let value = (await this.find(query))[0];
         const afterUpdate = updateProperties(value, update);
         await this.CURDHandler(this.store.put(afterUpdate));
-        return value;
+        return afterUpdate;
     }
     /** 通过主键查找数据并更新 返回更新后的数据 */
     async findByKeypathAndUpdate(query: string | number, update: UpdatePropertiesOptions<TableType>) {
         let value = (await this.findByKeypath(query))[0];
         const afterUpdate = updateProperties(value, update);
         await this.CURDHandler(this.store.put(afterUpdate));
-        return value;
+        return afterUpdate;
     }
     /** 通过索引查找数据并更新 返回更新后的数据 */
     async findByIndexAndUpdate(query: FindOptions<IndexNames>, update: UpdatePropertiesOptions<TableType>) {
         let value = (await this.findByIndex(query))[0];
         const afterUpdate = updateProperties(value, update);
         await this.CURDHandler(this.store.put(afterUpdate));
-        return value;
+        return afterUpdate;
     }
 
     /** 通过主键查找对应的数据 */

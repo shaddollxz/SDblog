@@ -1,20 +1,18 @@
 <template>
-    <div v-show="isShowTokenPoppop" class="shady gusto-flex-center">
-        <TokenPoppop @onEnsure="onEnsure" @onExit="onExit"></TokenPoppop>
-    </div>
     <div class="recruit">
-        <div class="pie" ref="pieDom"></div>
-
-        <div class="gusto-button" @click="isShowTokenPoppop = true">
-            <span>token管理</span>
-            <SvgIcon name="replyBox-help"></SvgIcon>
+        <div class="left gusto-flex-center-col">
+            <div class="pie" ref="pieDom"></div>
+            <div class="gusto-button" @click="isShowTokenPoppop = true">
+                <span>token管理</span>
+                <SvgIcon name="replyBox-help"></SvgIcon>
+            </div>
         </div>
 
         <div class="dataAnalyze">
             <div class="distribution">
                 <p>保底记录</p>
                 <span>自记录开始普通寻访已{{ lastSixData.lastSix }}发没有六星</span>
-                <span>限定池的记录请在下面查阅</span>
+                <span>（限定池的记录请在下面查阅）</span>
             </div>
 
             <div class="distribution">
@@ -45,13 +43,15 @@
                     @onOpen="() => getPoolDrawDataAndSetChart(name)"
                 >
                     <template #title>
-                        <span>{{ name }}</span>
-                        <span class="limit" v-if="isLimit(name)">限定</span>
+                        <div class="title">
+                            <div>{{ name }}</div>
+                            <div class="limit" v-if="isLimit(name)">限定</div>
+                        </div>
                     </template>
                     <template #content>
                         <div class="starData">
                             <span v-if="isLimit(name)">
-                                卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
+                                该卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
                             </span>
                             <span>合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发</span>
                             <span v-for="(count, rarity) in value" :class="`rarity-${rarity - 1}`">
@@ -59,16 +59,26 @@
                             </span>
                         </div>
                         <div class="drawData">
-                            <span v-for="(chars, time) in poolDrawData[name]">
-                                <span v-for="char of chars" :class="`rarity-${char.rarity}`">
-                                    {{ char }}
-                                </span>
-                            </span>
+                            <div class="charsDetail" v-for="(chars, time) in poolDrawData[name]">
+                                <div class="time">{{ time }}</div>
+                                <div class="chars">
+                                    <div
+                                        v-for="char of chars"
+                                        class="char gusto-tagBox"
+                                        :class="`rarity-${char.rarity}`"
+                                    >
+                                        {{ char.name }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </template>
                 </DropDown>
             </div>
         </div>
+    </div>
+    <div v-show="isShowTokenPoppop" class="shady gusto-flex-center">
+        <TokenPoppop @onEnsure="onEnsure" @onExit="onExit"></TokenPoppop>
     </div>
 </template>
 
@@ -243,24 +253,66 @@ function uploadData() {
     }
 }
 .recruit {
-    --rarity-2: #0493d0;
-    --rarity-3: #a231ff;
-    --rarity-4: #d88303;
-    --rarity-5: #d14e02;
     display: flex;
-    justify-content: space-evenly;
-    .pie {
-        width: 50%;
-        height: 20rem;
-    }
+    align-items: flex-start;
+    gap: $gap-large;
+    height: 100%;
+    padding: $gap-large;
     @include mobile {
         flex-direction: column;
+        .left {
+            .pie {
+                width: 100%;
+            }
+        }
+    }
+    .left {
+        flex: 0 1 55%;
+        gap: $gap;
         .pie {
             width: 100%;
+            height: 20rem;
         }
     }
     .dataAnalyze {
+        width: 100%;
         .distribution {
+            margin-bottom: $gap-large;
+            p {
+                font-size: var(--fontsize-big);
+            }
+            .dropDown {
+                padding: 0.3rem 0;
+                border-top: var(--color-text-default) solid 0.3rem;
+                margin-bottom: $gap-big;
+                width: 100%;
+            }
+            .title {
+                display: flex;
+                gap: $gap-xxlarge;
+            }
+            .starData {
+                margin: $gap-big 0;
+            }
+            .drawData {
+                .charsDetail {
+                    display: flex;
+                    align-items: center;
+                    gap: $gap-big;
+                    margin-bottom: $gap-big;
+                    font-size: var(--fontsize-small);
+                    .time {
+                        flex: 0 0 auto;
+                    }
+                    .chars {
+                        .char {
+                            --fontsize: var(--fontsize-small);
+                            float: left;
+                            margin: 0 $gap 0 0;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -278,5 +330,8 @@ function uploadData() {
     color: #d14e02;
 }
 .limit {
+    padding: 0 0.8rem;
+    text-align: center;
+    // background: linear-gradient(to left, red, blue);
 }
 </style>

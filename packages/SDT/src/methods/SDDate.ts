@@ -62,7 +62,13 @@ export default class SDDate extends Date {
                 case "Day":
                     return useChinese ? transformChinese[data] : transformEnglish_Week[data];
                 case "Hours":
-                    return /\/hh\//g.test(formatStr) ? (+data > 12 ? +data - 12 : data) : data;
+                    return /\/hh\//g.test(formatStr)
+                        ? +data > 12
+                            ? +data - 12
+                            : data
+                        : data.length == 2
+                        ? data
+                        : "0" + data;
                 case "Milliseconds":
                     if (data.length < 3) {
                         return 3 - data.length == 1 ? "0" + data : "00" + data;

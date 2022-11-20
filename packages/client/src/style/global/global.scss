@@ -75,3 +75,15 @@ textarea {
         outline-style: none;
     }
 }
+
+.message {
+    @include mobile {
+        width: 80% !important;
+    }
+}
+
+.svgIcon {
+    width: var(--fontsize-big);
+    fill: inherit;
+    aspect-ratio: 1 / 1;
+}

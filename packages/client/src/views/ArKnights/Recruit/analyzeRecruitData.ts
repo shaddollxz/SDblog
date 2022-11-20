@@ -12,6 +12,8 @@ export function isLimit(poolName: string) {
     return new RegExp(poolName).test(limitList);
 }
 
+const initStarData = { 3: 0, 4: 0, 5: 0, 6: 0 } as const;
+
 interface Result {
     lastSix: number; // 普通池距离上一个六星
     isHaveSix: boolean; // 这次分析的普通池数据中是否有六星 用来和以前的数据进行拼接使用
@@ -41,7 +43,7 @@ export async function analyzeData(list: RecruitInfo["list"]) {
     const counts: Result["counts"] = {};
     for (const draw of list) {
         const poolName = draw.pool;
-        counts[poolName] ? null : (counts[poolName] = { 3: 0, 4: 0, 5: 0, 6: 0 });
+        counts[poolName] ? null : (counts[poolName] = initStarData);
         for (const char of draw.chars) {
             counts[poolName][char.rarity + 1]++;
         }
@@ -54,8 +56,23 @@ export async function analyzeData(list: RecruitInfo["list"]) {
     }
     result.counts = counts;
     const drawTable = await useDrawTable(currentFlag);
+    const allkeys = await drawTable.getAllKeys();
     for (let poolName in pools) {
-        await drawTable.findByKeypathAndUpdate(poolName, { $set: { operators: pools[poolName] } });
+        if (allkeys.includes(poolName)) {
+            await drawTable.findByKeypathAndUpdate(poolName, {
+                $set:
+                    typeof pools[poolName][0] == "number"
+                        ? { operators: pools[poolName], ts: pools[poolName][0] as unknown as number }
+                        : { operators: pools[poolName] },
+            });
+        } else {
+            await drawTable.insert({
+                poolName,
+                star: initStarData,
+                operators: pools[poolName],
+                ts: pools[0] as unknown as number,
+            });
+        }
     }
 
     // 计算保底数据
