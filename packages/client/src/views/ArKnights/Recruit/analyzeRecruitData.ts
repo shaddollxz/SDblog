@@ -60,12 +60,14 @@ export async function analyzeData(list: RecruitInfo["list"]) {
     for (let poolName in pools) {
         if (allkeys.includes(poolName)) {
             await drawTable.findByKeypathAndUpdate(poolName, {
-                $set:
-                    typeof pools[poolName][0] == "number"
-                        ? { operators: pools[poolName], ts: pools[poolName][0] as unknown as number }
-                        : { operators: pools[poolName] },
+                $unshift: { operators: pools[poolName] },
             });
+            const ts = pools[poolName][0];
+            if (typeof ts == "number") {
+                await drawTable.findByKeypathAndUpdate(poolName, { $set: { ts } });
+            }
         } else {
+            result.newPools += poolName + " ";
             await drawTable.insert({
                 poolName,
                 star: initStarData,
@@ -84,13 +86,16 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             // 限定池
             result.lastSix_limit[poolName] = 0;
             result.isHaveSix_limit[poolName] = false;
-
+            let charOrder = 0;
             for (let i = 0; i < poolChars.length; i++) {
                 const charData = poolChars[i];
-                if (isCharData(charData) && charData.rarity == 5) {
-                    result.lastSix_limit[poolName] = i;
-                    result.isHaveSix_limit[poolName] = true;
-                    break;
+                if (isCharData(charData)) {
+                    charOrder++;
+                    if (charData.rarity == 5) {
+                        result.lastSix_limit[poolName] = charOrder - 1;
+                        result.isHaveSix_limit[poolName] = true;
+                        break;
+                    }
                 }
             }
             if (!result.isHaveSix_limit[poolName]) {
@@ -137,8 +142,8 @@ export async function freshData(result: Result): Promise<ExportData> {
                 // 旧卡池 加上新的数据
                 // @ts-ignore
                 starData[poolName] = objectAdd(drawData[poolName].star, result.counts[poolName]);
-                await drawTable.findByKeypathAndUpdate(poolName, { $set: { star: starData[poolName] } });
             }
+            await drawTable.findByKeypathAndUpdate(poolName, { $set: { star: starData[poolName] } });
         }
     }
     // 更新上次保底数据

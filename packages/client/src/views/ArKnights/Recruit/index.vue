@@ -10,25 +10,31 @@
 
         <div class="dataAnalyze">
             <div class="distribution">
-                <p>保底记录</p>
-                <span>自记录开始普通寻访已{{ lastSixData.lastSix }}发没有六星</span>
+                <h3>保底记录</h3>
+                <span>
+                    自记录开始普通寻访已
+                    <span class="rarity-5">
+                        {{ lastSixData.lastSix }}
+                    </span>
+                    发没有六星
+                </span>
                 <span>（限定池的记录请在下面查阅）</span>
             </div>
 
             <div class="distribution">
-                <p>平均出货统计</p>
+                <h3>平均出货统计</h3>
                 <!-- prettier-ignore -->
-                <span>
-                    六星平均{{ allStarData[6] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[6]), 2) }}发
+                <span class="rarity-5">
+                    6星平均{{ allStarData[6] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[6]), 2) }}发
                 </span>
                 <!-- prettier-ignore -->
-                <span>
-                    五星平均{{ allStarData[5] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[5]), 2) }}发
+                <span class="rarity-4">
+                    5星平均{{ allStarData[5] === 0 ? 0 : SDMath.ceil(SDMath.div(allDraw, allStarData[5]), 2) }}发
                 </span>
             </div>
 
             <div class="distribution">
-                <p>抽卡统计</p>
+                <h3>抽卡统计</h3>
                 <span>合计{{ allDraw }}发</span>
                 <span v-for="(count, rarity) in allStarData" :class="`rarity-${rarity - 1}`">
                     {{ rarity }}星{{ count }}个
@@ -36,7 +42,7 @@
             </div>
 
             <div class="distribution">
-                <p>单个卡池分析（打开查看饼图分析）</p>
+                <h3>单个卡池分析（打开查看饼图分析）</h3>
                 <DropDown
                     v-for="(value, name) in starData"
                     lazyRender
@@ -49,25 +55,33 @@
                         </div>
                     </template>
                     <template #content>
-                        <div class="starData">
-                            <span v-if="isLimit(name)">
-                                该卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
-                            </span>
-                            <span>合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发</span>
-                            <span v-for="(count, rarity) in value" :class="`rarity-${rarity - 1}`">
-                                {{ rarity }}星{{ count }}个
-                            </span>
-                        </div>
-                        <div class="drawData">
-                            <div class="charsDetail" v-for="(chars, time) in poolDrawData[name]">
-                                <div class="time">{{ time }}</div>
-                                <div class="chars">
-                                    <div
-                                        v-for="char of chars"
-                                        class="char gusto-tagBox"
-                                        :class="`rarity-${char.rarity}`"
-                                    >
-                                        {{ char.name }}
+                        <div class="content">
+                            <div class="starData">
+                                <span v-if="isLimit(name)">
+                                    该卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
+                                </span>
+                                <span>
+                                    合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发
+                                </span>
+                                <span v-for="(count, rarity) in value" :class="`rarity-${rarity - 1}`">
+                                    {{ rarity }}星{{ count }}个
+                                </span>
+                            </div>
+                            <div class="drawData">
+                                <div
+                                    class="charsDetail"
+                                    v-for="(chars, time) in poolDrawData[name]"
+                                    :key="time"
+                                >
+                                    <div class="time">{{ time }}</div>
+                                    <div class="chars">
+                                        <div
+                                            v-for="char of chars"
+                                            class="char gusto-tagBox"
+                                            :class="`rarity-${char.rarity}`"
+                                        >
+                                            {{ char.name }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +240,7 @@ async function getPoolDrawDataAndSetChart(poolName: string) {
             poolDrawData[poolName] = drawDataWithTime;
         }
     }
-    setChart(starData[poolName]);
+    setChart(starData.value[poolName]);
 }
 // #endregion
 function uploadData() {
@@ -268,7 +282,7 @@ function uploadData() {
     }
     .left {
         flex: 0 1 55%;
-        gap: $gap;
+        gap: $gap-xlarge;
         .pie {
             width: 100%;
             height: 20rem;
@@ -278,37 +292,44 @@ function uploadData() {
         width: 100%;
         .distribution {
             margin-bottom: $gap-large;
-            p {
-                font-size: var(--fontsize-big);
+            > span {
+                padding-left: $gap-big;
             }
             .dropDown {
                 padding: 0.3rem 0;
                 border-top: var(--color-text-default) solid 0.3rem;
-                margin-bottom: $gap-big;
+                margin-bottom: $gap-xlarge;
                 width: 100%;
             }
             .title {
                 display: flex;
                 gap: $gap-xxlarge;
+                margin: 0 0 0 $gap;
             }
-            .starData {
-                margin: $gap-big 0;
-            }
-            .drawData {
-                .charsDetail {
-                    display: flex;
-                    align-items: center;
-                    gap: $gap-big;
-                    margin-bottom: $gap-big;
-                    font-size: var(--fontsize-small);
-                    .time {
-                        flex: 0 0 auto;
+            .content {
+                margin: $gap-large $gap-xlarge 0;
+                .starData {
+                    margin: $gap-large 0;
+                    > span {
+                        margin-right: $gap-big;
                     }
-                    .chars {
-                        .char {
-                            --fontsize: var(--fontsize-small);
-                            float: left;
-                            margin: 0 $gap 0 0;
+                }
+                .drawData {
+                    .charsDetail {
+                        display: flex;
+                        align-items: center;
+                        gap: $gap-big;
+                        margin-bottom: $gap-big;
+                        font-size: var(--fontsize-small);
+                        .time {
+                            flex: 0 0 auto;
+                        }
+                        .chars {
+                            .char {
+                                --fontsize: var(--fontsize-small);
+                                float: left;
+                                margin: 0 $gap 0 0;
+                            }
                         }
                     }
                 }
@@ -330,8 +351,18 @@ function uploadData() {
     color: #d14e02;
 }
 .limit {
-    padding: 0 0.8rem;
+    padding: 0 1.5rem;
+    color: #fff;
     text-align: center;
-    // background: linear-gradient(to left, red, blue);
+    background: linear-gradient(
+        95deg,
+        #ab00ff4c 0%,
+        #b3c5ffff 25%,
+        #ffffff00 45%,
+        #ffffff00 55%,
+        #b3c5ffff 75%,
+        #ab00ff4c 100%
+    );
+    border-radius: 0.2rem;
 }
 </style>

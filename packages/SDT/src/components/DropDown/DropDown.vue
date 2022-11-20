@@ -1,8 +1,8 @@
 <template>
     <div class="dropDown">
-        <div class="title">
+        <div class="title" @click="onClick">
             <slot name="title"></slot>
-            <div class="arrow" :class="{ opened: isOpen }" @click="onClick">❮</div>
+            <div class="arrow" :class="{ opened: isOpen }">❮</div>
         </div>
         <template v-if="isRender">
             <div class="content" v-show="isOpen">
