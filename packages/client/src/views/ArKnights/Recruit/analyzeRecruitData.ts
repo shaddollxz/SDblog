@@ -12,8 +12,6 @@ export function isLimit(poolName: string) {
     return new RegExp(poolName).test(limitList);
 }
 
-const initStarData = { 3: 0, 4: 0, 5: 0, 6: 0 } as const;
-
 interface Result {
     lastSix: number; // 普通池距离上一个六星
     isHaveSix: boolean; // 这次分析的普通池数据中是否有六星 用来和以前的数据进行拼接使用
@@ -43,7 +41,7 @@ export async function analyzeData(list: RecruitInfo["list"]) {
     const counts: Result["counts"] = {};
     for (const draw of list) {
         const poolName = draw.pool;
-        counts[poolName] ? null : (counts[poolName] = initStarData);
+        counts[poolName] ? null : (counts[poolName] = { 3: 0, 4: 0, 5: 0, 6: 0 });
         for (const char of draw.chars) {
             counts[poolName][char.rarity + 1]++;
         }
@@ -70,7 +68,7 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             result.newPools += poolName + " ";
             await drawTable.insert({
                 poolName,
-                star: initStarData,
+                star: { 3: 0, 4: 0, 5: 0, 6: 0 },
                 operators: pools[poolName],
                 ts: pools[0] as unknown as number,
             });
@@ -86,15 +84,14 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             // 限定池
             result.lastSix_limit[poolName] = 0;
             result.isHaveSix_limit[poolName] = false;
-            let charOrder = 0;
             for (let i = 0; i < poolChars.length; i++) {
                 const charData = poolChars[i];
                 if (isCharData(charData)) {
-                    charOrder++;
                     if (charData.rarity == 5) {
-                        result.lastSix_limit[poolName] = charOrder - 1;
                         result.isHaveSix_limit[poolName] = true;
                         break;
+                    } else {
+                        result.lastSix_limit[poolName]++;
                     }
                 }
             }
@@ -106,13 +103,15 @@ export async function analyzeData(list: RecruitInfo["list"]) {
             if (!result.isHaveSix) {
                 for (let i = 0; i < poolChars.length; i++) {
                     const charData = poolChars[i];
-                    if (isCharData(charData) && charData.rarity == 5) {
-                        result.lastSix += i;
-                        result.isHaveSix = true;
-                        break;
+                    if (isCharData(charData)) {
+                        if (charData.rarity == 5) {
+                            result.isHaveSix = true;
+                            break;
+                        } else {
+                            result.lastSix++;
+                        }
                     }
                 }
-                result.lastSix += poolChars.length;
             }
         }
     }

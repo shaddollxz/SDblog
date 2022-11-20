@@ -7,5 +7,8 @@
 <style lang="scss" scoped>
 .arKnights {
     margin-left: $width-wife;
+    @include mobile {
+        margin-left: 0;
+    }
 }
 </style>

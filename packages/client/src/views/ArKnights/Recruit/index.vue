@@ -57,9 +57,13 @@
                     <template #content>
                         <div class="content">
                             <div class="starData">
-                                <span v-if="isLimit(name)">
-                                    该卡池中距离上一个六星已有{{ lastSixData.lastSix_limit[name] }}抽
-                                </span>
+                                <p v-if="isLimit(name)">
+                                    该卡池中距离上一个六星已有
+                                    <span class="rarity-5">
+                                        {{ lastSixData.lastSix_limit[name] }}
+                                    </span>
+                                    抽
+                                </p>
                                 <span>
                                     合计{{ [6, 5, 4, 3].reduce((pre, cur) => pre + value[cur], 0) }}发
                                 </span>
@@ -287,13 +291,16 @@ function uploadData() {
             width: 100%;
             height: 20rem;
         }
+        @include mobile {
+            width: 100%;
+            gap: 0;
+        }
     }
     .dataAnalyze {
         width: 100%;
         .distribution {
-            margin-bottom: $gap-large;
             > span {
-                padding-left: $gap-big;
+                padding-right: $gap;
             }
             .dropDown {
                 padding: 0.3rem 0;
@@ -310,6 +317,9 @@ function uploadData() {
                 margin: $gap-large $gap-xlarge 0;
                 .starData {
                     margin: $gap-large 0;
+                    p {
+                        margin: 0 0 $gap-big 0;
+                    }
                     > span {
                         margin-right: $gap-big;
                     }
@@ -353,6 +363,7 @@ function uploadData() {
 .limit {
     padding: 0 1.5rem;
     color: #fff;
+    text-shadow: 1px 1px 2px #000;
     text-align: center;
     background: linear-gradient(
         95deg,
