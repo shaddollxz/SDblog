@@ -9,7 +9,7 @@ source ${__dirname}/utils/ReadEnv.sh
 source ${__dirname}/utils/Log.sh
 
 cd $clientPath
-pnpm build:dev
+$(vue-tsc --noEmit && vite build --mode development)
 
 cd ${__rootDir}/scripts
 distPath=$(ReadEnv $envPath PUBLIC_DIST_PATH)

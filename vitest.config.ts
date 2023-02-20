@@ -1,19 +1,11 @@
 import { defineConfig } from "vitest/config";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
+    plugins: [vue()],
     test: {
         testTimeout: 10000,
         environment: "jsdom",
-        include: [
-            "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
-            "**/tests/**/*.[jt]s?(x)",
-            "**/?(*.)+(spec|test).[tj]s?(x)",
-            "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
-        ],
-    },
-    resolve: {
-        alias: {
-            "@": "/packages/client/src",
-        },
+        include: ["**/tests/*.test.[jt]s?(x)"],
     },
 });

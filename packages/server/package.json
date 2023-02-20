@@ -1,13 +1,16 @@
 {
     "name": "@blog/server",
     "version": "1.0.0",
+    "description": "后端代码",
+    "type": "module",
     "main": "./exports/index.ts",
     "types": "./exports/index.d.ts",
-    "type": "module",
     "scripts": {
         "dev": "set MODE=development && tsx watch src/app.ts",
-        "build": "set MODE=production && tsc",
-        "preview": "node --experimental-specifier-resolution=node bin/app.js"
+        "build": "cd ../.. && sh ./scripts/sh/buildServer.sh production",
+        "build:dev": "cd ../.. && sh ./scripts/sh/buildServer.sh development",
+        "preview": "node --experimental-specifier-resolution=node dist/app.js",
+        "clear": "rm -rf node_modules dist .turbo"
     },
     "dependencies": {
         "@typegoose/typegoose": "^9.10.1",

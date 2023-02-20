@@ -2,12 +2,13 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "bin",
+        "outDir": "dist",
         "sourceMap": false,
         "removeComments": true, // 打包时删除注释
         "lib": ["ESNext"]
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts"]
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
+    "exclude": ["node_modules"]
     // "ts-node": {
     //     "files": true
     // }

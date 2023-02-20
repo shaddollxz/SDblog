@@ -1,0 +1,22 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+
+    "pipeline": {
+        "build": {
+            "outputs": ["dist/**", "build/**"],
+            "dependsOn": ["^build"]
+        },
+        "build:dev": {
+            "outputs": ["dist/**", "build/**"],
+            "dependsOn": ["^build:dev"]
+        },
+        "preview": {
+            "outputs": ["dist/**", "build/**"],
+            "dependsOn": ["build:dev"]
+        },
+        "clear": {
+            "cache": false
+        }
+    },
+    "globalDependencies": ["./env/.env"]
+}

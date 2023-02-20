@@ -21,12 +21,14 @@
         "typeScript"
     ],
     "author": "https://github.com/shaddollxz",
-    "license": "ISC",
+    "license": "Apache",
     "bugs": {
         "url": "https://github.com/shaddollxz/SDT/issues"
     },
     "homepage": "https://github.com/shaddollxz/SDT#readme",
-    "scripts": {},
+    "scripts": {
+        "clear": "rm -rf node_modules"
+    },
     "peerDependencies": {
         "vue": "^3.2.0"
     },

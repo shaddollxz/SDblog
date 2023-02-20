@@ -6,7 +6,6 @@ node_modules
 stats.html
 dist
 static
+.turbo
 logs
-packages/server/bin
-packages/server/logs
 packages/client/src/assets/font

@@ -2,7 +2,7 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "bin",
+        "outDir": "dist",
         "sourceMap": false,
         "removeComments": true, // 打包时删除注释
         "lib": ["ESNext"]

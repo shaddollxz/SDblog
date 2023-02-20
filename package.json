@@ -9,14 +9,13 @@
         "start": "sh ./scripts/sh/startBlog.sh",
         "dev:client": "cd packages/client && pnpm dev",
         "dev:server": "cd packages/server && pnpm dev",
-        "build:client": "cd packages/client && pnpm build",
-        "build:client:dev": "sh ./scripts/sh/buildClientDev.sh",
-        "build:server": "sh ./scripts/sh/buildServer.sh",
-        "preview:client": "cd packages/client && pnpm preview",
-        "preview:server": "cd packages/server && pnpm preview",
+        "build": "turbo run build",
+        "build:dev": "turbo run build:dev",
+        "preview": "turbo run preview",
         "test": "vitest",
         "formatSVG": "cd ./scripts && pnpm formatSVG",
         "fontmin": "cd ./scripts && pnpm fontmin",
+        "clear": "turbo run clear && rm -rf node_modules",
         "clearlogs": "pm2 flush",
         "exportDB": "sh ./scripts/sh/exportDB.sh",
         "importDB": "sh ./scripts/sh/importDB.sh",
@@ -25,16 +24,18 @@
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
+    "license": "Apache",
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
         "@types/node": "^17.0.8",
         "@types/uuid": "^8.3.4",
+        "@vitejs/plugin-vue": "^3.0.1",
         "husky": "^8.0.1",
         "jsdom": "^20.0.0",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1",
         "tsx": "^3.8.0",
+        "turbo": "^1.6.3",
         "typescript": "^4.7.4",
         "vitest": "^0.18.0"
     },
@@ -43,6 +44,6 @@
         "chalk": "^5.0.1",
         "dotenv": "^12.0.4",
         "fs-extra": "^10.0.0",
-        "uuid": "^8.3.2"
+        "uuid": "^9.0.0"
     }
 }

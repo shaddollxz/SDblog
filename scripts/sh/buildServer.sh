@@ -9,11 +9,13 @@ mailsPath=${serverPath}/src/utils/sendMail/mails
 source ${__dirname}/utils/String.sh
 source ${__dirname}/utils/Log.sh
 
+env=$1
+
 cd $serverPath
-pnpm build
+$(set MODE=$1 && tsc)
 
 workers=$(ls $workerPath)
-workersTargetPath=${serverPath}/bin/workers
+workersTargetPath=${serverPath}/dist/workers
 for worker in $workers; do
     if [ $(EndWith $worker .js) == 1 ]; then
         cp ${workerPath}/$worker $workersTargetPath
@@ -21,7 +23,7 @@ for worker in $workers; do
 done
 
 mails=$(ls $mailsPath)
-mailsTargetPath=${serverPath}/bin/utils/sendMail/mails
+mailsTargetPath=${serverPath}/dist/utils/sendMail/mails
 if [ ! -d $mailsTargetPath ]; then
     mkdir $mailsTargetPath
 fi

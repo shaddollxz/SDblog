@@ -3,7 +3,7 @@ import "./db/connect"; // 链接数据库
 import "./workers"; // 加载其它线程
 import express from "express";
 import compression from "./middlewares/compression";
-import * as ASSETSPATH from "./utils/assetsPath";
+import chalk from "chalk";
 
 const app = express();
 
@@ -16,7 +16,6 @@ app.use(process.env.PUBLIC_STATIC_PREFIX, express.static(process.env.PUBLIC_STAT
 
 // 配置接口
 import routes from "./routes";
-// app.use("/api", routes);
 app.use(routes);
 
 // 404和错误处理
@@ -25,4 +24,4 @@ import error from "./middlewares/errorHandler";
 app.use(notFound, error);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("server is run at http://localhost:" + PORT));
+app.listen(PORT, () => console.log(`server is run at ${chalk.blue(`http://localhost:${PORT}`)} `));
