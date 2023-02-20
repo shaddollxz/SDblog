@@ -3,15 +3,14 @@
 
     "pipeline": {
         "build": {
-            "outputs": ["dist/**", "build/**"],
+            "outputs": ["dist/**"],
             "dependsOn": ["^build"]
         },
         "build:dev": {
-            "outputs": ["dist/**", "build/**"],
+            "outputs": ["dist/**"],
             "dependsOn": ["^build:dev"]
         },
         "preview": {
-            "outputs": ["dist/**", "build/**"],
             "dependsOn": ["build:dev"]
         },
         "clear": {

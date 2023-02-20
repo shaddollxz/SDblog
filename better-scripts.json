@@ -1,0 +1,15 @@
+{
+    "start": ["sh ./scripts/sh/startBlog.sh", "拉取最新代码并打包代码开启pm2"],
+    "formatSVG": ["pnpm -F scripts formatSVG", "清除前端中svg的颜色数据"],
+    "fontmin": ["pnpm -F scripts fontmin", "生成前端使用的字体文件"],
+    "clear": ["turbo run clear && rm -rf node_modules", "清空所有node_modules"],
+    "clearlogs": ["pm2 flush", "清空pm2日志"],
+    "exportDB": ["sh ./scripts/sh/exportDB.sh", "导出数据库文件"],
+    "importDB": ["sh ./scripts/sh/importDB.sh", "导入数据库文件"],
+    "dev:client": ["pnpm -F @blog/client dev", "前端开发服务器开启"],
+    "dev:server": ["pnpm -F @blog/server dev", "后端开发服务器开启"],
+    "build": ["turbo run build", "打包前后端代码"],
+    "build:dev": ["turbo run build:dev", "打包前后端代码并分析前端打包结果"],
+    "preview": ["turbo run preview", "代码打包后预览"],
+    "test:all": ["vitest run", "所有测试代码都运行一次"]
+}

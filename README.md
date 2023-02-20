@@ -4,7 +4,7 @@
 
 # 运行
 
-通过`pnpm i`装好依赖并配置环境文件后运行`pnpm start`即可
+通过`pnpm i`装好依赖并配置环境文件后运行`pnpm use`选择`start`即可
 
 # 功能
 
@@ -32,14 +32,14 @@ server{
     location / {
         root   xxx; # 前端打包结果dist所在目录 .env中的PUBLIC_DIST_PATH
         index  index.html;
-        proxy_pass http://localhost:3000; # 后端运行的位置 端口号是.env中的PORT
+        proxy_pass http://localhost:PORT; # 后端运行的位置 端口号是.env中的PORT
         try_files $uri $uri/ /index.html;
     }
 
     # 配置ajax代理
     location /api/ {
         rewrite ^/api/(.*) /$1 break;
-        proxy_pass http://localhost:3000; # 后端运行的位置
+        proxy_pass http://localhost:PORT; # 后端运行的位置
         add_header X-Slave $upstream_addr;
         proxy_redirect off;
         proxy_set_header Host $host;
