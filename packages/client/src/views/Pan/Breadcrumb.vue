@@ -1,9 +1,12 @@
 <template>
     <div class="breadcrumb">
         <span>位置：&nbsp;</span>
-        <a v-for="path of panStore.currentPathFolder" @click="() => panStore.toThisPath(path.id)">
-            {{ "/" + path.name }}
-        </a>
+        <template v-for="path of panStore.currentPathFolder">
+            <span>&nbsp;/&nbsp;</span>
+            <a @click="() => panStore.toThisPath(path.id)">
+                {{  path.name }}
+            </a>
+        </template>
     </div>
 </template>
 
