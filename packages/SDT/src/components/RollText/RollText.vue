@@ -30,7 +30,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     type: 1,
     duration: 8,
-    asyncData: () => null,
+    asyncData: null,
     align: "left",
 });
 

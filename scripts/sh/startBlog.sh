@@ -8,8 +8,10 @@ envPath="${__rootDir}/env"
 source ${__dirname}/utils/ReadEnv.sh
 source ${__dirname}/utils/Log.sh
 
+service mongod stop
+
 git checkout .
-git pull
+git pull --force
 
 # 检查字体文件
 cd ${__rootDir}/scripts
@@ -56,7 +58,7 @@ if [ -f ${envPath}/.env ]; then
         mkdir "${staticBasePath}${assetsPath}/emojis"
         Error "缺少静态资源文件夹 ${staticBasePath}${assetsPath}/emojis 已生成该文件夹"
     fi
-    if [ ! -d "${staticBasePath}${assetsPath}/emojis/noah"]; then
+    if [ ! -d "${staticBasePath}${assetsPath}/emojis/noah" ]; then
         mkdir "${staticBasePath}${assetsPath}/emojis/noah"
         Error "缺少静态资源文件夹 ${staticBasePath}${assetsPath}/emojis/noah 已生成该文件夹"
     fi
@@ -75,10 +77,11 @@ fi
 
 cd $__rootDir
 pm2 delete blog
-pnpm build:server
-pnpm build:client
+pnpm build
 pm2 start ${__rootDir}/pm2.json
 pm2 update
 pm2 list
+
+service mongod start
 
 Success "blog is running"

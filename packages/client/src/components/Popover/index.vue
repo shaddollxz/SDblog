@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
     x: "0px",
     y: "0px",
     arrow: true,
-    modelValue: () => null,
+    modelValue: null,
 });
 interface Emits {
     (n: "onClose"): void;
