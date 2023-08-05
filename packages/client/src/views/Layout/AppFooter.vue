@@ -2,16 +2,22 @@
     <footer class="global-footer gusto-flex-center">
         <div class="siteMsg">
             <div>
-                Copyright © 2022
-                <a href="https://www.shaddollxz.space">影依贤者</a>
+                {{ `Copyright © ${$formatTime(new Date(), "/YYYY/")}` }}
+                <a :href="href">{{ adminName }}</a>
             </div>
             <div class="gusto-flex-center">
                 <img src="~@img/beian.png" alt="" />
-                <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2021027724号</a>
+                <a href="https://beian.miit.gov.cn/" target="_blank">{{ beianhao }}</a>
             </div>
         </div>
     </footer>
 </template>
+
+<script setup lang="ts">
+const href = import.meta.env.PUBLIC_WEBSITE;
+const adminName = import.meta.env.PUBLIC_ADMIN_NAME;
+const beianhao = import.meta.env.PUBLIC_BEIAN;
+</script>
 
 <style lang="scss">
 .global-footer {

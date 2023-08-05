@@ -13,6 +13,9 @@ interface ImportMetaEnv {
     readonly VITE_DEVMOBILE: "0" | "1";
 
     readonly PUBLIC_WEBSITE: string;
+    readonly PUBLIC_ADMIN_NAME: string;
+    readonly PUBLIC_BEIAN: string;
+
     readonly PUBLIC_DIST_PATH: string;
     readonly PUBLIC_STATIC_PATH: string;
     readonly PUBLIC_STATIC_PREFIX: string;
