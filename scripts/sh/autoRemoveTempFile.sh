@@ -12,7 +12,8 @@ envPath=${__rootDir}/env/.env
 
 source ${__dirname}/utils/ReadEnv.sh
 
+staticPath=$(ReadEnv $envPath PUBLIC_STATIC_PATH)
 panFileDir=$(ReadEnv $envPath PAN_PATH)
 keepDay=$(ReadEnv $envPath PUBLIC_TEMP_DAY)
 
-find $panFileDir -mtime "+${keepDay}" -name "*" -delete
+find "${staticPath}${panFileDir}" -mtime "+${keepDay}" -name "*" -delete
