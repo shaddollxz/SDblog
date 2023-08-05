@@ -96,7 +96,13 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const headPic = props.blogMsg.headPic || Random.array(staticPics.headPic);
+const headPic = ref(props.blogMsg.headPic || Random.array(staticPics.headPic));
+
+watch(
+    () => props.blogMsg,
+    () => (headPic.value = props.blogMsg.headPic || Random.array(staticPics.headPic))
+);
+
 function errorHandle(e: Event) {
     const el = e.target as HTMLImageElement;
     el.src = defaultHeadPic;
