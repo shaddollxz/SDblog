@@ -7,7 +7,7 @@ export default <RouteItem>{
     meta: {
         title: "写文章",
         needLogin: true,
-        keepAlive: true,
+        keepAlive: false,
         authority: AuthorityEnum.blog,
     },
 };
